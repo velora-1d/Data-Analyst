@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul 5: Subquery & CTE (WITH ... AS) — SQL Data Analyst</title>
+    <meta name="description" content="Kuasai Subquery dan Common Table Expressions (CTE) di e-commerce: Scalar Subquery, Correlated Subquery, Operator EXISTS, dan Pipa Analisis Multi-Level CTE.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-left">
+        <a href="../index.html" class="logo"><div class="logo-icon"><i class="fa-solid fa-cart-shopping"></i></div>SQL E-Commerce Analytics</a>
+        <nav class="breadcrumb"><i class="fa-solid fa-chevron-right"></i><span>Modul 5: Subquery & CTE</span></nav>
+    </div>
+    <div class="header-right">
+        <div class="module-nav">
+            <a href="04_join.html" class="btn-icon" title="Modul 4"><i class="fa-solid fa-chevron-left"></i></a>
+            <span class="module-count">5 / 7</span>
+            <a href="06_window_functions.html" class="btn-icon" title="Modul 6"><i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+        <button class="btn-theme" id="themeToggle"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-list-ul"></i> Navigasi Materi</div>
+        <nav class="sidebar-nav">
+            <a href="#intro"       class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Pengantar Subquery</a>
+            <a href="#scalar"      class="nav-link"><i class="fa-solid fa-bullseye"></i> 2. Scalar Subquery</a>
+            <a href="#in-subquery" class="nav-link"><i class="fa-solid fa-list-check"></i> 3. Multi-Row Subquery (IN)</a>
+            <a href="#correlated"  class="nav-link"><i class="fa-solid fa-arrows-spin"></i> 4. Correlated Subquery</a>
+            <a href="#exists"      class="nav-link"><i class="fa-solid fa-check-double"></i> 5. EXISTS vs IN</a>
+            <a href="#cte"         class="nav-link"><i class="fa-solid fa-layer-group"></i> 6. Konsep CTE (WITH ... AS)</a>
+            <a href="#multi-cte"   class="nav-link"><i class="fa-solid fa-cubes"></i> 7. Multi-Level CTE Pipeline</a>
+            <a href="#rangkuman"   class="nav-link"><i class="fa-solid fa-book"></i> 8. Rangkuman</a>
+            <a href="#quiz"        class="nav-link"><i class="fa-solid fa-circle-question"></i> 9. Kuis Interaktif</a>
+        </nav>
+        <div class="nav-divider"></div>
+        <div class="sidebar-header"><i class="fa-solid fa-book-open"></i> Semua Modul</div>
+        <div class="sidebar-module-list">
+            <a href="01_tipe_data.html"       class="sidebar-module-link"><div class="num">1</div> Tipe Data</a>
+            <a href="02_query_dasar.html"      class="sidebar-module-link"><div class="num">2</div> Query Dasar</a>
+            <a href="03_agregasi.html"         class="sidebar-module-link"><div class="num">3</div> Agregasi</a>
+            <a href="04_join.html"             class="sidebar-module-link"><div class="num">4</div> JOIN</a>
+            <a href="05_subquery_cte.html"     class="sidebar-module-link current"><div class="num">5</div> Subquery & CTE</a>
+            <a href="06_window_functions.html" class="sidebar-module-link"><div class="num">6</div> Window Functions</a>
+            <a href="07_analisis_nyata.html"   class="sidebar-module-link"><div class="num">7</div> Analisis Nyata</a>
+        </div>
+    </aside>
+
+    <main class="main">
+    <div class="main-inner">
+        <div class="module-hero">
+            <div class="module-badge">Modul 05 &mdash; Tingkat Mahir</div>
+            <h1>Subquery & Common Table Expressions (CTE)</h1>
+            <p class="module-desc">
+                Saat analisis e-commerce membutuhkan pemfilteran dinamis terhadap rata-rata belanja global, atau pemrosesan logika bertahap seperti customer tiering dan profit margin, Subquery dan CTE adalah alat utama yang wajib dikuasai.
+            </p>
+            <div class="module-tags">
+                <span class="tag"><i class="fa-regular fa-clock"></i> 50 menit</span>
+                <span class="tag"><i class="fa-solid fa-signal"></i> Mahir</span>
+                <span class="tag"><i class="fa-solid fa-database"></i> Database: E-Commerce Indonesia (20 Tabel)</span>
+                <span class="tag"><i class="fa-solid fa-file-code"></i> <a href="../sql/05_subquery_cte.sql" style="color:inherit">sql/05_subquery_cte.sql</a></span>
+            </div>
+        </div>
+
+        <!-- 1. Intro -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Pengantar Subquery vs CTE</h2>
+            <p>
+                <strong>Subquery</strong> adalah query yang disematkan di dalam query lain (inner query). Kelemahannya adalah jika terlalu bersarang (nested), query menjadi sulit dibaca.
+            </p>
+            <p>
+                <strong>CTE (Common Table Expression)</strong> dengan klausa <code>WITH ... AS</code> memungkinkan kita mendefinisikan temporary result set bernama yang membuat kode mudah dibaca secara linier dari atas ke bawah seperti paragraf logika.
+            </p>
+        </section>
+
+        <!-- 2. Scalar -->
+        <section id="scalar">
+            <h2><i class="fa-solid fa-bullseye"></i> 2. Scalar Subquery (Perbandingan Nilai Tunggal)</h2>
+            <p>
+                Scalar subquery menghasilkan tepat <strong>1 baris dan 1 kolom</strong>. Sangat ideal untuk membandingkan nilai transaksi per pesanan terhadap rata-rata AOV keseluruhan toko.
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- Transaksi yang nilainya melebihi rata-rata belanja (AOV) toko</span>
+<span class="sql-kw">SELECT</span> 
+    nomor_invoice,
+    total_bayar,
+    (<span class="sql-kw">SELECT</span> <span class="sql-fn">ROUND</span>(<span class="sql-fn">AVG</span>(total_bayar), <span class="sql-num">0</span>) <span class="sql-kw">FROM</span> pesanan <span class="sql-kw">WHERE</span> status_pesanan <span class="sql-op">=</span> <span class="sql-str">'Selesai'</span>) <span class="sql-kw">AS</span> aov_global
+<span class="sql-kw">FROM</span> pesanan
+<span class="sql-kw">WHERE</span> status_pesanan <span class="sql-op">=</span> <span class="sql-str">'Selesai'</span>
+  <span class="sql-op">AND</span> total_bayar <span class="sql-op">&gt;</span> (<span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(total_bayar) <span class="sql-kw">FROM</span> pesanan <span class="sql-kw">WHERE</span> status_pesanan <span class="sql-op">=</span> <span class="sql-str">'Selesai'</span>)
+<span class="sql-kw">ORDER BY</span> total_bayar <span class="sql-kw">DESC</span>
+<span class="sql-kw">LIMIT</span> <span class="sql-num">5</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- 3. Subquery IN -->
+        <section id="in-subquery">
+            <h2><i class="fa-solid fa-list-check"></i> 3. Multi-Row Subquery dengan Operator IN</h2>
+            <p>
+                Subquery yang menghasilkan daftar nilai ID dapat dipasangkan dengan operator <code>IN</code>.
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- Mengambil daftar pelanggan yang pernah membeli produk kategori 'Elektronik & Gadget'</span>
+<span class="sql-kw">SELECT</span> pelanggan_id, nama_lengkap, email, no_hp
+<span class="sql-kw">FROM</span> pelanggan
+<span class="sql-kw">WHERE</span> pelanggan_id <span class="sql-kw">IN</span> (
+    <span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> p.pelanggan_id
+    <span class="sql-kw">FROM</span> pesanan p
+    <span class="sql-kw">JOIN</span> rincian_pesanan rp  <span class="sql-kw">ON</span> p.pesanan_id <span class="sql-op">=</span> rp.pesanan_id
+    <span class="sql-kw">JOIN</span> variasi_produk vp   <span class="sql-kw">ON</span> rp.variasi_id <span class="sql-op">=</span> vp.variasi_id
+    <span class="sql-kw">JOIN</span> produk pr           <span class="sql-kw">ON</span> vp.produk_id <span class="sql-op">=</span> pr.produk_id
+    <span class="sql-kw">JOIN</span> subkategori sk      <span class="sql-kw">ON</span> pr.subkategori_id <span class="sql-op">=</span> sk.subkategori_id
+    <span class="sql-kw">JOIN</span> kategori k          <span class="sql-kw">ON</span> sk.kategori_id <span class="sql-op">=</span> k.kategori_id
+    <span class="sql-kw">WHERE</span> k.nama_kategori <span class="sql-op">=</span> <span class="sql-str">'Elektronik & Gadget'</span>
+)
+<span class="sql-kw">LIMIT</span> <span class="sql-num">5</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- 4. Correlated Subquery -->
+        <section id="correlated">
+            <h2><i class="fa-solid fa-arrows-spin"></i> 4. Correlated Subquery</h2>
+            <p>
+                Correlated subquery bergantung pada nilai baris tabel luar (outer query) yang sedang diproses.
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- Menghitung jumlah pesanan per pelanggan secara correlated</span>
+<span class="sql-kw">SELECT</span> 
+    pl.pelanggan_id,
+    pl.nama_lengkap,
+    (
+        <span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(<span class="sql-op">*</span>) 
+        <span class="sql-kw">FROM</span> pesanan p 
+        <span class="sql-kw">WHERE</span> p.pelanggan_id <span class="sql-op">=</span> pl.pelanggan_id 
+          <span class="sql-op">AND</span> p.status_pesanan <span class="sql-op">=</span> <span class="sql-str">'Selesai'</span>
+    ) <span class="sql-kw">AS</span> total_pesanan_selesai
+<span class="sql-kw">FROM</span> pelanggan pl
+<span class="sql-kw">ORDER BY</span> total_pesanan_selesai <span class="sql-kw">DESC</span>
+<span class="sql-kw">LIMIT</span> <span class="sql-num">5</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- 5. EXISTS -->
+        <section id="exists">
+            <h2><i class="fa-solid fa-check-double"></i> 5. Operator EXISTS & NOT EXISTS</h2>
+            <p>
+                <code>EXISTS</code> sangat efisien karena engine langsung berhenti mencari (short-circuit) begitu menemukan setidaknya 1 baris kecocokan.
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- Menemukan voucher promo yang benar-benar pernah berhasil digunakan</span>
+<span class="sql-kw">SELECT</span> vp.voucher_id, vp.kode_voucher, vp.nilai_diskon
+<span class="sql-kw">FROM</span> voucher_promo vp
+<span class="sql-kw">WHERE EXISTS</span> (
+    <span class="sql-kw">SELECT</span> <span class="sql-num">1</span> 
+    <span class="sql-kw">FROM</span> pesanan p 
+    <span class="sql-kw">WHERE</span> p.voucher_id <span class="sql-op">=</span> vp.voucher_id 
+      <span class="sql-op">AND</span> p.status_pesanan <span class="sql-op">=</span> <span class="sql-str">'Selesai'</span>
+);</code></pre>
+            </div>
+        </section>
+
+        <!-- 6. CTE -->
+        <section id="cte">
+            <h2><i class="fa-solid fa-layer-group"></i> 6. Common Table Expression (WITH ... AS)</h2>
+            <p>
+                CTE adalah teknik standar yang digunakan oleh Data Analyst profesional untuk menstrukturkan query kompleks.
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- CTE: Analisis Segmentasi Spending Tier Pelanggan</span>
+<span class="sql-kw">WITH</span> CustomerSpending <span class="sql-kw">AS</span> (
+    <span class="sql-kw">SELECT</span> 
+        pl.pelanggan_id,
+        pl.nama_lengkap,
+        <span class="sql-fn">COUNT</span>(p.pesanan_id) <span class="sql-kw">AS</span> total_orders,
+        <span class="sql-fn">SUM</span>(p.total_bayar)  <span class="sql-kw">AS</span> total_spent
+    <span class="sql-kw">FROM</span> pelanggan pl
+    <span class="sql-kw">JOIN</span> pesanan p <span class="sql-kw">ON</span> pl.pelanggan_id <span class="sql-op">=</span> p.pelanggan_id
+    <span class="sql-kw">WHERE</span> p.status_pesanan <span class="sql-op">=</span> <span class="sql-str">'Selesai'</span>
+    <span class="sql-kw">GROUP BY</span> pl.pelanggan_id
+)
+<span class="sql-kw">SELECT</span> 
+    nama_lengkap,
+    total_orders,
+    total_spent,
+    <span class="sql-kw">CASE</span> 
+        <span class="sql-kw">WHEN</span> total_spent <span class="sql-op">&gt;=</span> <span class="sql-num">3000000</span> <span class="sql-kw">THEN</span> <span class="sql-str">'Platinum VIP'</span>
+        <span class="sql-kw">WHEN</span> total_spent <span class="sql-op">&gt;=</span> <span class="sql-num">1500000</span> <span class="sql-kw">THEN</span> <span class="sql-str">'Gold Member'</span>
+        <span class="sql-kw">ELSE</span> <span class="sql-str">'Silver Member'</span>
+    <span class="sql-kw">END</span> <span class="sql-kw">AS</span> membership_tier
+<span class="sql-kw">FROM</span> CustomerSpending
+<span class="sql-kw">ORDER BY</span> total_spent <span class="sql-kw">DESC</span>
+<span class="sql-kw">LIMIT</span> <span class="sql-num">6</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- 7. Multi-CTE -->
+        <section id="multi-cte">
+            <h2><i class="fa-solid fa-cubes"></i> 7. Multi-Level CTE Pipeline</h2>
+            <p>
+                Beberapa CTE dapat dirangkai berurutan dipisahkan tanda koma untuk membentuk pipeline data analitik.
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- Pipeline Multi-CTE: Total Omzet Kategori -&gt; Rata-rata Toko -&gt; Status Performa</span>
+<span class="sql-kw">WITH</span> CategorySales <span class="sql-kw">AS</span> (
+    <span class="sql-kw">SELECT</span> 
+        k.nama_kategori,
+        <span class="sql-fn">SUM</span>(rp.subtotal) <span class="sql-kw">AS</span> total_omzet
+    <span class="sql-kw">FROM</span> rincian_pesanan rp
+    <span class="sql-kw">JOIN</span> variasi_produk vp <span class="sql-kw">ON</span> rp.variasi_id <span class="sql-op">=</span> vp.variasi_id
+    <span class="sql-kw">JOIN</span> produk pr         <span class="sql-kw">ON</span> vp.produk_id <span class="sql-op">=</span> pr.produk_id
+    <span class="sql-kw">JOIN</span> subkategori sk    <span class="sql-kw">ON</span> pr.subkategori_id <span class="sql-op">=</span> sk.subkategori_id
+    <span class="sql-kw">JOIN</span> kategori k        <span class="sql-kw">ON</span> sk.kategori_id <span class="sql-op">=</span> k.kategori_id
+    <span class="sql-kw">GROUP BY</span> k.kategori_id
+),
+GlobalBenchmark <span class="sql-kw">AS</span> (
+    <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(total_omzet) <span class="sql-kw">AS</span> rata_rata_omzet_kategori <span class="sql-kw">FROM</span> CategorySales
+)
+<span class="sql-kw">SELECT</span> 
+    cs.nama_kategori,
+    cs.total_omzet,
+    <span class="sql-fn">ROUND</span>(gb.rata_rata_omzet_kategori, <span class="sql-num">0</span>) <span class="sql-kw">AS</span> benchmark_toko,
+    <span class="sql-kw">CASE</span> 
+        <span class="sql-kw">WHEN</span> cs.total_omzet <span class="sql-op">&gt;</span> gb.rata_rata_omzet_kategori <span class="sql-kw">THEN</span> <span class="sql-str">'Di Atas Benchmark'</span>
+        <span class="sql-kw">ELSE</span> <span class="sql-str">'Di Bawah Benchmark'</span>
+    <span class="sql-kw">END</span> <span class="sql-kw">AS</span> performa_kategori
+<span class="sql-kw">FROM</span> CategorySales cs
+<span class="sql-kw">CROSS JOIN</span> GlobalBenchmark gb
+<span class="sql-kw">ORDER BY</span> cs.total_omzet <span class="sql-kw">DESC</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- 8. Rangkuman -->
+        <section id="rangkuman">
+            <h2><i class="fa-solid fa-book"></i> 8. Rangkuman</h2>
+            <table class="compare-table">
+                <thead><tr><th>Fitur</th><th>Kelebihan Utama</th></tr></thead>
+                <tbody>
+                    <tr><td><code>Scalar Subquery</code></td><td>Mudah untuk perbandingan nilai individual dengan agregat</td></tr>
+                    <tr><td><code>EXISTS</code></td><td>Performa sangat cepat karena short-circuit evaluation</td></tr>
+                    <tr><td><code>CTE (WITH ... AS)</code></td><td>Struktur modular, bersih, reusable, dan mudah di-debug</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 9. Quiz -->
+        <section id="quiz">
+            <h2><i class="fa-solid fa-circle-question"></i> 9. Kuis Interaktif Pemahaman</h2>
+            <div class="quiz-section">
+                <div class="quiz-head"><i class="fa-solid fa-trophy"></i><h3>Uji Pemahaman: Subquery & CTE</h3></div>
+
+                <div class="quiz-card">
+                    <div class="quiz-q">1. Manakah klausa SQL yang digunakan untuk mendefinisikan Common Table Expression (CTE)?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this,true,'Tepat! WITH nama_cte AS ( ... ) adalah sintaks baku CTE.')"><div class="opt-letter">A</div> <code>WITH nama_cte AS ( ... )</code></div>
+                        <div class="quiz-opt" onclick="answerQuiz(this,false,'CREATE TABLE membuat tabel permanen di database.')"><div class="opt-letter">B</div> <code>CREATE TABLE TEMP ...</code></div>
+                    </div>
+                    <div class="quiz-fb"><i></i><span></span></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="mod-nav-footer">
+            <a href="04_join.html" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Modul 4</a>
+            <a href="06_window_functions.html" class="btn btn-primary">Lanjut ke Modul 6: Window Functions <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </div>
+    </main>
+</div>
+<script src="../assets/script.js"></script>
+</body>
+</html>

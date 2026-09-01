@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul 7: Capstone Analisis Bisnis E-Commerce — SQL Data Analyst</title>
+    <meta name="description" content="Proyek Capstone Data Analyst SQL: Net Profit Margin, Segmentasi Pelanggan RFM, Evaluasi ROI Voucher Promo, Kinerja Kurir Logistik, dan Alert Stok Kritis Gudang.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-left">
+        <a href="../index.html" class="logo"><div class="logo-icon"><i class="fa-solid fa-cart-shopping"></i></div>SQL E-Commerce Analytics</a>
+        <nav class="breadcrumb"><i class="fa-solid fa-chevron-right"></i><span>Modul 7: Capstone Analisis Bisnis</span></nav>
+    </div>
+    <div class="header-right">
+        <div class="module-nav">
+            <a href="06_window_functions.html" class="btn-icon" title="Modul 6"><i class="fa-solid fa-chevron-left"></i></a>
+            <span class="module-count">7 / 7</span>
+            <button class="btn-icon" disabled title="Akhir kurikulum"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+        <button class="btn-theme" id="themeToggle"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-list-ul"></i> Navigasi Materi</div>
+        <nav class="sidebar-nav">
+            <a href="#intro"        class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Pengantar Capstone</a>
+            <a href="#case1-profit"  class="nav-link"><i class="fa-solid fa-money-bill-trend-up"></i> 2. Kasus 1: Net Profit</a>
+            <a href="#case2-margin"  class="nav-link"><i class="fa-solid fa-chart-pie"></i> 3. Kasus 2: Margin Kategori</a>
+            <a href="#case3-rfm"     class="nav-link"><i class="fa-solid fa-users-gear"></i> 4. Kasus 3: Segmentasi RFM</a>
+            <a href="#case4-voucher" class="nav-link"><i class="fa-solid fa-ticket"></i> 5. Kasus 4: ROI Promo</a>
+            <a href="#case5-kurir"   class="nav-link"><i class="fa-solid fa-truck-fast"></i> 6. Kasus 5: Logistik Kurir</a>
+            <a href="#case6-stok"    class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> 7. Kasus 6: Stok Kritis</a>
+            <a href="#kesimpulan"    class="nav-link"><i class="fa-solid fa-flag-checkered"></i> 8. Kelulusan</a>
+            <a href="#quiz"          class="nav-link"><i class="fa-solid fa-circle-question"></i> 9. Kuis Akhir</a>
+        </nav>
+        <div class="nav-divider"></div>
+        <div class="sidebar-header"><i class="fa-solid fa-book-open"></i> Semua Modul</div>
+        <div class="sidebar-module-list">
+            <a href="01_tipe_data.html"       class="sidebar-module-link"><div class="num">1</div> Tipe Data</a>
+            <a href="02_query_dasar.html"      class="sidebar-module-link"><div class="num">2</div> Query Dasar</a>
+            <a href="03_agregasi.html"         class="sidebar-module-link"><div class="num">3</div> Agregasi</a>
+            <a href="04_join.html"             class="sidebar-module-link"><div class="num">4</div> JOIN</a>
+            <a href="05_subquery_cte.html"     class="sidebar-module-link"><div class="num">5</div> Subquery & CTE</a>
+            <a href="06_window_functions.html" class="sidebar-module-link"><div class="num">6</div> Window Functions</a>
+            <a href="07_analisis_nyata.html"   class="sidebar-module-link current"><div class="num">7</div> Analisis Nyata</a>
+        </div>
+    </aside>
+
+    <main class="main">
+    <div class="main-inner">
+        <div class="module-hero">
+            <div class="module-badge">Modul 07 &mdash; Capstone Project</div>
+            <h1>Studi Kasus Analisis Bisnis E-Commerce</h1>
+            <p class="module-desc">
+                Selamat datang di Capstone Project! Di modul pamungkas ini, Anda akan menggabungkan seluruh konsep SQL (Tipe Data, Filter, Agregasi, Multi-Table JOIN, CTE, dan Window Functions) untuk menjawab pertanyaan strategis yang dihadapi oleh C-Level dan Manajer E-Commerce.
+            </p>
+            <div class="module-tags">
+                <span class="tag"><i class="fa-regular fa-clock"></i> 60 menit</span>
+                <span class="tag"><i class="fa-solid fa-signal"></i> Tingkat Mahir</span>
+                <span class="tag"><i class="fa-solid fa-database"></i> Database: E-Commerce Indonesia (20 Tabel, 5.600+ Data)</span>
+                <span class="tag"><i class="fa-solid fa-file-code"></i> <a href="../sql/07_analisis_nyata.sql" style="color:inherit">sql/07_analisis_nyata.sql</a></span>
+            </div>
+        </div>
+
+        <!-- 1. Intro -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Pengantar Analisis Bisnis Nyata</h2>
+            <p>
+                Peran Data Analyst bukan sekadar menjalankan query teknis, melainkan <strong>memberikan rekomendasi aksi bisnis (Actionable Insights)</strong> dari data mentah. Kita akan membedah 6 kasus manajerial di database e-commerce kita.
+            </p>
+        </section>
+
+        <!-- 2. Kasus 1 -->
+        <section id="case1-profit">
+            <h2><i class="fa-solid fa-money-bill-trend-up"></i> 2. Kasus 1: Rekapitulasi Laba Bersih (Net Profit) & Margin (%)</h2>
+            <p><strong>Pertanyaan Manajerial:</strong> Berapa total uang kotor yang masuk (GMV), berapa modal pokok pengadaan barang (HPP), berapa biaya diskon yang dikeluarkan, dan berapa laba bersih final toko?</p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- Rekapitulasi Finansial Laba Rugi Toko</span>
+<span class="sql-kw">SELECT</span> 
+    <span class="sql-fn">COUNT</span>(<span class="sql-kw">DISTINCT</span> p.pesanan_id)                                                       <span class="sql-kw">AS</span> total_order_selesai,
+    <span class="sql-fn">SUM</span>(rp.subtotal)                                                                   <span class="sql-kw">AS</span> omzet_kotor,
+    <span class="sql-fn">SUM</span>(p.potongan_diskon)                                                             <span class="sql-kw">AS</span> total_diskon_diberikan,
+    <span class="sql-fn">SUM</span>(rp.jumlah <span class="sql-op">*</span> vp.harga_modal)                                                     <span class="sql-kw">AS</span> total_hpp_modal,
+    <span class="sql-fn">SUM</span>(rp.subtotal) <span class="sql-op">-</span> <span class="sql-fn">SUM</span>(p.potongan_diskon) <span class="sql-op">-</span> <span class="sql-fn">SUM</span>(rp.jumlah <span class="sql-op">*</span> vp.harga_modal)      <span class="sql-kw">AS</span> laba_bersih_final,
+    <span class="sql-fn">ROUND</span>(
+        (<span class="sql-fn">CAST</span>(<span class="sql-fn">SUM</span>(rp.subtotal) <span class="sql-op">-</span> <span class="sql-fn">SUM</span>(p.potongan_diskon) <span class="sql-op">-</span> <span class="sql-fn">SUM</span>(rp.jumlah <span class="sql-op">*</span> vp.harga_modal) <span class="sql-kw">AS</span> <span class="sql-type">REAL</span>) 
+        <span class="sql-op">/</span> <span class="sql-fn">SUM</span>(rp.subtotal)) <span class="sql-op">*</span> <span class="sql-num">100</span>,
+        <span class="sql-num">2</span>
+    ) <span class="sql-kw">AS</span> net_profit_margin_percent
+<span class="sql-kw">FROM</span> pesanan p
+<span class="sql-kw">JOIN</span> rincian_pesanan rp <span class="sql-kw">ON</span> p.pesanan_id <span class="sql-op">=</span> rp.pesanan_id
+<span class="sql-kw">JOIN</span> variasi_produk vp  <span class="sql-kw">ON</span> rp.variasi_id <span class="sql-op">=</span> vp.variasi_id
+<span class="sql-kw">WHERE</span> p.status_pesanan <span class="sql-op">=</span> <span class="sql-str">'Selesai'</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- 3. Kasus 2 -->
+        <section id="case2-margin">
+            <h2><i class="fa-solid fa-chart-pie"></i> 3. Kasus 2: Top 5 Kategori Paling Menguntungkan</h2>
+            <p><strong>Pertanyaan Manajerial:</strong> Kategori produk mana yang memberikan sumbangan laba (profit) nominal terbesar bagi perusahaan?</p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- Profitabilitas per Kategori Produk</span>
+<span class="sql-kw">SELECT</span> 
+    k.nama_kategori,
+    <span class="sql-fn">SUM</span>(rp.jumlah)                                     <span class="sql-kw">AS</span> unit_terjual,
+    <span class="sql-fn">SUM</span>(rp.subtotal)                                   <span class="sql-kw">AS</span> revenue_kategori,
+    <span class="sql-fn">SUM</span>(rp.subtotal) <span class="sql-op">-</span> <span class="sql-fn">SUM</span>(rp.jumlah <span class="sql-op">*</span> vp.harga_modal) <span class="sql-kw">AS</span> profit_kategori,
+    <span class="sql-fn">ROUND</span>(
+        (<span class="sql-fn">CAST</span>(<span class="sql-fn">SUM</span>(rp.subtotal) <span class="sql-op">-</span> <span class="sql-fn">SUM</span>(rp.jumlah <span class="sql-op">*</span> vp.harga_modal) <span class="sql-kw">AS</span> <span class="sql-type">REAL</span>) <span class="sql-op">/</span> <span class="sql-fn">SUM</span>(rp.subtotal)) <span class="sql-op">*</span> <span class="sql-num">100</span>, 
+        <span class="sql-num">1</span>
+    ) <span class="sql-kw">AS</span> profit_margin_percent
+<span class="sql-kw">FROM</span> rincian_pesanan rp
+<span class="sql-kw">JOIN</span> pesanan p         <span class="sql-kw">ON</span> rp.pesanan_id <span class="sql-op">=</span> p.pesanan_id
+<span class="sql-kw">JOIN</span> variasi_produk vp <span class="sql-kw">ON</span> rp.variasi_id <span class="sql-op">=</span> vp.variasi_id
+<span class="sql-kw">JOIN</span> produk pr         <span class="sql-kw">ON</span> vp.produk_id <span class="sql-op">=</span> pr.produk_id
+<span class="sql-kw">JOIN</span> subkategori sk    <span class="sql-kw">ON</span> pr.subkategori_id <span class="sql-op">=</span> sk.subkategori_id
+<span class="sql-kw">JOIN</span> kategori k        <span class="sql-kw">ON</span> sk.kategori_id <span class="sql-op">=</span> k.kategori_id
+<span class="sql-kw">WHERE</span> p.status_pesanan <span class="sql-op">=</span> <span class="sql-str">'Selesai'</span>
+<span class="sql-kw">GROUP BY</span> k.kategori_id
+<span class="sql-kw">ORDER BY</span> profit_kategori <span class="sql-kw">DESC</span>
+<span class="sql-kw">LIMIT</span> <span class="sql-num">5</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- 4. Kasus 3 -->
+        <section id="case3-rfm">
+            <h2><i class="fa-solid fa-users-gear"></i> 4. Kasus 3: Segmentasi Pelanggan (RFM Analysis)</h2>
+            <p><strong>Pertanyaan Manajerial:</strong> Siapa saja pelanggan VIP (Champions) yang loyal dan menghasilkan nilai belanja tertinggi untuk diprioritaskan oleh tim CRM?</p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- RFM Segmentation Pelanggan</span>
+<span class="sql-kw">WITH</span> CustomerAgg <span class="sql-kw">AS</span> (
+    <span class="sql-kw">SELECT</span> 
+        pl.pelanggan_id,
+        pl.nama_lengkap,
+        pl.kota,
+        <span class="sql-fn">MAX</span>(p.tanggal_pesanan) <span class="sql-kw">AS</span> transaksi_terakhir,
+        <span class="sql-fn">COUNT</span>(p.pesanan_id) <span class="sql-kw">AS</span> total_transaksi,
+        <span class="sql-fn">SUM</span>(p.total_bayar)  <span class="sql-kw">AS</span> total_pengeluaran
+    <span class="sql-kw">FROM</span> pelanggan pl
+    <span class="sql-kw">JOIN</span> pesanan p <span class="sql-kw">ON</span> pl.pelanggan_id <span class="sql-op">=</span> p.pelanggan_id
+    <span class="sql-kw">WHERE</span> p.status_pesanan <span class="sql-op">=</span> <span class="sql-str">'Selesai'</span>
+    <span class="sql-kw">GROUP BY</span> pl.pelanggan_id
+)
+<span class="sql-kw">SELECT</span> 
+    nama_lengkap,
+    kota,
+    total_transaksi,
+    total_pengeluaran,
+    <span class="sql-kw">CASE </span>
+        <span class="sql-kw">WHEN</span> total_pengeluaran <span class="sql-op">&gt;=</span> <span class="sql-num">3000000</span> <span class="sql-op">AND</span> total_transaksi <span class="sql-op">&gt;=</span> <span class="sql-num">3</span> <span class="sql-kw">THEN</span> <span class="sql-str">'VIP Champion'</span>
+        <span class="sql-kw">WHEN</span> total_pengeluaran <span class="sql-op">&gt;=</span> <span class="sql-num">1500000</span> <span class="sql-kw">THEN</span> <span class="sql-str">'Loyal Customer'</span>
+        <span class="sql-kw">ELSE</span> <span class="sql-str">'Regular Customer'</span>
+    <span class="sql-kw">END</span> <span class="sql-kw">AS</span> customer_segment
+<span class="sql-kw">FROM</span> CustomerAgg
+<span class="sql-kw">ORDER BY</span> total_pengeluaran <span class="sql-kw">DESC</span>
+<span class="sql-kw">LIMIT</span> <span class="sql-num">6</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- 5. Kasus 4 -->
+        <section id="case4-voucher">
+            <h2><i class="fa-solid fa-ticket"></i> 5. Kasus 4: Evaluasi ROI Voucher Promo Diskon</h2>
+            <p><strong>Pertanyaan Manajerial:</strong> Berapa rasio uang yang dihasilkan dibanding nominal diskon yang kita bakar (Promo Burn Rate)?</p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- Evaluasi Kinerja Kupon Promo</span>
+<span class="sql-kw">SELECT</span> 
+    vp.kode_voucher,
+    vp.tipe_diskon,
+    vp.nilai_diskon,
+    <span class="sql-fn">COUNT</span>(p.pesanan_id)   <span class="sql-kw">AS</span> frekuensi_dipakai,
+    <span class="sql-fn">SUM</span>(p.potongan_diskon) <span class="sql-kw">AS</span> total_biaya_diskon,
+    <span class="sql-fn">SUM</span>(p.total_bayar)     <span class="sql-kw">AS</span> total_omzet_yang_dihasilkan
+<span class="sql-kw">FROM</span> pesanan p
+<span class="sql-kw">JOIN</span> voucher_promo vp <span class="sql-kw">ON</span> p.voucher_id <span class="sql-op">=</span> vp.voucher_id
+<span class="sql-kw">WHERE</span> p.status_pesanan <span class="sql-op">=</span> <span class="sql-str">'Selesai'</span>
+<span class="sql-kw">GROUP BY</span> vp.voucher_id
+<span class="sql-kw">ORDER BY</span> total_omzet_yang_dihasilkan <span class="sql-kw">DESC</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- 6. Kasus 5 -->
+        <section id="case5-kurir">
+            <h2><i class="fa-solid fa-truck-fast"></i> 6. Kasus 5: Analisis Volume Logistik Kurir</h2>
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- Evaluasi Beban Logistik Pengiriman Ekspedisi</span>
+<span class="sql-kw">SELECT</span> 
+    ke.nama_kurir,
+    ke.layanan,
+    <span class="sql-fn">COUNT</span>(p.pesanan_id)                           <span class="sql-kw">AS</span> total_paket_dikirim,
+    <span class="sql-fn">SUM</span>(p.ongkos_kirim)                           <span class="sql-kw">AS</span> total_ongkir,
+    <span class="sql-fn">ROUND</span>(<span class="sql-fn">AVG</span>(p.total_berat_gram) <span class="sql-op">/</span> <span class="sql-num">1000.0</span>, <span class="sql-num">2</span>)      <span class="sql-kw">AS</span> rata_rata_berat_kg
+<span class="sql-kw">FROM</span> pesanan p
+<span class="sql-kw">JOIN</span> kurir_ekspedisi ke <span class="sql-kw">ON</span> p.kurir_id <span class="sql-op">=</span> ke.kurir_id
+<span class="sql-kw">WHERE</span> p.status_pesanan <span class="sql-kw">IN</span> (<span class="sql-str">'Dikirim'</span>, <span class="sql-str">'Selesai'</span>)
+<span class="sql-kw">GROUP BY</span> ke.kurir_id
+<span class="sql-kw">ORDER BY</span> total_paket_dikirim <span class="sql-kw">DESC</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- 7. Kasus 6 -->
+        <section id="case6-stok">
+            <h2><i class="fa-solid fa-boxes-stacked"></i> 7. Kasus 6: Inventory Alert (Stok Kritis Gudang &lt; 20 Unit)</h2>
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- Monitoring SKU dengan sisa persediaan menipis</span>
+<span class="sql-kw">SELECT</span> 
+    g.nama_gudang,
+    pr.nama_produk,
+    vp.sku,
+    vp.warna,
+    vp.ukuran,
+    sg.jumlah_stok
+<span class="sql-kw">FROM</span> stok_gudang sg
+<span class="sql-kw">JOIN</span> gudang g          <span class="sql-kw">ON</span> sg.gudang_id <span class="sql-op">=</span> g.gudang_id
+<span class="sql-kw">JOIN</span> variasi_produk vp <span class="sql-kw">ON</span> sg.variasi_id <span class="sql-op">=</span> vp.variasi_id
+<span class="sql-kw">JOIN</span> produk pr         <span class="sql-kw">ON</span> vp.produk_id <span class="sql-op">=</span> pr.produk_id
+<span class="sql-kw">WHERE</span> sg.jumlah_stok <span class="sql-op">&lt;</span> <span class="sql-num">20</span>
+<span class="sql-kw">ORDER BY</span> sg.jumlah_stok <span class="sql-kw">ASC</span>
+<span class="sql-kw">LIMIT</span> <span class="sql-num">8</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- 8. Kesimpulan -->
+        <section id="kesimpulan">
+            <h2><i class="fa-solid fa-flag-checkered"></i> 8. Selamat! Anda Telah Menyelesaikan Seluruh Kurikulum SQL</h2>
+            <div class="callout success">
+                <i class="fa-solid fa-circle-check"></i>
+                <div class="callout-body">
+                    <strong>Keahlian Data Analyst yang Telah Anda Kuasai:</strong>
+                    <ul style="margin-top:0.5rem;margin-left:1.25rem;line-height:1.8;">
+                        <li>Penguasaan Tipe Data SQL &amp; Konversi Type Casting</li>
+                        <li>Pemfilteran Kondisi Logika Bisnis &amp; Pencarian Teks</li>
+                        <li>Kalkulasi Metrik Finansial Agregasi (GMV, AOV, Margin Laba)</li>
+                        <li>Normalisasi &amp; JOIN Rantai Multi-Tabel Kompleks</li>
+                        <li>Subquery Bersarang &amp; Pipeline Modular Common Table Expressions (CTE)</li>
+                        <li>Window Functions untuk Perankingan &amp; Analisis Tren Pertumbuhan MoM</li>
+                        <li>Ekstraksi Insight Strategis dari 20 Tabel Database Relasional</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. Quiz -->
+        <section id="quiz">
+            <h2><i class="fa-solid fa-circle-question"></i> 9. Kuis Akhir Capstone</h2>
+            <div class="quiz-section">
+                <div class="quiz-head"><i class="fa-solid fa-trophy"></i><h3>Uji Pemahaman: Capstone E-Commerce</h3></div>
+
+                <div class="quiz-card">
+                    <div class="quiz-q">1. Manakah rumus yang benar untuk menghitung Net Profit Margin (%) di industri retail e-commerce?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this,true,'Benar! (Omzet - Diskon - HPP) / Omzet * 100.')"><div class="opt-letter">A</div> (Omzet Kotor - Diskon - Total HPP Modal) / Omzet Kotor * 100</div>
+                        <div class="quiz-opt" onclick="answerQuiz(this,false,'HPP Modal harus dikurangkan dari omzet.')"><div class="opt-letter">B</div> Total HPP / Omzet Kotor * 100</div>
+                    </div>
+                    <div class="quiz-fb"><i></i><span></span></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="mod-nav-footer">
+            <a href="06_window_functions.html" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Modul 6: Window Functions</a>
+            <a href="../index.html" class="btn btn-primary"><i class="fa-solid fa-house"></i> Kembali ke Menu Utama</a>
+        </div>
+    </div>
+    </main>
+</div>
+<script src="../assets/script.js"></script>
+</body>
+</html>
