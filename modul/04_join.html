@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul 4: JOIN & Normalisasi Multi-Tabel — SQL Data Analyst</title>
+    <meta name="description" content="Kuasai teknik JOIN di industri E-Commerce: INNER JOIN katalog, LEFT JOIN analisis user churn/anti-join, Multi-Table rantai 6 tabel, dan SELF JOIN struktur gudang.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-left">
+        <a href="../index.html" class="logo"><div class="logo-icon"><i class="fa-solid fa-cart-shopping"></i></div>SQL E-Commerce Analytics</a>
+        <nav class="breadcrumb"><i class="fa-solid fa-chevron-right"></i><span>Modul 4: JOIN & Relasi</span></nav>
+    </div>
+    <div class="header-right">
+        <div class="module-nav">
+            <a href="03_agregasi.html" class="btn-icon" title="Modul 3"><i class="fa-solid fa-chevron-left"></i></a>
+            <span class="module-count">4 / 7</span>
+            <a href="05_subquery_cte.html" class="btn-icon" title="Modul 5"><i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+        <button class="btn-theme" id="themeToggle"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-list-ul"></i> Navigasi Materi</div>
+        <nav class="sidebar-nav">
+            <a href="#intro"      class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Konsep Normalisasi</a>
+            <a href="#inner-join" class="nav-link"><i class="fa-solid fa-circle-nodes"></i> 2. INNER JOIN Katalog</a>
+            <a href="#left-join"  class="nav-link"><i class="fa-solid fa-arrows-split-up-and-left"></i> 3. LEFT JOIN & Anti-Join</a>
+            <a href="#multi-join" class="nav-link"><i class="fa-solid fa-link"></i> 4. Rantai 6 Tabel Transaksi</a>
+            <a href="#cross-join" class="nav-link"><i class="fa-solid fa-xmark"></i> 5. CROSS JOIN Kombinasi</a>
+            <a href="#rangkuman"  class="nav-link"><i class="fa-solid fa-layer-group"></i> 6. Rangkuman JOIN</a>
+            <a href="#quiz"       class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Interaktif</a>
+        </nav>
+        <div class="nav-divider"></div>
+        <div class="sidebar-header"><i class="fa-solid fa-book-open"></i> Semua Modul</div>
+        <div class="sidebar-module-list">
+            <a href="01_tipe_data.html"       class="sidebar-module-link"><div class="num">1</div> Tipe Data</a>
+            <a href="02_query_dasar.html"      class="sidebar-module-link"><div class="num">2</div> Query Dasar</a>
+            <a href="03_agregasi.html"         class="sidebar-module-link"><div class="num">3</div> Agregasi</a>
+            <a href="04_join.html"             class="sidebar-module-link current"><div class="num">4</div> JOIN</a>
+            <a href="05_subquery_cte.html"     class="sidebar-module-link"><div class="num">5</div> Subquery & CTE</a>
+            <a href="06_window_functions.html" class="sidebar-module-link"><div class="num">6</div> Window Functions</a>
+            <a href="07_analisis_nyata.html"   class="sidebar-module-link"><div class="num">7</div> Analisis Nyata</a>
+        </div>
+    </aside>
+
+    <main class="main">
+    <div class="main-inner">
+        <div class="module-hero">
+            <div class="module-badge">Modul 04 &mdash; Tingkat Menengah</div>
+            <h1>JOIN & Relasi Multi-Tabel E-Commerce</h1>
+            <p class="module-desc">
+                Database e-commerce yang baik dinormalisasi ke banyak tabel terpisah (produk, variasi, pesanan, kurir, pelanggan) untuk efisiensi penyimpanan. JOIN adalah jembatan untuk merekonstruksi kembali data tersebut menjadi satu laporan terpadu.
+            </p>
+            <div class="module-tags">
+                <span class="tag"><i class="fa-regular fa-clock"></i> 50 menit</span>
+                <span class="tag"><i class="fa-solid fa-signal"></i> Menengah</span>
+                <span class="tag"><i class="fa-solid fa-database"></i> Database: E-Commerce Indonesia (20 Tabel)</span>
+                <span class="tag"><i class="fa-solid fa-file-code"></i> <a href="../sql/04_join.sql" style="color:inherit">sql/04_join.sql</a></span>
+            </div>
+        </div>
+
+        <!-- 1. Intro -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Konsep Normalisasi & Relasi Kunci (PK / FK)</h2>
+            <p>
+                Dalam database e-commerce, relasi dibentuk melalui <strong>Primary Key (PK)</strong> sebagai ID unik tabel asal dan <strong>Foreign Key (FK)</strong> sebagai kolom penunjuk di tabel tujuan.
+            </p>
+            <div class="schema-box">
+<pre><code>[kategori] (kategori_id PK)
+    │
+    └──&lt; [subkategori] (subkategori_id PK, kategori_id FK)
+            │
+            └──&lt; [produk] (produk_id PK, subkategori_id FK, merek_id FK, supplier_id FK)
+                    │
+                    └──&lt; [variasi_produk] (variasi_id PK, produk_id FK)
+                            │
+                            └──&lt; [rincian_pesanan] (rincian_id PK, variasi_id FK, pesanan_id FK)
+                                    │
+[pelanggan] ──&lt; [pesanan] ──────────┘
+                  │
+                  ├──&gt; [kurir_ekspedisi]
+                  ├──&gt; [metode_pembayaran]
+                  └──&gt; [voucher_promo]</code></pre>
+            </div>
+        </section>
+
+        <!-- 2. INNER JOIN -->
+        <section id="inner-join">
+            <h2><i class="fa-solid fa-circle-nodes"></i> 2. INNER JOIN: Katalog Produk Lengkap</h2>
+            <p>
+                <code>INNER JOIN</code> hanya mengembalikan baris yang memiliki pasangan kecocokan di kedua tabel. Jika produk tidak memiliki merek, maka baris tersebut tidak akan muncul.
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- Menggabungkan Produk dengan Kategori, Subkategori, Merek, dan Supplier</span>
+<span class="sql-kw">SELECT</span> 
+    pr.produk_id,
+    pr.nama_produk,
+    m.nama_merek,
+    k.nama_kategori,
+    sk.nama_subkategori,
+    s.nama_supplier,
+    s.kota <span class="sql-kw">AS</span> kota_supplier
+<span class="sql-kw">FROM</span> produk pr
+<span class="sql-kw">INNER JOIN</span> merek m        <span class="sql-kw">ON</span> pr.merek_id <span class="sql-op">=</span> m.merek_id
+<span class="sql-kw">INNER JOIN</span> subkategori sk <span class="sql-kw">ON</span> pr.subkategori_id <span class="sql-op">=</span> sk.subkategori_id
+<span class="sql-kw">INNER JOIN</span> kategori k    <span class="sql-kw">ON</span> sk.kategori_id <span class="sql-op">=</span> k.kategori_id
+<span class="sql-kw">INNER JOIN</span> supplier s    <span class="sql-kw">ON</span> pr.supplier_id <span class="sql-op">=</span> s.supplier_id
+<span class="sql-kw">LIMIT</span> <span class="sql-num">5</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- 3. LEFT JOIN -->
+        <section id="left-join">
+            <h2><i class="fa-solid fa-arrows-split-up-and-left"></i> 3. LEFT JOIN & Analisis Churn (Anti-Join)</h2>
+            <p>
+                <code>LEFT JOIN</code> mempertahankan seluruh baris tabel kiri. Teknik ini sangat berguna untuk analisis retensi, misalnya: <em>Mencari pelanggan yang telah mendaftar tetapi belum pernah melakukan pesanan (Inactive Users).</em>
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- Anti-Join: Pelanggan yang belum pernah checkout</span>
+<span class="sql-kw">SELECT</span> 
+    pl.pelanggan_id,
+    pl.nama_lengkap,
+    pl.email,
+    pl.tanggal_daftar
+<span class="sql-kw">FROM</span> pelanggan pl
+<span class="sql-kw">LEFT JOIN</span> pesanan p <span class="sql-kw">ON</span> pl.pelanggan_id <span class="sql-op">=</span> p.pelanggan_id
+<span class="sql-kw">WHERE</span> p.pesanan_id <span class="sql-kw">IS NULL</span>
+<span class="sql-kw">LIMIT</span> <span class="sql-num">5</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- 4. Multi-Join -->
+        <section id="multi-join">
+            <h2><i class="fa-solid fa-link"></i> 4. Rantai 6 Tabel: Rincian Lengkap Pembelian Pelanggan</h2>
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- Rekonstruksi transaksi belanja utuh lintas 6 tabel</span>
+<span class="sql-kw">SELECT</span> 
+    p.nomor_invoice,
+    pl.nama_lengkap     <span class="sql-kw">AS</span> nama_pembeli,
+    pr.nama_produk,
+    vp.warna,
+    vp.ukuran,
+    rp.jumlah           <span class="sql-kw">AS</span> qty_beli,
+    rp.harga_satuan,
+    rp.subtotal,
+    ke.nama_kurir       <span class="sql-kw">AS</span> kurir_pengirim,
+    mp.nama_metode      <span class="sql-kw">AS</span> pembayaran
+<span class="sql-kw">FROM</span> pesanan p
+<span class="sql-kw">JOIN</span> pelanggan pl        <span class="sql-kw">ON</span> p.pelanggan_id <span class="sql-op">=</span> pl.pelanggan_id
+<span class="sql-kw">JOIN</span> rincian_pesanan rp  <span class="sql-kw">ON</span> p.pesanan_id <span class="sql-op">=</span> rp.pesanan_id
+<span class="sql-kw">JOIN</span> variasi_produk vp   <span class="sql-kw">ON</span> rp.variasi_id <span class="sql-op">=</span> vp.variasi_id
+<span class="sql-kw">JOIN</span> produk pr           <span class="sql-kw">ON</span> vp.produk_id <span class="sql-op">=</span> pr.produk_id
+<span class="sql-kw">JOIN</span> kurir_ekspedisi ke  <span class="sql-kw">ON</span> p.kurir_id <span class="sql-op">=</span> ke.kurir_id
+<span class="sql-kw">JOIN</span> metode_pembayaran mp <span class="sql-kw">ON</span> p.metode_id <span class="sql-op">=</span> mp.metode_id
+<span class="sql-kw">LIMIT</span> <span class="sql-num">5</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- 5. Cross Join -->
+        <section id="cross-join">
+            <h2><i class="fa-solid fa-xmark"></i> 5. CROSS JOIN (Matrix Kombinasi)</h2>
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- Membuat matriks kombinasi seluruh Kategori dengan seluruh Gudang</span>
+<span class="sql-kw">SELECT</span> 
+    k.nama_kategori,
+    g.nama_gudang,
+    g.kota
+<span class="sql-kw">FROM</span> kategori k
+<span class="sql-kw">CROSS JOIN</span> gudang g
+<span class="sql-kw">LIMIT</span> <span class="sql-num">6</span>;</code></pre>
+            </div>
+        </section>
+
+        <!-- 6. Rangkuman -->
+        <section id="rangkuman">
+            <h2><i class="fa-solid fa-layer-group"></i> 6. Rangkuman & Tips Optimasi JOIN</h2>
+            <table class="compare-table">
+                <thead><tr><th>Tipe JOIN</th><th>Hasil Baris</th><th>Kasus Penggunaan E-Commerce</th></tr></thead>
+                <tbody>
+                    <tr><td><code>INNER JOIN</code></td><td>Hanya irisan yang cocok</td><td>Transaksi yang valid dan memiliki data master lengkap</td></tr>
+                    <tr><td><code>LEFT JOIN</code></td><td>Semua data tabel kiri</td><td>Audit data hilang, pelanggan non-aktif, ulasan produk</td></tr>
+                    <tr><td><code>Anti-Join</code></td><td><code>LEFT JOIN + WHERE IS NULL</code></td><td>Mendeteksi user belum belanja atau produk belum laku</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 7. Quiz -->
+        <section id="quiz">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Interaktif Pemahaman</h2>
+            <div class="quiz-section">
+                <div class="quiz-head"><i class="fa-solid fa-trophy"></i><h3>Uji Pemahaman: JOIN Multi-Tabel</h3></div>
+
+                <div class="quiz-card">
+                    <div class="quiz-q">1. Pola query manakah yang digunakan untuk mencari variasi SKU yang belum pernah terjual sama sekali di pesanan mana pun?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this,true,'Benar! Gunakan LEFT JOIN antara variasi_produk dan rincian_pesanan, lalu filter WHERE rincian_pesanan.rincian_id IS NULL.')"><div class="opt-letter">A</div> LEFT JOIN dengan WHERE rincian_pesanan.rincian_id IS NULL</div>
+                        <div class="quiz-opt" onclick="answerQuiz(this,false,'INNER JOIN hanya memunculkan variasi yang sudah pernah terbeli.')"><div class="opt-letter">B</div> INNER JOIN antara produk dan rincian_pesanan</div>
+                    </div>
+                    <div class="quiz-fb"><i></i><span></span></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="mod-nav-footer">
+            <a href="03_agregasi.html" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Modul 3</a>
+            <a href="05_subquery_cte.html" class="btn btn-primary">Lanjut ke Modul 5: Subquery & CTE <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </div>
+    </main>
+</div>
+<script src="../assets/script.js"></script>
+</body>
+</html>
