@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Data Analyst — E-Commerce Indonesia Database</title>
+    <meta name="description" content="Modul belajar SQL lengkap untuk Data Analyst: tipe data, query dasar, agregasi, JOIN, subquery, window functions, dan analisis bisnis menggunakan Database E-Commerce Indonesia (20 Tabel, 5.600+ Data).">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+        .index-header {
+            position: sticky; top: 0;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem; height: 60px;
+            display: flex; align-items: center; justify-content: space-between;
+            z-index: 100; box-shadow: var(--shadow-sm);
+        }
+        .db-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.3rem 0.875rem;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border);
+            border-radius: 100px; font-size: 0.75rem; color: var(--text-muted);
+        }
+        .db-badge i { color: var(--success); }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="index-header">
+    <div class="logo">
+        <div class="logo-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+        SQL E-Commerce Analytics
+    </div>
+    <div style="display:flex;align-items:center;gap:0.75rem;">
+        <span class="db-badge">
+            <i class="fa-solid fa-circle-dot"></i>
+            ecommerce_indonesia.sqlite (20 Tabel)
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti tema">
+            <i class="fa-solid fa-sun" id="themeIcon"></i>
+        </button>
+    </div>
+</header>
+
+<!-- Hero -->
+<div class="index-hero">
+    <div class="index-logo-icon">
+        <i class="fa-solid fa-chart-line"></i>
+    </div>
+    <h1>Belajar SQL untuk<br><span>Data Analyst E-Commerce</span></h1>
+    <div class="schema-box">
+<pre><code>📁 Folder Database &amp; Query:
+├── 📂 database/
+│   ├── 🗄️ ecommerce.db        &lt;-- FILE DATABASE UTAMA (Buka file ini di DB Browser for SQLite!)
+│   └── 📄 schema.sql           &lt;-- DDL Skema 20 Tabel (Standar Industri: VARCHAR, CHAR, BIGINT)
+├── 📂 sql/
+│   ├── 📄 semua_query_latihan.sql &lt;-- 1 File Lengkap Berisi Semua Query Modul 1 s/d 7
+│   ├── 📄 01_tipe_data.sql
+│   ├── 📄 02_query_dasar.sql
+│   ├── 📄 03_agregasi.sql
+│   ├── 📄 04_join.sql
+│   ├── 📄 05_subquery_cte.sql
+│   ├── 📄 06_window_functions.sql
+│   └── 📄 07_analisis_nyata.sql
+└── 📂 modul/ (7 Modul Interaktif HTML)</code></pre>
+            </div>
+    <div class="index-stats">
+        <div class="stat">
+            <div class="stat-num">7</div>
+            <div class="stat-lbl">Modul Interaktif</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">20</div>
+            <div class="stat-lbl">Tabel Relasional</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">5.600+</div>
+            <div class="stat-lbl">Data Transaksi</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">100%</div>
+            <div class="stat-lbl">Praktik Nyata</div>
+        </div>
+    </div>
+</div>
+
+<!-- Module Grid -->
+<div class="module-grid">
+
+    <!-- Modul 1 -->
+    <a href="modul/01_tipe_data.html" class="module-card">
+        <div class="card-num">Modul 01</div>
+        <div class="card-icon"><i class="fa-solid fa-tag"></i></div>
+        <div class="card-title">Tipe Data & Struktur Tabel</div>
+        <div class="card-desc">Pahami tipe data di e-commerce: Rupiah (INTEGER/NUMERIC), nama pelanggan (TEXT), tanggal pesanan (DATETIME), dan penanganan NULL.</div>
+        <div class="card-topics">
+            <span class="card-topic">TEXT</span>
+            <span class="card-topic">INTEGER</span>
+            <span class="card-topic">DATETIME</span>
+            <span class="card-topic">NULL & CAST</span>
+        </div>
+        <div class="card-footer">
+            <span><i class="fa-regular fa-clock"></i> 30 menit</span>
+            <span><i class="fa-solid fa-signal" style="color:var(--success)"></i> Pemula</span>
+        </div>
+    </a>
+
+    <!-- Modul 2 -->
+    <a href="modul/02_query_dasar.html" class="module-card">
+        <div class="card-num">Modul 02</div>
+        <div class="card-icon"><i class="fa-solid fa-filter"></i></div>
+        <div class="card-title">Query Dasar & Filter Pesanan</div>
+        <div class="card-desc">SELECT produk, filter pesanan dengan WHERE status 'Selesai', pencarian LIKE nama barang, rentang tanggal BETWEEN, dan limit data.</div>
+        <div class="card-topics">
+            <span class="card-topic">SELECT</span>
+            <span class="card-topic">WHERE</span>
+            <span class="card-topic">ORDER BY</span>
+            <span class="card-topic">LIKE & IN</span>
+        </div>
+        <div class="card-footer">
+            <span><i class="fa-regular fa-clock"></i> 45 menit</span>
+            <span><i class="fa-solid fa-signal" style="color:var(--success)"></i> Pemula</span>
+        </div>
+    </a>
+
+    <!-- Modul 3 -->
+    <a href="modul/03_agregasi.html" class="module-card">
+        <div class="card-num">Modul 03</div>
+        <div class="card-icon"><i class="fa-solid fa-calculator"></i></div>
+        <div class="card-title">Fungsi Agregasi & Metrik Penjualan</div>
+        <div class="card-desc">Hitung total omzet (SUM), rata-rata belanja (AVG), pesanan terbanyak (COUNT), GROUP BY kota/metode bayar, dan filter HAVING.</div>
+        <div class="card-topics">
+            <span class="card-topic">SUM & AVG</span>
+            <span class="card-topic">COUNT</span>
+            <span class="card-topic">GROUP BY</span>
+            <span class="card-topic">HAVING</span>
+        </div>
+        <div class="card-footer">
+            <span><i class="fa-regular fa-clock"></i> 40 menit</span>
+            <span><i class="fa-solid fa-signal" style="color:var(--warning)"></i> Menengah</span>
+        </div>
+    </a>
+
+    <!-- Modul 4 -->
+    <a href="modul/04_join.html" class="module-card">
+        <div class="card-num">Modul 04</div>
+        <div class="card-icon"><i class="fa-solid fa-network-wired"></i></div>
+        <div class="card-title">JOIN & Relasi Multi-Tabel</div>
+        <div class="card-desc">Hubungkan rantai tabel transaksi: Pelanggan -> Pesanan -> Rincian -> Variasi SKU -> Produk -> Kategori -> Kurir Ekspedisi.</div>
+        <div class="card-topics">
+            <span class="card-topic">INNER JOIN</span>
+            <span class="card-topic">LEFT JOIN</span>
+            <span class="card-topic">Multi-JOIN</span>
+            <span class="card-topic">Anti-Join</span>
+        </div>
+        <div class="card-footer">
+            <span><i class="fa-regular fa-clock"></i> 50 menit</span>
+            <span><i class="fa-solid fa-signal" style="color:var(--warning)"></i> Menengah</span>
+        </div>
+    </a>
+
+    <!-- Modul 5 -->
+    <a href="modul/05_subquery_cte.html" class="module-card">
+        <div class="card-num">Modul 05</div>
+        <div class="card-icon"><i class="fa-solid fa-layer-group"></i></div>
+        <div class="card-title">Subquery & CTE (WITH ... AS)</div>
+        <div class="card-desc">Buat pipeline analisa pendapatan bersih (Net Margin), customer di atas rata-rata belanja, dan cek produk via EXISTS.</div>
+        <div class="card-topics">
+            <span class="card-topic">Scalar Subquery</span>
+            <span class="card-topic">WITH CTE</span>
+            <span class="card-topic">EXISTS</span>
+            <span class="card-topic">Multi-CTE</span>
+        </div>
+        <div class="card-footer">
+            <span><i class="fa-regular fa-clock"></i> 50 menit</span>
+            <span><i class="fa-solid fa-signal" style="color:var(--danger)"></i> Mahir</span>
+        </div>
+    </a>
+
+    <!-- Modul 6 -->
+    <a href="modul/06_window_functions.html" class="module-card">
+        <div class="card-num">Modul 06</div>
+        <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="card-title">Window Functions & Analisis Tren</div>
+        <div class="card-desc">Ranking produk terlaris per kategori (DENSE_RANK), pertumbuhan bulanan MoM (LAG/LEAD), dan Running Total omzet harian.</div>
+        <div class="card-topics">
+            <span class="card-topic">DENSE_RANK</span>
+            <span class="card-topic">PARTITION BY</span>
+            <span class="card-topic">LAG & LEAD</span>
+            <span class="card-topic">SUM OVER</span>
+        </div>
+        <div class="card-footer">
+            <span><i class="fa-regular fa-clock"></i> 55 menit</span>
+            <span><i class="fa-solid fa-signal" style="color:var(--danger)"></i> Mahir</span>
+        </div>
+    </a>
+
+    <!-- Modul 7 -->
+    <a href="modul/07_analisis_nyata.html" class="module-card">
+        <div class="card-num">Modul 07</div>
+        <div class="card-icon"><i class="fa-solid fa-briefcase"></i></div>
+        <div class="card-title">Capstone: Studi Kasus Bisnis E-Commerce</div>
+        <div class="card-desc">Proyek analisis utuh: Segmentasi RFM Customer, Evaluasi ROI Voucher Promo, Kinerja Logistik Kurir, dan Laba Bersih Kategori.</div>
+        <div class="card-topics">
+            <span class="card-topic">RFM Analysis</span>
+            <span class="card-topic">ROI Promo</span>
+            <span class="card-topic">Logistik Kurir</span>
+            <span class="card-topic">Net Profit</span>
+        </div>
+        <div class="card-footer">
+            <span><i class="fa-regular fa-clock"></i> 60 menit</span>
+            <span><i class="fa-solid fa-signal" style="color:var(--danger)"></i> Mahir</span>
+        </div>
+    </a>
+
+</div>
+
+<!-- Footer -->
+<footer style="text-align:center;padding:1.5rem 2rem 3rem;border-top:1px solid var(--border);color:var(--text-disabled);font-size:0.8125rem;">
+    <i class="fa-solid fa-database" style="color:var(--brand);margin-right:0.375rem;"></i>
+    SQL Data Analyst — E-Commerce Indonesia Database (20 Tabel, 5.600+ Data) &nbsp;|&nbsp;
+    <span>Format: HTML Interaktif + SQL File</span>
+</footer>
+
+<script src="assets/script.js"></script>
+</body>
+</html>

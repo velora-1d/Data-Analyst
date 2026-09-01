@@ -1,0 +1,19 @@
+{
+  "name": "sql-ecommerce-analytics",
+  "version": "1.0.0",
+  "description": "Kurikulum Modul Belajar SQL Data Analyst E-Commerce Indonesia",
+  "scripts": {
+    "dev": "npx serve . -p 3000",
+    "start": "npx serve . -p 3000",
+    "deploy:vercel": "npx vercel --prod"
+  },
+  "keywords": [
+    "sql",
+    "sqlite",
+    "data-analyst",
+    "ecommerce",
+    "course"
+  ],
+  "author": "Antigravity",
+  "license": "MIT"
+}
