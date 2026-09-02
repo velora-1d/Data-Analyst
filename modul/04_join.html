@@ -97,6 +97,39 @@
                   ├──&gt; [metode_pembayaran]
                   └──&gt; [voucher_promo]</code></pre>
             </div>
+
+            <!-- Jalur Garis Penghubung Relasi PK & FK -->
+            <div class="erd-connections">
+                <h4><i class="fa-solid fa-link" style="color:var(--brand-light)"></i> Jalur Garis Penghubung Relasi Kunci (PK ➔ FK)</h4>
+                
+                <div class="erd-conn-item">
+                    <div class="conn-source"><span class="pk-badge">PK</span> pelanggan.pelanggan_id</div>
+                    <div class="conn-arrow">─── 1 : N ───►</div>
+                    <div class="conn-target"><span class="fk-badge">FK</span> pesanan.pelanggan_id</div>
+                    <div class="conn-desc">(1 Pelanggan dapat membuat N transaksi Pesanan)</div>
+                </div>
+
+                <div class="erd-conn-item">
+                    <div class="conn-source"><span class="pk-badge">PK</span> pesanan.pesanan_id</div>
+                    <div class="conn-arrow">─── 1 : N ───►</div>
+                    <div class="conn-target"><span class="fk-badge">FK</span> rincian_pesanan.pesanan_id</div>
+                    <div class="conn-desc">(1 Pesanan berisi N item barang di Rincian Pesanan)</div>
+                </div>
+
+                <div class="erd-conn-item">
+                    <div class="conn-source"><span class="pk-badge">PK</span> variasi_produk.variasi_id</div>
+                    <div class="conn-arrow">─── 1 : N ───►</div>
+                    <div class="conn-target"><span class="fk-badge">FK</span> rincian_pesanan.variasi_id</div>
+                    <div class="conn-desc">(1 SKU Variasi Produk dibeli di N Rincian Pesanan)</div>
+                </div>
+
+                <div class="erd-conn-item">
+                    <div class="conn-source"><span class="pk-badge">PK</span> produk.produk_id</div>
+                    <div class="conn-arrow">─── 1 : N ───►</div>
+                    <div class="conn-target"><span class="fk-badge">FK</span> variasi_produk.produk_id</div>
+                    <div class="conn-desc">(1 Produk Induk memiliki N Variasi SKU Warna/Ukuran)</div>
+                </div>
+            </div>
         </section>
 
         <!-- 2. INNER JOIN -->

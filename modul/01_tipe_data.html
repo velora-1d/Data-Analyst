@@ -310,6 +310,39 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Jalur Garis Penghubung Relasi PK & FK -->
+                <div class="erd-connections">
+                    <h4><i class="fa-solid fa-link" style="color:var(--brand-light)"></i> Garis Penghubung &amp; Alur Relasi Kunci (PK ➔ FK)</h4>
+                    
+                    <div class="erd-conn-item">
+                        <div class="conn-source"><span class="pk-badge">PK</span> pelanggan.pelanggan_id</div>
+                        <div class="conn-arrow">─── 1 : N ───►</div>
+                        <div class="conn-target"><span class="fk-badge">FK</span> pesanan.pelanggan_id</div>
+                        <div class="conn-desc">(1 Pelanggan dapat membuat N transaksi Pesanan)</div>
+                    </div>
+
+                    <div class="erd-conn-item">
+                        <div class="conn-source"><span class="pk-badge">PK</span> pesanan.pesanan_id</div>
+                        <div class="conn-arrow">─── 1 : N ───►</div>
+                        <div class="conn-target"><span class="fk-badge">FK</span> rincian_pesanan.pesanan_id</div>
+                        <div class="conn-desc">(1 Pesanan memiliki N item barang di Rincian Pesanan)</div>
+                    </div>
+
+                    <div class="erd-conn-item">
+                        <div class="conn-source"><span class="pk-badge">PK</span> variasi_produk.variasi_id</div>
+                        <div class="conn-arrow">─── 1 : N ───►</div>
+                        <div class="conn-target"><span class="fk-badge">FK</span> rincian_pesanan.variasi_id</div>
+                        <div class="conn-desc">(1 SKU Variasi Produk dibeli di N Rincian Pesanan)</div>
+                    </div>
+
+                    <div class="erd-conn-item">
+                        <div class="conn-source"><span class="pk-badge">PK</span> kurir_ekspedisi.kurir_id</div>
+                        <div class="conn-arrow">─── 1 : N ───►</div>
+                        <div class="conn-target"><span class="fk-badge">FK</span> pesanan.kurir_id</div>
+                        <div class="conn-desc">(1 Layanan Kurir dipakai pengiriman di N Pesanan)</div>
+                    </div>
+                </div>
             </div>
 
             <div class="code-block">
