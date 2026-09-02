@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (window.mermaid) {
+                mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+            }
+        });
+    </script>
 </head>
 <body>
 
@@ -246,13 +254,43 @@
 
             <h3>Visualisasi Diagram ERD (Entity Relationship Diagram) E-Commerce</h3>
             <p>
-                Berikut adalah arsitektur relasi tabel transaksi utama yang ada di berkas <code>database/schema.sql</code>:
+                Berikut adalah diagram vektor SVG interaktif relasi 20 tabel di <code>database/schema.sql</code> (menggunakan standar notasi <em>Crow's Foot</em> <code>1:N</code>):
             </p>
+
+            <div class="mermaid-box">
+                <pre class="mermaid">
+erDiagram
+    pelanggan ||--o{ pesanan : "pelanggan_id (1:N)"
+    pelanggan ||--o{ alamat_pelanggan : "pelanggan_id (1:N)"
+    pelanggan ||--o{ ulasan_produk : "pelanggan_id (1:N)"
+    pelanggan ||--o{ keranjang_belanja : "pelanggan_id (1:N)"
+    pelanggan ||--o{ wishlist_produk : "pelanggan_id (1:N)"
+    
+    pesanan ||--o{ rincian_pesanan : "pesanan_id (1:N)"
+    pesanan ||--o{ riwayat_pembayaran : "pesanan_id (1:N)"
+    pesanan ||--o{ status_pengiriman : "pesanan_id (1:N)"
+    pesanan ||--o{ ulasan_produk : "pesanan_id (1:N)"
+
+    kategori ||--o{ subkategori : "kategori_id (1:N)"
+    subkategori ||--o{ produk : "subkategori_id (1:N)"
+    merek ||--o{ produk : "merek_id (1:N)"
+    supplier ||--o{ produk : "supplier_id (1:N)"
+    produk ||--o{ variasi_produk : "produk_id (1:N)"
+
+    variasi_produk ||--o{ rincian_pesanan : "variasi_id (1:N)"
+    variasi_produk ||--o{ stok_gudang : "variasi_id (1:N)"
+    gudang ||--o{ stok_gudang : "gudang_id (1:N)"
+
+    kurir_ekspedisi ||--o{ pesanan : "kurir_id (1:N)"
+    metode_pembayaran ||--o{ pesanan : "metode_id (1:N)"
+    voucher_promo ||--o{ pesanan : "voucher_id (1:N)"
+                </pre>
+            </div>
 
             <div class="erd-box">
                 <div class="erd-grid">
                     <!-- Tabel Pelanggan -->
-                    <div class="erd-card">
+                    <div class="erd-card master">
                         <div class="erd-card-header">
                             <span><i class="fa-solid fa-user"></i> pelanggan</span>
                             <span style="font-size:0.7rem;color:var(--brand-light)">Tabel Induk</span>
@@ -266,7 +304,7 @@
                     </div>
 
                     <!-- Tabel Pesanan -->
-                    <div class="erd-card">
+                    <div class="erd-card header-txn">
                         <div class="erd-card-header">
                             <span><i class="fa-solid fa-cart-shopping"></i> pesanan</span>
                             <span style="font-size:0.7rem;color:var(--warning)">Header Transaksi</span>
@@ -282,7 +320,7 @@
                     </div>
 
                     <!-- Tabel Rincian Pesanan -->
-                    <div class="erd-card">
+                    <div class="erd-card child-txn">
                         <div class="erd-card-header">
                             <span><i class="fa-solid fa-list-check"></i> rincian_pesanan</span>
                             <span style="font-size:0.7rem;color:var(--success)">Detail Item</span>
@@ -297,7 +335,7 @@
                     </div>
 
                     <!-- Tabel Variasi Produk -->
-                    <div class="erd-card">
+                    <div class="erd-card master">
                         <div class="erd-card-header">
                             <span><i class="fa-solid fa-box"></i> variasi_produk</span>
                             <span style="font-size:0.7rem;color:var(--brand-light)">Katalog SKU</span>

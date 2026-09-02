@@ -1366,6 +1366,55 @@ code:not([class*="language"]):not(.code-block code) {
     border-radius: var(--r-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
+    transition: transform var(--t), box-shadow var(--t), border-color var(--t);
+}
+.erd-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--brand-light);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+}
+
+.erd-card.master {
+    border-top: 3px solid #38BDF8;
+}
+.erd-card.master .erd-card-header {
+    background: rgba(56, 189, 248, 0.12);
+}
+
+.erd-card.header-txn {
+    border-top: 3px solid #F59E0B;
+}
+.erd-card.header-txn .erd-card-header {
+    background: rgba(245, 158, 11, 0.12);
+}
+
+.erd-card.child-txn {
+    border-top: 3px solid #10B981;
+}
+.erd-card.child-txn .erd-card-header {
+    background: rgba(16, 185, 129, 0.12);
+}
+
+.erd-card.lookup {
+    border-top: 3px solid #8B5CF6;
+}
+.erd-card.lookup .erd-card-header {
+    background: rgba(139, 92, 246, 0.12);
+}
+
+.mermaid-box {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: var(--r-xl);
+    padding: 1.5rem;
+    margin: 1.75rem 0;
+    overflow-x: auto;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+.mermaid-box svg {
+    max-width: 100% !important;
+    height: auto !important;
 }
 
 .erd-card-header {

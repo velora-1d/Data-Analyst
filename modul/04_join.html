@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (window.mermaid) {
+                mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+            }
+        });
+    </script>
 </head>
 <body>
 
@@ -80,6 +88,26 @@
             <p>
                 Dalam database e-commerce, relasi dibentuk melalui <strong>Primary Key (PK)</strong> sebagai ID unik tabel asal dan <strong>Foreign Key (FK)</strong> sebagai kolom penunjuk di tabel tujuan.
             </p>
+            <div class="mermaid-box">
+                <pre class="mermaid">
+erDiagram
+    pelanggan ||--o{ pesanan : "pelanggan_id (1:N)"
+    pelanggan ||--o{ alamat_pelanggan : "pelanggan_id (1:N)"
+    pesanan ||--o{ rincian_pesanan : "pesanan_id (1:N)"
+    pesanan ||--o{ riwayat_pembayaran : "pesanan_id (1:N)"
+    pesanan ||--o{ status_pengiriman : "pesanan_id (1:N)"
+    kategori ||--o{ subkategori : "kategori_id (1:N)"
+    subkategori ||--o{ produk : "subkategori_id (1:N)"
+    merek ||--o{ produk : "merek_id (1:N)"
+    supplier ||--o{ produk : "supplier_id (1:N)"
+    produk ||--o{ variasi_produk : "produk_id (1:N)"
+    variasi_produk ||--o{ rincian_pesanan : "variasi_id (1:N)"
+    kurir_ekspedisi ||--o{ pesanan : "kurir_id (1:N)"
+    metode_pembayaran ||--o{ pesanan : "metode_id (1:N)"
+    voucher_promo ||--o{ pesanan : "voucher_id (1:N)"
+                </pre>
+            </div>
+
             <div class="schema-box">
 <pre><code>[kategori] (kategori_id PK)
     │
