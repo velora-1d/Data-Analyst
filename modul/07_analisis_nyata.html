@@ -89,6 +89,13 @@
             <h2><i class="fa-solid fa-money-bill-trend-up"></i> 2. Kasus 1: Rekapitulasi Laba Bersih (Net Profit) & Margin (%)</h2>
             <p><strong>Pertanyaan Manajerial:</strong> Berapa total uang kotor yang masuk (GMV), berapa modal pokok pengadaan barang (HPP), berapa biaya diskon yang dikeluarkan, dan berapa laba bersih final toko?</p>
 
+            <div class="explain-box purpose">
+                <div class="explain-title"><i class="fa-solid fa-lightbulb"></i> Buat Apa Laporan Finansial Laba Rugi Ini Diciptakan?</div>
+                <div class="explain-desc">
+                    Melihat omzet kotor saja bisa menyesatkan jika modal HPP dan biaya bakar uang voucher sangat tinggi. Kueri ini menghitung **Net Profit Margin (%)** secara presisi dengan mengurangkan omzet kotor terhadap HPP modal dan potongan diskon toko.
+                </div>
+            </div>
+
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Rekapitulasi Finansial Laba Rugi Toko</span>
@@ -114,6 +121,13 @@
         <section id="case2-margin">
             <h2><i class="fa-solid fa-chart-pie"></i> 3. Kasus 2: Top 5 Kategori Paling Menguntungkan</h2>
             <p><strong>Pertanyaan Manajerial:</strong> Kategori produk mana yang memberikan sumbangan laba (profit) nominal terbesar bagi perusahaan?</p>
+
+            <div class="explain-box business">
+                <div class="explain-title"><i class="fa-solid fa-briefcase"></i> Skenario Bisnis: Efisiensi Stok Kategori High-Margin</div>
+                <div class="explain-desc">
+                    Direktur Pengadaan menggunakan hasil query ini untuk mengalokasikan modal pengadaan barang (*working capital*) ke kategori yang menyumbangkan profit margin tertinggi (misal: *Elektronik* atau *Pakaian*), daripada kategori dengan margin tipis.
+                </div>
+            </div>
 
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
@@ -144,6 +158,13 @@
         <section id="case3-rfm">
             <h2><i class="fa-solid fa-users-gear"></i> 4. Kasus 3: Segmentasi Pelanggan (RFM Analysis)</h2>
             <p><strong>Pertanyaan Manajerial:</strong> Siapa saja pelanggan VIP (Champions) yang loyal dan menghasilkan nilai belanja tertinggi untuk diprioritaskan oleh tim CRM?</p>
+
+            <div class="explain-box tip">
+                <div class="explain-title"><i class="fa-solid fa-gem"></i> Manfaat Segmentasi Pelanggan RFM</div>
+                <div class="explain-desc">
+                    Analisis RFM (*Recency, Frequency, Monetary*) mengelompokkan pelanggan menjadi kasta **VIP Champions**, **Loyal Customer**, dan **Regular Customer**. Pelanggan VIP dapat ditarik ke dalam program keanggotaan prioritas atau diberikan akses *early bird* diskon.
+                </div>
+            </div>
 
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
@@ -181,6 +202,13 @@
         <section id="case4-voucher">
             <h2><i class="fa-solid fa-ticket"></i> 5. Kasus 4: Evaluasi ROI Voucher Promo Diskon</h2>
             <p><strong>Pertanyaan Manajerial:</strong> Berapa rasio uang yang dihasilkan dibanding nominal diskon yang kita bakar (Promo Burn Rate)?</p>
+
+            <div class="explain-box purpose">
+                <div class="explain-title"><i class="fa-solid fa-coins"></i> Fungsi Evaluasi ROI Promo Diskon</div>
+                <div class="explain-desc">
+                    Kueri ini menghitung **Return on Investment (ROI)** promo voucher. Jika biaya diskon yang dikeluarkan Rp 5 Juta berhasil menghasilkan transaksi omzet Rp 80 Juta, berarti kampanye voucher tersebut sangat efektif dan menguntungkan.
+                </div>
+            </div>
 
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>

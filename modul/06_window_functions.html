@@ -90,6 +90,16 @@
         <!-- 2. Ranking -->
         <section id="ranking">
             <h2><i class="fa-solid fa-trophy"></i> 2. ROW_NUMBER, RANK, dan DENSE_RANK</h2>
+
+            <div class="explain-box purpose">
+                <div class="explain-title"><i class="fa-solid fa-lightbulb"></i> Buat Apa Fungsi Perankingan (Ranking) Digunakan?</div>
+                <div class="explain-desc">
+                    Fungsi perankingan memungkinkan Anda memberikan peringkat pada baris data **tanpa harus menciutkan tabel** (berbeda dari GROUP BY).<br>
+                    - **`ROW_NUMBER()`**: Memberikan penomoran unik mutlak (1, 2, 3, 4) cocok untuk penomoran baris.<br>
+                    - **`DENSE_RANK()`**: Memberikan peringkat berdampingan tanpa melompati angka (1, 2, 2, 3) jika ada nilai belanja yang persis sama.
+                </div>
+            </div>
+
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Perbandingan perankingan invoice pesanan</span>
@@ -108,6 +118,14 @@
         <!-- 3. PARTITION BY -->
         <section id="partition">
             <h2><i class="fa-solid fa-table-columns"></i> 3. PARTITION BY: Top 2 Produk Terlaris per Kategori</h2>
+
+            <div class="explain-box business">
+                <div class="explain-title"><i class="fa-solid fa-briefcase"></i> Skenario Bisnis: Top N Item per Kelompok</div>
+                <div class="explain-desc">
+                    Direktur Merchandise ingin menampilkan **"2 Produk Paling Laris"** di masing-masing kategori barang. Klausa `PARTITION BY k.kategori_id` memecah jendela kalkulasi per kategori, lalu `DENSE_RANK()` meranking penjualan di dalam tiap kelompok kategori tersebut.
+                </div>
+            </div>
+
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Top 2 Produk terlaris di setiap kategori produk</span>
@@ -137,6 +155,14 @@
         <!-- 4. LAG LEAD -->
         <section id="lag-lead">
             <h2><i class="fa-solid fa-timeline"></i> 4. LAG: Analisis Pertumbuhan MoM (Month-over-Month Growth)</h2>
+
+            <div class="explain-box purpose">
+                <div class="explain-title"><i class="fa-solid fa-chart-line"></i> Buat Apa Fungsi LAG Digunakan?</div>
+                <div class="explain-desc">
+                    Fungsi `LAG(omzet, 1)` mengambil nilai omzet dari baris 1 langkah sebelum periode saat ini. Dengan membandingkan omzet bulan ini terhadap bulan lalu, kita bisa menghitung laju pertumbuhan bulanan (**MoM Growth %**) secara langsung dalam query SQL.
+                </div>
+            </div>
+
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Menghitung omzet bulanan dan persentase pertumbuhan dibanding bulan sebelumnya</span>
@@ -164,6 +190,14 @@
         <!-- 5. Running Total -->
         <section id="running-total">
             <h2><i class="fa-solid fa-chart-line"></i> 5. Running Total: Akumulasi Omzet Berjalan</h2>
+
+            <div class="explain-box tip">
+                <div class="explain-title"><i class="fa-solid fa-calculator"></i> Konsep Running Total</div>
+                <div class="explain-desc">
+                    `SUM(total_bayar) OVER (ORDER BY tanggal_pesanan)` menjumlahkan omzet secara kumulatif dari transaksi pertama hingga transaksi saat ini. Sangat berguna untuk melacak pencapaian target pendapatan toko sepanjang tahun (Year-to-Date / YTD).
+                </div>
+            </div>
+
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Akumulasi total omzet toko secara real-time dari waktu ke waktu</span>

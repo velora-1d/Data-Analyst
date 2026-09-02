@@ -94,6 +94,13 @@
                 Scalar subquery menghasilkan tepat <strong>1 baris dan 1 kolom</strong>. Sangat ideal untuk membandingkan nilai transaksi per pesanan terhadap rata-rata AOV keseluruhan toko.
             </p>
 
+            <div class="explain-box purpose">
+                <div class="explain-title"><i class="fa-solid fa-lightbulb"></i> Buat Apa Scalar Subquery Digunakan?</div>
+                <div class="explain-desc">
+                    Saat Anda ingin menyaring transaksi yang nilainya di atas rata-rata toko, Anda tidak bisa mengetik angka rata-rata secara manual karena nilainya berubah terus setiap ada transaksi baru. Scalar subquery secara dinamis menghitung `(SELECT AVG(total_bayar) FROM pesanan)` lalu menggunakannya sebagai pembanding.
+                </div>
+            </div>
+
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Transaksi yang nilainya melebihi rata-rata belanja (AOV) toko</span>
@@ -115,6 +122,13 @@
             <p>
                 Subquery yang menghasilkan daftar nilai ID dapat dipasangkan dengan operator <code>IN</code>.
             </p>
+
+            <div class="explain-box business">
+                <div class="explain-title"><i class="fa-solid fa-users-target"></i> Skenario Bisnis: Profiling Target Marketing</div>
+                <div class="explain-desc">
+                    Tim Marketing ingin meluncurkan campaign promo aksesoris gadget khusus kepada pengguna yang pernah membeli produk 'Elektronik & Gadget'. Subquery bagian dalam mengumpulkan daftar `pelanggan_id` yang relevan, lalu query utama mengambil kontak pelanggan tersebut.
+                </div>
+            </div>
 
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
@@ -142,6 +156,13 @@
                 Correlated subquery bergantung pada nilai baris tabel luar (outer query) yang sedang diproses.
             </p>
 
+            <div class="explain-box tip">
+                <div class="explain-title"><i class="fa-solid fa-microchip"></i> Cara Kerja Correlated Subquery</div>
+                <div class="explain-desc">
+                    Tidak seperti subquery biasa yang dieksekusi sekali di awal, correlated subquery dieksekusi **berulang kali untuk setiap baris** tabel utama `pelanggan pl`. Syarat `p.pelanggan_id = pl.pelanggan_id` menyambungkan konteks baris luar ke dalam subquery.
+                </div>
+            </div>
+
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Menghitung jumlah pesanan per pelanggan secara correlated</span>
@@ -163,9 +184,13 @@
         <!-- 5. EXISTS -->
         <section id="exists">
             <h2><i class="fa-solid fa-check-double"></i> 5. Operator EXISTS & NOT EXISTS</h2>
-            <p>
-                <code>EXISTS</code> sangat efisien karena engine langsung berhenti mencari (short-circuit) begitu menemukan setidaknya 1 baris kecocokan.
-            </p>
+
+            <div class="explain-box purpose">
+                <div class="explain-title"><i class="fa-solid fa-bolt"></i> Mengapa EXISTS Lebih Cepat daripada IN?</div>
+                <div class="explain-desc">
+                    Operator `EXISTS` menggunakan mekanisme **Short-Circuit Evaluation**. Begitu engine menemukan setidaknya 1 baris transaksi yang cocok pada `SELECT 1 FROM pesanan`, pencarian langsung dihentikan tanpa perlu membaca seluruh sisa baris di tabel `pesanan`.
+                </div>
+            </div>
 
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
@@ -184,9 +209,13 @@
         <!-- 6. CTE -->
         <section id="cte">
             <h2><i class="fa-solid fa-layer-group"></i> 6. Common Table Expression (WITH ... AS)</h2>
-            <p>
-                CTE adalah teknik standar yang digunakan oleh praktisi data profesional untuk menstrukturkan query kompleks.
-            </p>
+
+            <div class="explain-box business">
+                <div class="explain-title"><i class="fa-solid fa-cubes"></i> Buat Apa CTE (WITH ... AS) Diciptakan?</div>
+                <div class="explain-desc">
+                    CTE membuat kode SQL yang sangat rumit menjadi **modular dan mudah dibaca** seperti fungsi pemrograman. Blok `WITH CustomerSpending AS (...)` membuat tabel sementara yang bersih, sehingga query utama di bawahnya tinggal mengambil hasilnya dengan klausa `SELECT ... FROM CustomerSpending`.
+                </div>
+            </div>
 
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
@@ -198,22 +227,23 @@
         <span class="sql-fn">COUNT</span>(p.pesanan_id) <span class="sql-kw">AS</span> total_orders,
         <span class="sql-fn">SUM</span>(p.total_bayar)  <span class="sql-kw">AS</span> total_spent
     <span class="sql-kw">FROM</span> pelanggan pl
-    <span class="sql-kw">JOIN</span> pesanan p <span class="sql-kw">ON</span> pl.pelanggan_id <span class="sql-op">=</span> p.pelanggan_id
-    <span class="sql-kw">WHERE</span> p.status_pesanan <span class="sql-op">=</span> <span class="sql-str">'Selesai'</span>
+    <span class="sql-kw">LEFT JOIN</span> pesanan p <span class="sql-kw">ON</span> pl.pelanggan_id <span class="sql-op">=</span> p.pelanggan_id <span class="sql-op">AND</span> p.status_pesanan <span class="sql-op">=</span> <span class="sql-str">'Selesai'</span>
     <span class="sql-kw">GROUP BY</span> pl.pelanggan_id
 )
 <span class="sql-kw">SELECT</span> 
+    pelanggan_id,
     nama_lengkap,
     total_orders,
-    total_spent,
+    <span class="sql-fn">COALESCE</span>(total_spent, <span class="sql-num">0</span>) <span class="sql-kw">AS</span> total_belanja,
     <span class="sql-kw">CASE</span> 
-        <span class="sql-kw">WHEN</span> total_spent <span class="sql-op">&gt;=</span> <span class="sql-num">3000000</span> <span class="sql-kw">THEN</span> <span class="sql-str">'Platinum VIP'</span>
-        <span class="sql-kw">WHEN</span> total_spent <span class="sql-op">&gt;=</span> <span class="sql-num">1500000</span> <span class="sql-kw">THEN</span> <span class="sql-str">'Gold Member'</span>
-        <span class="sql-kw">ELSE</span> <span class="sql-str">'Silver Member'</span>
-    <span class="sql-kw">END</span> <span class="sql-kw">AS</span> membership_tier
+        <span class="sql-kw">WHEN</span> total_spent <span class="sql-op">&gt;=</span> <span class="sql-num">10000000</span> <span class="sql-kw">THEN</span> <span class="sql-str">'VIP / Diamond'</span>
+        <span class="sql-kw">WHEN</span> total_spent <span class="sql-op">&gt;=</span> <span class="sql-num">3000000</span>  <span class="sql-kw">THEN</span> <span class="sql-str">'Gold Customer'</span>
+        <span class="sql-kw">WHEN</span> total_spent <span class="sql-op">&gt;</span> <span class="sql-num">0</span>        <span class="sql-kw">THEN</span> <span class="sql-str">'Regular Customer'</span>
+        <span class="sql-kw">ELSE</span> <span class="sql-str">'Inactive / Lead'</span>
+    <span class="sql-kw">END</span> <span class="sql-kw">AS</span> kasta_pelanggan
 <span class="sql-kw">FROM</span> CustomerSpending
 <span class="sql-kw">ORDER BY</span> total_spent <span class="sql-kw">DESC</span>
-<span class="sql-kw">LIMIT</span> <span class="sql-num">6</span>;</code></pre>
+<span class="sql-kw">LIMIT</span> <span class="sql-num">5</span>;</code></pre>
             </div>
         </section>
 
