@@ -81,6 +81,14 @@
             <p>
                 Fungsi agregasi mengambil sekumpulan nilai baris dan merangkumnya menjadi satu nilai statistik ringkasan. Fungsi agregasi mengabaikan nilai <code>NULL</code> (kecuali <code>COUNT(*)</code>).
             </p>
+
+            <div class="explain-box purpose">
+                <div class="explain-title"><i class="fa-solid fa-lightbulb"></i> Buat Apa Fungsi Agregasi Diciptakan?</div>
+                <div class="explain-desc">
+                    Tanpa fungsi agregasi, Anda harus membaca ratusan ribu baris data transaksi satu per satu secara manual. Dengan Agregasi SQL, database SQLite secara instan menghitung total nilai transaksi (**GMV**), rata-rata belanja per invoice (**AOV**), serta batas nilai transaksi tertinggi dan terendah dalam hitungan milidetik.
+                </div>
+            </div>
+
             <table class="compare-table">
                 <thead><tr><th>Fungsi SQL</th><th>Metrik Bisnis E-Commerce</th><th>Pertanyaan Manajerial</th></tr></thead>
                 <tbody>
@@ -98,6 +106,13 @@
             <p>
                 <code>COUNT(*)</code> menghitung seluruh baris fisik di tabel. Sedangkan <code>COUNT(kolom)</code> hanya menghitung baris yang kolomnya <strong>tidak bernilai NULL</strong>.
             </p>
+
+            <div class="explain-box business">
+                <div class="explain-title"><i class="fa-solid fa-briefcase"></i> Skenario Analisis Bisnis: Penetrasi Promo Voucher</div>
+                <div class="explain-desc">
+                    Tim Marketing ingin mengetahui efektivitas promo voucher. Karena `voucher_id` bernilai `NULL` jika pelanggan belanja tanpa voucher, kita bisa membandingkan `COUNT(*)` (seluruh order) dengan `COUNT(voucher_id)` (order yang memakai voucher) untuk menghitung persentase penggunaan voucher.
+                </div>
+            </div>
 
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
@@ -123,6 +138,15 @@
         <!-- 3. SUM & AVG -->
         <section id="sum-avg">
             <h2><i class="fa-solid fa-calculator"></i> 3. SUM & AVG: Total Omzet & Average Order Value (AOV)</h2>
+
+            <div class="explain-box purpose">
+                <div class="explain-title"><i class="fa-solid fa-chart-line"></i> Kapan SUM & AVG Digunakan?</div>
+                <div class="explain-desc">
+                    - **`SUM(total_bayar)`**: Digunakan saat Direktur Keuangan meminta total pendapatan kotor (Gross Sales).<br>
+                    - **`AVG(total_bayar)`**: Digunakan oleh Tim Product untuk mengukur daya beli rata-rata pengguna (Average Order Value / AOV). Jika AOV naik dari Rp 150.000 menjadi Rp 250.000, berarti strategi *upselling* produk berhasil.
+                </div>
+            </div>
+
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Ringkasan omzet dan AOV pesanan dengan status 'Selesai'</span>
@@ -138,6 +162,14 @@
         <!-- 4. MIN MAX -->
         <section id="min-max">
             <h2><i class="fa-solid fa-arrows-up-down"></i> 4. MIN & MAX: Transaksi Ekstrem & Rentang Waktu</h2>
+
+            <div class="explain-box tip">
+                <div class="explain-title"><i class="fa-solid fa-clock-rotate-left"></i> Penjelasan Penggunaan MIN & MAX</div>
+                <div class="explain-desc">
+                    Fungsi `MIN()` dan `MAX()` tidak hanya bekerja pada nilai angka/rupiah, tetapi juga sangat berguna pada tipe tanggal `DATETIME`. `MIN(tanggal_pesanan)` memberi tahu tanggal pesanan paling awal, sedangkan `MAX(tanggal_pesanan)` memberi tahu transaksi paling terbaru.
+                </div>
+            </div>
+
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Transaksi terendah, tertinggi, dan rentang tanggal order</span>
@@ -158,6 +190,13 @@
                 <code>GROUP BY</code> mengelompokkan data berdasarkan nilai kolom tertentu. Setiap kolom di klausa <code>SELECT</code> yang bukan fungsi agregasi <strong>wajib</strong> didaftarkan di <code>GROUP BY</code>.
             </p>
 
+            <div class="explain-box business">
+                <div class="explain-title"><i class="fa-solid fa-cubes"></i> Mengapa Harus Dikelompokkan (Grouped)?</div>
+                <div class="explain-desc">
+                    Mengetahui total omzet Rp 500 Juta saja belum cukup untuk pengambilan keputusan. Dengan `GROUP BY mp.nama_metode`, Direktur Bisnis bisa melihat metode mana (misal: *GoPay*, *BCA Virtual Account*, *QRIS*) yang paling banyak digunakan oleh pengguna.
+                </div>
+            </div>
+
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Performa omzet per Metode Pembayaran</span>
@@ -177,6 +216,15 @@
         <!-- 6. HAVING -->
         <section id="having">
             <h2><i class="fa-solid fa-filter"></i> 6. HAVING vs WHERE</h2>
+
+            <div class="explain-box tip">
+                <div class="explain-title"><i class="fa-solid fa-triangle-exclamation"></i> Aturan Emas: Kapan Menggunakan WHERE vs HAVING?</div>
+                <div class="explain-desc">
+                    - Gunakan **`WHERE`** untuk menyaring baris sebelum dihitung (contoh: `WHERE status_pesanan = 'Selesai'`).<br>
+                    - Gunakan **`HAVING`** untuk menyaring hasil kalkulasi kelompok setelah dihitung (contoh: `HAVING COUNT(pesanan_id) > 15` atau `HAVING SUM(total_bayar) > 10.000.000`). `WHERE` **tidak bisa** menerima fungsi agregasi `SUM/COUNT`!
+                </div>
+            </div>
+
             <table class="compare-table">
                 <thead><tr><th>Klausa</th><th>Waktu Eksekusi</th><th>Objek yang Difilter</th><th>Bisa Pakai Agregat?</th></tr></thead>
                 <tbody>

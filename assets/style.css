@@ -1503,6 +1503,52 @@ code:not([class*="language"]):not(.code-block code) {
     cursor: grabbing;
 }
 
+/* --- Explanation Callout Box Components --- */
+.explain-box {
+    background: rgba(30, 41, 59, 0.5);
+    border-left: 4px solid var(--brand);
+    border-radius: 0 10px 10px 0;
+    padding: 1.25rem 1.5rem;
+    margin: 1.25rem 0 1.5rem 0;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-left-width: 4px;
+}
+.explain-box.purpose {
+    border-left-color: #38BDF8;
+    background: rgba(56, 189, 248, 0.08);
+}
+.explain-box.purpose .explain-title {
+    color: #38BDF8;
+}
+.explain-box.tip {
+    border-left-color: #F59E0B;
+    background: rgba(245, 158, 11, 0.08);
+}
+.explain-box.tip .explain-title {
+    color: #FBBF24;
+}
+.explain-box.business {
+    border-left-color: #3ECF8E;
+    background: rgba(62, 207, 142, 0.08);
+}
+.explain-box.business .explain-title {
+    color: #3ECF8E;
+}
+.explain-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.explain-desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #CBD5E1;
+    margin: 0;
+}
+
 /* Color Accents per Entity Role */
 .s-node.master {
     border-top: 3px solid #38BDF8;

@@ -368,6 +368,13 @@
                 <code>INNER JOIN</code> hanya mengembalikan baris yang memiliki pasangan kecocokan di kedua tabel. Jika produk tidak memiliki merek, maka baris tersebut tidak akan muncul.
             </p>
 
+            <div class="explain-box purpose">
+                <div class="explain-title"><i class="fa-solid fa-lightbulb"></i> Buat Apa INNER JOIN Digunakan?</div>
+                <div class="explain-desc">
+                    Tabel `produk` hanya menyimpan `merek_id` berbentuk angka (misal: `merek_id = 3`). Agar aplikasi E-Commerce atau dashboard analitik bisa menampilkan nama brand yang human-readable (misal: `"Samsung"`), kita menggabungkan tabel `produk` dengan tabel `merek` menggunakan `INNER JOIN` berbasis relasi `produk.merek_id = merek.merek_id`.
+                </div>
+            </div>
+
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Menggabungkan Produk dengan Kategori, Subkategori, Merek, dan Supplier</span>
@@ -394,6 +401,13 @@
             <p>
                 <code>LEFT JOIN</code> mempertahankan seluruh baris tabel kiri. Teknik ini sangat berguna untuk analisis retensi, misalnya: <em>Mencari pelanggan yang telah mendaftar tetapi belum pernah melakukan pesanan (Inactive Users).</em>
             </p>
+
+            <div class="explain-box business">
+                <div class="explain-title"><i class="fa-solid fa-user-slash"></i> Skenario Bisnis: Mendeteksi User Pasif (Zero Transaction)</div>
+                <div class="explain-desc">
+                    Tim CRM ingin mengirimkan email voucher selamat datang untuk pengguna baru yang belum membuat transaksi. Dengan `LEFT JOIN pelanggan p ON ... WHERE pesanan_id IS NULL`, database SQLite secara instan menemukan semua pelanggan yang belum punya orderan!
+                </div>
+            </div>
 
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
