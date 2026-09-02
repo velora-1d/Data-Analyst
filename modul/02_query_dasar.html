@@ -103,6 +103,15 @@
                 Hindari kebiasaan menggunakan <code>SELECT *</code> pada production database karena membebani memori. Pilihlah kolom yang spesifik dan gunakan <code>AS</code> untuk memberi nama alias yang mudah dipahami stakeholder bisnis.
             </p>
 
+            <div class="explain-box purpose">
+                <div class="explain-title"><i class="fa-solid fa-lightbulb"></i> Buat Apa SELECT &amp; Kolom Kalkulasi Digunakan?</div>
+                <div class="explain-desc">
+                    - **`SELECT kolom`**: Mengambil spesifik informasi dari database tanpa menarik data yang tidak diperlukan (menghemat *bandwidth* network &amp; memori server).<br>
+                    - **`AS alias_nama`**: Mengubah header nama kolom agar siap dikonsumsi langsung oleh laporan Excel / dashboard Power BI tanpa perlu di-*rename* manual.<br>
+                    - **`berat_gram / 1000.0`**: Melakukan transformasi matematika otomatis langsung di level database sebelum sampai ke aplikasi.
+                </div>
+            </div>
+
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Mengambil katalog produk dengan kolom kalkulasi dan alias</span>
@@ -122,6 +131,13 @@
             <p>
                 Klausa <code>WHERE</code> menyaring baris berdasarkan kondisi logika (True/False). Operator yang didukung: <code>=</code>, <code>!=</code> (atau <code>&lt;&gt;</code>), <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>.
             </p>
+
+            <div class="explain-box business">
+                <div class="explain-title"><i class="fa-solid fa-briefcase"></i> Skenario Bisnis: Menyaring High-Value Customers</div>
+                <div class="explain-desc">
+                    Tim Keuangan hanya memproses laporan invoice transaksi yang statusnya sudah **'Selesai'** dan bernilai belanja tinggi (di atas **Rp 300.000**). Klausa `WHERE` menyeleksi baris mentah sebelum dikirimkan ke aplikasi.
+                </div>
+            </div>
 
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
@@ -145,6 +161,13 @@
                 Operator logika menggabungkan multi-kondisi. Selalu gunakan kurung buka dan tutup <code>( ... )</code> jika menggabungkan <code>AND</code> dan <code>OR</code> untuk menghindari kesalahan urutan evaluasi boolean.
             </p>
 
+            <div class="explain-box tip">
+                <div class="explain-title"><i class="fa-solid fa-triangle-exclamation"></i> Aturan Penggunaan Tanda Kurung Logika Boolean</div>
+                <div class="explain-desc">
+                    Di SQL, operator `AND` diproses lebih dulu daripada `OR` (*operator precedence*). Dengan memberi tanda kurung `(status_pesanan = 'Selesai' OR status_pesanan = 'Dikirim')`, Anda memastikan bahwa pengelompokan status dievaluasi sebagai satu kesatuan sebelum disaring dengan syarat `ongkos_kirim > 15000`.
+                </div>
+            </div>
+
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Pesanan yang selesai ATAU dikirim, dan memiliki ongkir > 15000</span>
@@ -163,9 +186,14 @@
         <!-- 5. ORDER BY & LIMIT -->
         <section id="orderby">
             <h2><i class="fa-solid fa-arrow-up-wide-short"></i> 5. ORDER BY, LIMIT, dan OFFSET (Paginasi Data)</h2>
-            <p>
-                <code>ORDER BY kolom DESC</code> mengurutkan dari nilai terbesar ke terkecil. Dikombinasikan dengan <code>LIMIT n OFFSET m</code>, kita dapat membuat paginasi tabel data aplikasi.
-            </p>
+
+            <div class="explain-box purpose">
+                <div class="explain-title"><i class="fa-solid fa-list-ol"></i> Buat Apa ORDER BY, LIMIT, &amp; OFFSET Digunakan?</div>
+                <div class="explain-desc">
+                    - **`ORDER BY total_bayar DESC`**: Digunakan saat pimpinan bisnis ingin melihat leaderboard transaksi bernilai fantastis (Top Spender).<br>
+                    - **`LIMIT 5 OFFSET 5`**: Merupakan fondasi arsitektur **Paginasi Halaman (Page 1, Page 2)** pada antarmuka web/mobile e-commerce agar aplikasi tidak memuat ribuan data sekaligus.
+                </div>
+            </div>
 
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
@@ -190,6 +218,14 @@
         <!-- 6. DISTINCT -->
         <section id="distinct">
             <h2><i class="fa-solid fa-fingerprint"></i> 6. DISTINCT: Menghapus Duplikasi Baris</h2>
+
+            <div class="explain-box business">
+                <div class="explain-title"><i class="fa-solid fa-map-location-dot"></i> Fungsi &amp; Kegunaan DISTINCT</div>
+                <div class="explain-desc">
+                    Tabel `alamat_pelanggan` memiliki ribuan baris dengan nama kota yang berulang. `SELECT DISTINCT provinsi, kota` secara otomatis mengeliminasi nama kota yang sama sehingga memberikan daftar lokasi unik pelanggan untuk kebutuhan perencanaan ekspansi gudang logistik.
+                </div>
+            </div>
+
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Melihat daftar kota dan provinsi unik asal pelanggan</span>
@@ -204,6 +240,14 @@
         <!-- 7. BETWEEN -->
         <section id="between">
             <h2><i class="fa-solid fa-arrows-left-right"></i> 7. BETWEEN: Rentang Angka & Tanggal</h2>
+
+            <div class="explain-box tip">
+                <div class="explain-title"><i class="fa-solid fa-calendar-days"></i> Buat Apa Klausa BETWEEN Digunakan?</div>
+                <div class="explain-desc">
+                    `BETWEEN A AND B` menyederhanakan penulisan kondisi rentang tertutup `(tanggal >= A AND tanggal <= B)`. Sangat efektif untuk pembuatan laporan pendapatan bulanan atau kuartalan (Q1, Q2, Q3, Q4).
+                </div>
+            </div>
+
             <div class="code-block">
                 <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Pesanan yang terjadi sepanjang Kuartal 3 (Juli - September 2023)</span>
