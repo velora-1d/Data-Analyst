@@ -87,6 +87,47 @@ function initSidebar() {
     sections.forEach(s => io.observe(s));
 }
 
+// --- Mobile Sidebar Drawer Toggle ---
+function initMobileSidebar() {
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const sidebar   = document.querySelector('.sidebar');
+    const overlay   = document.getElementById('sidebarOverlay');
+
+    if (!sidebar) return;
+
+    function openSidebar() {
+        sidebar.classList.add('open');
+        if (overlay) overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+        });
+    }
+
+    if (overlay) {
+        overlay.addEventListener('click', closeSidebar);
+    }
+
+    const navLinks = sidebar.querySelectorAll('a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 820) {
+                closeSidebar();
+            }
+        });
+    });
+}
+
 // --- Quiz ---
 function answerQuiz(optEl, isCorrect, explanation) {
     const card = optEl.closest('.quiz-card');
@@ -117,4 +158,5 @@ document.addEventListener('DOMContentLoaded', () => {
     if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
 
     initSidebar();
+    initMobileSidebar();
 });
