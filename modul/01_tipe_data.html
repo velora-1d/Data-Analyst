@@ -49,8 +49,9 @@
             <a href="#datetime"    class="nav-link"><i class="fa-regular fa-calendar"></i> 7. Tipe DATETIME</a>
             <a href="#null"        class="nav-link"><i class="fa-solid fa-ban"></i> 8. Penanganan Nilai NULL</a>
             <a href="#cast"        class="nav-link"><i class="fa-solid fa-arrow-right-arrow-left"></i> 9. Type Casting (CAST)</a>
-            <a href="#rangkuman"   class="nav-link"><i class="fa-solid fa-layer-group"></i> 10. Rangkuman & Best Practice</a>
-            <a href="#quiz"        class="nav-link"><i class="fa-solid fa-circle-question"></i> 11. Kuis Interaktif</a>
+            <a href="#ddl-dml"     class="nav-link"><i class="fa-solid fa-database"></i> 10. Desain Tabel DDL & DML</a>
+            <a href="#rangkuman"   class="nav-link"><i class="fa-solid fa-layer-group"></i> 11. Rangkuman & Best Practice</a>
+            <a href="#quiz"        class="nav-link"><i class="fa-solid fa-circle-question"></i> 12. Kuis Interaktif</a>
         </nav>
         <div class="nav-divider"></div>
         <div class="sidebar-header"><i class="fa-solid fa-book-open"></i> Daftar Seluruh Modul</div>
@@ -246,6 +247,20 @@
                 </table>
                 <div class="table-note"><i class="fa-solid fa-circle-info"></i> Simbol <code>||</code> adalah operator penggabung (string concatenation) standar SQL.</div>
             </div>
+
+            <div class="callout info">
+                <i class="fa-solid fa-lightbulb"></i>
+                <div class="callout-body">
+                    <strong>Penjelasan Detail Fungsi Manipulasi Teks (String):</strong>
+                    <ul style="margin-top:0.5rem;margin-left:1.25rem;line-height:1.8;">
+                        <li><code>UPPER(nama_lengkap)</code> — Mengubah semua huruf menjadi kapital. Digunakan untuk menstandarkan teks agar pencarian nama bersifat <em>case-insensitive</em>.</li>
+                        <li><code>LOWER(email)</code> — Mengubah alamat email menjadi huruf kecil. Sangat penting pada tahap <em>Data Cleaning</em> agar data email konsisten.</li>
+                        <li><code>LENGTH(nama_lengkap)</code> — Menghitung jumlah karakter dalam string. Berguna untuk validasi input (misal memeriksa panjang NIK, nomor telepon, atau nama minimum).</li>
+                        <li><code>SUBSTR(no_hp, 1, 4) || '-xxxx-xxxx'</code> — <strong>Data Masking (Privasi Data / PII)</strong>: Mengambil 4 digit awal prefix operator HP dengan <code>SUBSTR()</code> lalu menggabungkannya (<code>||</code>) dengan pola rahasia demi mematuhi regulasi Undang-Undang Perlindungan Data Pribadi (UU PDP).</li>
+                        <li><code>typeof(nama_lengkap)</code> — Memeriksa tipe data riil dari isi kolom secara dinamis di SQLite untuk memastikan tipe data tersimpan sebagai <code>text</code>.</li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
         <!-- 5. INTEGER -->
@@ -435,14 +450,87 @@
             </div>
         </section>
 
-        <!-- 10. Rangkuman -->
+        <!-- 10. DDL & DML -->
+        <section id="ddl-dml">
+            <h2><i class="fa-solid fa-database"></i> 10. DDL & DML: Desain Tabel & Manipulasi Data</h2>
+            <p>
+                Selain membaca data (query <code>SELECT</code>), pengolahan data SQL melibatkan 2 kelompok perintah utama:
+                <strong>DDL (Data Definition Language)</strong> untuk mendefinisikan struktur skema tabel, dan 
+                <strong>DML (Data Manipulation Language)</strong> untuk memanipulasi isi baris data.
+            </p>
+
+            <h3>A. Data Definition Language (DDL)</h3>
+            <p>
+                Digunakan untuk membuat (<code>CREATE TABLE</code>), mengubah struktur (<code>ALTER TABLE</code>), dan menghapus struktur tabel (<code>DROP TABLE</code>).
+            </p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label"><i class="fa-solid fa-code"></i> DDL: Membuat & Mengubah Tabel</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
+                </div>
+                <pre><code><span class="sql-cmt">-- 1. CREATE TABLE: Membuat tabel kategori promo baru dengan Constraints</span>
+<span class="sql-kw">CREATE TABLE IF NOT EXISTS</span> kategori_promo (
+    kategori_id   <span class="sql-type">INTEGER</span> <span class="sql-kw">PRIMARY KEY AUTOINCREMENT</span>,
+    nama_kategori <span class="sql-type">VARCHAR</span>(<span class="sql-num">50</span>) <span class="sql-kw">NOT NULL UNIQUE</span>,
+    diskon_pct    <span class="sql-type">REAL</span> <span class="sql-kw">DEFAULT</span> <span class="sql-num">0.0</span>,
+    status_aktif  <span class="sql-type">INTEGER</span> <span class="sql-kw">CHECK</span> (status_aktif <span class="sql-kw">IN</span> (<span class="sql-num">0</span>, <span class="sql-num">1</span>)) <span class="sql-kw">DEFAULT</span> <span class="sql-num">1</span>
+);
+
+<span class="sql-cmt">-- 2. ALTER TABLE: Menambah kolom baru catatan pada tabel</span>
+<span class="sql-kw">ALTER TABLE</span> kategori_promo <span class="sql-kw">ADD COLUMN</span> catatan <span class="sql-type">TEXT</span>;
+
+<span class="sql-cmt">-- 3. DROP TABLE: Menghapus tabel permanen jika sudah tidak digunakan</span>
+<span class="sql-kw">DROP TABLE IF EXISTS</span> tabel_sementara;</code></pre>
+            </div>
+
+            <h3>B. Data Manipulation Language (DML)</h3>
+            <p>
+                Digunakan untuk menambah (<code>INSERT</code>), memperbarui (<code>UPDATE</code>), dan menghapus isi baris data (<code>DELETE</code>).
+            </p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label"><i class="fa-solid fa-code"></i> DML: Manipulasi Baris Data</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
+                </div>
+                <pre><code><span class="sql-cmt">-- 1. INSERT: Menambah data promo baru</span>
+<span class="sql-kw">INSERT INTO</span> kategori_promo (nama_kategori, diskon_pct, status_aktif)
+<span class="sql-kw">VALUES</span> 
+    (<span class="sql-str">'Flash Sale Payday'</span>, <span class="sql-num">25.5</span>, <span class="sql-num">1</span>),
+    (<span class="sql-str">'Diskon Ongkir Super'</span>, <span class="sql-num">10.0</span>, <span class="sql-num">1</span>);
+
+<span class="sql-cmt">-- 2. UPDATE: Memperbarui nilai diskon promo khusus</span>
+<span class="sql-kw">UPDATE</span> kategori_promo
+<span class="sql-kw">SET</span> diskon_pct = <span class="sql-num">30.0</span>, catatan = <span class="sql-str">'Promo Khusus Tanggal Kembar'</span>
+<span class="sql-kw">WHERE</span> nama_kategori = <span class="sql-str">'Flash Sale Payday'</span>;
+
+<span class="sql-cmt">-- 3. DELETE: Menghapus baris promo yang sudah dinonaktifkan</span>
+<span class="sql-kw">DELETE FROM</span> kategori_promo
+<span class="sql-kw">WHERE</span> status_aktif = <span class="sql-num">0</span>;</code></pre>
+            </div>
+
+            <div class="callout warning">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div class="callout-body">
+                    <strong>Penting: DELETE vs TRUNCATE TABLE</strong>
+                    <p style="margin-top:0.25rem;">
+                        Perintah <code>DELETE FROM tabel WHERE ...</code> menghapus baris data spesifik berdasarkan kondisi. Jika klausa <code>WHERE</code> dihilangkan, seluruh baris data akan terhapus. Di database enterprise (MySQL/PostgreSQL/Oracle), perintah <code>TRUNCATE TABLE</code> digunakan untuk mengosongkan isi tabel secara instan dan mereset nomor urut auto-increment.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. Rangkuman -->
         <section id="rangkuman">
-            <h2><i class="fa-solid fa-layer-group"></i> 10. Rangkuman & Best Practices Pengolahan Data</h2>
+            <h2><i class="fa-solid fa-layer-group"></i> 11. Rangkuman & Best Practices Pengolahan Data</h2>
             <table class="compare-table">
                 <thead><tr><th>Skenario Kasus</th><th>Pendekatan Terbaik SQL</th><th>Contoh Kode</th></tr></thead>
                 <tbody>
                     <tr><td>Uang Rupiah</td><td>Gunakan INTEGER bulat untuk mencegah bug koma</td><td><code>total_bayar INTEGER</code></td></tr>
                     <tr><td>Persentase Laba</td><td>Gunakan CAST ke REAL sebelum membagi</td><td><code>CAST(untung AS REAL) / omzet * 100</code></td></tr>
+                    <tr><td>Desain Tabel Baru</td><td>Gunakan DDL <code>CREATE TABLE</code> + Constraints</td><td><code>NOT NULL UNIQUE DEFAULT 0</code></td></tr>
+                    <tr><td>Update Status Pesanan</td><td>Gunakan DML <code>UPDATE ... SET ... WHERE</code></td><td><code>UPDATE pesanan SET status='Selesai'</code></td></tr>
                     <tr><td>Pengecekan Nilai Kosong</td><td>Gunakan IS NULL / IS NOT NULL</td><td><code>WHERE voucher_id IS NOT NULL</code></td></tr>
                     <tr><td>Imputasi Default Nilai NULL</td><td>Gunakan fungsi COALESCE()</td><td><code>COALESCE(potongan_diskon, 0)</code></td></tr>
                     <tr><td>Analisis Waktu Checkout</td><td>Gunakan STRFTIME ISO-8601</td><td><code>STRFTIME('%Y-%m', tanggal_pesanan)</code></td></tr>
@@ -450,9 +538,9 @@
             </table>
         </section>
 
-        <!-- 11. Quiz -->
+        <!-- 12. Quiz -->
         <section id="quiz">
-            <h2><i class="fa-solid fa-circle-question"></i> 11. Kuis Interaktif Pemahaman</h2>
+            <h2><i class="fa-solid fa-circle-question"></i> 12. Kuis Interaktif Pemahaman</h2>
             <div class="quiz-section">
                 <div class="quiz-head"><i class="fa-solid fa-trophy"></i><h3>Uji Pemahaman: Tipe Data SQL E-Commerce</h3></div>
 
