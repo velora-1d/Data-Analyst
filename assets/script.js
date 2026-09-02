@@ -150,7 +150,7 @@ function answerQuiz(optEl, isCorrect, explanation) {
     }
 }
 
-// --- Supabase & Neon DB Interactive ERD Canvas ---
+// --- Interactive ERD PK & FK Canvas ---
 function initSupabaseERDCanvas() {
     const canvas = document.querySelector('.supabase-canvas');
     if (!canvas) return;
