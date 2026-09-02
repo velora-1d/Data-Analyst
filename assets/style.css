@@ -1343,15 +1343,246 @@ code:not([class*="language"]):not(.code-block code) {
     gap: 0.5rem;
 }
 
-/* --- ERD Diagram Styles --- */
-.erd-box {
-    background: var(--bg-surface-2);
-    border: 1px solid var(--border);
-    border-radius: var(--r-xl);
-    padding: 1.5rem;
-    margin: 1.75rem 0;
-    box-shadow: var(--shadow-sm);
+/* --- Supabase & Neon DB Modern ERD Canvas Styles --- */
+.supabase-erd-wrapper {
+    position: relative;
+    margin: 2rem 0;
+    font-family: var(--font-sans);
+}
+
+.supabase-canvas {
+    background-color: #0B0F19;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1.2px, transparent 1.2px);
+    background-size: 24px 24px;
+    border: 1px solid #1E293B;
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
     overflow-x: auto;
+}
+
+.supabase-canvas-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.supabase-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: #F8FAFC;
+}
+.supabase-brand i {
+    color: #3ECF8E;
+    font-size: 1.1rem;
+}
+.supabase-brand span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(62, 207, 142, 0.15);
+    color: #3ECF8E;
+    padding: 2px 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(62, 207, 142, 0.3);
+}
+
+.supabase-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.s-btn {
+    background: #1E293B;
+    color: #94A3B8;
+    border: 1px solid #334155;
+    padding: 0.35rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.s-btn:hover {
+    background: #334155;
+    color: #F8FAFC;
+    border-color: #475569;
+}
+
+.supabase-nodes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+.s-node {
+    background: #0F172A;
+    border: 1px solid #1E293B;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+.s-node:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.2);
+    border-color: #38BDF8;
+}
+
+.s-node-header {
+    padding: 0.75rem 1rem;
+    font-weight: 800;
+    font-size: 0.875rem;
+    color: #F8FAFC;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #1E293B;
+}
+
+/* Color Accents per Entity Role */
+.s-node.master {
+    border-top: 3px solid #38BDF8;
+}
+.s-node.master .s-node-header {
+    background: linear-gradient(90deg, rgba(56, 189, 248, 0.15), transparent);
+}
+
+.s-node.txn-header {
+    border-top: 3px solid #F59E0B;
+}
+.s-node.txn-header .s-node-header {
+    background: linear-gradient(90deg, rgba(245, 158, 11, 0.15), transparent);
+}
+
+.s-node.txn-child {
+    border-top: 3px solid #3ECF8E;
+}
+.s-node.txn-child .s-node-header {
+    background: linear-gradient(90deg, rgba(62, 207, 142, 0.15), transparent);
+}
+
+.s-node.lookup {
+    border-top: 3px solid #A855F7;
+}
+.s-node.lookup .s-node-header {
+    background: linear-gradient(90deg, rgba(168, 85, 247, 0.15), transparent);
+}
+
+.s-node-body {
+    padding: 0.5rem 0;
+}
+
+.s-node-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.4rem 1rem;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: #E2E8F0;
+    transition: background 0.15s ease;
+    position: relative;
+}
+.s-node-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.s-col-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.s-pk-tag {
+    background: rgba(245, 158, 11, 0.2);
+    color: #FBBF24;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 1px 5px;
+    border-radius: 4px;
+}
+
+.s-fk-tag {
+    background: rgba(56, 189, 248, 0.2);
+    color: #38BDF8;
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 1px 5px;
+    border-radius: 4px;
+}
+
+.s-type-pill {
+    font-size: 0.6875rem;
+    color: #94A3B8;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.s-handle-out {
+    width: 8px;
+    height: 8px;
+    background: #38BDF8;
+    border-radius: 50%;
+    position: absolute;
+    right: -4px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 0 6px #38BDF8;
+}
+
+.s-handle-in {
+    width: 8px;
+    height: 8px;
+    background: #3ECF8E;
+    border-radius: 50%;
+    position: absolute;
+    left: -4px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 0 6px #3ECF8E;
+}
+
+/* SVG Connector Lines Overlay */
+.s-svg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.s-svg-path {
+    stroke: #475569;
+    stroke-width: 2px;
+    fill: none;
+    stroke-dasharray: 6 4;
+    transition: all 0.3s ease;
+}
+.s-svg-path.active {
+    stroke: #38BDF8;
+    stroke-width: 3px;
+    stroke-dasharray: none;
+    filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.8));
 }
 
 .erd-grid {

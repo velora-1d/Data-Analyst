@@ -150,6 +150,73 @@ function answerQuiz(optEl, isCorrect, explanation) {
     }
 }
 
+// --- Supabase & Neon DB Interactive ERD Canvas ---
+function initSupabaseERDCanvas() {
+    const canvas = document.querySelector('.supabase-canvas');
+    if (!canvas) return;
+
+    const svg = canvas.querySelector('.s-svg-overlay');
+    const grid = canvas.querySelector('.supabase-nodes-grid');
+    if (!svg || !grid) return;
+
+    function renderConnections() {
+        // Clear existing paths
+        while (svg.firstChild) {
+            svg.removeChild(svg.firstChild);
+        }
+
+        const canvasRect = canvas.getBoundingClientRect();
+        const outHandles = canvas.querySelectorAll('.s-handle-out[data-handle]');
+
+        outHandles.forEach(outDot => {
+            const handleId = outDot.getAttribute('data-handle');
+            const inDot = canvas.querySelector(`.s-handle-in[data-handle-target="${handleId}"]`);
+            if (!inDot) return;
+
+            const r1 = outDot.getBoundingClientRect();
+            const r2 = inDot.getBoundingClientRect();
+
+            // Calculate relative coordinates inside SVG canvas
+            const x1 = r1.left + r1.width / 2 - canvasRect.left;
+            const y1 = r1.top + r1.height / 2 - canvasRect.top;
+            const x2 = r2.left + r2.width / 2 - canvasRect.left;
+            const y2 = r2.top + r2.height / 2 - canvasRect.top;
+
+            // Bezier curve control points
+            const dx = Math.abs(x2 - x1) * 0.5;
+            const cx1 = x1 + Math.max(dx, 40);
+            const cy1 = y1;
+            const cx2 = x2 - Math.max(dx, 40);
+            const cy2 = y2;
+
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', `M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}`);
+            path.setAttribute('class', 's-svg-path');
+            path.setAttribute('data-relation', handleId);
+
+            svg.appendChild(path);
+
+            // Hover interactions
+            const sourceRow = outDot.closest('.s-node-row');
+            const targetRow = inDot.closest('.s-node-row');
+
+            [sourceRow, targetRow].forEach(row => {
+                if (!row) return;
+                row.addEventListener('mouseenter', () => {
+                    path.classList.add('active');
+                });
+                row.addEventListener('mouseleave', () => {
+                    path.classList.remove('active');
+                });
+            });
+        });
+    }
+
+    // Initial render & resize handler
+    setTimeout(renderConnections, 200);
+    window.addEventListener('resize', renderConnections);
+}
+
 // --- Init ---
 document.addEventListener('DOMContentLoaded', () => {
     setTheme(getTheme());
@@ -159,4 +226,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initSidebar();
     initMobileSidebar();
+    initSupabaseERDCanvas();
 });
+

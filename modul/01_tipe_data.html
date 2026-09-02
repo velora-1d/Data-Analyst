@@ -252,134 +252,173 @@
                 </tbody>
             </table>
 
-            <h3>Visualisasi Diagram ERD (Entity Relationship Diagram) E-Commerce</h3>
+            <h3>Visualisasi Diagram ERD (Supabase &amp; Neon DB Visualizer Canvas)</h3>
             <p>
-                Berikut adalah diagram vektor SVG interaktif relasi 20 tabel di <code>database/schema.sql</code> (menggunakan standar notasi <em>Crow's Foot</em> <code>1:N</code>):
+                Visualisasi skema relasi interaktif ala <strong>Supabase Studio</strong> &amp; <strong>Neon DB Canvas</strong> dengan jalur konektor SVG berpendar dan dot-grid dark theme:
             </p>
 
-            <div class="mermaid-box">
-                <pre class="mermaid">
-erDiagram
-    pelanggan ||--o{ pesanan : "pelanggan_id (1:N)"
-    pelanggan ||--o{ alamat_pelanggan : "pelanggan_id (1:N)"
-    pelanggan ||--o{ ulasan_produk : "pelanggan_id (1:N)"
-    pelanggan ||--o{ keranjang_belanja : "pelanggan_id (1:N)"
-    pelanggan ||--o{ wishlist_produk : "pelanggan_id (1:N)"
-    
-    pesanan ||--o{ rincian_pesanan : "pesanan_id (1:N)"
-    pesanan ||--o{ riwayat_pembayaran : "pesanan_id (1:N)"
-    pesanan ||--o{ status_pengiriman : "pesanan_id (1:N)"
-    pesanan ||--o{ ulasan_produk : "pesanan_id (1:N)"
-
-    kategori ||--o{ subkategori : "kategori_id (1:N)"
-    subkategori ||--o{ produk : "subkategori_id (1:N)"
-    merek ||--o{ produk : "merek_id (1:N)"
-    supplier ||--o{ produk : "supplier_id (1:N)"
-    produk ||--o{ variasi_produk : "produk_id (1:N)"
-
-    variasi_produk ||--o{ rincian_pesanan : "variasi_id (1:N)"
-    variasi_produk ||--o{ stok_gudang : "variasi_id (1:N)"
-    gudang ||--o{ stok_gudang : "gudang_id (1:N)"
-
-    kurir_ekspedisi ||--o{ pesanan : "kurir_id (1:N)"
-    metode_pembayaran ||--o{ pesanan : "metode_id (1:N)"
-    voucher_promo ||--o{ pesanan : "voucher_id (1:N)"
-                </pre>
-            </div>
-
-            <div class="erd-box">
-                <div class="erd-grid">
-                    <!-- Tabel Pelanggan -->
-                    <div class="erd-card master">
-                        <div class="erd-card-header">
-                            <span><i class="fa-solid fa-user"></i> pelanggan</span>
-                            <span style="font-size:0.7rem;color:var(--brand-light)">Tabel Induk</span>
+            <div class="supabase-erd-wrapper">
+                <div class="supabase-canvas">
+                    <svg class="s-svg-overlay"></svg>
+                    
+                    <div class="supabase-canvas-bar">
+                        <div class="supabase-brand">
+                            <i class="fa-solid fa-database"></i>
+                            Supabase Schema Visualizer
+                            <span>E-Commerce 20 Tables</span>
                         </div>
-                        <div class="erd-card-body">
-                            <div class="erd-row"><span><span class="pk-badge">PK</span>pelanggan_id</span><span>INTEGER</span></div>
-                            <div class="erd-row"><span>nama_lengkap</span><span>VARCHAR</span></div>
-                            <div class="erd-row"><span>email</span><span>VARCHAR</span></div>
-                            <div class="erd-row"><span>no_hp</span><span>VARCHAR</span></div>
+                        <div class="supabase-controls">
+                            <button class="s-btn" onclick="initSupabaseERDCanvas()"><i class="fa-solid fa-arrows-rotate"></i> Redraw Cables</button>
+                            <button class="s-btn"><i class="fa-solid fa-expand"></i> Interactive Canvas</button>
                         </div>
                     </div>
 
-                    <!-- Tabel Pesanan -->
-                    <div class="erd-card header-txn">
-                        <div class="erd-card-header">
-                            <span><i class="fa-solid fa-cart-shopping"></i> pesanan</span>
-                            <span style="font-size:0.7rem;color:var(--warning)">Header Transaksi</span>
+                    <div class="supabase-nodes-grid">
+                        <!-- Node 1: Pelanggan (Master) -->
+                        <div class="s-node master">
+                            <div class="s-node-header">
+                                <span><i class="fa-solid fa-user" style="color:#38BDF8"></i> pelanggan</span>
+                                <span class="s-type-pill">Master</span>
+                            </div>
+                            <div class="s-node-body">
+                                <div class="s-node-row">
+                                    <div class="s-col-info"><span class="s-pk-tag">PK</span> pelanggan_id</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                    <div class="s-handle-out" data-handle="pelanggan.pelanggan_id"></div>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info">nama_lengkap</div>
+                                    <span class="s-type-pill">VARCHAR</span>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info">email</div>
+                                    <span class="s-type-pill">VARCHAR</span>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info">no_hp</div>
+                                    <span class="s-type-pill">VARCHAR</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="erd-card-body">
-                            <div class="erd-row"><span><span class="pk-badge">PK</span>pesanan_id</span><span>INTEGER</span></div>
-                            <div class="erd-row"><span><span class="fk-badge">FK</span>pelanggan_id</span><span>INTEGER</span></div>
-                            <div class="erd-row"><span><span class="fk-badge">FK</span>kurir_id</span><span>INTEGER</span></div>
-                            <div class="erd-row"><span><span class="fk-badge">FK</span>metode_id</span><span>INTEGER</span></div>
-                            <div class="erd-row"><span>nomor_invoice</span><span>VARCHAR</span></div>
-                            <div class="erd-row"><span>total_bayar</span><span>INTEGER</span></div>
-                        </div>
-                    </div>
 
-                    <!-- Tabel Rincian Pesanan -->
-                    <div class="erd-card child-txn">
-                        <div class="erd-card-header">
-                            <span><i class="fa-solid fa-list-check"></i> rincian_pesanan</span>
-                            <span style="font-size:0.7rem;color:var(--success)">Detail Item</span>
+                        <!-- Node 2: Pesanan (Header Transaksi) -->
+                        <div class="s-node txn-header">
+                            <div class="s-node-header">
+                                <span><i class="fa-solid fa-cart-shopping" style="color:#F59E0B"></i> pesanan</span>
+                                <span class="s-type-pill">Header Txn</span>
+                            </div>
+                            <div class="s-node-body">
+                                <div class="s-node-row">
+                                    <div class="s-col-info"><span class="s-pk-tag">PK</span> pesanan_id</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                    <div class="s-handle-out" data-handle="pesanan.pesanan_id"></div>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info"><span class="s-fk-tag">FK</span> pelanggan_id</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                    <div class="s-handle-in" data-handle-target="pelanggan.pelanggan_id"></div>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info"><span class="s-fk-tag">FK</span> kurir_id</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                    <div class="s-handle-in" data-handle-target="kurir_ekspedisi.kurir_id"></div>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info">nomor_invoice</div>
+                                    <span class="s-type-pill">VARCHAR</span>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info">total_bayar</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="erd-card-body">
-                            <div class="erd-row"><span><span class="pk-badge">PK</span>rincian_id</span><span>INTEGER</span></div>
-                            <div class="erd-row"><span><span class="fk-badge">FK</span>pesanan_id</span><span>INTEGER</span></div>
-                            <div class="erd-row"><span><span class="fk-badge">FK</span>variasi_id</span><span>INTEGER</span></div>
-                            <div class="erd-row"><span>jumlah</span><span>INTEGER</span></div>
-                            <div class="erd-row"><span>harga_satuan</span><span>INTEGER</span></div>
-                        </div>
-                    </div>
 
-                    <!-- Tabel Variasi Produk -->
-                    <div class="erd-card master">
-                        <div class="erd-card-header">
-                            <span><i class="fa-solid fa-box"></i> variasi_produk</span>
-                            <span style="font-size:0.7rem;color:var(--brand-light)">Katalog SKU</span>
+                        <!-- Node 3: Rincian Pesanan (Child Detail) -->
+                        <div class="s-node txn-child">
+                            <div class="s-node-header">
+                                <span><i class="fa-solid fa-list-check" style="color:#3ECF8E"></i> rincian_pesanan</span>
+                                <span class="s-type-pill">Detail Item</span>
+                            </div>
+                            <div class="s-node-body">
+                                <div class="s-node-row">
+                                    <div class="s-col-info"><span class="s-pk-tag">PK</span> rincian_id</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info"><span class="s-fk-tag">FK</span> pesanan_id</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                    <div class="s-handle-in" data-handle-target="pesanan.pesanan_id"></div>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info"><span class="s-fk-tag">FK</span> variasi_id</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                    <div class="s-handle-in" data-handle-target="variasi_produk.variasi_id"></div>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info">jumlah</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info">harga_satuan</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="erd-card-body">
-                            <div class="erd-row"><span><span class="pk-badge">PK</span>variasi_id</span><span>INTEGER</span></div>
-                            <div class="erd-row"><span><span class="fk-badge">FK</span>produk_id</span><span>INTEGER</span></div>
-                            <div class="erd-row"><span>sku</span><span>VARCHAR</span></div>
-                            <div class="erd-row"><span>harga_jual</span><span>INTEGER</span></div>
+
+                        <!-- Node 4: Variasi Produk (Master SKU) -->
+                        <div class="s-node master">
+                            <div class="s-node-header">
+                                <span><i class="fa-solid fa-box" style="color:#38BDF8"></i> variasi_produk</span>
+                                <span class="s-type-pill">Katalog SKU</span>
+                            </div>
+                            <div class="s-node-body">
+                                <div class="s-node-row">
+                                    <div class="s-col-info"><span class="s-pk-tag">PK</span> variasi_id</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                    <div class="s-handle-out" data-handle="variasi_produk.variasi_id"></div>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info">sku</div>
+                                    <span class="s-type-pill">VARCHAR</span>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info">warna</div>
+                                    <span class="s-type-pill">VARCHAR</span>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info">harga_jual</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Jalur Garis Penghubung Relasi PK & FK -->
-                <div class="erd-connections">
-                    <h4><i class="fa-solid fa-link" style="color:var(--brand-light)"></i> Garis Penghubung &amp; Alur Relasi Kunci (PK ➔ FK)</h4>
-                    
-                    <div class="erd-conn-item">
-                        <div class="conn-source"><span class="pk-badge">PK</span> pelanggan.pelanggan_id</div>
-                        <div class="conn-arrow">─── 1 : N ───►</div>
-                        <div class="conn-target"><span class="fk-badge">FK</span> pesanan.pelanggan_id</div>
-                        <div class="conn-desc">(1 Pelanggan dapat membuat N transaksi Pesanan)</div>
-                    </div>
+            <!-- Jalur Garis Penghubung Relasi PK & FK -->
+            <div class="erd-connections">
+                <h4><i class="fa-solid fa-link" style="color:var(--brand-light)"></i> Garis Penghubung &amp; Alur Relasi Kunci (PK ➔ FK)</h4>
+                
+                <div class="erd-conn-item">
+                    <div class="conn-source"><span class="pk-badge">PK</span> pelanggan.pelanggan_id</div>
+                    <div class="conn-arrow">─── 1 : N ───►</div>
+                    <div class="conn-target"><span class="fk-badge">FK</span> pesanan.pelanggan_id</div>
+                    <div class="conn-desc">(1 Pelanggan dapat membuat N transaksi Pesanan)</div>
+                </div>
 
-                    <div class="erd-conn-item">
-                        <div class="conn-source"><span class="pk-badge">PK</span> pesanan.pesanan_id</div>
-                        <div class="conn-arrow">─── 1 : N ───►</div>
-                        <div class="conn-target"><span class="fk-badge">FK</span> rincian_pesanan.pesanan_id</div>
-                        <div class="conn-desc">(1 Pesanan memiliki N item barang di Rincian Pesanan)</div>
-                    </div>
+                <div class="erd-conn-item">
+                    <div class="conn-source"><span class="pk-badge">PK</span> pesanan.pesanan_id</div>
+                    <div class="conn-arrow">─── 1 : N ───►</div>
+                    <div class="conn-target"><span class="fk-badge">FK</span> rincian_pesanan.pesanan_id</div>
+                    <div class="conn-desc">(1 Pesanan memiliki N item barang di Rincian Pesanan)</div>
+                </div>
 
-                    <div class="erd-conn-item">
-                        <div class="conn-source"><span class="pk-badge">PK</span> variasi_produk.variasi_id</div>
-                        <div class="conn-arrow">─── 1 : N ───►</div>
-                        <div class="conn-target"><span class="fk-badge">FK</span> rincian_pesanan.variasi_id</div>
-                        <div class="conn-desc">(1 SKU Variasi Produk dibeli di N Rincian Pesanan)</div>
-                    </div>
-
-                    <div class="erd-conn-item">
-                        <div class="conn-source"><span class="pk-badge">PK</span> kurir_ekspedisi.kurir_id</div>
-                        <div class="conn-arrow">─── 1 : N ───►</div>
-                        <div class="conn-target"><span class="fk-badge">FK</span> pesanan.kurir_id</div>
-                        <div class="conn-desc">(1 Layanan Kurir dipakai pengiriman di N Pesanan)</div>
-                    </div>
+                <div class="erd-conn-item">
+                    <div class="conn-source"><span class="pk-badge">PK</span> variasi_produk.variasi_id</div>
+                    <div class="conn-arrow">─── 1 : N ───►</div>
+                    <div class="conn-target"><span class="fk-badge">FK</span> rincian_pesanan.variasi_id</div>
+                    <div class="conn-desc">(1 SKU Variasi Produk dibeli di N Rincian Pesanan)</div>
                 </div>
             </div>
 

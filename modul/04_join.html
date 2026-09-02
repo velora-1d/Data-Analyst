@@ -88,24 +88,81 @@
             <p>
                 Dalam database e-commerce, relasi dibentuk melalui <strong>Primary Key (PK)</strong> sebagai ID unik tabel asal dan <strong>Foreign Key (FK)</strong> sebagai kolom penunjuk di tabel tujuan.
             </p>
-            <div class="mermaid-box">
-                <pre class="mermaid">
-erDiagram
-    pelanggan ||--o{ pesanan : "pelanggan_id (1:N)"
-    pelanggan ||--o{ alamat_pelanggan : "pelanggan_id (1:N)"
-    pesanan ||--o{ rincian_pesanan : "pesanan_id (1:N)"
-    pesanan ||--o{ riwayat_pembayaran : "pesanan_id (1:N)"
-    pesanan ||--o{ status_pengiriman : "pesanan_id (1:N)"
-    kategori ||--o{ subkategori : "kategori_id (1:N)"
-    subkategori ||--o{ produk : "subkategori_id (1:N)"
-    merek ||--o{ produk : "merek_id (1:N)"
-    supplier ||--o{ produk : "supplier_id (1:N)"
-    produk ||--o{ variasi_produk : "produk_id (1:N)"
-    variasi_produk ||--o{ rincian_pesanan : "variasi_id (1:N)"
-    kurir_ekspedisi ||--o{ pesanan : "kurir_id (1:N)"
-    metode_pembayaran ||--o{ pesanan : "metode_id (1:N)"
-    voucher_promo ||--o{ pesanan : "voucher_id (1:N)"
-                </pre>
+            <div class="supabase-erd-wrapper">
+                <div class="supabase-canvas">
+                    <svg class="s-svg-overlay"></svg>
+                    
+                    <div class="supabase-canvas-bar">
+                        <div class="supabase-brand">
+                            <i class="fa-solid fa-database"></i>
+                            Supabase Schema Visualizer
+                            <span>E-Commerce 20 Tables</span>
+                        </div>
+                        <div class="supabase-controls">
+                            <button class="s-btn" onclick="initSupabaseERDCanvas()"><i class="fa-solid fa-arrows-rotate"></i> Redraw Cables</button>
+                        </div>
+                    </div>
+
+                    <div class="supabase-nodes-grid">
+                        <!-- Node 1: Pelanggan (Master) -->
+                        <div class="s-node master">
+                            <div class="s-node-header">
+                                <span><i class="fa-solid fa-user" style="color:#38BDF8"></i> pelanggan</span>
+                                <span class="s-type-pill">Master</span>
+                            </div>
+                            <div class="s-node-body">
+                                <div class="s-node-row">
+                                    <div class="s-col-info"><span class="s-pk-tag">PK</span> pelanggan_id</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                    <div class="s-handle-out" data-handle="pelanggan.pelanggan_id"></div>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info">nama_lengkap</div>
+                                    <span class="s-type-pill">VARCHAR</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Node 2: Pesanan (Header Transaksi) -->
+                        <div class="s-node txn-header">
+                            <div class="s-node-header">
+                                <span><i class="fa-solid fa-cart-shopping" style="color:#F59E0B"></i> pesanan</span>
+                                <span class="s-type-pill">Header Txn</span>
+                            </div>
+                            <div class="s-node-body">
+                                <div class="s-node-row">
+                                    <div class="s-col-info"><span class="s-pk-tag">PK</span> pesanan_id</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                    <div class="s-handle-out" data-handle="pesanan.pesanan_id"></div>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info"><span class="s-fk-tag">FK</span> pelanggan_id</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                    <div class="s-handle-in" data-handle-target="pelanggan.pelanggan_id"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Node 3: Rincian Pesanan (Child Detail) -->
+                        <div class="s-node txn-child">
+                            <div class="s-node-header">
+                                <span><i class="fa-solid fa-list-check" style="color:#3ECF8E"></i> rincian_pesanan</span>
+                                <span class="s-type-pill">Detail Item</span>
+                            </div>
+                            <div class="s-node-body">
+                                <div class="s-node-row">
+                                    <div class="s-col-info"><span class="s-pk-tag">PK</span> rincian_id</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                </div>
+                                <div class="s-node-row">
+                                    <div class="s-col-info"><span class="s-fk-tag">FK</span> pesanan_id</div>
+                                    <span class="s-type-pill">INTEGER</span>
+                                    <div class="s-handle-in" data-handle-target="pesanan.pesanan_id"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="schema-box">
