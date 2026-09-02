@@ -43,15 +43,16 @@
             <a href="#intro"       class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Pengantar Tipe Data</a>
             <a href="#affinity"    class="nav-link"><i class="fa-solid fa-microchip"></i> 2. SQLite Type Affinity</a>
             <a href="#pragma"      class="nav-link"><i class="fa-solid fa-table-list"></i> 3. Inspeksi Skema PRAGMA</a>
-            <a href="#text"        class="nav-link"><i class="fa-solid fa-font"></i> 4. Tipe TEXT & String</a>
-            <a href="#integer"     class="nav-link"><i class="fa-solid fa-hashtag"></i> 5. Tipe INTEGER & Rupiah</a>
-            <a href="#real"        class="nav-link"><i class="fa-solid fa-percent"></i> 6. Tipe REAL & Presisi</a>
-            <a href="#datetime"    class="nav-link"><i class="fa-regular fa-calendar"></i> 7. Tipe DATETIME</a>
-            <a href="#null"        class="nav-link"><i class="fa-solid fa-ban"></i> 8. Penanganan Nilai NULL</a>
-            <a href="#cast"        class="nav-link"><i class="fa-solid fa-arrow-right-arrow-left"></i> 9. Type Casting (CAST)</a>
-            <a href="#ddl-dml"     class="nav-link"><i class="fa-solid fa-database"></i> 10. Desain Tabel DDL & DML</a>
-            <a href="#rangkuman"   class="nav-link"><i class="fa-solid fa-layer-group"></i> 11. Rangkuman & Best Practice</a>
-            <a href="#quiz"        class="nav-link"><i class="fa-solid fa-circle-question"></i> 12. Kuis Interaktif</a>
+            <a href="#erd-relasi"  class="nav-link"><i class="fa-solid fa-diagram-project"></i> 4. Relasi PK, FK & Diagram ERD</a>
+            <a href="#text"        class="nav-link"><i class="fa-solid fa-font"></i> 5. Tipe TEXT & String</a>
+            <a href="#integer"     class="nav-link"><i class="fa-solid fa-hashtag"></i> 6. Tipe INTEGER & Rupiah</a>
+            <a href="#real"        class="nav-link"><i class="fa-solid fa-percent"></i> 7. Tipe REAL & Presisi</a>
+            <a href="#datetime"    class="nav-link"><i class="fa-regular fa-calendar"></i> 8. Tipe DATETIME</a>
+            <a href="#null"        class="nav-link"><i class="fa-solid fa-ban"></i> 9. Penanganan Nilai NULL</a>
+            <a href="#cast"        class="nav-link"><i class="fa-solid fa-arrow-right-arrow-left"></i> 10. Type Casting (CAST)</a>
+            <a href="#ddl-dml"     class="nav-link"><i class="fa-solid fa-database"></i> 11. Desain Tabel DDL & DML</a>
+            <a href="#rangkuman"   class="nav-link"><i class="fa-solid fa-layer-group"></i> 12. Rangkuman Best Practice</a>
+            <a href="#quiz"        class="nav-link"><i class="fa-solid fa-circle-question"></i> 13. Kuis Interaktif</a>
         </nav>
         <div class="nav-divider"></div>
         <div class="sidebar-header"><i class="fa-solid fa-book-open"></i> Daftar Seluruh Modul</div>
@@ -208,9 +209,132 @@
             </div>
         </section>
 
-        <!-- 4. TEXT -->
+        <!-- 4. RELASI PK, FK & ERD -->
+        <section id="erd-relasi">
+            <h2><i class="fa-solid fa-diagram-project"></i> 4. Relasi Antar Tabel: Primary Key (PK), Foreign Key (FK) & Diagram ERD</h2>
+            <p>
+                Dalam database relasional bisnis e-commerce (20 Tabel), data tidak disimpan dalam 1 lembar spreadsheet raksasa, melainkan dipecah ke dalam tabel-tabel terpisah untuk menghindari duplikasi (<em>normalisasi</em>). 
+                Kunci hubungan antar tabel ditentukan oleh <strong>Primary Key (PK)</strong> dan <strong>Foreign Key (FK)</strong>.
+            </p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Istilah Relasi</th>
+                        <th>Definisi Teknis</th>
+                        <th>Contoh pada Database E-Commerce Ini</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Primary Key (PK)</strong></td>
+                        <td>Kolom unik penanda utama tiap baris data. Tidak boleh bernilai <code>NULL</code> dan tidak boleh ada duplikat.</td>
+                        <td><code>pelanggan_id</code> pada tabel <code>pelanggan</code>, <code>pesanan_id</code> pada tabel <code>pesanan</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Foreign Key (FK)</strong></td>
+                        <td>Kolom pada suatu tabel yang merujuk/menunjuk ke <code>PRIMARY KEY</code> di tabel lain untuk menghubungkan transaksi.</td>
+                        <td><code>pesanan.pelanggan_id</code> (FK) yang merujuk ke <code>pelanggan.pelanggan_id</code> (PK).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kardinalitas (1:N)</strong></td>
+                        <td>Hubungan <em>One-to-Many</em>: Satu baris induk di tabel PK dapat terhubung ke banyak baris anak di tabel FK.</td>
+                        <td>1 <code>pelanggan</code> dapat memiliki N <code>pesanan</code>. 1 <code>pesanan</code> dapat memiliki N <code>rincian_pesanan</code> (item barang).</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Visualisasi Diagram ERD (Entity Relationship Diagram) E-Commerce</h3>
+            <p>
+                Berikut adalah arsitektur relasi tabel transaksi utama yang ada di berkas <code>database/schema.sql</code>:
+            </p>
+
+            <div class="erd-box">
+                <div class="erd-grid">
+                    <!-- Tabel Pelanggan -->
+                    <div class="erd-card">
+                        <div class="erd-card-header">
+                            <span><i class="fa-solid fa-user"></i> pelanggan</span>
+                            <span style="font-size:0.7rem;color:var(--brand-light)">Tabel Induk</span>
+                        </div>
+                        <div class="erd-card-body">
+                            <div class="erd-row"><span><span class="pk-badge">PK</span>pelanggan_id</span><span>INTEGER</span></div>
+                            <div class="erd-row"><span>nama_lengkap</span><span>VARCHAR</span></div>
+                            <div class="erd-row"><span>email</span><span>VARCHAR</span></div>
+                            <div class="erd-row"><span>no_hp</span><span>VARCHAR</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Tabel Pesanan -->
+                    <div class="erd-card">
+                        <div class="erd-card-header">
+                            <span><i class="fa-solid fa-cart-shopping"></i> pesanan</span>
+                            <span style="font-size:0.7rem;color:var(--warning)">Header Transaksi</span>
+                        </div>
+                        <div class="erd-card-body">
+                            <div class="erd-row"><span><span class="pk-badge">PK</span>pesanan_id</span><span>INTEGER</span></div>
+                            <div class="erd-row"><span><span class="fk-badge">FK</span>pelanggan_id</span><span>INTEGER</span></div>
+                            <div class="erd-row"><span><span class="fk-badge">FK</span>kurir_id</span><span>INTEGER</span></div>
+                            <div class="erd-row"><span><span class="fk-badge">FK</span>metode_id</span><span>INTEGER</span></div>
+                            <div class="erd-row"><span>nomor_invoice</span><span>VARCHAR</span></div>
+                            <div class="erd-row"><span>total_bayar</span><span>INTEGER</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Tabel Rincian Pesanan -->
+                    <div class="erd-card">
+                        <div class="erd-card-header">
+                            <span><i class="fa-solid fa-list-check"></i> rincian_pesanan</span>
+                            <span style="font-size:0.7rem;color:var(--success)">Detail Item</span>
+                        </div>
+                        <div class="erd-card-body">
+                            <div class="erd-row"><span><span class="pk-badge">PK</span>rincian_id</span><span>INTEGER</span></div>
+                            <div class="erd-row"><span><span class="fk-badge">FK</span>pesanan_id</span><span>INTEGER</span></div>
+                            <div class="erd-row"><span><span class="fk-badge">FK</span>variasi_id</span><span>INTEGER</span></div>
+                            <div class="erd-row"><span>jumlah</span><span>INTEGER</span></div>
+                            <div class="erd-row"><span>harga_satuan</span><span>INTEGER</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Tabel Variasi Produk -->
+                    <div class="erd-card">
+                        <div class="erd-card-header">
+                            <span><i class="fa-solid fa-box"></i> variasi_produk</span>
+                            <span style="font-size:0.7rem;color:var(--brand-light)">Katalog SKU</span>
+                        </div>
+                        <div class="erd-card-body">
+                            <div class="erd-row"><span><span class="pk-badge">PK</span>variasi_id</span><span>INTEGER</span></div>
+                            <div class="erd-row"><span><span class="fk-badge">FK</span>produk_id</span><span>INTEGER</span></div>
+                            <div class="erd-row"><span>sku</span><span>VARCHAR</span></div>
+                            <div class="erd-row"><span>harga_jual</span><span>INTEGER</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label"><i class="fa-solid fa-code"></i> DDL Skema Relasi FK (foreign_keys)</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
+                </div>
+                <pre><code><span class="sql-cmt">-- Contoh DDL Pembuatan Tabel Pesanan dengan Foreign Keys dari schema.sql</span>
+<span class="sql-kw">CREATE TABLE</span> pesanan (
+    pesanan_id      <span class="sql-type">INTEGER</span> <span class="sql-kw">PRIMARY KEY AUTOINCREMENT</span>,
+    nomor_invoice   <span class="sql-type">VARCHAR</span>(<span class="sql-num">50</span>) <span class="sql-kw">UNIQUE NOT NULL</span>,
+    pelanggan_id    <span class="sql-type">INTEGER</span> <span class="sql-kw">NOT NULL</span>,
+    kurir_id        <span class="sql-type">INTEGER</span> <span class="sql-kw">NOT NULL</span>,
+    total_bayar     <span class="sql-type">INTEGER</span> <span class="sql-kw">NOT NULL</span>,
+    
+    <span class="sql-cmt">-- Deklarasi Relasi Foreign Key</span>
+    <span class="sql-kw">FOREIGN KEY</span> (pelanggan_id) <span class="sql-kw">REFERENCES</span> pelanggan(pelanggan_id),
+    <span class="sql-kw">FOREIGN KEY</span> (kurir_id)     <span class="sql-kw">REFERENCES</span> kurir_ekspedisi(kurir_id)
+);</code></pre>
+            </div>
+        </section>
+
+        <!-- 5. TEXT -->
         <section id="text">
-            <h2><i class="fa-solid fa-font"></i> 4. Tipe TEXT & Manipulasi Karakter</h2>
+            <h2><i class="fa-solid fa-font"></i> 5. Tipe TEXT & Manipulasi Karakter</h2>
             <p>
                 Tipe TEXT menyimpan data alfabet, simbol, dan alfanumerik. Manipulasi teks sangat krusial untuk data cleaning, seperti menstandarkan huruf besar/kecil, menggabungkan alamat, atau menyamarkan nomor HP pribadi (data privacy).
             </p>
@@ -263,9 +387,9 @@
             </div>
         </section>
 
-        <!-- 5. INTEGER -->
+        <!-- 6. INTEGER -->
         <section id="integer">
-            <h2><i class="fa-solid fa-hashtag"></i> 5. Tipe INTEGER & Operasi Finansial Rupiah</h2>
+            <h2><i class="fa-solid fa-hashtag"></i> 6. Tipe INTEGER & Operasi Finansial Rupiah</h2>
             <p>
                 Dalam sistem transaksi di Indonesia, mata uang Rupiah biasanya disimpan sebagai <code>INTEGER</code> bulat tanpa pecahan sen. Hal ini menghindari bug floating-point rounding yang sering terjadi pada tipe float.
             </p>
@@ -312,9 +436,9 @@
             </div>
         </section>
 
-        <!-- 6. REAL -->
+        <!-- 7. REAL -->
         <section id="real">
-            <h2><i class="fa-solid fa-percent"></i> 6. Tipe REAL & Fungsi Pembulatan ROUND()</h2>
+            <h2><i class="fa-solid fa-percent"></i> 7. Tipe REAL & Fungsi Pembulatan ROUND()</h2>
             <p>
                 Tipe REAL digunakan untuk nilai metrik yang memiliki desimal seperti rating ulasan pelanggan (contoh: 4.8 bintang), rasio diskon persentase, atau berat barang dalam kilogram.
             </p>
@@ -335,9 +459,9 @@
             </div>
         </section>
 
-        <!-- 7. DATETIME -->
+        <!-- 8. DATETIME -->
         <section id="datetime">
-            <h2><i class="fa-regular fa-calendar"></i> 7. Tipe DATETIME (Analisis Waktu Transaksi)</h2>
+            <h2><i class="fa-regular fa-calendar"></i> 8. Tipe DATETIME (Analisis Waktu Transaksi)</h2>
             <p>
                 Di SQLite, tanggal dan waktu disimpan dalam format teks standar <strong>ISO-8601</strong> yaitu <code>YYYY-MM-DD HH:MM:SS</code>. Kita menggunakan fungsi <code>STRFTIME()</code> dan <code>DATE()</code> untuk membedah pola waktu belanja pelanggan.
             </p>
@@ -375,9 +499,9 @@
             </div>
         </section>
 
-        <!-- 8. NULL -->
+        <!-- 9. NULL -->
         <section id="null">
-            <h2><i class="fa-solid fa-ban"></i> 8. Menangani Nilai NULL (Missing Values)</h2>
+            <h2><i class="fa-solid fa-ban"></i> 9. Menangani Nilai NULL (Missing Values)</h2>
             <p>
                 Di database e-commerce, <code>NULL</code> berarti informasi tersebut <strong>tidak ada / tidak berlaku</strong>. Contohnya adalah transaksi pesanan yang tidak menggunakan kupon promo, di mana nilai <code>voucher_id</code> adalah <code>NULL</code>.
             </p>
@@ -410,9 +534,9 @@
             </div>
         </section>
 
-        <!-- 9. CAST -->
+        <!-- 10. CAST -->
         <section id="cast">
-            <h2><i class="fa-solid fa-arrow-right-arrow-left"></i> 9. Type Casting dengan CAST()</h2>
+            <h2><i class="fa-solid fa-arrow-right-arrow-left"></i> 10. Type Casting dengan CAST()</h2>
             <p>
                 Fungsi <code>CAST(ekspresi AS tipe_tujuan)</code> digunakan untuk mengonversi tipe data secara eksplisit pada saat query berjalan. Sangat dibutuhkan saat menghitung margin laba persentase.
             </p>
@@ -450,9 +574,9 @@
             </div>
         </section>
 
-        <!-- 10. DDL & DML -->
+        <!-- 11. DDL & DML -->
         <section id="ddl-dml">
-            <h2><i class="fa-solid fa-database"></i> 10. DDL & DML: Desain Tabel & Manipulasi Data</h2>
+            <h2><i class="fa-solid fa-database"></i> 11. DDL & DML: Desain Tabel & Manipulasi Data</h2>
             <p>
                 Selain membaca data (query <code>SELECT</code>), pengolahan data SQL melibatkan 2 kelompok perintah utama:
                 <strong>DDL (Data Definition Language)</strong> untuk mendefinisikan struktur skema tabel, dan 

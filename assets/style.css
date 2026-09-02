@@ -1343,6 +1343,82 @@ code:not([class*="language"]):not(.code-block code) {
     gap: 0.5rem;
 }
 
+/* --- ERD Diagram Styles --- */
+.erd-box {
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    padding: 1.5rem;
+    margin: 1.75rem 0;
+    box-shadow: var(--shadow-sm);
+    overflow-x: auto;
+}
+
+.erd-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+}
+
+.erd-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.erd-card-header {
+    background: var(--bg-surface-3);
+    padding: 0.625rem 1rem;
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+}
+
+.erd-card-body {
+    padding: 0.75rem 1rem;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+}
+
+.erd-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+    border-bottom: 1px dashed rgba(255,255,255,0.05);
+}
+.erd-row:last-child {
+    border-bottom: none;
+}
+
+.pk-badge {
+    background: rgba(245, 158, 11, 0.2);
+    color: #FBBF24;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    margin-right: 0.35rem;
+}
+
+.fk-badge {
+    background: rgba(37, 99, 235, 0.2);
+    color: #60A5FA;
+    border: 1px solid rgba(37, 99, 235, 0.4);
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    margin-right: 0.35rem;
+}
+
 /* --- 20. Responsive Media Queries --- */
 @media (max-width: 1024px) {
     .main {
