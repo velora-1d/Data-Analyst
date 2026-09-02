@@ -104,75 +104,204 @@
                     </div>
 
                     <div class="supabase-domains-container">
-                        <!-- Domain 1: Master Data -->
+                        <!-- Domain 1: Master Data (Left Column) -->
                         <div class="s-domain-col">
-                            <div class="s-domain-header master"><i class="fa-solid fa-database"></i> Domain 1: Master Data</div>
-                            
-                            <!-- Node 1: Pelanggan (Master) -->
+                            <div class="s-domain-header master"><i class="fa-solid fa-database"></i> Domain 1: Master Data (7 Tabel)</div>
+
+                            <!-- 1. pelanggan -->
                             <div class="s-node master">
-                                <div class="s-node-header">
-                                    <span><i class="fa-solid fa-user" style="color:#38BDF8"></i> pelanggan</span>
-                                    <span class="s-type-pill">Master PK</span>
-                                </div>
+                                <div class="s-node-header"><span><i class="fa-solid fa-user" style="color:#38BDF8"></i> pelanggan</span><span class="s-type-pill">Master</span></div>
                                 <div class="s-node-body">
-                                    <div class="s-node-row">
-                                        <div class="s-col-info"><span class="s-pk-tag">PK</span> pelanggan_id</div>
-                                        <span class="s-type-pill">INTEGER</span>
-                                        <div class="s-handle-out" data-handle="pelanggan.pelanggan_id"></div>
-                                    </div>
-                                    <div class="s-node-row">
-                                        <div class="s-col-info">nama_lengkap</div>
-                                        <span class="s-type-pill">VARCHAR</span>
-                                    </div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> pelanggan_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-out" data-handle="pelanggan.pelanggan_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info">nama_lengkap</div><span class="s-type-pill">VARCHAR</span></div>
+                                    <div class="s-node-row"><div class="s-col-info">email</div><span class="s-type-pill">VARCHAR</span></div>
+                                </div>
+                            </div>
+
+                            <!-- 2. kategori -->
+                            <div class="s-node master">
+                                <div class="s-node-header"><span><i class="fa-solid fa-layer-group" style="color:#38BDF8"></i> kategori</span><span class="s-type-pill">Master</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> kategori_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-out" data-handle="kategori.kategori_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info">nama_kategori</div><span class="s-type-pill">VARCHAR</span></div>
+                                </div>
+                            </div>
+
+                            <!-- 3. subkategori -->
+                            <div class="s-node master">
+                                <div class="s-node-header"><span><i class="fa-solid fa-sitemap" style="color:#38BDF8"></i> subkategori</span><span class="s-type-pill">Master</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> subkategori_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-out" data-handle="subkategori.subkategori_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> kategori_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="kategori.kategori_id"></div></div>
+                                </div>
+                            </div>
+
+                            <!-- 4. merek -->
+                            <div class="s-node master">
+                                <div class="s-node-header"><span><i class="fa-solid fa-copyright" style="color:#38BDF8"></i> merek</span><span class="s-type-pill">Master</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> merek_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-out" data-handle="merek.merek_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info">nama_merek</div><span class="s-type-pill">VARCHAR</span></div>
+                                </div>
+                            </div>
+
+                            <!-- 5. supplier -->
+                            <div class="s-node master">
+                                <div class="s-node-header"><span><i class="fa-solid fa-truck-field" style="color:#38BDF8"></i> supplier</span><span class="s-type-pill">Master</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> supplier_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-out" data-handle="supplier.supplier_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info">nama_supplier</div><span class="s-type-pill">VARCHAR</span></div>
+                                </div>
+                            </div>
+
+                            <!-- 6. produk -->
+                            <div class="s-node master">
+                                <div class="s-node-header"><span><i class="fa-solid fa-cubes" style="color:#38BDF8"></i> produk</span><span class="s-type-pill">Master</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> produk_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-out" data-handle="produk.produk_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> subkategori_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="subkategori.subkategori_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> merek_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="merek.merek_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> supplier_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="supplier.supplier_id"></div></div>
+                                </div>
+                            </div>
+
+                            <!-- 7. variasi_produk -->
+                            <div class="s-node master">
+                                <div class="s-node-header"><span><i class="fa-solid fa-box" style="color:#38BDF8"></i> variasi_produk</span><span class="s-type-pill">Master SKU</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> variasi_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-out" data-handle="variasi_produk.variasi_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> produk_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="produk.produk_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info">sku</div><span class="s-type-pill">VARCHAR</span></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Domain 2: Header Transaksi -->
+                        <!-- Domain 2: Header Transaksi & Logistik (Center Column) -->
                         <div class="s-domain-col">
-                            <div class="s-domain-header txn"><i class="fa-solid fa-receipt"></i> Domain 2: Header Transaksi</div>
+                            <div class="s-domain-header txn"><i class="fa-solid fa-receipt"></i> Domain 2: Transaksi &amp; Referensi (6 Tabel)</div>
 
-                            <!-- Node 2: Pesanan (Header Transaksi) -->
+                            <!-- 8. pesanan -->
                             <div class="s-node txn-header">
-                                <div class="s-node-header">
-                                    <span><i class="fa-solid fa-cart-shopping" style="color:#F59E0B"></i> pesanan</span>
-                                    <span class="s-type-pill">Header Txn</span>
-                                </div>
+                                <div class="s-node-header"><span><i class="fa-solid fa-cart-shopping" style="color:#F59E0B"></i> pesanan</span><span class="s-type-pill">Header Txn</span></div>
                                 <div class="s-node-body">
-                                    <div class="s-node-row">
-                                        <div class="s-col-info"><span class="s-pk-tag">PK</span> pesanan_id</div>
-                                        <span class="s-type-pill">INTEGER</span>
-                                        <div class="s-handle-out" data-handle="pesanan.pesanan_id"></div>
-                                    </div>
-                                    <div class="s-node-row">
-                                        <div class="s-col-info"><span class="s-fk-tag">FK</span> pelanggan_id</div>
-                                        <span class="s-type-pill">INTEGER</span>
-                                        <div class="s-handle-in" data-handle-target="pelanggan.pelanggan_id"></div>
-                                    </div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> pesanan_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-out" data-handle="pesanan.pesanan_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> pelanggan_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="pelanggan.pelanggan_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> kurir_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="kurir_ekspedisi.kurir_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> metode_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="metode_pembayaran.metode_id"></div></div>
+                                </div>
+                            </div>
+
+                            <!-- 9. alamat_pelanggan -->
+                            <div class="s-node lookup">
+                                <div class="s-node-header"><span><i class="fa-solid fa-location-dot" style="color:#A855F7"></i> alamat_pelanggan</span><span class="s-type-pill">Lokasi</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> alamat_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-out" data-handle="alamat_pelanggan.alamat_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> pelanggan_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="pelanggan.pelanggan_id"></div></div>
+                                </div>
+                            </div>
+
+                            <!-- 10. kurir_ekspedisi -->
+                            <div class="s-node lookup">
+                                <div class="s-node-header"><span><i class="fa-solid fa-truck-fast" style="color:#A855F7"></i> kurir_ekspedisi</span><span class="s-type-pill">Lookup</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> kurir_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-out" data-handle="kurir_ekspedisi.kurir_id"></div></div>
+                                </div>
+                            </div>
+
+                            <!-- 11. metode_pembayaran -->
+                            <div class="s-node lookup">
+                                <div class="s-node-header"><span><i class="fa-solid fa-wallet" style="color:#A855F7"></i> metode_pembayaran</span><span class="s-type-pill">Lookup</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> metode_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-out" data-handle="metode_pembayaran.metode_id"></div></div>
+                                </div>
+                            </div>
+
+                            <!-- 12. voucher_promo -->
+                            <div class="s-node lookup">
+                                <div class="s-node-header"><span><i class="fa-solid fa-ticket" style="color:#A855F7"></i> voucher_promo</span><span class="s-type-pill">Lookup</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> voucher_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-out" data-handle="voucher_promo.voucher_id"></div></div>
+                                </div>
+                            </div>
+
+                            <!-- 13. gudang -->
+                            <div class="s-node lookup">
+                                <div class="s-node-header"><span><i class="fa-solid fa-warehouse" style="color:#A855F7"></i> gudang</span><span class="s-type-pill">Lookup</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> gudang_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-out" data-handle="gudang.gudang_id"></div></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Domain 3: Detail Item & Log -->
+                        <!-- Domain 3: Detail Item, Tracking & Interaksi (Right Column) -->
                         <div class="s-domain-col">
-                            <div class="s-domain-header detail"><i class="fa-solid fa-layer-group"></i> Domain 3: Detail &amp; Log</div>
+                            <div class="s-domain-header detail"><i class="fa-solid fa-layer-group"></i> Domain 3: Detail &amp; Interaksi (7 Tabel)</div>
 
-                            <!-- Node 3: Rincian Pesanan (Child Detail) -->
+                            <!-- 14. rincian_pesanan -->
                             <div class="s-node txn-child">
-                                <div class="s-node-header">
-                                    <span><i class="fa-solid fa-list-check" style="color:#3ECF8E"></i> rincian_pesanan</span>
-                                    <span class="s-type-pill">Detail Item</span>
-                                </div>
+                                <div class="s-node-header"><span><i class="fa-solid fa-list-check" style="color:#3ECF8E"></i> rincian_pesanan</span><span class="s-type-pill">Detail Item</span></div>
                                 <div class="s-node-body">
-                                    <div class="s-node-row">
-                                        <div class="s-col-info"><span class="s-pk-tag">PK</span> rincian_id</div>
-                                        <span class="s-type-pill">INTEGER</span>
-                                    </div>
-                                    <div class="s-node-row">
-                                        <div class="s-col-info"><span class="s-fk-tag">FK</span> pesanan_id</div>
-                                        <span class="s-type-pill">INTEGER</span>
-                                        <div class="s-handle-in" data-handle-target="pesanan.pesanan_id"></div>
-                                    </div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> rincian_id</div><span class="s-type-pill">INTEGER</span></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> pesanan_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="pesanan.pesanan_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> variasi_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="variasi_produk.variasi_id"></div></div>
+                                </div>
+                            </div>
+
+                            <!-- 15. stok_gudang -->
+                            <div class="s-node txn-child">
+                                <div class="s-node-header"><span><i class="fa-solid fa-boxes-stacked" style="color:#3ECF8E"></i> stok_gudang</span><span class="s-type-pill">Inventaris</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> stok_id</div><span class="s-type-pill">INTEGER</span></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> gudang_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="gudang.gudang_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> variasi_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="variasi_produk.variasi_id"></div></div>
+                                </div>
+                            </div>
+
+                            <!-- 16. riwayat_pembayaran -->
+                            <div class="s-node txn-child">
+                                <div class="s-node-header"><span><i class="fa-solid fa-money-bill-transfer" style="color:#3ECF8E"></i> riwayat_pembayaran</span><span class="s-type-pill">Log Bayar</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> pembayaran_id</div><span class="s-type-pill">INTEGER</span></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> pesanan_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="pesanan.pesanan_id"></div></div>
+                                </div>
+                            </div>
+
+                            <!-- 17. status_pengiriman -->
+                            <div class="s-node txn-child">
+                                <div class="s-node-header"><span><i class="fa-solid fa-route" style="color:#3ECF8E"></i> status_pengiriman</span><span class="s-type-pill">Tracking</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> tracking_id</div><span class="s-type-pill">INTEGER</span></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> pesanan_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="pesanan.pesanan_id"></div></div>
+                                </div>
+                            </div>
+
+                            <!-- 18. ulasan_produk -->
+                            <div class="s-node txn-child">
+                                <div class="s-node-header"><span><i class="fa-solid fa-star" style="color:#3ECF8E"></i> ulasan_produk</span><span class="s-type-pill">Ulasan</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> ulasan_id</div><span class="s-type-pill">INTEGER</span></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> produk_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="produk.produk_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> pelanggan_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="pelanggan.pelanggan_id"></div></div>
+                                </div>
+                            </div>
+
+                            <!-- 19. keranjang_belanja -->
+                            <div class="s-node txn-child">
+                                <div class="s-node-header"><span><i class="fa-solid fa-cart-flatbed" style="color:#3ECF8E"></i> keranjang_belanja</span><span class="s-type-pill">Cart</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> keranjang_id</div><span class="s-type-pill">INTEGER</span></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> pelanggan_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="pelanggan.pelanggan_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> variasi_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="variasi_produk.variasi_id"></div></div>
+                                </div>
+                            </div>
+
+                            <!-- 20. wishlist_produk -->
+                            <div class="s-node txn-child">
+                                <div class="s-node-header"><span><i class="fa-solid fa-heart" style="color:#3ECF8E"></i> wishlist_produk</span><span class="s-type-pill">Favorit</span></div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-pk-tag">PK</span> wishlist_id</div><span class="s-type-pill">INTEGER</span></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> pelanggan_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="pelanggan.pelanggan_id"></div></div>
+                                    <div class="s-node-row"><div class="s-col-info"><span class="s-fk-tag">FK</span> produk_id</div><span class="s-type-pill">INTEGER</span><div class="s-handle-in" data-handle-target="produk.produk_id"></div></div>
                                 </div>
                             </div>
                         </div>

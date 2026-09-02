@@ -156,8 +156,8 @@ function initSupabaseERDCanvas() {
     if (!canvas) return;
 
     const svg = canvas.querySelector('.s-svg-overlay');
-    const grid = canvas.querySelector('.supabase-nodes-grid');
-    if (!svg || !grid) return;
+    const container = canvas.querySelector('.supabase-domains-container');
+    if (!svg || !container) return;
 
     function renderConnections() {
         // Clear existing paths
