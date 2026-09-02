@@ -1,7 +1,7 @@
 {
-  "name": "sql-ecommerce-analytics",
+  "name": "belajar-data-sql-ecommerce",
   "version": "1.0.0",
-  "description": "Kurikulum Modul Belajar SQL Data Analyst E-Commerce Indonesia",
+  "description": "Kurikulum Modul Belajar Data SQL E-Commerce Indonesia by Velora",
   "scripts": {
     "dev": "npx serve . -p 3000",
     "start": "npx serve . -p 3000",

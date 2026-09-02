@@ -1,5 +1,5 @@
 // ============================================================
-// SQL Data Analyst — Shared Script
+// Belajar Data — Shared Script
 // ============================================================
 
 const THEME_KEY = 'sql-da-theme';

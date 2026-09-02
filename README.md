@@ -1,8 +1,9 @@
-# SQL E-Commerce Data Analytics Curriculum
+# Belajar Data — SQL E-Commerce Indonesia
 
-Kurikulum pembelajaran SQL komprehensif untuk Data Analyst berbasis studi kasus industri nyata menggunakan database relasional **E-Commerce Indonesia** (20 Tabel Relasional dan 5.600+ baris data transaksi).
+Kurikulum pembelajaran SQL komprehensif berbasis studi kasus industri nyata menggunakan database relasional **E-Commerce Indonesia** (20 Tabel Relasional dan 5.600+ baris data transaksi).
 
----
+**Dikembangkan oleh:** Velora  
+**Disusun oleh:** Mahin Utsman Nawawi, S.H  
 
 ## 1. Menjalankan Proyek Secara Lokal
 
