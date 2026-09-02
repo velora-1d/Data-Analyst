@@ -273,122 +273,132 @@
                         </div>
                     </div>
 
-                    <div class="supabase-nodes-grid">
-                        <!-- Node 1: Pelanggan (Master) -->
-                        <div class="s-node master">
-                            <div class="s-node-header">
-                                <span><i class="fa-solid fa-user" style="color:#38BDF8"></i> pelanggan</span>
-                                <span class="s-type-pill">Master</span>
+                    <div class="supabase-domains-container">
+                        <!-- Domain 1: Master Data (Left Column) -->
+                        <div class="s-domain-col">
+                            <div class="s-domain-header master"><i class="fa-solid fa-database"></i> Domain 1: Master Data</div>
+
+                            <!-- Node 1: Pelanggan (Master) -->
+                            <div class="s-node master">
+                                <div class="s-node-header">
+                                    <span><i class="fa-solid fa-user" style="color:#38BDF8"></i> pelanggan</span>
+                                    <span class="s-type-pill">Master PK</span>
+                                </div>
+                                <div class="s-node-body">
+                                    <div class="s-node-row">
+                                        <div class="s-col-info"><span class="s-pk-tag">PK</span> pelanggan_id</div>
+                                        <span class="s-type-pill">INTEGER</span>
+                                        <div class="s-handle-out" data-handle="pelanggan.pelanggan_id"></div>
+                                    </div>
+                                    <div class="s-node-row">
+                                        <div class="s-col-info">nama_lengkap</div>
+                                        <span class="s-type-pill">VARCHAR</span>
+                                    </div>
+                                    <div class="s-node-row">
+                                        <div class="s-col-info">email</div>
+                                        <span class="s-type-pill">VARCHAR</span>
+                                    </div>
+                                    <div class="s-node-row">
+                                        <div class="s-col-info">no_hp</div>
+                                        <span class="s-type-pill">VARCHAR</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="s-node-body">
-                                <div class="s-node-row">
-                                    <div class="s-col-info"><span class="s-pk-tag">PK</span> pelanggan_id</div>
-                                    <span class="s-type-pill">INTEGER</span>
-                                    <div class="s-handle-out" data-handle="pelanggan.pelanggan_id"></div>
+
+                            <!-- Node 2: Variasi Produk (Master SKU) -->
+                            <div class="s-node master">
+                                <div class="s-node-header">
+                                    <span><i class="fa-solid fa-box" style="color:#38BDF8"></i> variasi_produk</span>
+                                    <span class="s-type-pill">Katalog SKU</span>
                                 </div>
-                                <div class="s-node-row">
-                                    <div class="s-col-info">nama_lengkap</div>
-                                    <span class="s-type-pill">VARCHAR</span>
-                                </div>
-                                <div class="s-node-row">
-                                    <div class="s-col-info">email</div>
-                                    <span class="s-type-pill">VARCHAR</span>
-                                </div>
-                                <div class="s-node-row">
-                                    <div class="s-col-info">no_hp</div>
-                                    <span class="s-type-pill">VARCHAR</span>
+                                <div class="s-node-body">
+                                    <div class="s-node-row">
+                                        <div class="s-col-info"><span class="s-pk-tag">PK</span> variasi_id</div>
+                                        <span class="s-type-pill">INTEGER</span>
+                                        <div class="s-handle-out" data-handle="variasi_produk.variasi_id"></div>
+                                    </div>
+                                    <div class="s-node-row">
+                                        <div class="s-col-info">sku</div>
+                                        <span class="s-type-pill">VARCHAR</span>
+                                    </div>
+                                    <div class="s-node-row">
+                                        <div class="s-col-info">warna</div>
+                                        <span class="s-type-pill">VARCHAR</span>
+                                    </div>
+                                    <div class="s-node-row">
+                                        <div class="s-col-info">harga_jual</div>
+                                        <span class="s-type-pill">INTEGER</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Node 2: Pesanan (Header Transaksi) -->
-                        <div class="s-node txn-header">
-                            <div class="s-node-header">
-                                <span><i class="fa-solid fa-cart-shopping" style="color:#F59E0B"></i> pesanan</span>
-                                <span class="s-type-pill">Header Txn</span>
-                            </div>
-                            <div class="s-node-body">
-                                <div class="s-node-row">
-                                    <div class="s-col-info"><span class="s-pk-tag">PK</span> pesanan_id</div>
-                                    <span class="s-type-pill">INTEGER</span>
-                                    <div class="s-handle-out" data-handle="pesanan.pesanan_id"></div>
+                        <!-- Domain 2: Header Transaksi (Center Column) -->
+                        <div class="s-domain-col">
+                            <div class="s-domain-header txn"><i class="fa-solid fa-receipt"></i> Domain 2: Header Transaksi</div>
+
+                            <!-- Node 3: Pesanan (Header Transaksi) -->
+                            <div class="s-node txn-header">
+                                <div class="s-node-header">
+                                    <span><i class="fa-solid fa-cart-shopping" style="color:#F59E0B"></i> pesanan</span>
+                                    <span class="s-type-pill">Header Txn</span>
                                 </div>
-                                <div class="s-node-row">
-                                    <div class="s-col-info"><span class="s-fk-tag">FK</span> pelanggan_id</div>
-                                    <span class="s-type-pill">INTEGER</span>
-                                    <div class="s-handle-in" data-handle-target="pelanggan.pelanggan_id"></div>
-                                </div>
-                                <div class="s-node-row">
-                                    <div class="s-col-info"><span class="s-fk-tag">FK</span> kurir_id</div>
-                                    <span class="s-type-pill">INTEGER</span>
-                                    <div class="s-handle-in" data-handle-target="kurir_ekspedisi.kurir_id"></div>
-                                </div>
-                                <div class="s-node-row">
-                                    <div class="s-col-info">nomor_invoice</div>
-                                    <span class="s-type-pill">VARCHAR</span>
-                                </div>
-                                <div class="s-node-row">
-                                    <div class="s-col-info">total_bayar</div>
-                                    <span class="s-type-pill">INTEGER</span>
+                                <div class="s-node-body">
+                                    <div class="s-node-row">
+                                        <div class="s-col-info"><span class="s-pk-tag">PK</span> pesanan_id</div>
+                                        <span class="s-type-pill">INTEGER</span>
+                                        <div class="s-handle-out" data-handle="pesanan.pesanan_id"></div>
+                                    </div>
+                                    <div class="s-node-row">
+                                        <div class="s-col-info"><span class="s-fk-tag">FK</span> pelanggan_id</div>
+                                        <span class="s-type-pill">INTEGER</span>
+                                        <div class="s-handle-in" data-handle-target="pelanggan.pelanggan_id"></div>
+                                    </div>
+                                    <div class="s-node-row">
+                                        <div class="s-col-info">nomor_invoice</div>
+                                        <span class="s-type-pill">VARCHAR</span>
+                                    </div>
+                                    <div class="s-node-row">
+                                        <div class="s-col-info">total_bayar</div>
+                                        <span class="s-type-pill">INTEGER</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Node 3: Rincian Pesanan (Child Detail) -->
-                        <div class="s-node txn-child">
-                            <div class="s-node-header">
-                                <span><i class="fa-solid fa-list-check" style="color:#3ECF8E"></i> rincian_pesanan</span>
-                                <span class="s-type-pill">Detail Item</span>
-                            </div>
-                            <div class="s-node-body">
-                                <div class="s-node-row">
-                                    <div class="s-col-info"><span class="s-pk-tag">PK</span> rincian_id</div>
-                                    <span class="s-type-pill">INTEGER</span>
-                                </div>
-                                <div class="s-node-row">
-                                    <div class="s-col-info"><span class="s-fk-tag">FK</span> pesanan_id</div>
-                                    <span class="s-type-pill">INTEGER</span>
-                                    <div class="s-handle-in" data-handle-target="pesanan.pesanan_id"></div>
-                                </div>
-                                <div class="s-node-row">
-                                    <div class="s-col-info"><span class="s-fk-tag">FK</span> variasi_id</div>
-                                    <span class="s-type-pill">INTEGER</span>
-                                    <div class="s-handle-in" data-handle-target="variasi_produk.variasi_id"></div>
-                                </div>
-                                <div class="s-node-row">
-                                    <div class="s-col-info">jumlah</div>
-                                    <span class="s-type-pill">INTEGER</span>
-                                </div>
-                                <div class="s-node-row">
-                                    <div class="s-col-info">harga_satuan</div>
-                                    <span class="s-type-pill">INTEGER</span>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Domain 3: Detail Item & Log (Right Column) -->
+                        <div class="s-domain-col">
+                            <div class="s-domain-header detail"><i class="fa-solid fa-layer-group"></i> Domain 3: Detail &amp; Log</div>
 
-                        <!-- Node 4: Variasi Produk (Master SKU) -->
-                        <div class="s-node master">
-                            <div class="s-node-header">
-                                <span><i class="fa-solid fa-box" style="color:#38BDF8"></i> variasi_produk</span>
-                                <span class="s-type-pill">Katalog SKU</span>
-                            </div>
-                            <div class="s-node-body">
-                                <div class="s-node-row">
-                                    <div class="s-col-info"><span class="s-pk-tag">PK</span> variasi_id</div>
-                                    <span class="s-type-pill">INTEGER</span>
-                                    <div class="s-handle-out" data-handle="variasi_produk.variasi_id"></div>
+                            <!-- Node 4: Rincian Pesanan (Child Detail) -->
+                            <div class="s-node txn-child">
+                                <div class="s-node-header">
+                                    <span><i class="fa-solid fa-list-check" style="color:#3ECF8E"></i> rincian_pesanan</span>
+                                    <span class="s-type-pill">Detail Item</span>
                                 </div>
-                                <div class="s-node-row">
-                                    <div class="s-col-info">sku</div>
-                                    <span class="s-type-pill">VARCHAR</span>
-                                </div>
-                                <div class="s-node-row">
-                                    <div class="s-col-info">warna</div>
-                                    <span class="s-type-pill">VARCHAR</span>
-                                </div>
-                                <div class="s-node-row">
-                                    <div class="s-col-info">harga_jual</div>
-                                    <span class="s-type-pill">INTEGER</span>
+                                <div class="s-node-body">
+                                    <div class="s-node-row">
+                                        <div class="s-col-info"><span class="s-pk-tag">PK</span> rincian_id</div>
+                                        <span class="s-type-pill">INTEGER</span>
+                                    </div>
+                                    <div class="s-node-row">
+                                        <div class="s-col-info"><span class="s-fk-tag">FK</span> pesanan_id</div>
+                                        <span class="s-type-pill">INTEGER</span>
+                                        <div class="s-handle-in" data-handle-target="pesanan.pesanan_id"></div>
+                                    </div>
+                                    <div class="s-node-row">
+                                        <div class="s-col-info"><span class="s-fk-tag">FK</span> variasi_id</div>
+                                        <span class="s-type-pill">INTEGER</span>
+                                        <div class="s-handle-in" data-handle-target="variasi_produk.variasi_id"></div>
+                                    </div>
+                                    <div class="s-node-row">
+                                        <div class="s-col-info">jumlah</div>
+                                        <span class="s-type-pill">INTEGER</span>
+                                    </div>
+                                    <div class="s-node-row">
+                                        <div class="s-col-info">harga_satuan</div>
+                                        <span class="s-type-pill">INTEGER</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
