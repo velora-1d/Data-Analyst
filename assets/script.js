@@ -159,8 +159,55 @@ function initSupabaseERDCanvas() {
     const container = canvas.querySelector('.supabase-domains-container');
     if (!svg || !container) return;
 
+    // 1. Draggable Nodes Implementation
+    const nodes = canvas.querySelectorAll('.s-node');
+    nodes.forEach(node => {
+        const header = node.querySelector('.s-node-header');
+        if (!header || node.dataset.dragInit) return;
+        node.dataset.dragInit = "true";
+
+        let isDragging = false;
+        let startX, startY;
+        let initialLeft = 0, initialTop = 0;
+
+        header.addEventListener('pointerdown', e => {
+            // Ignore click on buttons inside header
+            if (e.target.tagName === 'BUTTON' || e.target.closest('button')) return;
+            
+            isDragging = true;
+            node.classList.add('dragging');
+            header.setPointerCapture(e.pointerId);
+
+            startX = e.clientX;
+            startY = e.clientY;
+
+            const transform = new WebKitCSSMatrix(window.getComputedStyle(node).transform);
+            initialLeft = transform.m41 || 0;
+            initialTop = transform.m42 || 0;
+        });
+
+        header.addEventListener('pointermove', e => {
+            if (!isDragging) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            node.style.transform = `translate(${initialLeft + dx}px, ${initialTop + dy}px)`;
+            renderConnections();
+        });
+
+        const stopDrag = e => {
+            if (!isDragging) return;
+            isDragging = false;
+            node.classList.remove('dragging');
+            try { header.releasePointerCapture(e.pointerId); } catch(err){}
+            renderConnections();
+        };
+
+        header.addEventListener('pointerup', stopDrag);
+        header.addEventListener('pointercancel', stopDrag);
+    });
+
+    // 2. Real-time Cable Connections
     function renderConnections() {
-        // Clear existing paths
         while (svg.firstChild) {
             svg.removeChild(svg.firstChild);
         }
@@ -183,7 +230,7 @@ function initSupabaseERDCanvas() {
             const y2 = r2.top + r2.height / 2 - canvasRect.top;
 
             // Bezier curve control points
-            const dx = Math.abs(x2 - x1) * 0.5;
+            const dx = Math.abs(x2 - x1) * 0.45;
             const cx1 = x1 + Math.max(dx, 40);
             const cy1 = y1;
             const cx2 = x2 - Math.max(dx, 40);

@@ -1472,12 +1472,19 @@ code:not([class*="language"]):not(.code-block code) {
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: box-shadow var(--t), border-color var(--t);
     position: relative;
+    user-select: none;
+    touch-action: none;
 }
 .s-node:hover {
-    transform: translateY(-4px);
     box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.2);
+    border-color: #38BDF8;
+}
+.s-node.dragging {
+    z-index: 100 !important;
+    opacity: 0.95;
+    box-shadow: 0 20px 48px rgba(0,0,0,0.8), 0 0 24px rgba(56, 189, 248, 0.4);
     border-color: #38BDF8;
 }
 
@@ -1490,6 +1497,10 @@ code:not([class*="language"]):not(.code-block code) {
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #1E293B;
+    cursor: grab;
+}
+.s-node-header:active {
+    cursor: grabbing;
 }
 
 /* Color Accents per Entity Role */
