@@ -51,7 +51,7 @@
 
     --sidebar-w:      280px;
     --header-h:       64px;
-    --content-max:    1120px;
+    --content-max:    1360px;
 
     --r-sm:           6px;
     --r:              10px;
@@ -417,14 +417,16 @@ a:hover {
 .main {
     flex: 1;
     margin-left: var(--sidebar-w);
-    padding: 2.5rem 3.5rem 5rem;
-    display: flex;
-    justify-content: center;
+    padding: 2.5rem 3rem 5rem;
+    width: calc(100% - var(--sidebar-w));
+    min-width: 0;
+    display: block;
 }
 
 .main-inner {
     width: 100%;
     max-width: var(--content-max);
+    margin: 0 auto;
 }
 
 /* --- 7. Module Hero Section (Prominent Card) --- */
@@ -1505,48 +1507,132 @@ code:not([class*="language"]):not(.code-block code) {
 
 /* --- Explanation Callout Box Components --- */
 .explain-box {
-    background: rgba(30, 41, 59, 0.5);
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border);
     border-left: 4px solid var(--brand);
-    border-radius: 0 10px 10px 0;
+    border-radius: var(--r);
     padding: 1.25rem 1.5rem;
-    margin: 1.25rem 0 1.5rem 0;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-left-width: 4px;
+    margin: 1.5rem 0;
+    box-shadow: var(--shadow-sm);
+    transition: background var(--t), border-color var(--t);
 }
+
 .explain-box.purpose {
-    border-left-color: #38BDF8;
-    background: rgba(56, 189, 248, 0.08);
+    border-left-color: #0284C7;
+    background: rgba(14, 165, 233, 0.08);
+    border-color: rgba(14, 165, 233, 0.25);
 }
 .explain-box.purpose .explain-title {
-    color: #38BDF8;
+    color: #0284C7;
 }
+
 .explain-box.tip {
-    border-left-color: #F59E0B;
+    border-left-color: #D97706;
     background: rgba(245, 158, 11, 0.08);
+    border-color: rgba(245, 158, 11, 0.25);
 }
 .explain-box.tip .explain-title {
-    color: #FBBF24;
+    color: #D97706;
 }
+
 .explain-box.business {
-    border-left-color: #3ECF8E;
-    background: rgba(62, 207, 142, 0.08);
+    border-left-color: #059669;
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.25);
 }
 .explain-box.business .explain-title {
-    color: #3ECF8E;
+    color: #059669;
 }
+
+/* Dark Mode Vibrant Contrast */
+[data-theme="dark"] .explain-box.purpose {
+    border-left-color: #38BDF8;
+    background: rgba(56, 189, 248, 0.08);
+    border-color: rgba(56, 189, 248, 0.22);
+}
+[data-theme="dark"] .explain-box.purpose .explain-title {
+    color: #38BDF8;
+}
+
+[data-theme="dark"] .explain-box.tip {
+    border-left-color: #F59E0B;
+    background: rgba(245, 158, 11, 0.08);
+    border-color: rgba(245, 158, 11, 0.22);
+}
+[data-theme="dark"] .explain-box.tip .explain-title {
+    color: #FBBF24;
+}
+
+[data-theme="dark"] .explain-box.business {
+    border-left-color: #10B981;
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.22);
+}
+[data-theme="dark"] .explain-box.business .explain-title {
+    color: #34D399;
+}
+
 .explain-title {
-    font-weight: 700;
+    font-weight: 800;
     font-size: 0.95rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.625rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    letter-spacing: -0.01em;
 }
+
 .explain-desc {
-    font-size: 0.9rem;
-    line-height: 1.6;
-    color: #CBD5E1;
+    font-size: 0.9375rem;
+    line-height: 1.75;
+    color: var(--text-primary);
     margin: 0;
+}
+
+.explain-desc p {
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    line-height: 1.75;
+}
+.explain-desc p:last-child {
+    margin-bottom: 0;
+}
+
+.explain-desc ul {
+    margin: 0.5rem 0 0.5rem 1.25rem;
+    padding: 0;
+    list-style-type: disc;
+}
+
+.explain-desc li {
+    margin-bottom: 0.4rem;
+    color: var(--text-primary);
+    line-height: 1.65;
+}
+.explain-desc li:last-child {
+    margin-bottom: 0;
+}
+
+.explain-desc strong {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.explain-desc code {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    background: var(--bg-surface-3);
+    color: var(--brand-light);
+    padding: 0.15em 0.45em;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border);
+    font-weight: 600;
+}
+
+[data-theme="light"] .explain-desc code {
+    background: rgba(37, 99, 235, 0.08);
+    color: #1D4ED8;
+    border-color: rgba(37, 99, 235, 0.2);
 }
 
 /* Color Accents per Entity Role */

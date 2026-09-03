@@ -94,9 +94,11 @@
             <div class="explain-box purpose">
                 <div class="explain-title"><i class="fa-solid fa-lightbulb"></i> Buat Apa Fungsi Perankingan (Ranking) Digunakan?</div>
                 <div class="explain-desc">
-                    Fungsi perankingan memungkinkan Anda memberikan peringkat pada baris data **tanpa harus menciutkan tabel** (berbeda dari GROUP BY).<br>
-                    - **`ROW_NUMBER()`**: Memberikan penomoran unik mutlak (1, 2, 3, 4) cocok untuk penomoran baris.<br>
-                    - **`DENSE_RANK()`**: Memberikan peringkat berdampingan tanpa melompati angka (1, 2, 2, 3) jika ada nilai belanja yang persis sama.
+                    <p>Fungsi perankingan memungkinkan Anda memberikan peringkat pada baris data <strong>tanpa harus menciutkan tabel</strong> (berbeda dari GROUP BY):</p>
+                    <ul>
+                        <li><strong><code>ROW_NUMBER()</code></strong>: Memberikan penomoran unik mutlak (1, 2, 3, 4) cocok untuk penomoran baris.</li>
+                        <li><strong><code>DENSE_RANK()</code></strong>: Memberikan peringkat berdampingan tanpa melompati angka (1, 2, 2, 3) jika ada nilai belanja yang persis sama.</li>
+                    </ul>
                 </div>
             </div>
 
@@ -122,7 +124,7 @@
             <div class="explain-box business">
                 <div class="explain-title"><i class="fa-solid fa-briefcase"></i> Skenario Bisnis: Top N Item per Kelompok</div>
                 <div class="explain-desc">
-                    Direktur Merchandise ingin menampilkan **"2 Produk Paling Laris"** di masing-masing kategori barang. Klausa `PARTITION BY k.kategori_id` memecah jendela kalkulasi per kategori, lalu `DENSE_RANK()` meranking penjualan di dalam tiap kelompok kategori tersebut.
+                    <p>Direktur Merchandise ingin menampilkan <strong>"2 Produk Paling Laris"</strong> di masing-masing kategori barang. Klausa <code>PARTITION BY k.kategori_id</code> memecah jendela kalkulasi per kategori, lalu <code>DENSE_RANK()</code> meranking penjualan di dalam tiap kelompok kategori tersebut.</p>
                 </div>
             </div>
 
@@ -159,7 +161,7 @@
             <div class="explain-box purpose">
                 <div class="explain-title"><i class="fa-solid fa-chart-line"></i> Buat Apa Fungsi LAG Digunakan?</div>
                 <div class="explain-desc">
-                    Fungsi `LAG(omzet, 1)` mengambil nilai omzet dari baris 1 langkah sebelum periode saat ini. Dengan membandingkan omzet bulan ini terhadap bulan lalu, kita bisa menghitung laju pertumbuhan bulanan (**MoM Growth %**) secara langsung dalam query SQL.
+                    <p>Fungsi <code>LAG(omzet, 1)</code> mengambil nilai omzet dari baris 1 langkah sebelum periode saat ini. Dengan membandingkan omzet bulan ini terhadap bulan lalu, kita bisa menghitung laju pertumbuhan bulanan (<strong>MoM Growth %</strong>) secara langsung dalam query SQL.</p>
                 </div>
             </div>
 
@@ -194,7 +196,7 @@
             <div class="explain-box tip">
                 <div class="explain-title"><i class="fa-solid fa-calculator"></i> Konsep Running Total</div>
                 <div class="explain-desc">
-                    `SUM(total_bayar) OVER (ORDER BY tanggal_pesanan)` menjumlahkan omzet secara kumulatif dari transaksi pertama hingga transaksi saat ini. Sangat berguna untuk melacak pencapaian target pendapatan toko sepanjang tahun (Year-to-Date / YTD).
+                    <p><code>SUM(total_bayar) OVER (ORDER BY tanggal_pesanan)</code> menjumlahkan omzet secara kumulatif dari transaksi pertama hingga transaksi saat ini. Sangat berguna untuk melacak pencapaian target pendapatan toko sepanjang tahun (Year-to-Date / YTD).</p>
                 </div>
             </div>
 

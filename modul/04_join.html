@@ -371,7 +371,7 @@
             <div class="explain-box purpose">
                 <div class="explain-title"><i class="fa-solid fa-lightbulb"></i> Buat Apa INNER JOIN Digunakan?</div>
                 <div class="explain-desc">
-                    Tabel `produk` hanya menyimpan `merek_id` berbentuk angka (misal: `merek_id = 3`). Agar aplikasi E-Commerce atau dashboard analitik bisa menampilkan nama brand yang human-readable (misal: `"Samsung"`), kita menggabungkan tabel `produk` dengan tabel `merek` menggunakan `INNER JOIN` berbasis relasi `produk.merek_id = merek.merek_id`.
+                    <p>Tabel <code>produk</code> hanya menyimpan <code>merek_id</code> berbentuk angka (misal: <code>merek_id = 3</code>). Agar aplikasi E-Commerce atau dashboard analitik bisa menampilkan nama brand yang mudah dipahami (misal: "Samsung"), kita menggabungkan tabel <code>produk</code> dengan tabel <code>merek</code> menggunakan <code>INNER JOIN</code> berbasis relasi <code>produk.merek_id = merek.merek_id</code>.</p>
                 </div>
             </div>
 
@@ -405,7 +405,7 @@
             <div class="explain-box business">
                 <div class="explain-title"><i class="fa-solid fa-user-slash"></i> Skenario Bisnis: Mendeteksi User Pasif (Zero Transaction)</div>
                 <div class="explain-desc">
-                    Tim CRM ingin mengirimkan email voucher selamat datang untuk pengguna baru yang belum membuat transaksi. Dengan `LEFT JOIN pelanggan p ON ... WHERE pesanan_id IS NULL`, database SQLite secara instan menemukan semua pelanggan yang belum punya orderan!
+                    <p>Tim CRM ingin mengirimkan email voucher selamat datang untuk pengguna baru yang belum membuat transaksi. Dengan <code>LEFT JOIN pelanggan p ON ... WHERE pesanan_id IS NULL</code>, database SQLite secara instan menemukan semua pelanggan yang belum punya orderan!</p>
                 </div>
             </div>
 

@@ -97,7 +97,7 @@
             <div class="explain-box purpose">
                 <div class="explain-title"><i class="fa-solid fa-lightbulb"></i> Buat Apa Scalar Subquery Digunakan?</div>
                 <div class="explain-desc">
-                    Saat Anda ingin menyaring transaksi yang nilainya di atas rata-rata toko, Anda tidak bisa mengetik angka rata-rata secara manual karena nilainya berubah terus setiap ada transaksi baru. Scalar subquery secara dinamis menghitung `(SELECT AVG(total_bayar) FROM pesanan)` lalu menggunakannya sebagai pembanding.
+                    <p>Saat Anda ingin menyaring transaksi yang nilainya di atas rata-rata toko, Anda tidak bisa mengetik angka rata-rata secara manual karena nilainya berubah terus setiap ada transaksi baru. Scalar subquery secara dinamis menghitung <code>(SELECT AVG(total_bayar) FROM pesanan)</code> lalu menggunakannya sebagai pembanding.</p>
                 </div>
             </div>
 
@@ -126,7 +126,7 @@
             <div class="explain-box business">
                 <div class="explain-title"><i class="fa-solid fa-users-target"></i> Skenario Bisnis: Profiling Target Marketing</div>
                 <div class="explain-desc">
-                    Tim Marketing ingin meluncurkan campaign promo aksesoris gadget khusus kepada pengguna yang pernah membeli produk 'Elektronik & Gadget'. Subquery bagian dalam mengumpulkan daftar `pelanggan_id` yang relevan, lalu query utama mengambil kontak pelanggan tersebut.
+                    <p>Tim Marketing ingin meluncurkan campaign promo aksesoris gadget khusus kepada pengguna yang pernah membeli produk 'Elektronik &amp; Gadget'. Subquery bagian dalam mengumpulkan daftar <code>pelanggan_id</code> yang relevan, lalu query utama mengambil kontak pelanggan tersebut.</p>
                 </div>
             </div>
 
@@ -159,7 +159,7 @@
             <div class="explain-box tip">
                 <div class="explain-title"><i class="fa-solid fa-microchip"></i> Cara Kerja Correlated Subquery</div>
                 <div class="explain-desc">
-                    Tidak seperti subquery biasa yang dieksekusi sekali di awal, correlated subquery dieksekusi **berulang kali untuk setiap baris** tabel utama `pelanggan pl`. Syarat `p.pelanggan_id = pl.pelanggan_id` menyambungkan konteks baris luar ke dalam subquery.
+                    <p>Tidak seperti subquery biasa yang dieksekusi sekali di awal, correlated subquery dieksekusi <strong>berulang kali untuk setiap baris</strong> tabel utama <code>pelanggan pl</code>. Syarat <code>p.pelanggan_id = pl.pelanggan_id</code> menyambungkan konteks baris luar ke dalam subquery.</p>
                 </div>
             </div>
 
@@ -188,7 +188,7 @@
             <div class="explain-box purpose">
                 <div class="explain-title"><i class="fa-solid fa-bolt"></i> Mengapa EXISTS Lebih Cepat daripada IN?</div>
                 <div class="explain-desc">
-                    Operator `EXISTS` menggunakan mekanisme **Short-Circuit Evaluation**. Begitu engine menemukan setidaknya 1 baris transaksi yang cocok pada `SELECT 1 FROM pesanan`, pencarian langsung dihentikan tanpa perlu membaca seluruh sisa baris di tabel `pesanan`.
+                    <p>Operator <code>EXISTS</code> menggunakan mekanisme <strong>Short-Circuit Evaluation</strong>. Begitu engine menemukan setidaknya 1 baris transaksi yang cocok pada <code>SELECT 1 FROM pesanan</code>, pencarian langsung dihentikan tanpa perlu membaca seluruh sisa baris di tabel <code>pesanan</code>.</p>
                 </div>
             </div>
 
@@ -213,7 +213,7 @@
             <div class="explain-box business">
                 <div class="explain-title"><i class="fa-solid fa-cubes"></i> Buat Apa CTE (WITH ... AS) Diciptakan?</div>
                 <div class="explain-desc">
-                    CTE membuat kode SQL yang sangat rumit menjadi **modular dan mudah dibaca** seperti fungsi pemrograman. Blok `WITH CustomerSpending AS (...)` membuat tabel sementara yang bersih, sehingga query utama di bawahnya tinggal mengambil hasilnya dengan klausa `SELECT ... FROM CustomerSpending`.
+                    <p>CTE membuat kode SQL yang sangat rumit menjadi <strong>modular dan mudah dibaca</strong> seperti fungsi pemrograman. Blok <code>WITH CustomerSpending AS (...)</code> membuat tabel sementara yang bersih, sehingga query utama di bawahnya tinggal mengambil hasilnya dengan klausa <code>SELECT ... FROM CustomerSpending</code>.</p>
                 </div>
             </div>
 
