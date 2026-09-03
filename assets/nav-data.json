@@ -157,11 +157,11 @@
       "icon": "fa-solid fa-bezier-curve",
       "badge": "Aktif (3 Modul)",
       "badgeColor": "var(--success)",
-      "description": "Anatomi User Interface (Visual Hierarchy, 8pt Grid, Design Tokens, Atomic Design) dan Arsitektur UX (User Journey, 10 Nielsen Heuristics, Beban Kognitif & Aksesibilitas WCAG 2.1 AA).",
+      "description": "Layout Engine (Grid vs Flexbox, Header, Hero, Banner, Sidebar, Footer), Ensiklopedia Ratusan Komponen UI (Buttons, Forms, Toast, Modal, Skeleton), dan Arsitektur UX WCAG 2.1 AA.",
       "modules": [
-        { "id": "uiux_01_anatomy_tokens", "title": "Anatomi UI & Tokens", "url": "tracks/11_ui_ux_design/01_ui_anatomy_tokens.html", "status": "ready", "duration": "50m" },
-        { "id": "uiux_02_heuristics_journey", "title": "Arsitektur UX & Heuristik", "url": "tracks/11_ui_ux_design/02_ux_heuristics_journey.html", "status": "ready", "duration": "55m" },
-        { "id": "uiux_03_a11y_design_systems", "title": "Aksesibilitas & Design System", "url": "tracks/11_ui_ux_design/03_a11y_design_systems.html", "status": "ready", "duration": "55m" }
+        { "id": "uiux_01_layout_wireframe", "title": "Layout Engine & Wireframe", "url": "tracks/11_ui_ux_design/01_ui_anatomy_tokens.html", "status": "ready", "duration": "50m" },
+        { "id": "uiux_02_components_catalog", "title": "Ensiklopedia Komponen UI", "url": "tracks/11_ui_ux_design/02_ux_heuristics_journey.html", "status": "ready", "duration": "55m" },
+        { "id": "uiux_03_a11y_design_systems", "title": "Arsitektur UX & Aksesibilitas", "url": "tracks/11_ui_ux_design/03_a11y_design_systems.html", "status": "ready", "duration": "55m" }
       ]
     }
   ]
