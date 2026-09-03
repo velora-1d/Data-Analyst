@@ -331,7 +331,7 @@ function getRootPrefix() {
 async function loadNavData() {
     if (navDataCache) return navDataCache;
     try {
-        const fetchPath = getRootPrefix() + 'assets/nav-data.json';
+        const fetchPath = getRootPrefix() + 'assets/nav-data.json?v=2.2.0';
         const res = await fetch(fetchPath);
         if (res.ok) {
             navDataCache = await res.json();
@@ -341,6 +341,25 @@ async function loadNavData() {
         console.warn('Could not load nav-data.json:', e);
     }
     return null;
+}
+
+function initHeaderBrand() {
+    const headerLeft = document.querySelector('.header-left');
+    if (headerLeft && !headerLeft.querySelector('.header-brand-author')) {
+        const brandBadge = document.createElement('div');
+        brandBadge.className = 'header-brand-author';
+        brandBadge.innerHTML = `
+            <span class="brand-pill"><i class="fa-solid fa-shield-halved"></i> Velora</span>
+            <span class="brand-divider">•</span>
+            <span class="author-pill"><i class="fa-solid fa-user-graduate"></i> Mahin Utsman Nawawi, S.H</span>
+        `;
+        const logo = headerLeft.querySelector('.logo');
+        if (logo && logo.nextSibling) {
+            headerLeft.insertBefore(brandBadge, logo.nextSibling);
+        } else {
+            headerLeft.appendChild(brandBadge);
+        }
+    }
 }
 
 async function initDynamicMultiTrackSidebar() {
@@ -453,6 +472,7 @@ function reinitPage() {
 
     initSidebar();
     initMobileSidebar();
+    initHeaderBrand();
     initDynamicMultiTrackSidebar();
     initSupabaseERDCanvas();
     idlePrefetchLinks();
