@@ -1,0 +1,126 @@
+{
+  "platform": "Fundamental Coding",
+  "author": "Mahin Utsman Nawawi, S.H",
+  "developer": "Velora",
+  "tracks": [
+    {
+      "id": "database_sql",
+      "title": "Database & SQL Analytics",
+      "icon": "fa-solid fa-database",
+      "badge": "Aktif (7 Modul)",
+      "badgeColor": "var(--success)",
+      "description": "Fondasi basis data relasional, SQL tingkat lanjut, metrik bisnis e-commerce, hingga struktur internal B-Tree & WAL.",
+      "modules": [
+        { "id": "01_tipe_data", "title": "Modul 1: Tipe Data SQL", "url": "modul/01_tipe_data.html", "status": "ready", "duration": "45m" },
+        { "id": "02_query_dasar", "title": "Modul 2: Query Dasar, Filtering & Paginasi", "url": "modul/02_query_dasar.html", "status": "ready", "duration": "40m" },
+        { "id": "03_agregasi", "title": "Modul 3: Fungsi Agregasi & Metrik Penjualan", "url": "modul/03_agregasi.html", "status": "ready", "duration": "40m" },
+        { "id": "04_join", "title": "Modul 4: Relasi Multi-Tabel & JOIN", "url": "modul/04_join.html", "status": "ready", "duration": "50m" },
+        { "id": "05_subquery_cte", "title": "Modul 5: Subquery & CTE (WITH ... AS)", "url": "modul/05_subquery_cte.html", "status": "ready", "duration": "45m" },
+        { "id": "06_window_functions", "title": "Modul 6: Window Functions & Tren", "url": "modul/06_window_functions.html", "status": "ready", "duration": "55m" },
+        { "id": "07_analisis_nyata", "title": "Modul 7: Capstone Analisis E-Commerce", "url": "modul/07_analisis_nyata.html", "status": "ready", "duration": "60m" }
+      ]
+    },
+    {
+      "id": "frontend",
+      "title": "Frontend Engineering",
+      "icon": "fa-solid fa-code",
+      "badge": "Roadmap",
+      "badgeColor": "var(--brand)",
+      "description": "Browser rendering pipeline, DOM & CSSOM, JS Event Loop, arsitektur CSS modern, dan paradigma framework (React/Vue/Svelte).",
+      "modules": [
+        { "id": "fe_01_rendering", "title": "1. Browser Rendering Pipeline (DOM, Reflow & Repaint)", "url": "tracks/02_frontend/01_rendering.html", "status": "planned", "duration": "45m" },
+        { "id": "fe_02_event_loop", "title": "2. JS Engine Internals & Asynchronous Event Loop", "url": "tracks/02_frontend/02_event_loop.html", "status": "planned", "duration": "50m" },
+        { "id": "fe_03_css_architecture", "title": "3. Modern CSS Architecture & Design Tokens", "url": "tracks/02_frontend/03_css_architecture.html", "status": "planned", "duration": "40m" },
+        { "id": "fe_04_framework_paradigms", "title": "4. Virtual DOM vs Compiler vs Fine-Grained Reactivity", "url": "tracks/02_frontend/04_framework_paradigms.html", "status": "planned", "duration": "50m" },
+        { "id": "fe_05_rendering_models", "title": "5. Arsitektur Rendering: CSR, SSR, SSG & ISR", "url": "tracks/02_frontend/05_rendering_models.html", "status": "planned", "duration": "45m" }
+      ]
+    },
+    {
+      "id": "backend",
+      "title": "Backend Engineering",
+      "icon": "fa-solid fa-server",
+      "badge": "Roadmap",
+      "badgeColor": "var(--brand)",
+      "description": "Protokol HTTP/1.1 s/d HTTP/3, desain API standar industri (REST, GraphQL, gRPC), autentikasi Session/JWT/OAuth2, dan Caching.",
+      "modules": [
+        { "id": "be_01_http_protocols", "title": "1. Anatomi Paket HTTP & Evolusi Protokol (HTTP/1, 2, 3)", "url": "tracks/03_backend/01_http_protocols.html", "status": "planned", "duration": "45m" },
+        { "id": "be_02_api_design", "title": "2. Desain Arsitektur API: REST vs GraphQL vs gRPC", "url": "tracks/03_backend/02_api_design.html", "status": "planned", "duration": "55m" },
+        { "id": "be_03_auth_security", "title": "3. Autentikasi: Stateful Session vs JWT vs OAuth 2.0 PKCE", "url": "tracks/03_backend/03_auth_security.html", "status": "planned", "duration": "50m" },
+        { "id": "be_04_caching_redis", "title": "4. Strategi Caching, Invalidation & Redis Cache-Aside", "url": "tracks/03_backend/04_caching_redis.html", "status": "planned", "duration": "40m" },
+        { "id": "be_05_message_queues", "title": "5. Message Brokers & Asynchronous Jobs (RabbitMQ/Kafka)", "url": "tracks/03_backend/05_message_queues.html", "status": "planned", "duration": "50m" }
+      ]
+    },
+    {
+      "id": "arsitektur_sistem",
+      "title": "Arsitektur Sistem & Repositori",
+      "icon": "fa-solid fa-sitemap",
+      "badge": "Diskusi Mendalam",
+      "badgeColor": "var(--warning)",
+      "description": "Bedah tuntas Monorepo vs Polyrepo, Monolith vs Microservices, Clean & Hexagonal Architecture, serta Domain-Driven Design (DDD).",
+      "modules": [
+        { "id": "arch_01_monorepo_polyrepo", "title": "1. Monorepo vs Polyrepo: Analisis Trade-Off & Studi Kasus", "url": "tracks/04_arsitektur_sistem/01_monorepo_polyrepo.html", "status": "planned", "duration": "60m" },
+        { "id": "arch_02_monolith_microservices", "title": "2. Modular Monolith vs Microservices: Kapan Harus Pecah?", "url": "tracks/04_arsitektur_sistem/02_monolith_microservices.html", "status": "planned", "duration": "55m" },
+        { "id": "arch_03_clean_architecture", "title": "3. Clean Architecture & Hexagonal Ports-and-Adapters", "url": "tracks/04_arsitektur_sistem/03_clean_architecture.html", "status": "planned", "duration": "50m" },
+        { "id": "arch_04_ddd_fundamentals", "title": "4. Domain-Driven Design (Bounded Context, Aggregates)", "url": "tracks/04_arsitektur_sistem/04_ddd_fundamentals.html", "status": "planned", "duration": "55m" },
+        { "id": "arch_05_event_driven", "title": "5. Event-Driven Architecture, Event Sourcing & CQRS", "url": "tracks/04_arsitektur_sistem/05_event_driven.html", "status": "planned", "duration": "50m" }
+      ]
+    },
+    {
+      "id": "jaringan_server",
+      "title": "Jaringan Komputer & Server",
+      "icon": "fa-solid fa-network-wired",
+      "badge": "Roadmap",
+      "badgeColor": "var(--brand)",
+      "description": "Model OSI vs TCP/IP, Alamat IP & Subnetting CIDR, Resolusi DNS, Nginx Reverse Proxy, Load Balancer, dan Linux Server.",
+      "modules": [
+        { "id": "net_01_osi_tcp", "title": "1. Model OSI 7 Lapisan & TCP/IP 3-Way Handshake", "url": "tracks/05_jaringan_server/01_osi_tcp.html", "status": "planned", "duration": "45m" },
+        { "id": "net_02_ip_subnetting", "title": "2. IPv4 vs IPv6, Subnetting CIDR, IP Publik & Privat NAT", "url": "tracks/05_jaringan_server/02_ip_subnetting.html", "status": "planned", "duration": "50m" },
+        { "id": "net_03_dns_tls", "title": "3. Anatomi DNS Resolution & SSL/TLS Handshake Security", "url": "tracks/05_jaringan_server/03_dns_tls.html", "status": "planned", "duration": "45m" },
+        { "id": "net_04_nginx_proxy", "title": "4. Nginx Reverse Proxy, Load Balancer & Rate Limiting", "url": "tracks/05_jaringan_server/04_nginx_proxy.html", "status": "planned", "duration": "50m" },
+        { "id": "net_05_linux_server", "title": "5. Linux Server Essentials: Process, Permissions & Systemd", "url": "tracks/05_jaringan_server/05_linux_server.html", "status": "planned", "duration": "45m" }
+      ]
+    },
+    {
+      "id": "devops_docker",
+      "title": "DevOps, Docker & CI/CD",
+      "icon": "fa-brands fa-docker",
+      "badge": "Roadmap",
+      "badgeColor": "var(--brand)",
+      "description": "Kontainerisasi dari dasar, arsitektur Docker internals, multi-stage build image ramping, Docker Compose, dan pipeline CI/CD.",
+      "modules": [
+        { "id": "ops_01_container_internals", "title": "1. Container vs VM: Kernel Namespaces & cgroups", "url": "tracks/06_devops_docker/01_container_internals.html", "status": "planned", "duration": "40m" },
+        { "id": "ops_02_dockerfile_best_practices", "title": "2. Dockerfile Production: Multi-Stage Builds & Layer Cache", "url": "tracks/06_devops_docker/02_dockerfile_best_practices.html", "status": "planned", "duration": "45m" },
+        { "id": "ops_03_docker_compose", "title": "3. Multi-Container Orchestration dengan Docker Compose", "url": "tracks/06_devops_docker/03_docker_compose.html", "status": "planned", "duration": "45m" },
+        { "id": "ops_04_cicd_pipeline", "title": "4. Otomasi CI/CD Pipeline dengan GitHub Actions", "url": "tracks/06_devops_docker/04_cicd_pipeline.html", "status": "planned", "duration": "50m" }
+      ]
+    },
+    {
+      "id": "bahasa_pemrograman",
+      "title": "Paradigma Bahasa & Memori",
+      "icon": "fa-solid fa-cubes",
+      "badge": "Diskusi Mendalam",
+      "badgeColor": "var(--warning)",
+      "description": "Kompilasi vs Interpreter, Static vs Dynamic Typing, Stack vs Heap, serta Garbage Collection vs Rust Ownership.",
+      "modules": [
+        { "id": "lang_01_paradigms", "title": "1. Paradigma: OOP vs Fungsional vs Prosedural", "url": "tracks/07_bahasa_pemrograman/01_paradigms.html", "status": "planned", "duration": "45m" },
+        { "id": "lang_02_memory_management", "title": "2. Alokasi Memori: Stack vs Heap & Pointer De-reference", "url": "tracks/07_bahasa_pemrograman/02_memory_management.html", "status": "planned", "duration": "50m" },
+        { "id": "lang_03_gc_vs_ownership", "title": "3. Tracing Garbage Collector vs Rust Ownership/Borrowing", "url": "tracks/07_bahasa_pemrograman/03_gc_vs_ownership.html", "status": "planned", "duration": "55m" },
+        { "id": "lang_04_language_matrix", "title": "4. Matriks Komparasi: Go vs Rust vs Python vs TS vs Java", "url": "tracks/07_bahasa_pemrograman/04_language_matrix.html", "status": "planned", "duration": "50m" }
+      ]
+    },
+    {
+      "id": "git_workflow",
+      "title": "Git & Engineering Workflow",
+      "icon": "fa-brands fa-git-alt",
+      "badge": "Roadmap",
+      "badgeColor": "var(--brand)",
+      "description": "Git Internals (DAG, Tree, Blob), Rebase vs Merge, Trunk-Based Development, dan teknik penyelamatan data dengan git reflog.",
+      "modules": [
+        { "id": "git_01_dag_internals", "title": "1. Git Internals: Directed Acyclic Graph (DAG) & Objek Hash", "url": "tracks/08_git_workflow/01_dag_internals.html", "status": "planned", "duration": "40m" },
+        { "id": "git_02_rebase_vs_merge", "title": "2. Rebase vs Merge: Linear History vs True Commits", "url": "tracks/08_git_workflow/02_rebase_vs_merge.html", "status": "planned", "duration": "45m" },
+        { "id": "git_03_branching_strategies", "title": "3. Trunk-Based Development vs GitFlow di Tim Industri", "url": "tracks/08_git_workflow/03_branching_strategies.html", "status": "planned", "duration": "40m" },
+        { "id": "git_04_reflog_disaster_recovery", "title": "4. Disaster Recovery: git reflog, bisect & cherry-pick", "url": "tracks/08_git_workflow/04_reflog_disaster_recovery.html", "status": "planned", "duration": "45m" }
+      ]
+    }
+  ]
+}
