@@ -1,6 +1,6 @@
-# Belajar Data — SQL E-Commerce Indonesia
+# Fundamental Coding — Software & Data Engineering Series (Velora)
 
-Kurikulum pembelajaran SQL komprehensif berbasis studi kasus industri nyata menggunakan database relasional **E-Commerce Indonesia** (20 Tabel Relasional dan 5.600+ baris data transaksi).
+Kurikulum pembelajaran interaktif Fundamental Coding: Rekayasa Perangkat Lunak, Frontend, Backend, dan Database Relasional berbasis studi kasus industri nyata.
 
 **Dikembangkan oleh:** Velora  
 **Disusun oleh:** Mahin Utsman Nawawi, S.H  

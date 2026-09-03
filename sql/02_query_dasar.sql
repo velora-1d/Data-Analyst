@@ -1,6 +1,6 @@
 -- ============================================================
 -- 02_query_dasar.sql: Query Dasar, Filtering, Aliasing & Sorting
--- Belajar Data — SQL E-Commerce Indonesia (by Velora)
+-- Fundamental Coding — SQL & Software Engineering (by Velora)
 -- ============================================================
 
 -- 1. Anatomi & Urutan Query: SELECT Dasar

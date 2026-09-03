@@ -1,7 +1,7 @@
 {
-  "name": "belajar-data-sql-ecommerce",
+  "name": "fundamental-coding-velora",
   "version": "1.0.0",
-  "description": "Kurikulum Modul Belajar Data SQL E-Commerce Indonesia by Velora",
+  "description": "Kurikulum Modul Fundamental Coding: Frontend, Backend, Database & Software Engineering by Velora",
   "scripts": {
     "dev": "npx serve . -p 3000",
     "start": "npx serve . -p 3000",

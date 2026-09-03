@@ -1,5 +1,5 @@
 // ============================================================
-// Belajar Data — Shared Script (SPA Smooth Navigation)
+// Fundamental Coding — Shared Script (SPA Smooth Navigation)
 // ============================================================
 
 const THEME_KEY = 'sql-da-theme';

@@ -1,6 +1,6 @@
 -- ============================================================
 -- 01_tipe_data.sql: Tipe Data SQL, Manipulasi Text, CAST, DDL & DML
--- Belajar Data — SQL E-Commerce Indonesia (by Velora)
+-- Fundamental Coding — SQL & Software Engineering (by Velora)
 -- ============================================================
 
 -- 1. Inspeksi Skema Tabel PRAGMA
