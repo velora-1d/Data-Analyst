@@ -114,30 +114,87 @@
     border-color: #BFDBFE;
 }
 
+/* Light Theme Supabase ERD Canvas Overrides (Ultra High-Contrast Readability) */
+[data-theme="light"] .supabase-canvas {
+    background-color: #F8FAFC;
+    background-image: radial-gradient(rgba(100, 116, 139, 0.22) 1.2px, transparent 1.2px);
+    border-color: #CBD5E1;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+}
+[data-theme="light"] .supabase-canvas-bar {
+    border-bottom-color: #E2E8F0;
+}
+[data-theme="light"] .supabase-brand {
+    color: #0F172A;
+}
+[data-theme="light"] .s-domain-header.master {
+    background: #EFF6FF;
+    color: #1D4ED8;
+    border-color: #BFDBFE;
+}
+[data-theme="light"] .s-domain-header.txn {
+    background: #FEF3C7;
+    color: #B45309;
+    border-color: #FCD34D;
+}
+[data-theme="light"] .s-domain-header.detail {
+    background: #ECFDF5;
+    color: #047857;
+    border-color: #A7F3D0;
+}
 [data-theme="light"] .s-node {
     background: #FFFFFF;
     border-color: #CBD5E1;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
 }
 [data-theme="light"] .s-node-header {
     color: #0F172A;
     border-bottom-color: #E2E8F0;
     background: #F8FAFC;
+    font-weight: 800;
+}
+[data-theme="light"] .s-node-row {
+    color: #0F172A; /* TEKS HITAM TAJAM BERSIH */
+}
+[data-theme="light"] .s-col-info {
+    color: #0F172A; /* NAMA KOLOM SANGAT JELAS */
+    font-weight: 600;
+}
+[data-theme="light"] .s-node-row:hover {
+    background: #F1F5F9;
+}
+[data-theme="light"] .s-type-pill {
+    color: #334155; /* TIPE DATA ABU-ABU GELAP TAJAM */
+    background: #F1F5F9;
+    border: 1px solid #CBD5E1;
+    font-weight: 700;
+}
+[data-theme="light"] .s-pk-tag {
+    background: #FEF3C7;
+    color: #B45309;
+    border: 1px solid #FCD34D;
+    font-weight: 800;
+}
+[data-theme="light"] .s-fk-tag {
+    background: #DBEAFE;
+    color: #1D4ED8;
+    border: 1px solid #93C5FD;
+    font-weight: 800;
 }
 [data-theme="light"] .s-btn {
-    background: #F1F5F9;
-    color: #334155;
+    background: #FFFFFF;
+    color: #1E293B;
     border-color: #CBD5E1;
+    font-weight: 600;
 }
 [data-theme="light"] .s-btn:hover {
-    background: #E2E8F0;
+    background: #F1F5F9;
     color: #0F172A;
+    border-color: #94A3B8;
 }
-[data-theme="light"] .s-col-name {
-    color: #1E293B;
-}
-[data-theme="light"] .s-col-type {
-    color: #64748B;
+[data-theme="light"] .s-svg-path {
+    stroke: rgba(37, 99, 235, 0.45);
+    stroke-width: 2px;
 }
 
 /* --- 2. Reset & Base Typography --- */
@@ -1983,21 +2040,23 @@ blockquote strong {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.4rem 1rem;
+    padding: 0.45rem 1rem;
     font-family: var(--mono);
     font-size: 0.8rem;
-    color: #E2E8F0;
+    color: #F8FAFC;
     transition: background 0.15s ease;
     position: relative;
 }
 .s-node-row:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .s-col-info {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    color: #F8FAFC;
+    font-weight: 600;
 }
 
 .s-pk-tag {
