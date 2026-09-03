@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 30: Capstone Project: Enterprise System Design 100K QPS — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Puncak kurikulum rekayasa perangkat lunak: Sintesis menyeluruh dari 30 fase menuju cetak biru arsitektur enterprise skala 100.000 QPS zero-downtime, disaster recovery RPO/RTO, dan sertifikasi akhir.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 10</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 30: Capstone Enterprise</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-crown" style="color:var(--warning)"></i>
+            100K QPS Blueprint <span>(Capstone)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 30</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-flag-checkered"></i> 1. Sintesis 30 Fase</a>
+            <a href="#master-architecture" class="nav-link"><i class="fa-solid fa-sitemap"></i> 2. Cetak Biru Arsitektur 100K QPS</a>
+            <a href="#request-lifecycle" class="nav-link"><i class="fa-solid fa-route"></i> 3. Perjalanan 1 Request Pengguna</a>
+            <a href="#dr-sla" class="nav-link"><i class="fa-solid fa-shield-cat"></i> 4. Disaster Recovery (RPO &amp; RTO)</a>
+            <a href="#checklist" class="nav-link"><i class="fa-solid fa-clipboard-check"></i> 5. Checklist Kesiapan Produksi</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-graduation-cap"></i> 6. Ujian Sertifikasi Kelulusan</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-crown" style="color:var(--warning)"></i> Track 10: Capstone Project</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 60 Menit Baca &amp; Validasi</span>
+                <span class="tag"><i class="fa-solid fa-medal" style="color:var(--brand-light)"></i> Master Principal Architect</span>
+            </div>
+            <h1>Fase 30: Capstone Project: End-to-End Enterprise System Design</h1>
+            <p class="module-lead">
+                Mahakarya integrasi rekayasa perangkat lunak: menyatukan seluruh 30 fase kurikulum menjadi satu cetak biru arsitektur sistem skala 100.000 QPS zero-downtime, audit ketahanan bencana RPO &amp; RTO, serta ujian sertifikasi komprehensif Principal Engineer.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-flag-checkered"></i> 1. Sintesis 30 Fase: Dari Biner Menuju Awan</h2>
+            <p>
+                Selamat! Anda telah menuntaskan perjalanan intelektual yang luar biasa melewati 30 fase rekayasa perangkat lunak:
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-layer-group"></i> 5 Lapisan Pondasi yang Telah Dikuasai</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        1. <strong>Hardware &amp; OS (Fase 1-3, 17-18, 23-24):</strong> Biner, Aljabar Boolean, Berkeley Sockets, VFS, epoll, cgroups v2, dan Rust Zero-Cost Memory.<br>
+                        2. <strong>Storage &amp; Data (Fase 4-6, 29):</strong> B-Tree Indexes, ACID WAL, MVCC, Relational Sharding, dan Caching XFetch.<br>
+                        3. <strong>Frontend &amp; Browser (Fase 7-9):</strong> Critical Rendering Path, Flex/Grid Tokens, Fine-Grained Signals, dan Zero-Flicker UX.<br>
+                        4. <strong>Networking &amp; API (Fase 10-12, 19):</strong> HTTP/3 QUIC, REST/gRPC, OAuth PKCE, dan Nginx Master-Worker Reverse Proxy.<br>
+                        5. <strong>Architecture &amp; SRE (Fase 13-16, 20-22, 26-28):</strong> Clean Architecture, Modular Monolith, K8s, Terraform OIDC, OpenTelemetry, dan Circuit Breaker!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="master-architecture">
+            <h2><i class="fa-solid fa-sitemap"></i> 2. Cetak Biru Arsitektur Enterprise 100.000 QPS</h2>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Edge Layer</div>
+                    <div class="pipeline-step-title">Cloudflare + Anycast DNS</div>
+                    <div class="pipeline-step-desc">DDoS Shield, Caching Aset Statis di 300+ PoP kota dunia, HTTP/3 QUIC 0-RTT Handshake.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Gateway Layer</div>
+                    <div class="pipeline-step-title">Nginx SSL Termination &amp; Envoy</div>
+                    <div class="pipeline-step-desc">Terminasi TLS, Rate Limiting token bucket, dan injeksi header W3C <code>traceparent</code> OpenTelemetry.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Compute Layer</div>
+                    <div class="pipeline-step-title">Kubernetes Cluster (Pods)</div>
+                    <div class="pipeline-step-desc">Go &amp; Node.js microservices terisolasi cgroups v2, Auto-scaling HPA, Rolling Update dengan Readiness Probes.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Speed Layer</div>
+                    <div class="pipeline-step-title">Redis Clustered + XFetch</div>
+                    <div class="pipeline-step-desc">Consistent Hashing ring membagi RAM, Algoritma XFetch mengeliminasi Cache Stampede hingga 99.9%.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Persistence Layer</div>
+                    <div class="pipeline-step-title">PostgreSQL Master-Replica</div>
+                    <div class="pipeline-step-desc">1 Primary Write Node + 4 Read Replicas dengan WAL streaming replication, PgBouncer connection pooler.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="request-lifecycle">
+            <h2><i class="fa-solid fa-route"></i> 3. Perjalanan 1 Request Pengguna Menembus Seluruh Lapisan</h2>
+            <ol>
+                <li><strong>Browser:</strong> Pengguna mengklik tombol "Beli". Event loop JS mengeksekusi microtask, mengirim request via koneksi UDP <code>HTTP/3</code> yang sudah aktif.</li>
+                <li><strong>Edge CDN:</strong> Resolusi DNS Anycast mengarahkan request ke server edge terdekat (&lt; 5ms).</li>
+                <li><strong>Reverse Proxy:</strong> Nginx mendekripsi paket SSL TLS 1.3, menyematkan header <code>traceparent: 00-4bf9...</code> dan meneruskan plain-text HTTP/1.1 via keepalive socket ke Kubernetes Service.</li>
+                <li><strong>Kubernetes Service (ClusterIP):</strong> iptables Linux merutekan paket ke salah satu Pod backend yang berstatus <code>Ready</code>.</li>
+                <li><strong>Application Logic:</strong> Service Order memvalidasi JWT token, mengecek cache Redis via <strong>Algoritma XFetch</strong>.</li>
+                <li><strong>Database Access:</strong> Jika cache miss, connection pool PgBouncer meminjam 1 koneksi socket TCP yang sudah hangat ke PostgreSQL Read Replica via query berindeks B-Tree.</li>
+                <li><strong>Response &amp; Telemetri:</strong> Data dikirimkan kembali ke pengguna dalam <strong>28 milidetik</strong>, dan metrik RED otomatis terekam di Prometheus!</li>
+            </ol>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="dr-sla">
+            <h2><i class="fa-solid fa-shield-cat"></i> 4. Disaster Recovery: Menghitung RPO &amp; RTO</h2>
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Parameter Bencana</th>
+                        <th>Target Standar Enterprise</th>
+                        <th>Strategi Implementasi Nyata</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>RPO (Recovery Point Objective)</strong></td>
+                        <td><strong>&lt; 1 Detik</strong> (Maksimal data hilang jika data center terbakar)</td>
+                        <td>Synchronous PostgreSQL WAL replication ke standby server di Availability Zone berbeda.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RTO (Recovery Time Objective)</strong></td>
+                        <td><strong>&lt; 3 Menit</strong> (Durasi waktu hingga sistem kembali menyala normal)</td>
+                        <td>Otomasi Failover Patroni / AWS RDS Multi-AZ dengan pemindahan DNS CNAME otomatis.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="checklist">
+            <h2><i class="fa-solid fa-clipboard-check"></i> 5. Checklist Kesiapan Produksi (Go-Live Gate)</h2>
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-circle-check"></i> 7 Syarat Mutlak Sebelum Merilis Sistem ke Publik</div>
+                <div class="callout-body">
+                    [x] <strong>Keamanan:</strong> User non-root di Docker, OIDC cloud auth, sertifikat SSL grade A+, nol SQL Injection via parameterized query.<br>
+                    [x] <strong>Kinerja:</strong> Indeks B-Tree pada semua foreign key, connection pooler (PgBouncer &amp; Keepalive Upstream Nginx).<br>
+                    [x] <strong>Keandalan:</strong> Circuit Breaker dengan Full Jitter, Readiness Probe pada semua deployment K8s.<br>
+                    [x] <strong>Observability:</strong> W3C Traceparent propagation, dashboard metrik RED, alert error rate &gt; 1% di Slack.<br>
+                    [x] <strong>Caching:</strong> Algoritma XFetch untuk mitigasi cache stampede pada hot keys.<br>
+                    [x] <strong>Infrastruktur:</strong> Seluruh konfigurasi cloud didefinisikan di Terraform HCL dengan state locking.<br>
+                    [x] <strong>Testing:</strong> Piramida test sehat (70% unit test kilat, contract test Pact di CI, E2E Playwright untuk alur kritis).
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-graduation-cap"></i> 6. Ujian Sertifikasi Kelulusan Principal Software Architect</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Dalam skenario lonjakan trafik masif (Flash Sale 100K QPS), kombinasi arsitektural manakah yang paling efektif mencegah database relational mengalami keruntuhan total?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Menaikkan CPU tanpa connection pooling akan memicu deadlock koneksi.')">A. Membeli server CPU terbesar tanpa memasang cache</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Kombinasi PgBouncer connection pooling, Read Replicas dengan B-Tree index, dan Caching Redis dengan Algoritma XFetch memblokir 98% trafik langsung ke database utama!')">B. Memasang PgBouncer Connection Pooler, Read Replicas untuk query baca, dan Redis Caching dengan Algoritma Probabilistik XFetch untuk mencegah stampede</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Menghapus index justru membuat query menjadi Sequential Scan yang lambat.')">C. Menghapus seluruh indeks database untuk mempercepat penulisan</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">2. Ketika terjadi bencana kebakaran di sebuah data center cloud, metrik 'RPO (Recovery Point Objective)' mengukur apa?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Durasi waktu adalah RTO (Recovery Time Objective).')">A. Berapa lama waktu yang dibutuhkan hingga server kembali online</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! RPO mengukur toleransi maksimal kehilangan data dalam rentang waktu (misal: RPO 1 detik berarti transaksi 1 detik terakhir yang belum tersinkronisasi hilang).')">B. Batas maksimal rentang waktu transaksi data yang hilang akibat bencana tersebut</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Bukan biaya uang.')">C. Jumlah biaya kerugian finansial yang harus dibayar</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 3 -->
+            <div class="quiz-card">
+                <div class="quiz-question">3. Mengapa sebuah perusahaan teknologi kelas dunia lebih memilih Clean Architecture (Hexagonal Ports &amp; Adapters) dibandingkan arsitektur yang terikat erat dengan framework?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Clean architecture sedikit menambah kode abstraction.')">A. Karena membuat jumlah baris kode menjadi lebih sedikit</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Luar biasa! Aturan Dependency Inversion memastikan entitas logika bisnis murni tidak terikat pada framework web atau jenis database, memungkinkan pengujian sub-milidetik dengan in-memory mock dan migrasi tanpa rasa sakit.')">B. Menjaga agar aturan bisnis inti (Domain Entities) tetap murni dan independen dari detail eksternal (framework, database, protokol), memungkinkan pengujian instan dan masa pakai kode puluhan tahun</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Tidak menghilangkan server.')">C. Mengeliminasi kebutuhan server fisik</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="01_distributed_caching_xfetch.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 29: Caching &amp; XFetch
+            </a>
+            <a href="../../plan.html" class="btn btn-primary" style="background:var(--success);border-color:var(--success);">
+                <i class="fa-solid fa-trophy"></i> Selamat! Kurikulum Tuntas 100%
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

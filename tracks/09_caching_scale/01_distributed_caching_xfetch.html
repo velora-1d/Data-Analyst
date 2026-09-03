@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 29: Distributed Caching, Redis &amp; Algoritma XFetch — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Arsitektur caching terdistribusi skala tinggi: Pola Cache-Aside vs Write-Through, Redis Internals (epoll, SDS, SkipList), Bahaya Cache Stampede, dan Implementasi Algoritma Probabilistik XFetch.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 10</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 29: Distributed Caching &amp; XFetch</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-bolt"></i>
+            XFetch Algorithm <span>(Cache Stampede)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 29</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Tiga Topologi Caching</a>
+            <a href="#redis-internals" class="nav-link"><i class="fa-solid fa-microchip"></i> 2. Arsitektur Internal Redis</a>
+            <a href="#cache-stampede" class="nav-link"><i class="fa-solid fa-bullhorn"></i> 3. Bahaya Cache Stampede</a>
+            <a href="#xfetch-math" class="nav-link"><i class="fa-solid fa-calculator"></i> 4. Matematika Algoritma XFetch</a>
+            <a href="#xfetch-code" class="nav-link"><i class="fa-solid fa-code"></i> 5. Implementasi XFetch Produksi</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-cloud-bolt"></i> Track 10: Skalabilitas &amp; Capstone</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Distributed Caching)</span>
+            </div>
+            <h1>Fase 29: Distributed Caching, Redis &amp; Algoritma XFetch</h1>
+            <p class="module-lead">
+                Menghancurkan bottleneck database relational: arsitektur topologi caching (Cache-Aside vs Write-Through), mikro-struktur data Redis (SDS, SkipList, Single-Thread Event Loop), mitigasi fenomena mematikan Thundering Herd (Cache Stampede), serta implementasi algoritma probabilistik optimal <strong>XFetch</strong>.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Tiga Topologi Caching Terdistribusi</h2>
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Pola Caching</th>
+                        <th>Alur Baca / Tulis</th>
+                        <th>Kelebihan &amp; Resiko</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Cache-Aside (Standar Industri)</strong></td>
+                        <td>Aplikasi mengecek Redis dulu. Jika Miss, baca DB lalu simpan ke Redis dengan TTL.</td>
+                        <td><strong>Paling tangguh:</strong> Jika Redis mati, aplikasi tetap hidup langsung membaca DB. Resiko: data bisa <em>stale</em> sesaat jika DB di-update tanpa memvalidasi cache.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Write-Through</strong></td>
+                        <td>Aplikasi menulis ke Cache; Cache bertanggung jawab menulis ke Database secara atomik.</td>
+                        <td>Konsistensi data terjamin tinggi, namun operasi penulisan memiliki latensi dobel.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Write-Back (Write-Behind)</strong></td>
+                        <td>Aplikasi menulis HANYA ke Cache; Cache menulis ke DB secara asinkron setiap 5 detik.</td>
+                        <td><strong>Kecepatan tulis super kilat</strong>, namun <strong>berisiko kehilangan data</strong> jika mesin cache crash sebelum data terdorong ke harddisk DB.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="redis-internals">
+            <h2><i class="fa-solid fa-microchip"></i> 2. Mengapa Redis Begitu Cepat? (100.000+ Operasi/Detik)</h2>
+            <p>
+                Banyak orang bingung mengapa Redis yang <strong>Single-Threaded</strong> bisa jauh lebih cepat daripada database multi-threaded:
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">RAM Murni</div>
+                    <div class="pipeline-step-title">In-Memory Storage</div>
+                    <div class="pipeline-step-desc">Seluruh data disimpan langsung di RAM, mengeliminasi jeda I/O pencarian piringan disk secara permanen.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Tanpa Lock</div>
+                    <div class="pipeline-step-title">Zero Lock Contention</div>
+                    <div class="pipeline-step-desc">Karena single-threaded, Redis tidak membuang siklus CPU untuk mutex locking atau thread context switching!</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Struktur Canggih</div>
+                    <div class="pipeline-step-title">SDS &amp; SkipList</div>
+                    <div class="pipeline-step-desc">Menggunakan Simple Dynamic String (SDS O(1) panjang) dan <strong>SkipList hierarkis</strong> untuk operasi Sorted Set (ZSET) berkecapatan O(log N).</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="cache-stampede">
+            <h2><i class="fa-solid fa-bullhorn"></i> 3. Bahaya Mematikan Cache Stampede (Thundering Herd)</h2>
+            <p>
+                Bayangkan sebuah kunci cache berita viral atau promo kilat diakses <strong>20.000 kali per detik</strong> dengan TTL 10 menit.
+            </p>
+
+            <div class="callout-box callout-pitfall">
+                <div class="callout-header"><i class="fa-solid fa-bomb"></i> Anatomi Bencana Cache Stampede</div>
+                <div class="callout-body">
+                    Tepat pada menit ke 10:00.001, kunci cache tersebut <strong>KADALUARSA (EXPIRED)</strong>:
+                    <br><br>
+                    1. Dalam 10 milidetik berikutnya, 20.000 request pengguna membaca Redis dan semuanya mendapatkan <code>Cache Miss</code>!<br>
+                    2. Seluruh 20.000 proses serentak melakukan query kalkulasi SQL berat yang sama persis ke database utama PostgreSQL!<br>
+                    3. Connection pool database habis seketika, CPU database 100%, server database crash, dan seluruh aplikasi tumbang total!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="xfetch-math">
+            <h2><i class="fa-solid fa-calculator"></i> 4. Matematika Algoritma Probabilistik XFetch</h2>
+            <p>
+                Pada makalah ilmiah ACM <em>"Optimal Probabilistic Cache Stampede Prevention"</em> (Vattani et al.), para peneliti membuktikan bahwa kita tidak membutuhkan distributed lock yang lambat. Cukup gunakan rumus probabilitas eksponensial:
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-square-root-variable"></i> Rumus XFetch</div>
+                <div class="callout-body">
+                    Sebuah request memutuskan untuk <strong>menghitung ulang cache di latar belakang</strong> jika memenuhi syarat:
+                    <br><br>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:1.05rem;background:var(--bg-primary);padding:12px;border-radius:6px;color:var(--brand-light);">
+                        currentTime - (delta * beta * ln(random())) &gt;= expirationTime
+                    </div>
+                    <br>
+                    • <code>delta</code>: Durasi waktu yang dibutuhkan database untuk menghitung nilai ini (misal 50ms).<br>
+                    • <code>beta</code>: Parameter agresivitas (standar <code>1.0</code>).<br>
+                    • <code>random()</code>: Angka acak murni antara 0 dan 1.<br>
+                    • <code>ln(random())</code>: Logaritma natural yang menghasilkan angka negatif acak.<br><br>
+                    <strong>Hasil Brilian:</strong> Saat cache masih baru, probabilitas refresh adalah 0%. Ketika mendekati detik-detik kadaluarsa, probabilitas meningkat secara eksponensial, sehingga <strong>TEPAT SATU request yang beruntung akan memperbarui cache sebelum kunci benar-benar mati</strong>, sementara 19.999 request lainnya tetap membaca cache lama dengan mulus!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="xfetch-code">
+            <h2><i class="fa-solid fa-code"></i> 5. Implementasi XFetch Produksi</h2>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-brands fa-js"></i> utils/xfetchCache.ts</span></div>
+                <pre><code>interface CacheEntry&lt;T&gt; {
+    value: T;
+    delta: number;      // Waktu komputasi dalam milidetik
+    expiresAt: number;  // Timestamp kadaluarsa mutlak
+}
+
+async function getWithXFetch&lt;T&gt;(
+    key: string,
+    ttlMs: number,
+    computeFn: () =&gt; Promise&lt;T&gt;,
+    beta: number = 1.0
+): Promise&lt;T&gt; {
+    const cached = await redis.get&lt;CacheEntry&lt;T&gt;&gt;(key);
+    const now = Date.now();
+
+    // Logika Probabilistik XFetch:
+    const shouldRecompute = !cached || 
+        (now - (cached.delta * beta * Math.log(Math.random())) &gt;= cached.expiresAt);
+
+    if (shouldRecompute) {
+        const start = Date.now();
+        const freshValue = await computeFn();
+        const delta = Date.now() - start;
+
+        const newEntry: CacheEntry&lt;T&gt; = {
+            value: freshValue,
+            delta,
+            expiresAt: Date.now() + ttlMs
+        };
+
+        // Simpan asinkron ke Redis
+        await redis.set(key, newEntry, 'PX', ttlMs + 60000); // Ekstra buffer TTL
+        return freshValue;
+    }
+
+    return cached.value;
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-fire"></i> War Story: Lonjakan Flash Sale 12.12 Merobohkan DB Akibat TTL Seragam</div>
+                <div class="callout-body">
+                    Sebuah platform e-commerce menyetel TTL 1.000.000 produk flash sale tepat <strong>600 detik (10 menit)</strong>.
+                    <br><br>
+                    Ketika flash sale dimulai pukul 00:00, seluruh produk dibaca dan disimpan ke Redis.
+                    <br><br>
+                    <strong>Dampak:</strong> Tepat pada pukul 00:10.00, seluruh 1.000.000 kunci cache <strong>KADALUARSA BERSAMAAN DALAM 1 DETIK YANG SAMA</strong>!
+                    <br><br>
+                    Terjadilah <em>Massive Cache Stampede</em> yang mengirim jutaan query SQL ke database, melumpuhkan seluruh transaksi belanja selama 45 menit!
+                    <br><br>
+                    <strong>Solusi Baku:</strong><br>
+                    1. <strong>Terapkan Cache Jitter:</strong> Setel TTL dinamis: <code>TTL = base_ttl + random(-60, 60)</code>.<br>
+                    2. Gunakan <strong>Algoritma Probabilistik XFetch</strong> untuk seluruh query halaman produk utama!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Caching &amp; XFetch</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Masalah apakah yang diselesaikan secara spesifik oleh Algoritma Probabilistik XFetch dalam sistem cache terdistribusi?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'XFetch tidak mengenkripsi.')">A. Enkripsi data password pengguna di memori</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! XFetch memicu pembaruan cache di latar belakang sebelum kunci expired secara probabilistik, mencegah ribuan request serentak menabrak database (Cache Stampede / Thundering Herd).')">B. Mencegah fenomena Cache Stampede (Thundering Herd) dengan memperbarui cache sebelum kadaluarsa secara probabilistik tanpa distributed lock</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'XFetch bukan untuk format gambar.')">C. Mengompresi ukuran gambar JPEG</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Mengapa Redis yang menggunakan arsitektur Single-Thread Event Loop sanggup melayani lebih dari 100.000 operasi per detik?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Redis tidak memakai GPU.')">A. Karena Redis mengeksekusi kode di chip GPU</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Operasi in-memory RAM kilat, non-blocking I/O multiplexing epoll, dan ketiadaan overhead thread locking/context switching membuat Redis sangat cepat.')">B. Menyimpan data langsung di RAM, menggunakan I/O multiplexing non-blocking (epoll), dan mengeliminasi overhead mutex lock serta thread context-switching</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Single thread tidak membagi beban ke 64 core.')">C. Menjalankan 64 thread paralel di CPU</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="../08_testing_observability/03_sre_resilience_circuit_breaker.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 28: SRE &amp; Resiliency
+            </a>
+            <a href="02_capstone_enterprise_architecture.html" class="btn btn-primary">
+                Lanjut ke Fase 30: Capstone Final Project <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

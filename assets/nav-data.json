@@ -130,12 +130,12 @@
       "id": "caching_capstone",
       "title": "Distributed Caching & Capstone",
       "icon": "fa-solid fa-cloud-bolt",
-      "badge": "Capstone",
-      "badgeColor": "var(--warning)",
+      "badge": "Aktif (2 Modul)",
+      "badgeColor": "var(--success)",
       "description": "Pola caching terdistribusi, Redis internals, mitigasi Cache Stampede via Algoritma XFetch, dan System Design Capstone 100K QPS.",
       "modules": [
-        { "id": "cache_01_redis_xfetch", "title": "1. Distributed Caching, Redis Internals & Algoritma XFetch", "url": "tracks/10_caching_capstone/01_redis_xfetch.html", "status": "planned", "duration": "55m" },
-        { "id": "cache_02_system_design_capstone", "title": "2. Capstone: Rancang Bangun Arsitektur Sistem 100K QPS", "url": "tracks/10_caching_capstone/02_system_design_capstone.html", "status": "planned", "duration": "75m" }
+        { "id": "cache_01_redis_xfetch", "title": "Fase 29: Caching & Algoritma XFetch", "url": "tracks/09_caching_scale/01_distributed_caching_xfetch.html", "status": "ready", "duration": "55m" },
+        { "id": "cache_02_system_design_capstone", "title": "Fase 30: Capstone Enterprise 100K QPS", "url": "tracks/09_caching_scale/02_capstone_enterprise_architecture.html", "status": "ready", "duration": "60m" }
       ]
     }
   ]
