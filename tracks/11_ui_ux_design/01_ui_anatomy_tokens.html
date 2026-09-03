@@ -173,6 +173,31 @@
         @media (max-width: 768px) {
             .demo-split-box { grid-template-columns: 1fr; }
         }
+
+        /* 108 UI Component Encyclopedia Styles */
+        .comp-filter-btn {
+            background: var(--bg-surface-2);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            padding: 5px 12px;
+            border-radius: 99px;
+            font-size: 0.76rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .comp-filter-btn:hover {
+            border-color: var(--brand);
+            color: var(--brand-light);
+        }
+        .comp-filter-btn.active {
+            background: var(--brand);
+            color: #fff;
+            border-color: var(--brand);
+            font-weight: 700;
+        }
+        .comp-table tbody tr:hover {
+            background: rgba(37, 99, 235, 0.05);
+        }
     </style>
 </head>
 <body>
@@ -314,415 +339,1295 @@
             </div>
         </section>
 
-        <!-- Section 2: Taksonomi & Kamus Lengkap 35+ Komponen UI -->
+                <!-- Section 2: Ensiklopedia & Taksonomi 108 Komponen UI Lengkap -->
         <section id="component-taxonomy">
-            <h2><i class="fa-solid fa-cubes"></i> 2. Taksonomi &amp; Kamus Lengkap 35+ Komponen UI</h2>
+            <h2><i class="fa-solid fa-cubes"></i> 2. Ensiklopedia &amp; Taksonomi 108 Komponen UI Lengkap</h2>
             <p>
-                Di industri teknologi profesional, sebuah aplikasi tidak hanya terdiri dari tombol dan input biasa. Berdasarkan standar desain global (*Apple Human Interface Guidelines, Google Material 3, Tailwind UI, Radix UI, Shopify Polaris*), komponen antarmuka diklasifikasikan ke dalam <strong>5 domain fungsional besar</strong>:
+                Di dalam rekayasa desain antarmuka industri modern (*Apple Human Interface Guidelines, Google Material Design 3, Radix UI, Shopify Polaris, Tailwind UI*), tidak ada elemen yang dibuat secara sembarangan. Setiap tombol, kotak input, notifikasi, hingga tata letak memiliki <strong>nama baku, peran fungsi UX, standar aksesibilitas keyboard (WCAG 2.1 AA), dan aturan penempatan</strong>.
+            </p>
+            <p>
+                Berikut adalah <strong>108 Komponen Antarmuka Digital Lengkap</strong> yang diklasifikasikan ke dalam 10 domain fungsional. Gunakan fitur pencarian cepat di bawah ini untuk mencari komponen apa pun seketika:
             </p>
 
-            <!-- KATEGORI 1: NAVIGASI & WAYFINDING -->
-            <h3 style="color:var(--brand-light);margin-top:24px;"><i class="fa-solid fa-compass"></i> Kategori 1: Navigasi &amp; Orientasi (Wayfinding)</h3>
-            <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen yang membantu pengguna mengetahui posisinya saat ini dan berpindah antar-layar tanpa tersesat.</p>
+            <!-- Interactive Search & Category Filter Controls -->
+            <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin:20px 0;box-shadow:0 4px 20px rgba(0,0,0,0.2);">
+                <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;">
+                    <div style="flex:1;position:relative;">
+                        <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:0.9rem;"></i>
+                        <input type="text" id="compSearchInput" placeholder="Cari 108 nama komponen (misal: button, picker, modal, slider, breadcrumb, otp)..." oninput="filterComponents()" style="width:100%;padding:10px 14px 10px 38px;background:var(--bg-surface-2);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text-primary);font-size:0.85rem;outline:none;">
+                    </div>
+                    <span id="compSearchCount" style="font-size:0.8rem;color:var(--brand-light);font-weight:700;white-space:nowrap;">108 Komponen Aktif</span>
+                </div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;" id="compCategoryTabs">
+                    <button class="comp-filter-btn active" onclick="filterCategory('all', this)">Semua (108)</button>
+                    <button class="comp-filter-btn" onclick="filterCategory('cat-nav', this)">Navigasi & Orientasi Pengguna</button>
+                    <button class="comp-filter-btn" onclick="filterCategory('cat-action', this)">Aksi & Pemicu Interaksi</button>
+                    <button class="comp-filter-btn" onclick="filterCategory('cat-form', this)">Kontrol Formulir & Input Teks</button>
+                    <button class="comp-filter-btn" onclick="filterCategory('cat-adv-input', this)">Kontrol Input Khusus & Lanjutan</button>
+                    <button class="comp-filter-btn" onclick="filterCategory('cat-feedback', this)">Umpan Balik, Status & Dialog</button>
+                    <button class="comp-filter-btn" onclick="filterCategory('cat-display', this)">Penyajian Data & Kontainer Konten</button>
+                    <button class="comp-filter-btn" onclick="filterCategory('cat-media', this)">Media, Grafis & Visualisasi</button>
+                    <button class="comp-filter-btn" onclick="filterCategory('cat-search', this)">Filter, Pencarian & Kurasi Data</button>
+                    <button class="comp-filter-btn" onclick="filterCategory('cat-commerce', this)">E-Commerce & Transaksi Finansial</button>
+                    <button class="comp-filter-btn" onclick="filterCategory('cat-util', this)">Utilitas & Interaksi Sistem</button>
+                </div>
+            </div>
 
-            <table class="compare-table">
-                <thead>
-                    <tr>
-                        <th>Nama Komponen</th>
-                        <th>Definisi &amp; Perilaku Antarmuka</th>
-                        <th>Kapan Wajib Digunakan?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Navbar / Top Navigation</strong></td>
-                        <td>Pita menu horizontal di puncak halaman berisi logo brand, tautan utama, dan tombol profil.</td>
-                        <td>Navigasi tingkat paling atas (*root level*) pada aplikasi desktop dan tablet.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Sidebar Accordion</strong></td>
-                        <td>Panel menu samping bertingkat yang dapat dibuka-tutup (*expand/collapse*).</td>
-                        <td>Dashboard aplikasi bisnis yang memiliki lebih dari 15 modul atau sub-menu.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Breadcrumbs</strong></td>
-                        <td>Jejak remah roti horizontal penunjuk hierarki lokasi data (<code>Home &gt; Kategori &gt; Sepatu</code>).</td>
-                        <td>E-commerce atau dokumentasi teknis dengan kedalaman struktur lebih dari 2 lapis.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tabs / Segmented Control</strong></td>
-                        <td>Pengalih tampilan tab dalam satu kontainer tanpa memicu reload halaman web.</td>
-                        <td>Menampilkan data yang saling berkaitan (misal tab *'Deskripsi'*, *'Spesifikasi'*, *'Ulasan'*).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Pagination</strong></td>
-                        <td>Kontrol pemecah daftar data per lembar (<code>&lt; 1 2 3 ... 10 &gt;</code>).</td>
-                        <td>Tabel database besar (misal 5.600 data transaksi) agar query backend ringan dan terukur.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Steppers / Wizard</strong></td>
-                        <td>Indikator langkah berurutan (Langkah 1: Keranjang &gt; 2: Alamat &gt; 3: Pembayaran).</td>
-                        <td>Alur transaksi multi-fase yang membutuhkan data berurutan agar user tidak kewalahan.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Bottom Navigation Bar</strong></td>
-                        <td>Menu tab 4-5 ikon yang menempel di bagian bawah layar smartphone.</td>
-                        <td>Navigasi utama aplikasi mobile agar mudah dijangkau ibu jari (*Natural Thumb Zone*).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Floating Action Button (FAB)</strong></td>
-                        <td>Tombol bulat mengambang di pojok kanan-bawah layar.</td>
-                        <td>Aksi tunggal paling sering digunakan dalam satu layar (contoh: *'Tulis Pesan Baru'*, *'Buat Pesanan'*).</td>
-                    </tr>
-                </tbody>
-            </table>
+            <!-- 1. Navigasi & Orientasi Pengguna (Wayfinding) -->
+            <div class="category-block" id="cat-nav">
+                <h3 style="color:var(--brand-light);margin-top:28px;display:flex;align-items:center;gap:8px;">
+                    <i class="fa-solid fa-compass"></i> 1. Navigasi & Orientasi Pengguna (Wayfinding)
+                </h3>
+                <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen yang memandu pengguna mengetahui posisinya saat ini dan berpindah antar-layar tanpa disorientasi.</p>
 
-            <!-- LIVE BOX: KOMPONEN NAVIGASI -->
+                <table class="compare-table comp-table">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;">No</th>
+                            <th style="width:230px;">Nama Komponen UI</th>
+                            <th>Definisi &amp; Peran Fungsional UX</th>
+                            <th>Best Practice &amp; Aksesibilitas (WCAG)</th>
+                            <th style="width:180px;">Contoh Industri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="comp-row" data-cat="cat-nav" data-name="navbar (top navigation bar) pita horizontal utama di bagian atas viewport berisi brand, menu utama, pencarian, dan profil/cta. header portal tokopedia, stripe, github.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">1</td>
+                            <td><strong>Navbar (Top Navigation Bar)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Pita horizontal utama di bagian atas viewport berisi brand, menu utama, pencarian, dan profil/CTA.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Gunakan position: sticky; top: 0; dengan backdrop blur agar selalu dapat diakses saat scroll.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Header portal Tokopedia, Stripe, GitHub.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-nav" data-name="sidebar navigation (expanded) panel navigasi vertikal (240px-280px) untuk aplikasi dengan banyak modul hirarkis. dashboard aws console, cloudflare, linear.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">2</td>
+                            <td><strong>Sidebar Navigation (Expanded)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Panel navigasi vertikal (240px-280px) untuk aplikasi dengan banyak modul hirarkis.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Kelompokkan menu dengan divider dan label kategori yang jelas (Grouping).</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Dashboard AWS Console, Cloudflare, Linear.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-nav" data-name="navigation rail (collapsed) sidebar ramping (64px) yang hanya menampilkan ikon vertikal untuk menghemat ruang kanvas kerja. vs code sidebar, figma toolbar, slack workspace switcher.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">3</td>
+                            <td><strong>Navigation Rail (Collapsed)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Sidebar ramping (64px) yang hanya menampilkan ikon vertikal untuk menghemat ruang kanvas kerja.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Wajib berikan tooltip pada hover agar arti ikon tetap jelas bagi pengguna baru.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">VS Code sidebar, Figma toolbar, Slack workspace switcher.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-nav" data-name="breadcrumbs jejak remah roti horizontal penunjuk hierarki lokasi data (home > kategori > sepatu). halaman produk amazon, dokumentasi mdn web docs.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">4</td>
+                            <td><strong>Breadcrumbs</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Jejak remah roti horizontal penunjuk hierarki lokasi data (Home > Kategori > Sepatu).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Gunakan pemisah non-teks atau panah halus dan beri atribut aria-current="page" pada item terakhir.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Halaman produk Amazon, dokumentasi MDN Web Docs.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-nav" data-name="tabs (segmented control) pengalih konten selevel dalam satu kontainer viewport tanpa reload halaman. tab 'overview' / 'pull requests' di github.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">5</td>
+                            <td><strong>Tabs (Segmented Control)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Pengalih konten selevel dalam satu kontainer viewport tanpa reload halaman.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Gunakan role="tablist", role="tab", dan aria-selected="true" untuk aksesibilitas.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Tab 'Overview' / 'Pull Requests' di GitHub.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-nav" data-name="pagination kontrol pemecah daftar data per lembar (< 1 2 3 ... 10 >) dengan tombol previous/next. hasil pencarian google search, daftar transaksi bank.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">6</td>
+                            <td><strong>Pagination</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kontrol pemecah daftar data per lembar (< 1 2 3 ... 10 >) dengan tombol previous/next.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tampilkan jumlah total baris/halaman agar pengguna tahu estimasi volume data.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Hasil pencarian Google Search, daftar transaksi bank.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-nav" data-name="infinite scroll loader pemicu pemuatan data otomatis saat pengguna scroll mendekati batas bawah kanvas. feed twitter/x, instagram, pinterest.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">7</td>
+                            <td><strong>Infinite Scroll Loader</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Pemicu pemuatan data otomatis saat pengguna scroll mendekati batas bawah kanvas.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Berikan opsi 'Kembali ke Atas' dan jangan tempatkan tautan footer penting di bawahnya.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Feed Twitter/X, Instagram, Pinterest.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-nav" data-name="stepper / wizard indikator langkah berurutan (langkah 1: akun > 2: alamat > 3: pembayaran). checkout belanja shopee, pendaftaran akun bank digital.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">8</td>
+                            <td><strong>Stepper / Wizard</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Indikator langkah berurutan (Langkah 1: Akun > 2: Alamat > 3: Pembayaran).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Beri tahu status tiap langkah (Done, Active, Pending) dan simpan draf jika alur panjang.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Checkout belanja Shopee, pendaftaran akun bank digital.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-nav" data-name="bottom navigation bar menu navigasi 3-5 ikon yang menempel di bagian bawah layar smartphone. aplikasi mobile gojek, spotify, youtube.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">9</td>
+                            <td><strong>Bottom Navigation Bar</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Menu navigasi 3-5 ikon yang menempel di bagian bawah layar smartphone.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Prioritaskan ikon yang paling sering diakses ibu jari (Natural Thumb Zone).</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Aplikasi mobile Gojek, Spotify, YouTube.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-nav" data-name="floating action button (fab) tombol bulat melayang di pojok kanan-bawah layar pemicu aksi tunggal terpenting. tombol 'tulis email baru' di aplikasi gmail mobile.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">10</td>
+                            <td><strong>Floating Action Button (FAB)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tombol bulat melayang di pojok kanan-bawah layar pemicu aksi tunggal terpenting.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Hanya boleh 1 FAB utama per layar agar tidak membingungkan hirarki aksi.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Tombol 'Tulis Email Baru' di aplikasi Gmail mobile.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-nav" data-name="speed dial (expandable fab) fab yang merekah mengeluarkan beberapa sub-tombol aksi terkait saat ditekan. google maps mobile (laporkan kejadian, cari tempat).">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">11</td>
+                            <td><strong>Speed Dial (Expandable FAB)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">FAB yang merekah mengeluarkan beberapa sub-tombol aksi terkait saat ditekan.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Beri animasi rotasi 45 derajat pada ikon utama saat menu terbuka.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Google Maps mobile (Laporkan Kejadian, Cari Tempat).</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-nav" data-name="skip to content link tautan tersembunyi yang muncul saat tombol tab pertama kali ditekan untuk bypass navbar. standar website pemerintahan dan enterprise aksesibel.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">12</td>
+                            <td><strong>Skip to Content Link</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tautan tersembunyi yang muncul saat tombol Tab pertama kali ditekan untuk bypass navbar.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Wajib di setiap situs standar WCAG 2.1 AA untuk pengguna navigasi keyboard.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Standar website pemerintahan dan enterprise aksesibel.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-nav" data-name="mega menu dropdown lebar multi-kolom yang memuat seluruh katalog kategori besar sekaligus. menu kategori tokopedia, bestbuy, ikea.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">13</td>
+                            <td><strong>Mega Menu</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Dropdown lebar multi-kolom yang memuat seluruh katalog kategori besar sekaligus.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Beri sedikit delay (150ms) pada mouseleave agar dropdown tidak tiba-tiba tertutup.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Menu kategori Tokopedia, BestBuy, Ikea.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-nav" data-name="tree view struktur direktori pohon bertingkat yang dapat dibuka dan ditutup (expand/collapse). file explorer vs code, folder google drive.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">14</td>
+                            <td><strong>Tree View</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Struktur direktori pohon bertingkat yang dapat dibuka dan ditutup (expand/collapse).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Dukung navigasi panah keyboard (ArrowUp, ArrowDown, ArrowRight/Left).</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">File explorer VS Code, folder Google Drive.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-nav" data-name="anchor navigation (table of contents) daftar navigasi cepat ke heading-heading spesifik di dalam satu artikel panjang. sidebar kanan dokumentasi stripe, wikipedia, tailwind css.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">15</td>
+                            <td><strong>Anchor Navigation (Table of Contents)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Daftar navigasi cepat ke heading-heading spesifik di dalam satu artikel panjang.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Pasangkan dengan IntersectionObserver (Scrollspy) untuk menandai heading yang sedang dibaca.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Sidebar kanan dokumentasi Stripe, Wikipedia, Tailwind CSS.</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
             <div class="live-preview-box">
                 <div class="live-preview-header">
-                    <div class="live-preview-title"><i class="fa-solid fa-compass" style="color:var(--brand);"></i> Contoh UI Nyata: Komponen Navigasi &amp; Orientasi</div>
-                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);"><i class="fa-solid fa-eye"></i> Live Interactive</span>
+                    <div class="live-preview-title"><i class="fa-solid fa-compass" style="color:var(--brand);"></i> Live Showcase: Navigasi & Wayfinding</div>
+                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);">15 Komponen</span>
                 </div>
-
-                <div style="display:flex;flex-direction:column;gap:14px;">
-                    <!-- Breadcrumbs -->
-                    <div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text-muted);background:var(--bg-surface-2);padding:8px 14px;border-radius:var(--r-sm);border:1px solid var(--border);">
-                        <span><i class="fa-solid fa-house"></i> Home</span>
-                        <i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i>
-                        <span>Katalog Elektronik</span>
-                        <i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i>
-                        <span style="color:var(--brand-light);font-weight:700;">MacBook Pro M3 Max</span>
-                    </div>
-
-                    <!-- Segmented Tabs -->
-                    <div style="display:inline-flex;background:var(--bg-surface-2);padding:4px;border-radius:var(--r-sm);border:1px solid var(--border);max-width:360px;">
-                        <button style="background:var(--brand);color:#fff;border:none;padding:6px 14px;border-radius:4px;font-size:0.78rem;font-weight:600;cursor:pointer;">Semua Transaksi</button>
-                        <button style="background:transparent;color:var(--text-secondary);border:none;padding:6px 14px;font-size:0.78rem;cursor:pointer;">Sukses (4.820)</button>
-                        <button style="background:transparent;color:var(--text-secondary);border:none;padding:6px 14px;font-size:0.78rem;cursor:pointer;">Pending (38)</button>
-                    </div>
-
-                    <!-- Stepper Wizard -->
-                    <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg-surface-2);padding:14px 20px;border-radius:var(--r-sm);border:1px solid var(--border);">
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <span style="width:24px;height:24px;background:var(--success);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;"><i class="fa-solid fa-check"></i></span>
-                            <span style="font-size:0.8rem;font-weight:600;color:var(--text-primary);">1. Keranjang</span>
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                    <!-- Breadcrumbs & Segmented Tabs -->
+                    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;background:var(--bg-surface-2);padding:10px 14px;border-radius:var(--r-sm);border:1px solid var(--border);">
+                        <div style="font-size:0.8rem;color:var(--text-muted);display:flex;align-items:center;gap:6px;">
+                            <span><i class="fa-solid fa-house"></i> Home</span>
+                            <i class="fa-solid fa-chevron-right" style="font-size:0.65rem;"></i>
+                            <span>Server Infra</span>
+                            <i class="fa-solid fa-chevron-right" style="font-size:0.65rem;"></i>
+                            <strong style="color:var(--brand-light);">PostgreSQL Cluster</strong>
                         </div>
-                        <div style="flex:1;height:2px;background:var(--success);margin:0 12px;"></div>
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <span style="width:24px;height:24px;background:var(--brand);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;">2</span>
-                            <span style="font-size:0.8rem;font-weight:700;color:var(--brand-light);">2. Pengiriman</span>
+                        <div style="display:inline-flex;background:var(--bg-surface);padding:3px;border-radius:6px;border:1px solid var(--border);">
+                            <button style="background:var(--brand);color:#fff;border:none;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">Overview</button>
+                            <button style="background:transparent;color:var(--text-secondary);border:none;padding:4px 10px;font-size:0.75rem;cursor:pointer;">Metrics</button>
+                            <button style="background:transparent;color:var(--text-secondary);border:none;padding:4px 10px;font-size:0.75rem;cursor:pointer;">Logs</button>
                         </div>
-                        <div style="flex:1;height:2px;background:var(--border);margin:0 12px;"></div>
-                        <div style="display:flex;align-items:center;gap:8px;opacity:0.5;">
-                            <span style="width:24px;height:24px;background:var(--bg-surface);color:var(--text-muted);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;">3</span>
-                            <span style="font-size:0.8rem;color:var(--text-muted);">3. Pembayaran</span>
+                    </div>
+                    <!-- Stepper & Pagination -->
+                    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;background:var(--bg-surface-2);padding:10px 14px;border-radius:var(--r-sm);border:1px solid var(--border);">
+                        <div style="display:flex;align-items:center;gap:8px;font-size:0.78rem;">
+                            <span style="background:var(--success);color:#fff;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;"><i class="fa-solid fa-check"></i></span>
+                            <span style="color:var(--text-primary);font-weight:600;">1. Inisialisasi</span>
+                            <i class="fa-solid fa-arrow-right" style="font-size:0.7rem;color:var(--text-muted);"></i>
+                            <span style="background:var(--brand);color:#fff;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;">2</span>
+                            <span style="color:var(--brand-light);font-weight:700;">2. Konfigurasi</span>
+                        </div>
+                        <div style="display:flex;gap:4px;font-size:0.75rem;">
+                            <button style="background:var(--bg-surface);color:var(--text-secondary);border:1px solid var(--border);padding:3px 8px;border-radius:4px;cursor:pointer;"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button style="background:var(--brand);color:#fff;border:none;padding:3px 8px;border-radius:4px;cursor:pointer;">1</button>
+                            <button style="background:var(--bg-surface);color:var(--text-secondary);border:1px solid var(--border);padding:3px 8px;border-radius:4px;cursor:pointer;">2</button>
+                            <button style="background:var(--bg-surface);color:var(--text-secondary);border:1px solid var(--border);padding:3px 8px;border-radius:4px;cursor:pointer;">3</button>
+                            <button style="background:var(--bg-surface);color:var(--text-secondary);border:1px solid var(--border);padding:3px 8px;border-radius:4px;cursor:pointer;"><i class="fa-solid fa-chevron-right"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
+        
+            </div>
 
-            <!-- KATEGORI 2: AKSI & PEMICU INTERAKSI -->
-            <h3 style="color:var(--brand-light);margin-top:28px;"><i class="fa-solid fa-play"></i> Kategori 2: Aksi &amp; Pemicu Interaksi (Actions &amp; Triggers)</h3>
-            <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen yang dieksekusi pengguna untuk mengirimkan perintah atau mengubah kondisi sistem.</p>
+            <!-- 2. Aksi & Pemicu Interaksi (Actions & Triggers) -->
+            <div class="category-block" id="cat-action">
+                <h3 style="color:var(--brand-light);margin-top:28px;display:flex;align-items:center;gap:8px;">
+                    <i class="fa-solid fa-play"></i> 2. Aksi & Pemicu Interaksi (Actions & Triggers)
+                </h3>
+                <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen yang diaktifkan pengguna untuk mengeksekusi fungsi, submit data, atau mengubah state sistem.</p>
 
-            <table class="compare-table">
-                <thead>
-                    <tr>
-                        <th>Tipe Tombol</th>
-                        <th>Karakter Visual</th>
-                        <th>Aturan Penggunaan Industri</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Primary Button</strong></td>
-                        <td>Solid warna brand (`#2563EB`) teks kontras tinggi putih.</td>
-                        <td>Hanya 1 per layar utama untuk aksi konversi paling krusial (*'Bayar Sekarang'*, *'Daftar'*).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Secondary Button</strong></td>
-                        <td>Latar netral lembut (`var(--bg-surface-2)`) berbingkai tipis.</td>
-                        <td>Aksi pendukung penting yang tidak menyelesaikan alur (*'Simpan Draf'*, *'Lihat Preview'*).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Outline Button</strong></td>
-                        <td>Transparan dengan garis tepi (*stroke*) sewarna tema.</td>
-                        <td>Tombol aksi sekunder, filter pencarian, atau navigasi pagination.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ghost / Text Button</strong></td>
-                        <td>Hanya teks tanpa bingkai; background baru muncul saat kursor hover.</td>
-                        <td>Aksi netral ringan (*'Batal'*, *'Tutup'*, *'Lewati Langkah'*).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Destructive / Danger Button</strong></td>
-                        <td>Warna merah terang (`#EF4444`).</td>
-                        <td>Aksi permanen berisiko tinggi (*'Hapus Database'*, *'Keluar Akun'*).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Icon Button</strong></td>
-                        <td>Bentuk 40x40px hanya berisi simbol ikon grafis.</td>
-                        <td>Bilah toolbar sempit. Wajib menyertakan atribut aksesibilitas <code>aria-label</code>.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Split / Dropdown Button</strong></td>
-                        <td>Tombol terbelah (klik kiri = aksi cepat, klik kanan panah = menu opsi).</td>
-                        <td>Aksi majemuk (contoh: *'Publikasikan'* vs *'Jadwalkan Besok'*).</td>
-                    </tr>
-                </tbody>
-            </table>
+                <table class="compare-table comp-table">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;">No</th>
+                            <th style="width:230px;">Nama Komponen UI</th>
+                            <th>Definisi &amp; Peran Fungsional UX</th>
+                            <th>Best Practice &amp; Aksesibilitas (WCAG)</th>
+                            <th style="width:180px;">Contoh Industri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="comp-row" data-cat="cat-action" data-name="primary button tombol kontras tertinggi penentu aksi konversi terpenting dalam layar. 'beli sekarang', 'daftar akun', 'simpan perubahan'.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">16</td>
+                            <td><strong>Primary Button</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tombol kontras tertinggi penentu aksi konversi terpenting dalam layar.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Gunakan maksimal 1 tombol primer per viewport aktif untuk mencegah keraguan klik.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">'Beli Sekarang', 'Daftar Akun', 'Simpan Perubahan'.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-action" data-name="secondary button tombol netral berbingkai tipis untuk aksi pendukung yang tidak menyelesaikan alur. 'simpan draf', 'lihat preview', 'kembali'.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">17</td>
+                            <td><strong>Secondary Button</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tombol netral berbingkai tipis untuk aksi pendukung yang tidak menyelesaikan alur.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Jangan gunakan warna mencolok; cukup warna netral surface dengan border kontras sedang.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">'Simpan Draf', 'Lihat Preview', 'Kembali'.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-action" data-name="outline button tombol transparan dengan garis tepi halus sewarna tema brand. filter chip, navigasi halaman katalog.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">18</td>
+                            <td><strong>Outline Button</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tombol transparan dengan garis tepi halus sewarna tema brand.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Sangat baik untuk tombol aksi tingkat kedua di sebelah tombol primer.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Filter chip, navigasi halaman katalog.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-action" data-name="ghost / text button tombol tanpa batas fisik; background hanya muncul saat kursor mouse hover. 'batal', 'tutup', 'lewati langkah ini'.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">19</td>
+                            <td><strong>Ghost / Text Button</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tombol tanpa batas fisik; background hanya muncul saat kursor mouse hover.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Gunakan untuk aksi netral yang tidak memerlukan perhatian tinggi.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">'Batal', 'Tutup', 'Lewati Langkah Ini'.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-action" data-name="destructive / danger button tombol peringatan berwarna merah terang (#ef4444) untuk aksi berisiko fatal. 'hapus database', 'batalkan langganan'.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">20</td>
+                            <td><strong>Destructive / Danger Button</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tombol peringatan berwarna merah terang (#EF4444) untuk aksi berisiko fatal.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Wajib pasangkan dengan dialog konfirmasi sebelum eksekusi berjalan.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">'Hapus Database', 'Batalkan Langganan'.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-action" data-name="icon button tombol kotak kompak hanya berisi simbol grafis (misal: tombol sampah, pensil, bookmark). toolbar editor teks, tombol favorit di kartu produk.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">21</td>
+                            <td><strong>Icon Button</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tombol kotak kompak hanya berisi simbol grafis (misal: tombol sampah, pensil, bookmark).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Wajib sertakan atribut aria-label untuk aksesibilitas screen reader.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Toolbar editor teks, tombol favorit di kartu produk.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-action" data-name="split / dropdown button tombol terbelah dua (klik kiri = eksekusi cepat, klik panah kanan = daftar opsi). 'publikasikan sekarang' vs 'jadwalkan besok'.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">22</td>
+                            <td><strong>Split / Dropdown Button</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tombol terbelah dua (klik kiri = eksekusi cepat, klik panah kanan = daftar opsi).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Ideal untuk fitur dengan satu aksi default populer dan beberapa alternatif.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">'Publikasikan Sekarang' vs 'Jadwalkan Besok'.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-action" data-name="floating action bar (bulk bar) bilah aksi melayang yang muncul saat beberapa baris data dalam tabel dipilih. aksi centang batch di gmail atau dashboard admin.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">23</td>
+                            <td><strong>Floating Action Bar (Bulk Bar)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Bilah aksi melayang yang muncul saat beberapa baris data dalam tabel dipilih.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tampilkan jumlah item terpilih dan aksi massal (Hapus Semua, Export, Tandai Selesai).</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Aksi centang batch di Gmail atau dashboard admin.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-action" data-name="toggle button tombol yang mempertahankan status ditekan/aktif (stateful button). tombol bold, italic, strikethrough di word/docs.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">24</td>
+                            <td><strong>Toggle Button</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tombol yang mempertahankan status ditekan/aktif (stateful button).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Gunakan aria-pressed="true/false" untuk mengabari screen reader status penekanan.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Tombol Bold, Italic, Strikethrough di Word/Docs.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-action" data-name="copy-to-clipboard button tombol penyalin teks/api key otomatis dengan perubahan ikon ke centang hijau. salin kode curl di dokumentasi developer api.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">25</td>
+                            <td><strong>Copy-to-Clipboard Button</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tombol penyalin teks/API key otomatis dengan perubahan ikon ke centang hijau.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Ganti teks/ikon sementara selama 2 detik ke 'Tersalin!' agar pengguna yakin aksi berhasil.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Salin kode cURL di dokumentasi developer API.</span></td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            <!-- KATEGORI 3: FORM CONTROLS & INPUT DATA -->
-            <h3 style="color:var(--brand-light);margin-top:28px;"><i class="fa-solid fa-pen-to-square"></i> Kategori 3: Kontrol Formulir &amp; Input Data (Form Controls)</h3>
-            <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen penangkap input teks, pilihan numerik, tanggal, dan berkas dari pengguna.</p>
-
-            <table class="compare-table">
-                <thead>
-                    <tr>
-                        <th>Kontrol Input</th>
-                        <th>Fungsi Spesifik</th>
-                        <th>Contoh Skenario Nyata</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Text Input (Single Line)</strong></td>
-                        <td>Masukan teks pendek 1 baris.</td>
-                        <td>Nama lengkap pelanggan, alamat email, kode kupon diskon.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Password Field</strong></td>
-                        <td>Teks tersensor titik dengan tombol mata (*toggle show/hide*).</td>
-                        <td>Formulir login dan pembuatan kata sandi baru.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Textarea (Multi Line)</strong></td>
-                        <td>Kotak teks luas yang dapat di-scroll atau resize.</td>
-                        <td>Catatan kurir pengiriman, ulasan testimoni pembeli produk.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Select / Dropdown</strong></td>
-                        <td>Pemilih 1 opsi dari daftar tersembunyi yang hemat ruang layar.</td>
-                        <td>Pilihan Provinsi pengiriman, pilihan metode kurir ekspedisi.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Combobox / Autocomplete</strong></td>
-                        <td>Kotak ketik dengan pencarian in-memory dinamis.</td>
-                        <td>Pencarian nama kecamatan / kelurahan dari 80.000+ data wilayah.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Checkbox</strong></td>
-                        <td>Pemilih multi-pilihan (bisa memilih 0, 1, atau banyak opsi sekaligus).</td>
-                        <td>Pilihan filter produk: [x] Gratis Ongkir [x] Bintang 4+ [x] COD.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Radio Button</strong></td>
-                        <td>Pemilih opsi tunggal mutlak yang mutually exclusive.</td>
-                        <td>Pilihan metode pembayaran: (o) QRIS ( ) Transfer Bank ( ) COD.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Toggle Switch</strong></td>
-                        <td>Saklar geser on/off instan tanpa perlu tombol 'Simpan'.</td>
-                        <td>Pengaturan sistem: Aktifkan Mode Gelap, Nyalakan Notifikasi Push.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Range Slider</strong></td>
-                        <td>Penggeser nilai numerik kontinu.</td>
-                        <td>Filter rentang harga: Rp 50.000 s/d Rp 2.500.000.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>OTP / Pin Input</strong></td>
-                        <td>Deretan 4-6 kotak kecil terpisah yang otomatis lompat ke kotak berikutnya.</td>
-                        <td>Verifikasi keamanan 2FA SMS/WhatsApp kode OTP.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>File Dropzone</strong></td>
-                        <td>Area drag-and-drop berkas dokumen atau gambar.</td>
-                        <td>Unggah bukti transfer pembayaran atau foto KTP verifikasi.</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <!-- LIVE BOX: FORM CONTROLS SHOWCASE -->
+                
             <div class="live-preview-box">
                 <div class="live-preview-header">
-                    <div class="live-preview-title"><i class="fa-solid fa-pen-to-square" style="color:var(--brand);"></i> Contoh UI Nyata: Ragam Kontrol Formulir Modern</div>
-                    <span class="badge" style="background:rgba(16,185,129,0.15);color:var(--success);"><i class="fa-solid fa-check"></i> Interactive Form</span>
+                    <div class="live-preview-title"><i class="fa-solid fa-play" style="color:var(--brand);"></i> Live Showcase: Aksi & Pemicu Interaksi</div>
+                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);">10 Komponen</span>
                 </div>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+                    <button class="btn-ui btn-ui-primary"><i class="fa-solid fa-bolt"></i> Primary</button>
+                    <button class="btn-ui btn-ui-secondary"><i class="fa-solid fa-floppy-disk"></i> Secondary</button>
+                    <button class="btn-ui btn-ui-outline"><i class="fa-solid fa-sliders"></i> Outline</button>
+                    <button class="btn-ui btn-ui-ghost"><i class="fa-solid fa-xmark"></i> Ghost</button>
+                    <button class="btn-ui btn-ui-danger"><i class="fa-solid fa-trash-can"></i> Danger</button>
+                    <button class="btn-ui btn-ui-icon" title="Bookmark"><i class="fa-solid fa-bookmark"></i></button>
+                    <button style="background:var(--bg-surface-2);color:var(--brand-light);border:1px solid var(--border);padding:6px 12px;border-radius:6px;font-size:0.78rem;cursor:pointer;display:flex;align-items:center;gap:6px;">
+                        <i class="fa-regular fa-copy"></i> Salin Token API
+                    </button>
+                </div>
+            </div>
+        
+            </div>
 
-                <div class="form-control-row">
+            <!-- 3. Kontrol Formulir & Input Teks (Form Controls) -->
+            <div class="category-block" id="cat-form">
+                <h3 style="color:var(--brand-light);margin-top:28px;display:flex;align-items:center;gap:8px;">
+                    <i class="fa-solid fa-pen-to-square"></i> 3. Kontrol Formulir & Input Teks (Form Controls)
+                </h3>
+                <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen penangkap input data teks, pilihan numerik, tanggal, dan berkas dari pengguna.</p>
+
+                <table class="compare-table comp-table">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;">No</th>
+                            <th style="width:230px;">Nama Komponen UI</th>
+                            <th>Definisi &amp; Peran Fungsional UX</th>
+                            <th>Best Practice &amp; Aksesibilitas (WCAG)</th>
+                            <th style="width:180px;">Contoh Industri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="comp-row" data-cat="cat-form" data-name="single-line text input kotak isian teks dasar 1 baris untuk nama, email, atau username. form pendaftaran nama akun pengguna.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">26</td>
+                            <td><strong>Single-line Text Input</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kotak isian teks dasar 1 baris untuk nama, email, atau username.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Selalu sertakan label eksplisit di atas input dan placeholder deskriptif.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Form pendaftaran nama akun pengguna.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="password input with eye toggle input kata sandi tersensor dengan ikon mata pengalih visibilitas teks. layar login semua aplikasi modern.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">27</td>
+                            <td><strong>Password Input with Eye Toggle</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Input kata sandi tersensor dengan ikon mata pengalih visibilitas teks.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Bantu kurangi eror typo pengguna tanpa mengorbankan keamanan di tempat umum.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Layar login semua aplikasi modern.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="textarea (multi-line input) area isian teks luas dengan tinggi otomatis atau pegangan resize vertikal. form ulasan produk, kotak pesan pengaduan.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">28</td>
+                            <td><strong>Textarea (Multi-line Input)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Area isian teks luas dengan tinggi otomatis atau pegangan resize vertikal.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Sertakan indikator penghitung sisa karakter (misal: 140/500 kata).</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Form ulasan produk, kotak pesan pengaduan.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="search input with clear button kolom pencarian dengan ikon kaca pembesar dan tombol 'x' pembersih teks instan. kolom pencarian e-commerce atau filter tabel.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">29</td>
+                            <td><strong>Search Input with Clear Button</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kolom pencarian dengan ikon kaca pembesar dan tombol 'x' pembersih teks instan.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Pasangkan debounce timer (300ms) pada pemanggilan query API pencarian.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Kolom pencarian e-commerce atau filter tabel.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="number stepper input kotak angka dengan tombol plus dan minus (+ / -) untuk menambah kuantitas. jumlah kuantitas barang di keranjang belanja.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">30</td>
+                            <td><strong>Number Stepper Input</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kotak angka dengan tombol plus dan minus (+ / -) untuk menambah kuantitas.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Cegah angka menjadi negatif atau melebihi stok gudang yang tersedia.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Jumlah kuantitas barang di keranjang belanja.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="select / dropdown menu menu pemilih 1 opsi dari daftar tersembunyi yang hemat ruang vertikal. pilihan nama provinsi atau opsi pengiriman.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">31</td>
+                            <td><strong>Select / Dropdown Menu</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Menu pemilih 1 opsi dari daftar tersembunyi yang hemat ruang vertikal.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Gunakan untuk opsi antara 5 hingga 15 item; di bawah 5 item lebih baik Radio Button.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Pilihan nama Provinsi atau opsi pengiriman.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="multi-select dropdown dropdown yang memungkinkan memilih lebih dari satu opsi sekaligus berbentuk tag. filter multi-kategori produk e-commerce.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">32</td>
+                            <td><strong>Multi-Select Dropdown</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Dropdown yang memungkinkan memilih lebih dari satu opsi sekaligus berbentuk tag.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Beri tombol 'Pilih Semua' dan 'Hapus Semua' jika opsinya panjang.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Filter multi-kategori produk e-commerce.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="combobox / autocomplete input teks dengan pencarian dinamis yang menyaring ribuan opsi saat diketik. pencarian kota bandara tiket pesawat (cgk, sub, dps).">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">33</td>
+                            <td><strong>Combobox / Autocomplete</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Input teks dengan pencarian dinamis yang menyaring ribuan opsi saat diketik.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tampilkan highlight tebal pada karakter huruf yang cocok dengan ketikan user.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Pencarian kota bandara tiket pesawat (CGK, SUB, DPS).</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="checkbox kotak centang untuk pilihan majemuk mandiri atau grup multi-opsi. syarat & ketentuan [x], filter fitur e-commerce.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">34</td>
+                            <td><strong>Checkbox</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kotak centang untuk pilihan majemuk mandiri atau grup multi-opsi.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Teks label harus bisa diklik untuk mencentang kotak (bungkus dengan label for).</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Syarat & Ketentuan [x], filter fitur e-commerce.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="radio button lingkaran pemilih opsi tunggal mutlak yang saling meniadakan (mutually exclusive). pilihan jenis kelamin (pria/wanita), metode pembayaran.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">35</td>
+                            <td><strong>Radio Button</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Lingkaran pemilih opsi tunggal mutlak yang saling meniadakan (mutually exclusive).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Harus selalu ada 1 opsi default yang tercentang sejak awal layar dimuat.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Pilihan Jenis Kelamin (Pria/Wanita), metode pembayaran.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="toggle switch saklar geser on/off instan untuk preferensi sistem tanpa butuh tombol simpan. pengaturan privasi akun di menu settings.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">36</td>
+                            <td><strong>Toggle Switch</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Saklar geser on/off instan untuk preferensi sistem tanpa butuh tombol simpan.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Hanya gunakan untuk perubahan state langsung (misal: Nyalakan Wifi, Mode Gelap).</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Pengaturan privasi akun di menu Settings.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="range slider penggeser nilai batas numerik kontinu pada track garis horizontal. pengatur volume suara atau kecerahan layar monitor.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">37</td>
+                            <td><strong>Range Slider</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Penggeser nilai batas numerik kontinu pada track garis horizontal.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tampilkan nilai angka yang sedang aktif tepat di atas pegangan geser (thumb).</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Pengatur volume suara atau kecerahan layar monitor.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="dual handle range slider slider dengan 2 titik pegangan untuk menentukan nilai rentang minimum dan maksimum. filter harga barang: rp 100.000 s/d rp 2.500.000.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">38</td>
+                            <td><strong>Dual Handle Range Slider</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Slider dengan 2 titik pegangan untuk menentukan nilai rentang minimum dan maksimum.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Cegah handle kiri melewati handle kanan agar nilai min tidak lebih besar dari max.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Filter harga barang: Rp 100.000 s/d Rp 2.500.000.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="date picker kalender pop-up pemilih tanggal hari, bulan, dan tahun. input tanggal lahir atau tanggal reservasi.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">39</td>
+                            <td><strong>Date Picker</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kalender pop-up pemilih tanggal hari, bulan, dan tahun.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Dukung input ketik manual via keyboard selain klik kalender visual.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Input tanggal lahir atau tanggal reservasi.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="date range picker kalender pemilih rentang dua tanggal (mulai s/d selesai). pemesanan kamar hotel (check-in & check-out).">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">40</td>
+                            <td><strong>Date Range Picker</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kalender pemilih rentang dua tanggal (mulai s/d selesai).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Beri warna sorotan lembut pada rentang hari yang berada di antara kedua tanggal.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Pemesanan kamar hotel (Check-in & Check-out).</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="time picker pemilih jam dan menit digital atau jam putar analog jarum jam. jadwal temu janji dokter atau reservasi restoran.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">41</td>
+                            <td><strong>Time Picker</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Pemilih jam dan menit digital atau jam putar analog jarum jam.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tampilkan format 24 jam atau AM/PM yang konsisten dengan preferensi regional.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Jadwal temu janji dokter atau reservasi restoran.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="file dropzone area seret-lepas berkas dokumen atau foto dengan validasi format dan ukuran. unggah dokumen kyc ktp atau bukti transfer struk bank.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">42</td>
+                            <td><strong>File Dropzone</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Area seret-lepas berkas dokumen atau foto dengan validasi format dan ukuran.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tampilkan daftar ekstensi yang didukung (.pdf, .png maks 5MB) dan progress upload.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Unggah dokumen KYC KTP atau bukti transfer struk bank.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-form" data-name="otp / pin input deretan 4-6 kotak kecil terpisah yang otomatis lompat fokus ke kotak selanjutnya. verifikasi kode login whatsapp atau transaksi perbankan.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">43</td>
+                            <td><strong>OTP / PIN Input</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Deretan 4-6 kotak kecil terpisah yang otomatis lompat fokus ke kotak selanjutnya.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Dukung auto-paste clipboard satu klik dan fitur SMS auto-fill di mobile.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Verifikasi kode login WhatsApp atau transaksi perbankan.</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
+            <div class="live-preview-box">
+                <div class="live-preview-header">
+                    <div class="live-preview-title"><i class="fa-solid fa-pen-to-square" style="color:var(--brand);"></i> Live Showcase: Kontrol Formulir & Input</div>
+                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);">18 Komponen</span>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:14px;">
                     <!-- OTP Input -->
-                    <div class="form-field">
-                        <label class="form-label"><i class="fa-solid fa-shield-halved"></i> Kode OTP 4-Digit</label>
-                        <div style="display:flex;gap:8px;">
-                            <input type="text" maxlength="1" value="7" style="width:38px;height:42px;text-align:center;font-size:1.1rem;font-weight:700;background:var(--bg-surface-2);border:1px solid var(--brand);color:#fff;border-radius:6px;outline:none;">
-                            <input type="text" maxlength="1" value="4" style="width:38px;height:42px;text-align:center;font-size:1.1rem;font-weight:700;background:var(--bg-surface-2);border:1px solid var(--brand);color:#fff;border-radius:6px;outline:none;">
-                            <input type="text" maxlength="1" value="9" style="width:38px;height:42px;text-align:center;font-size:1.1rem;font-weight:700;background:var(--bg-surface-2);border:1px solid var(--brand);color:#fff;border-radius:6px;outline:none;">
-                            <input type="text" maxlength="1" value="" placeholder="•" style="width:38px;height:42px;text-align:center;font-size:1.1rem;font-weight:700;background:var(--bg-surface-2);border:1px solid var(--border);color:#fff;border-radius:6px;outline:none;">
+                    <div style="background:var(--bg-surface-2);padding:12px;border-radius:6px;border:1px solid var(--border);">
+                        <label style="font-size:0.75rem;font-weight:700;color:var(--text-secondary);display:block;margin-bottom:6px;">OTP 4-Digit:</label>
+                        <div style="display:flex;gap:6px;">
+                            <input type="text" maxlength="1" value="8" style="width:34px;height:38px;text-align:center;background:var(--bg-surface);border:1px solid var(--brand);color:#fff;border-radius:4px;font-weight:700;">
+                            <input type="text" maxlength="1" value="2" style="width:34px;height:38px;text-align:center;background:var(--bg-surface);border:1px solid var(--brand);color:#fff;border-radius:4px;font-weight:700;">
+                            <input type="text" maxlength="1" value="5" style="width:34px;height:38px;text-align:center;background:var(--bg-surface);border:1px solid var(--brand);color:#fff;border-radius:4px;font-weight:700;">
+                            <input type="text" maxlength="1" placeholder="•" style="width:34px;height:38px;text-align:center;background:var(--bg-surface);border:1px solid var(--border);color:#fff;border-radius:4px;font-weight:700;">
                         </div>
                     </div>
-
-                    <!-- Range Slider -->
-                    <div class="form-field">
-                        <div style="display:flex;justify-content:space-between;">
-                            <label class="form-label"><i class="fa-solid fa-sliders"></i> Batas Anggaran</label>
-                            <span style="font-size:0.75rem;color:var(--brand-light);font-weight:700;">Rp 750.000</span>
+                    <!-- Toggle Switch & Stepper -->
+                    <div style="background:var(--bg-surface-2);padding:12px;border-radius:6px;border:1px solid var(--border);display:flex;flex-direction:column;gap:10px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <span style="font-size:0.75rem;font-weight:600;color:var(--text-primary);">Auto-Sync Data:</span>
+                            <div style="width:36px;height:20px;background:var(--brand);border-radius:99px;position:relative;cursor:pointer;">
+                                <div style="width:16px;height:16px;background:#fff;border-radius:50%;position:absolute;top:2px;right:2px;"></div>
+                            </div>
                         </div>
-                        <input type="range" min="100000" max="2000000" value="750000" style="accent-color:var(--brand);margin-top:10px;">
-                    </div>
-
-                    <!-- Tag / Chip Input -->
-                    <div class="form-field">
-                        <label class="form-label"><i class="fa-solid fa-tags"></i> Tag Topik Terpilih</label>
-                        <div style="display:flex;flex-wrap:wrap;gap:6px;background:var(--bg-surface-2);padding:6px;border-radius:6px;border:1px solid var(--border);">
-                            <span style="background:var(--brand);color:#fff;font-size:0.72rem;padding:2px 8px;border-radius:99px;display:flex;align-items:center;gap:4px;">PostgreSQL <i class="fa-solid fa-xmark" style="cursor:pointer;"></i></span>
-                            <span style="background:var(--brand);color:#fff;font-size:0.72rem;padding:2px 8px;border-radius:99px;display:flex;align-items:center;gap:4px;">Docker <i class="fa-solid fa-xmark" style="cursor:pointer;"></i></span>
-                            <span style="color:var(--text-muted);font-size:0.75rem;padding:2px 4px;">+ Ketik tag...</span>
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <span style="font-size:0.75rem;font-weight:600;color:var(--text-primary);">Jumlah Kursi:</span>
+                            <div style="display:flex;align-items:center;gap:6px;">
+                                <button style="width:24px;height:24px;background:var(--bg-surface);border:1px solid var(--border);color:#fff;border-radius:4px;cursor:pointer;">-</button>
+                                <span style="font-size:0.8rem;font-weight:700;color:var(--brand-light);">3</span>
+                                <button style="width:24px;height:24px;background:var(--bg-surface);border:1px solid var(--border);color:#fff;border-radius:4px;cursor:pointer;">+</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        
+            </div>
 
-            <!-- KATEGORI 4: UMPAN BALIK & NOTIFIKASI -->
-            <h3 style="color:var(--brand-light);margin-top:28px;"><i class="fa-solid fa-bell"></i> Kategori 4: Umpan Balik &amp; Notifikasi (Feedback &amp; Overlays)</h3>
-            <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen penunjuk status operasi, pemberi peringatan, dan dialog aksi mendesak.</p>
+            <!-- 4. Kontrol Input Khusus & Lanjutan (Advanced Inputs) -->
+            <div class="category-block" id="cat-adv-input">
+                <h3 style="color:var(--brand-light);margin-top:28px;display:flex;align-items:center;gap:8px;">
+                    <i class="fa-solid fa-sliders"></i> 4. Kontrol Input Khusus & Lanjutan (Advanced Inputs)
+                </h3>
+                <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen input tingkat lanjut untuk penanganan media kaya, format data terstruktur, dan validasi khusus.</p>
 
-            <table class="compare-table">
-                <thead>
-                    <tr>
-                        <th>Komponen Feedback</th>
-                        <th>Tingkat Gangguan (*Disruption*)</th>
-                        <th>Waktu &amp; Skenario Muncul</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Toast / Snackbar</strong></td>
-                        <td><strong>Rendah (Non-blocking):</strong> Melayang di sudut layar, hilang otomatis dalam 3-5 detik.</td>
-                        <td>Konfirmasi aksi sukses instan (contoh: <em>'Link berhasil disalin ke clipboard'</em>).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Alert Banner / Callout</strong></td>
-                        <td><strong>Sedang (In-page):</strong> Kotak berwarna statis di dalam alur halaman.</td>
-                        <td>Peringatan akun belum diverifikasi atau panduan tips keamanan.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Modal Dialog</strong></td>
-                        <td><strong>Sangat Tinggi (Blocking):</strong> Membekukan seluruh layar dengan backdrop gelap.</td>
-                        <td>Persetujuan penting yang tidak boleh diabaikan (*'Konfirmasi Hapus Data'*).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Drawer / Bottom Sheet</strong></td>
-                        <td><strong>Tinggi (Slide-in):</strong> Panel geser dari sisi layar atau bagian bawah smartphone.</td>
-                        <td>Keranjang belanja kilat, filter produk kompleks di mobile, atau form komentar.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tooltip</strong></td>
-                        <td><strong>Mikro (On Hover/Focus):</strong> Gelembung teks kecil saat mouse mendekat.</td>
-                        <td>Menjelaskan arti tombol yang hanya berupa ikon tanpa teks label.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Skeleton Loader</strong></td>
-                        <td><strong>Persepsi Positif:</strong> Kerangka shimmer abu-abu yang meniru bentuk asli konten.</td>
-                        <td>Saat aplikasi sedang menunggu respons API data jaringan asinkron.</td>
-                    </tr>
-                </tbody>
-            </table>
+                <table class="compare-table comp-table">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;">No</th>
+                            <th style="width:230px;">Nama Komponen UI</th>
+                            <th>Definisi &amp; Peran Fungsional UX</th>
+                            <th>Best Practice &amp; Aksesibilitas (WCAG)</th>
+                            <th style="width:180px;">Contoh Industri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="comp-row" data-cat="cat-adv-input" data-name="tag / chip input kotak input yang otomatis mengubah kata berkoma menjadi lencana chip ber-tombol silang. input tag kata kunci artikel blog atau keahlian di linkedin.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">44</td>
+                            <td><strong>Tag / Chip Input</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kotak input yang otomatis mengubah kata berkoma menjadi lencana chip ber-tombol silang.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Dukung penekanan tombol Backspace untuk menghapus chip terakhir saat input kosong.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Input tag kata kunci artikel blog atau keahlian di LinkedIn.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-adv-input" data-name="rich text editor (wysiwyg) kanvas editor teks berformat dengan toolbar tebal, miring, list, tabel, dan gambar. editor artikel notion, wordpress gutenberg, medium.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">45</td>
+                            <td><strong>Rich Text Editor (WYSIWYG)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kanvas editor teks berformat dengan toolbar tebal, miring, list, tabel, dan gambar.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Pastikan hasil output kode HTML bersih (sanitized) untuk mencegah serangan XSS.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Editor artikel Notion, WordPress Gutenberg, Medium.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-adv-input" data-name="color picker pemilih palet warna visual dengan slider spektrum, eyedropper, dan input hex/rgba. pengaturan warna tema figma, canva, panel kustomisasi web.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">46</td>
+                            <td><strong>Color Picker</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Pemilih palet warna visual dengan slider spektrum, eyedropper, dan input Hex/RGBA.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tampilkan swatch warna yang sering digunakan agar user tidak perlu mengetik hex berulang.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Pengaturan warna tema Figma, Canva, panel kustomisasi web.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-adv-input" data-name="star rating input deretan 5 bintang interaktif untuk memberikan skor penilaian ulasan pelanggan. rating ulasan produk tokopedia, review film imdb.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">47</td>
+                            <td><strong>Star Rating Input</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Deretan 5 bintang interaktif untuk memberikan skor penilaian ulasan pelanggan.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Dukung setengah bintang (half-star) untuk skor desimal yang lebih presisi.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Rating ulasan produk Tokopedia, review film IMDb.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-adv-input" data-name="signature pad kanvas sentuh untuk membubuhkan tanda tangan basah digital secara presisi. aplikasi kurir penerimaan paket, dokumen legal docusign.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">48</td>
+                            <td><strong>Signature Pad</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kanvas sentuh untuk membubuhkan tanda tangan basah digital secara presisi.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Sediakan tombol 'Hapus' dan tombol 'Unduh Tanda Tangan PNG Transparan'.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Aplikasi kurir penerimaan paket, dokumen legal DocuSign.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-adv-input" data-name="credit card input with auto-formatting input kartu kredit dengan spasi tiap 4 digit dan deteksi otomatis logo kartu. layar pembayaran stripe checkout, midtrans.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">49</td>
+                            <td><strong>Credit Card Input with Auto-formatting</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Input kartu kredit dengan spasi tiap 4 digit dan deteksi otomatis logo kartu.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Gunakan algoritma Luhn Check untuk validasi keaslian nomor kartu di sisi client.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Layar pembayaran Stripe Checkout, Midtrans.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-adv-input" data-name="currency / masked input input uang yang otomatis menyisipkan simbol mata uang dan titik pemisah ribuan. input harga produk atau nominal transfer rekening m-banking.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">50</td>
+                            <td><strong>Currency / Masked Input</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Input uang yang otomatis menyisipkan simbol mata uang dan titik pemisah ribuan.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Cegah input huruf dan simpan nilai murni tanpa format ke database backend.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Input harga produk atau nominal transfer rekening m-Banking.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-adv-input" data-name="phone input with country flag input nomor handphone dengan dropdown bendera negara dan kode panggil (+62). pendaftaran akun whatsapp, uber, telegram.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">51</td>
+                            <td><strong>Phone Input with Country Flag</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Input nomor handphone dengan dropdown bendera negara dan kode panggil (+62).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Deteksi negara otomatis menggunakan GeoIP agar user tidak perlu mencari negaranya.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Pendaftaran akun WhatsApp, Uber, Telegram.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-adv-input" data-name="mention / user tagging input input teks yang memunculkan dropdown rekomendasi profil saat mengetik simbol @. komentar github pr, mention di slack atau discord.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">52</td>
+                            <td><strong>Mention / User Tagging Input</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Input teks yang memunculkan dropdown rekomendasi profil saat mengetik simbol @.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Navigasi daftar dropdown harus lancar menggunakan tombol panah keyboard.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Komentar GitHub PR, mention di Slack atau Discord.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-adv-input" data-name="captcha / verification widget widget verifikasi keamanan interaktif untuk memastikan pengguna bukan bot otomatis. form pendaftaran akun atau reset kata sandi.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">53</td>
+                            <td><strong>Captcha / Verification Widget</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Widget verifikasi keamanan interaktif untuk memastikan pengguna bukan bot otomatis.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Gunakan Cloudflare Turnstile atau invisible reCAPTCHA v3 untuk meminimalkan friksi UX.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Form pendaftaran akun atau reset kata sandi.</span></td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            <!-- KATEGORI 5: PENYAJIAN & PENGELOMPOKAN DATA -->
-            <h3 style="color:var(--brand-light);margin-top:28px;"><i class="fa-solid fa-table"></i> Kategori 5: Penyajian &amp; Pengelompokan Data (Data Display)</h3>
-            <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen perangkum informasi agar data besar mudah dicerna otak pengguna secara cepat.</p>
-
-            <table class="compare-table">
-                <thead>
-                    <tr>
-                        <th>Komponen Tampilan</th>
-                        <th>Karakter Desain</th>
-                        <th>Contoh Penggunaan Industri</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Bento Card</strong></td>
-                        <td>Kartu modular dengan elevasi, radius halus, dan perpaduan hierarki visual tegas.</td>
-                        <td>Menampilkan kartu ringkasan fitur produk, kartu modul belajar, atau metrik KPI.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Data Table</strong></td>
-                        <td>Tabel baris-kolom dengan sticky header, pagination, dan fungsi pengurutan (*sorting*).</td>
-                        <td>Daftar transaksi order e-commerce, laporan keuangan, log aktivitas pengguna.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Badge / Status Pill</strong></td>
-                        <td>Lencana oval kecil berwarna kontras dengan teks singkat.</td>
-                        <td>Penunjuk status real-time (*'Aktif'*, *'Selesai'*, *'Gagal'*, *'Diskon 50%'*).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Avatar Group</strong></td>
-                        <td>Tumpukan foto profil bulat bertingkat yang saling tumpang-tindih.</td>
-                        <td>Menampilkan anggota tim proyek atau kolaborator yang sedang online.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Accordion / Collapse</strong></td>
-                        <td>Panel bertingkat yang mengembang saat diklik untuk menghemat ruang vertikal.</td>
-                        <td>Halaman Tanya Jawab (*FAQ*), spesifikasi teknis, atau filter kategori samping.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Timeline</strong></td>
-                        <td>Garis vertikal/horizontal historis dengan titik simpul kejadian.</td>
-                        <td>Pelacakan paket kurir pengiriman e-commerce atau riwayat audit log.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Empty State</strong></td>
-                        <td>Ilustrasi ramah dengan teks panduan saat data masih kosong.</td>
-                        <td>Tampilan ketika keranjang belanja masih 0 barang atau kotak masuk belum ada pesan.</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <!-- LIVE BOX: DATA DISPLAY SHOWCASE -->
+                
             <div class="live-preview-box">
                 <div class="live-preview-header">
-                    <div class="live-preview-title"><i class="fa-solid fa-table" style="color:var(--brand);"></i> Contoh UI Nyata: Penyajian Data (Badge, Avatar Stack &amp; Timeline)</div>
-                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);"><i class="fa-solid fa-chart-pie"></i> Visual Data</span>
+                    <div class="live-preview-title"><i class="fa-solid fa-sliders" style="color:var(--brand);"></i> Live Showcase: Kontrol Input Lanjutan</div>
+                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);">10 Komponen</span>
                 </div>
+                <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+                    <div style="display:flex;align-items:center;gap:4px;color:#F59E0B;font-size:1rem;background:var(--bg-surface-2);padding:6px 12px;border-radius:6px;border:1px solid var(--border);">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+                        <span style="font-size:0.75rem;color:var(--text-secondary);margin-left:6px;font-weight:700;">4.0 (Ulasan)</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;background:var(--bg-surface-2);padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.78rem;">
+                        <i class="fa-regular fa-credit-card" style="color:var(--brand-light);"></i>
+                        <span style="letter-spacing:1px;font-weight:600;">•••• •••• •••• 4242</span>
+                        <span style="background:rgba(37,99,235,0.2);color:var(--brand-light);padding:2px 6px;border-radius:4px;font-size:0.7rem;">VISA</span>
+                    </div>
+                </div>
+            </div>
+        
+            </div>
 
-                <div class="demo-split-box">
-                    <!-- Avatar Stack & Badges -->
-                    <div style="background:var(--bg-surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;">
-                        <strong style="font-size:0.82rem;color:var(--text-primary);display:block;margin-bottom:8px;">Avatar Stack Kolaborator:</strong>
-                        <div style="display:flex;align-items:center;margin-bottom:12px;">
-                            <div style="width:32px;height:32px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;border:2px solid var(--bg-surface-2);">MU</div>
-                            <div style="width:32px;height:32px;border-radius:50%;background:#10B981;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;border:2px solid var(--bg-surface-2);margin-left:-8px;">VL</div>
-                            <div style="width:32px;height:32px;border-radius:50%;background:#F59E0B;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;border:2px solid var(--bg-surface-2);margin-left:-8px;">AG</div>
-                            <div style="width:32px;height:32px;border-radius:50%;background:var(--bg-surface);color:var(--text-muted);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;border:2px solid var(--bg-surface-2);margin-left:-8px;">+9</div>
+            <!-- 5. Umpan Balik, Status & Dialog (Feedback & Overlays) -->
+            <div class="category-block" id="cat-feedback">
+                <h3 style="color:var(--brand-light);margin-top:28px;display:flex;align-items:center;gap:8px;">
+                    <i class="fa-solid fa-bell"></i> 5. Umpan Balik, Status & Dialog (Feedback & Overlays)
+                </h3>
+                <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen pemberi sinyal status operasi, peringatan keselamatan, dan dialog konfirmasi aksi mendesak.</p>
+
+                <table class="compare-table comp-table">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;">No</th>
+                            <th style="width:230px;">Nama Komponen UI</th>
+                            <th>Definisi &amp; Peran Fungsional UX</th>
+                            <th>Best Practice &amp; Aksesibilitas (WCAG)</th>
+                            <th style="width:180px;">Contoh Industri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="comp-row" data-cat="cat-feedback" data-name="toast / snackbar notifikasi melayang non-blocking di sudut layar yang hilang otomatis dalam 3-5 detik. 'file berhasil diarsipkan (undo)', 'tautan tersalin'.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">54</td>
+                            <td><strong>Toast / Snackbar</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Notifikasi melayang non-blocking di sudut layar yang hilang otomatis dalam 3-5 detik.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Berikan opsi tombol 'Undo' untuk aksi yang tidak sengaja tertekan pengguna.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">'File berhasil diarsipkan (Undo)', 'Tautan tersalin'.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-feedback" data-name="alert banner (callout) kotak status statis di dalam alur halaman (info biru, sukses hijau, peringatan kuning, eror merah). 'email anda belum diverifikasi. kirim ulang link aktivasi'.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">55</td>
+                            <td><strong>Alert Banner (Callout)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kotak status statis di dalam alur halaman (Info biru, Sukses hijau, Peringatan kuning, Eror merah).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tuliskan solusi pemecahan masalah dengan lugas, bukan sekadar pesan eror membingungkan.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">'Email Anda belum diverifikasi. Kirim ulang link aktivasi'.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-feedback" data-name="modal dialog jendela pop-up blocking dengan backdrop gelap yang membekukan interaksi halaman dasar. dialog tambah data baru, modal login pop-up.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">56</td>
+                            <td><strong>Modal Dialog</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Jendela pop-up blocking dengan backdrop gelap yang membekukan interaksi halaman dasar.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Wajib terapkan focus trap (fokus keyboard terkurung di dalam modal) dan tombol ESC untuk tutup.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Dialog tambah data baru, modal login pop-up.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-feedback" data-name="confirmation dialog modal khusus pertanyaan ya/tidak dengan tombol konfirmasi berwarna bahaya. konfirmasi hapus project di github atau vercel.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">57</td>
+                            <td><strong>Confirmation Dialog</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Modal khusus pertanyaan Ya/Tidak dengan tombol konfirmasi berwarna bahaya.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tuliskan dampak aksi secara eksplisit ('Data yang dihapus tidak dapat dipulihkan').</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Konfirmasi hapus project di GitHub atau Vercel.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-feedback" data-name="off-canvas drawer (side sheet) panel yang meluncur masuk dari sisi kanan/kiri menutupi sebagian kanvas kerja. keranjang belanja kilat, panel inspeksi atribut figma.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">58</td>
+                            <td><strong>Off-canvas Drawer (Side Sheet)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Panel yang meluncur masuk dari sisi kanan/kiri menutupi sebagian kanvas kerja.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Sangat efektif untuk menampilkan detail data tanpa membawa user pindah halaman.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Keranjang belanja kilat, panel inspeksi atribut Figma.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-feedback" data-name="bottom sheet panel geser dari dasar layar smartphone yang bisa digeser naik-turun dengan sentuhan jari. menu bagikan (share sheet) ios dan android.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">59</td>
+                            <td><strong>Bottom Sheet</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Panel geser dari dasar layar smartphone yang bisa digeser naik-turun dengan sentuhan jari.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Gunakan untuk memilih opsi cepat pada pengalaman mobile-first.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Menu bagikan (Share Sheet) iOS dan Android.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-feedback" data-name="tooltip gelembung teks mikro penjelas saat kursor mouse hover pada ikon tanpa teks label. penjelas fungsi ikon kuas atau pin di aplikasi.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">60</td>
+                            <td><strong>Tooltip</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Gelembung teks mikro penjelas saat kursor mouse hover pada ikon tanpa teks label.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Hanya gunakan untuk informasi singkat pendukung; jangan simpan info krusial di tooltip.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Penjelas fungsi ikon kuas atau pin di aplikasi.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-feedback" data-name="popover gelembung melayang interaktif yang memuat form mini, filter, atau kartu profil saat diklik. kartu preview profil user di github saat hover avatar.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">61</td>
+                            <td><strong>Popover</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Gelembung melayang interaktif yang memuat form mini, filter, atau kartu profil saat diklik.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Popover tetap terbuka saat diklik sampai pengguna mengklik area luar kanvas (click outside).</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Kartu preview profil user di GitHub saat hover avatar.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-feedback" data-name="determinate progress bar bilah kemajuan dengan persentase angka pasti (0% s/d 100%). progress unggah file dokumen 4.2 mb / 10 mb (42%).">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">62</td>
+                            <td><strong>Determinate Progress Bar</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Bilah kemajuan dengan persentase angka pasti (0% s/d 100%).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tampilkan sisa waktu estimasi jika proses berlangsung lebih dari 5 detik.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Progress unggah file dokumen 4.2 MB / 10 MB (42%).</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-feedback" data-name="indeterminate progress bar bilah animasi garis bergerak berulang untuk proses yang durasinya tidak terprediksi. bilah animasi di bagian atas saat halaman next.js memuat rute baru.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">63</td>
+                            <td><strong>Indeterminate Progress Bar</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Bilah animasi garis bergerak berulang untuk proses yang durasinya tidak terprediksi.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Gunakan saat menunggu respons query basis data yang tidak memiliki status kemajuan bertahap.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Bilah animasi di bagian atas saat halaman Next.js memuat rute baru.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-feedback" data-name="circular spinner loader cincin berputar penanda aplikasi sedang sibuk memproses permintaan di latar belakang. ikon loading di dalam tombol submit form.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">64</td>
+                            <td><strong>Circular Spinner Loader</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Cincin berputar penanda aplikasi sedang sibuk memproses permintaan di latar belakang.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Jangan gunakan spinner layar penuh jika hanya 1 tombol atau kartu kecil yang sedang memuat.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Ikon loading di dalam tombol submit form.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-feedback" data-name="skeleton screen loader kerangka berkilau abu-abu (shimmer) yang meniru bentuk fisik asli konten artikel/kartu. tampilan loading youtube, facebook, linkedin feed.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">65</td>
+                            <td><strong>Skeleton Screen Loader</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kerangka berkilau abu-abu (shimmer) yang meniru bentuk fisik asli konten artikel/kartu.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Jauh lebih disukai daripada spinner karena menurunkan persepsi waktu tunggu pengguna.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Tampilan loading YouTube, Facebook, LinkedIn feed.</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
+            <div class="live-preview-box">
+                <div class="live-preview-header">
+                    <div class="live-preview-title"><i class="fa-solid fa-bell" style="color:var(--brand);"></i> Live Showcase: Umpan Balik & Status Sistem</div>
+                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);">12 Komponen</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                    <!-- Alert Callout -->
+                    <div style="background:rgba(16,185,129,0.12);border-left:4px solid var(--success);padding:10px 14px;border-radius:4px;display:flex;align-items:center;justify-content:space-between;font-size:0.8rem;color:#10B981;">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Sinkronisasi basis data berhasil dalam <strong>12ms</strong>.</span>
                         </div>
-                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                            <span class="badge" style="background:rgba(16,185,129,0.15);color:var(--success);border-color:rgba(16,185,129,0.3);"><i class="fa-solid fa-circle-check"></i> Selesai</span>
-                            <span class="badge" style="background:rgba(245,158,11,0.15);color:#F59E0B;border-color:rgba(245,158,11,0.3);"><i class="fa-solid fa-clock"></i> Diproses</span>
-                            <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);border-color:rgba(37,99,235,0.3);"><i class="fa-solid fa-tag"></i> 12 Track</span>
+                        <i class="fa-solid fa-xmark" style="cursor:pointer;color:var(--text-muted);"></i>
+                    </div>
+                    <!-- Skeleton Loader Shimmer Simulation -->
+                    <div style="background:var(--bg-surface-2);padding:12px;border-radius:6px;border:1px solid var(--border);display:flex;gap:10px;align-items:center;">
+                        <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.08);"></div>
+                        <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+                            <div style="width:60%;height:10px;background:rgba(255,255,255,0.08);border-radius:4px;"></div>
+                            <div style="width:90%;height:8px;background:rgba(255,255,255,0.05);border-radius:4px;"></div>
                         </div>
                     </div>
+                </div>
+            </div>
+        
+            </div>
 
-                    <!-- Timeline Tracking -->
-                    <div style="background:var(--bg-surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;">
-                        <strong style="font-size:0.82rem;color:var(--text-primary);display:block;margin-bottom:8px;">Timeline Status Logistik:</strong>
-                        <div style="display:flex;flex-direction:column;gap:10px;font-size:0.78rem;">
-                            <div style="display:flex;gap:10px;align-items:flex-start;">
-                                <i class="fa-solid fa-circle-dot" style="color:var(--success);margin-top:2px;"></i>
-                                <div><strong style="color:var(--text-primary);">Paket Diterima Pembeli</strong><br><span style="color:var(--text-muted);font-size:0.72rem;">Jakarta Pusat • 14:20 WIB</span></div>
-                            </div>
-                            <div style="display:flex;gap:10px;align-items:flex-start;">
-                                <i class="fa-solid fa-circle" style="color:var(--brand);margin-top:2px;font-size:0.7rem;"></i>
-                                <div><span style="color:var(--text-secondary);">Kurir Menuju Alamat Tujuan</span><br><span style="color:var(--text-muted);font-size:0.72rem;">Jakarta Selatan • 10:15 WIB</span></div>
+            <!-- 6. Penyajian Data & Kontainer Konten (Data Display) -->
+            <div class="category-block" id="cat-display">
+                <h3 style="color:var(--brand-light);margin-top:28px;display:flex;align-items:center;gap:8px;">
+                    <i class="fa-solid fa-table"></i> 6. Penyajian Data & Kontainer Konten (Data Display)
+                </h3>
+                <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen perangkum informasi agar kumpulan data kompleks mudah dicerna secara cepat dan terstruktur.</p>
+
+                <table class="compare-table comp-table">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;">No</th>
+                            <th style="width:230px;">Nama Komponen UI</th>
+                            <th>Definisi &amp; Peran Fungsional UX</th>
+                            <th>Best Practice &amp; Aksesibilitas (WCAG)</th>
+                            <th style="width:180px;">Contoh Industri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="comp-row" data-cat="cat-display" data-name="bento card kartu modular berkedalaman visual tegas perangkum satu kesatuan informasi atau fitur. kartu showcase apple, dashboard modern saas.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">66</td>
+                            <td><strong>Bento Card</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kartu modular berkedalaman visual tegas perangkum satu kesatuan informasi atau fitur.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Beri hover elevasi halus (translateY -2px) dan border berpendar biru saat didekati kursor.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Kartu showcase Apple, dashboard modern SaaS.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-display" data-name="data table tabel baris-kolom dengan sticky header, pagination, dan kemampuan sortir data. daftar transaksi order penjualan, log audit server.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">67</td>
+                            <td><strong>Data Table</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tabel baris-kolom dengan sticky header, pagination, dan kemampuan sortir data.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Ratakan angka ke kanan (right-align) dan teks ke kiri (left-align) untuk keterbacaan data.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Daftar transaksi order penjualan, log audit server.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-display" data-name="data grid (spreadsheet-like) tabel tingkat lanjut dengan kemampuan inline-editing langsung pada sel data dan freeze column. airtable, google sheets, erp inventaris barang.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">68</td>
+                            <td><strong>Data Grid (Spreadsheet-like)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tabel tingkat lanjut dengan kemampuan inline-editing langsung pada sel data dan freeze column.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Sediakan shortcut keyboard untuk navigasi sel mirip Excel (Tab, Enter, Panah).</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Airtable, Google Sheets, ERP inventaris barang.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-display" data-name="badge / status pill lencana oval kecil kontras penunjuk status real-time (live, sukses, gagal, baru). lencana status pembayaran 'lunas' di faktur invoice.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">69</td>
+                            <td><strong>Badge / Status Pill</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Lencana oval kecil kontras penunjuk status real-time (Live, Sukses, Gagal, Baru).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Gunakan warna semantik konsisten: Hijau (Sukses), Kuning (Pending), Merah (Gagal).</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Lencana status pembayaran 'Lunas' di faktur invoice.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-display" data-name="tag / category label label penanda metadata, kategori produk, atau topik artikel. tag 'react', 'postgresql' di blog engineering.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">70</td>
+                            <td><strong>Tag / Category Label</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Label penanda metadata, kategori produk, atau topik artikel.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Dapat diklik untuk menyaring seluruh konten yang memiliki tag serupa.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Tag 'React', 'PostgreSQL' di blog engineering.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-display" data-name="avatar gambar foto profil pengguna bulat atau kotak dengan inisial cadangan jika gambar gagal dimuat. foto profil pengguna di sudut kanan atas navbar.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">71</td>
+                            <td><strong>Avatar</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Gambar foto profil pengguna bulat atau kotak dengan inisial cadangan jika gambar gagal dimuat.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Wajib sertakan alt text berupa nama lengkap pemilik akun.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Foto profil pengguna di sudut kanan atas navbar.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-display" data-name="avatar group (stack) tumpukan foto profil bertingkat yang saling tumpang-tindih dengan counter penutup (+5). daftar kolaborator proyek di figma atau google docs.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">72</td>
+                            <td><strong>Avatar Group (Stack)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tumpukan foto profil bertingkat yang saling tumpang-tindih dengan counter penutup (+5).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Beri border sekeliling avatar sewarna background agar tumpukan tampak rapi dan berjarak.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Daftar kolaborator proyek di Figma atau Google Docs.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-display" data-name="accordion / collapse panel lipat vertikal untuk menghemat ruang kanvas dengan menyembunyikan detail sekunder. halaman tanya jawab populer (faq), spesifikasi barang.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">73</td>
+                            <td><strong>Accordion / Collapse</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Panel lipat vertikal untuk menghemat ruang kanvas dengan menyembunyikan detail sekunder.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Beri ikon panah chevron rotasi 180 derajat saat panel dibuka.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Halaman Tanya Jawab Populer (FAQ), spesifikasi barang.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-display" data-name="carousel / image slider kontainer geser horizontal untuk menampilkan galeri foto atau banner promo bergiliran. banner promo beranda shopee, galeri foto properti airbnb.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">74</td>
+                            <td><strong>Carousel / Image Slider</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kontainer geser horizontal untuk menampilkan galeri foto atau banner promo bergiliran.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Berikan tombol jeda (Pause) jika slider berjalan otomatis (Auto-play) demi aksesibilitas.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Banner promo beranda Shopee, galeri foto properti Airbnb.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-display" data-name="timeline / event stream garis riwayat vertikal kronologis kejadian dengan titik simpul status. pelacakan resi pengiriman kurir jne, riwayat audit git commit.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">75</td>
+                            <td><strong>Timeline / Event Stream</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Garis riwayat vertikal kronologis kejadian dengan titik simpul status.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Urutkan kejadian terbaru di paling atas dan tandai titik kejadian terakhir dengan warna cerah.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Pelacakan resi pengiriman kurir JNE, riwayat audit git commit.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-display" data-name="empty state tampilan ilustratif ramah saat tabel, keranjang, atau kotak masuk belum memiliki data sama sekali. layar kotak masuk pesan saat masih kosong.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">76</td>
+                            <td><strong>Empty State</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tampilan ilustratif ramah saat tabel, keranjang, atau kotak masuk belum memiliki data sama sekali.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Sertakan tombol Call-to-Action langsung (misal: 'Mulai Belanja', 'Buat Dokumen Pertama').</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Layar kotak masuk pesan saat masih kosong.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-display" data-name="error state / 404 visual tampilan visual saat rute halaman tidak ditemukan atau sambungan internet offline. halaman 404 not found ramah pengguna.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">77</td>
+                            <td><strong>Error State / 404 Visual</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tampilan visual saat rute halaman tidak ditemukan atau sambungan internet offline.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Sediakan tombol 'Coba Lagi' atau tautan 'Kembali ke Beranda' yang jelas.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Halaman 404 Not Found ramah pengguna.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-display" data-name="metric kpi stat card kartu statistik angka besar dengan lencana persentase tren naik/turun hijau atau merah. kartu total revenue, active users di google analytics.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">78</td>
+                            <td><strong>Metric KPI Stat Card</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kartu statistik angka besar dengan lencana persentase tren naik/turun hijau atau merah.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tampilkan konteks perbandingan (misal: '+14% dibandingkan bulan lalu').</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Kartu Total Revenue, Active Users di Google Analytics.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-display" data-name="key-value description list daftar pasangan label dan nilai terstruktur rapi dua kolom. rincian spesifikasi mesin laptop (ram, processor, storage).">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">79</td>
+                            <td><strong>Key-Value Description List</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Daftar pasangan label dan nilai terstruktur rapi dua kolom.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Gunakan tag HTML semantik dl, dt, dan dd untuk pembacaan akurat oleh screen reader.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Rincian spesifikasi mesin laptop (RAM, Processor, Storage).</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-display" data-name="activity feed stream aliran linier kartu aktivitas pengguna waktu nyata (mirip timeline linimasa). linimasa aktivitas tim di jira, github feed.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">80</td>
+                            <td><strong>Activity Feed Stream</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Aliran linier kartu aktivitas pengguna waktu nyata (mirip timeline linimasa).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Kelompokkan aktivitas berdasarkan hari (Hari Ini, Kemarin, Minggu Lalu).</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Linimasa aktivitas tim di Jira, GitHub feed.</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
+            <div class="live-preview-box">
+                <div class="live-preview-header">
+                    <div class="live-preview-title"><i class="fa-solid fa-table" style="color:var(--brand);"></i> Live Showcase: Penyajian Data & Metrik</div>
+                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);">15 Komponen</span>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;">
+                    <!-- Metric Card -->
+                    <div style="background:var(--bg-surface-2);padding:14px;border-radius:6px;border:1px solid var(--border);">
+                        <span style="font-size:0.75rem;color:var(--text-muted);font-weight:600;">Monthly Active Users</span>
+                        <div style="font-size:1.4rem;font-weight:800;color:var(--text-primary);margin:4px 0;">24.890</div>
+                        <span style="font-size:0.75rem;color:var(--success);font-weight:700;"><i class="fa-solid fa-arrow-trend-up"></i> +18.4% vs bln lalu</span>
+                    </div>
+                    <!-- Avatar Stack & Pill -->
+                    <div style="background:var(--bg-surface-2);padding:14px;border-radius:6px;border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between;">
+                        <span style="font-size:0.75rem;color:var(--text-muted);font-weight:600;">Status Kluster Server:</span>
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <span class="badge" style="background:rgba(16,185,129,0.15);color:var(--success);"><i class="fa-solid fa-circle-check"></i> 99.98% Online</span>
+                            <div style="display:flex;align-items:center;">
+                                <div style="width:24px;height:24px;border-radius:50%;background:var(--brand);color:#fff;font-size:0.65rem;display:flex;align-items:center;justify-content:center;font-weight:700;border:1px solid #fff;">A</div>
+                                <div style="width:24px;height:24px;border-radius:50%;background:var(--success);color:#fff;font-size:0.65rem;display:flex;align-items:center;justify-content:center;font-weight:700;border:1px solid #fff;margin-left:-6px;">B</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        
+            </div>
+
+            <!-- 7. Media, Grafis & Visualisasi (Media & Visualization) -->
+            <div class="category-block" id="cat-media">
+                <h3 style="color:var(--brand-light);margin-top:28px;display:flex;align-items:center;gap:8px;">
+                    <i class="fa-solid fa-photo-film"></i> 7. Media, Grafis & Visualisasi (Media & Visualization)
+                </h3>
+                <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen pemutar berkas multimedia, penampil visual resolusi tinggi, dan visualisasi grafik data.</p>
+
+                <table class="compare-table comp-table">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;">No</th>
+                            <th style="width:230px;">Nama Komponen UI</th>
+                            <th>Definisi &amp; Peran Fungsional UX</th>
+                            <th>Best Practice &amp; Aksesibilitas (WCAG)</th>
+                            <th style="width:180px;">Contoh Industri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="comp-row" data-cat="cat-media" data-name="lightbox / image modal penampil foto layar penuh berlatar gelap saat thumbnail gambar diklik. galeri foto portofolio, tampilan foto produk e-commerce.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">81</td>
+                            <td><strong>Lightbox / Image Modal</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Penampil foto layar penuh berlatar gelap saat thumbnail gambar diklik.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Sediakan kontrol zoom, tombol panah foto berikutnya, dan tombol keyboard ESC untuk keluar.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Galeri foto portofolio, tampilan foto produk e-commerce.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-media" data-name="custom video player bar bilah kontrol video kustom (play/pause, timeline scrubber, volume, closed caption, fullscreen). pemutar video netflix, youtube, vimeo.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">82</td>
+                            <td><strong>Custom Video Player Bar</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Bilah kontrol video kustom (Play/Pause, Timeline Scrubber, Volume, Closed Caption, Fullscreen).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Sertakan dukungan shortcut spasi untuk Play/Pause dan panah kanan/kiri untuk skip 5 detik.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Pemutar video Netflix, YouTube, Vimeo.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-media" data-name="audio player waveform visualisasi gelombang suara rekaman audio podcast atau voice message yang interaktif. soundcloud, pemutar pesan suara whatsapp.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">83</td>
+                            <td><strong>Audio Player Waveform</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Visualisasi gelombang suara rekaman audio podcast atau voice message yang interaktif.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Biarkan pengguna mengklik sembarang titik gelombang untuk loncat ke detik yang diinginkan.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">SoundCloud, pemutar pesan suara WhatsApp.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-media" data-name="audio visualizer widget bilah equalizer grafis bergerak mengikuti frekuensi ketukan audio secara realtime. widget musik spotify web, apple music.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">84</td>
+                            <td><strong>Audio Visualizer Widget</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Bilah equalizer grafis bergerak mengikuti frekuensi ketukan audio secara realtime.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Jeda animasi canvas saat tab browser tidak aktif untuk menghemat daya baterai CPU.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Widget musik Spotify Web, Apple Music.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-media" data-name="interactive map canvas peta digital interaktif dengan pin lokasi cabang toko, tombol zoom, dan kotak info. google maps, peta lacak kurir gojek/grab.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">85</td>
+                            <td><strong>Interactive Map Canvas</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Peta digital interaktif dengan pin lokasi cabang toko, tombol zoom, dan kotak info.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Gunakan fitur clustering pin jika terdapat ratusan lokasi toko berdekatan.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Google Maps, peta lacak kurir Gojek/Grab.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-media" data-name="image comparison slider garis pemisah vertikal yang bisa digeser mouse untuk membandingkan dua foto sebelum vs sesudah. showcase hasil editing foto, restorasi gambar lama.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">86</td>
+                            <td><strong>Image Comparison Slider</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Garis pemisah vertikal yang bisa digeser mouse untuk membandingkan dua foto Sebelum vs Sesudah.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Beri label jelas 'Sebelum' di kiri dan 'Sesudah' di kanan agar user tidak tertukar.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Showcase hasil editing foto, restorasi gambar lama.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-media" data-name="interactive chart wrapper kontainer grafik garis, batang, atau donat dengan pop-up tooltip data presisi saat kursor hover. grafik fluktuasi saham di tradingview, dashboard chart.js.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">87</td>
+                            <td><strong>Interactive Chart Wrapper</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kontainer grafik garis, batang, atau donat dengan pop-up tooltip data presisi saat kursor hover.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Berikan alternatif tabel teks ringkas bagi pengguna tunanetra yang memakai screen reader.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Grafik fluktuasi saham di TradingView, dashboard Chart.js.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-media" data-name="sparkline grafik mini tanpa sumbu koordinat yang disematkan langsung di dalam kartu kpi atau sel tabel. tren harga 7 hari koin kripto di coinmarketcap.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">88</td>
+                            <td><strong>Sparkline</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Grafik mini tanpa sumbu koordinat yang disematkan langsung di dalam kartu KPI atau sel tabel.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Hanya gunakan untuk memperlihatkan arah tren sekilas (naik/turun), bukan angka detail.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Tren harga 7 hari koin kripto di CoinMarketCap.</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
+            <div class="live-preview-box">
+                <div class="live-preview-header">
+                    <div class="live-preview-title"><i class="fa-solid fa-photo-film" style="color:var(--brand);"></i> Live Showcase: Media & Visualisasi Data</div>
+                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);">8 Komponen</span>
+                </div>
+                <div style="background:var(--bg-surface-2);padding:14px;border-radius:6px;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <button style="width:36px;height:36px;border-radius:50%;background:var(--brand);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-play"></i></button>
+                        <div>
+                            <span style="font-size:0.8rem;font-weight:700;color:var(--text-primary);display:block;">Podcast Rekayasa Perangkat Lunak #12</span>
+                            <span style="font-size:0.72rem;color:var(--text-muted);">04:20 / 38:15 • 1.25x</span>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:flex-end;gap:3px;height:24px;">
+                        <div style="width:4px;height:8px;background:var(--brand);border-radius:2px;"></div>
+                        <div style="width:4px;height:18px;background:var(--brand);border-radius:2px;"></div>
+                        <div style="width:4px;height:24px;background:var(--brand);border-radius:2px;"></div>
+                        <div style="width:4px;height:12px;background:var(--brand);border-radius:2px;"></div>
+                        <div style="width:4px;height:20px;background:var(--brand-light);border-radius:2px;"></div>
+                        <div style="width:4px;height:10px;background:var(--brand-light);border-radius:2px;"></div>
+                    </div>
+                </div>
+            </div>
+        
+            </div>
+
+            <!-- 8. Filter, Pencarian & Kurasi Data (Search & Filtering) -->
+            <div class="category-block" id="cat-search">
+                <h3 style="color:var(--brand-light);margin-top:28px;display:flex;align-items:center;gap:8px;">
+                    <i class="fa-solid fa-magnifying-glass"></i> 8. Filter, Pencarian & Kurasi Data (Search & Filtering)
+                </h3>
+                <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen pencarian cerdas, pemfilteran multi-kriteria, dan pengurutan data untuk menemukan konten dengan cepat.</p>
+
+                <table class="compare-table comp-table">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;">No</th>
+                            <th style="width:230px;">Nama Komponen UI</th>
+                            <th>Definisi &amp; Peran Fungsional UX</th>
+                            <th>Best Practice &amp; Aksesibilitas (WCAG)</th>
+                            <th style="width:180px;">Contoh Industri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="comp-row" data-cat="cat-search" data-name="filter bar / pill strip deretan chip tombol penyaring kriteria di atas daftar data (semua, aktif, selesai). filter kategori video di beranda youtube.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">89</td>
+                            <td><strong>Filter Bar / Pill Strip</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Deretan chip tombol penyaring kriteria di atas daftar data (Semua, Aktif, Selesai).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Biarkan chip aktif berlatar belakang kontras dan chip non-aktif bernada netral.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Filter kategori video di beranda YouTube.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-search" data-name="faceted search sidebar panel filter samping berisi kategori bertingkat, rentang harga, rating, dan merek. sidebar filter produk tokopedia, amazon.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">90</td>
+                            <td><strong>Faceted Search Sidebar</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Panel filter samping berisi kategori bertingkat, rentang harga, rating, dan merek.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tampilkan jumlah produk yang cocok di samping tiap opsi (misal: Samsung (42)).</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Sidebar filter produk Tokopedia, Amazon.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-search" data-name="quick command palette (cmd+k) dialog pencarian cepat berorientasi keyboard untuk berpindah halaman atau mengeksekusi aksi. command palette di linear, raycast, github (cmd+k).">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">91</td>
+                            <td><strong>Quick Command Palette (Cmd+K)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Dialog pencarian cepat berorientasi keyboard untuk berpindah halaman atau mengeksekusi aksi.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Dukung navigasi panah keyboard dan pencarian toleran typo (Fuzzy Search).</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Command Palette di Linear, Raycast, GitHub (Cmd+K).</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-search" data-name="sort dropdown menu pemilih urutan data (harga terendah, terbaru, rating tertinggi). dropdown 'urutkan berdasarkan' di marketplace.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">92</td>
+                            <td><strong>Sort Dropdown</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Menu pemilih urutan data (Harga Terendah, Terbaru, Rating Tertinggi).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Selalu beri tahu urutan mana yang sedang aktif di label tombol dropdown.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Dropdown 'Urutkan berdasarkan' di marketplace.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-search" data-name="active filter tags deretan chip filter yang sedang aktif dengan tombol silang dan tombol 'reset semua'. tag filter harga dan lokasi aktif di pencarian mobil.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">93</td>
+                            <td><strong>Active Filter Tags</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Deretan chip filter yang sedang aktif dengan tombol silang dan tombol 'Reset Semua'.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tempatkan tepat di atas hasil pencarian agar user mudah membatalkan kriteria filter.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Tag filter harga dan lokasi aktif di pencarian mobil.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-search" data-name="view switcher (grid vs list) tombol pengalih tata letak kartu produk antara kisi kotak (grid) atau baris memanjang (list). pengalih tampilan file di google drive (grid / list).">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">94</td>
+                            <td><strong>View Switcher (Grid vs List)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tombol pengalih tata letak kartu produk antara kisi kotak (Grid) atau baris memanjang (List).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Simpan preferensi pilihan user ke localStorage agar bertahan saat reload.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Pengalih tampilan file di Google Drive (Grid / List).</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-search" data-name="density switcher pengatur kerapatan jarak spasi baris tabel (compact, comfortable, spacious). pengaturan densitas baris gmail atau jira board.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">95</td>
+                            <td><strong>Density Switcher</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Pengatur kerapatan jarak spasi baris tabel (Compact, Comfortable, Spacious).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Mode compact sangat disukai pengguna power user yang terbiasa membaca data padat.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Pengaturan densitas baris Gmail atau Jira board.</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
+            <div class="live-preview-box">
+                <div class="live-preview-header">
+                    <div class="live-preview-title"><i class="fa-solid fa-magnifying-glass" style="color:var(--brand);"></i> Live Showcase: Filter & Pencarian Cepat</div>
+                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);">7 Komponen</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                    <!-- Command Palette Mockup -->
+                    <div style="background:var(--bg-surface-2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;">
+                        <div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text-muted);">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>Ketik perintah atau cari modul database...</span>
+                        </div>
+                        <span style="background:var(--bg-surface);border:1px solid var(--border);font-size:0.7rem;padding:2px 6px;border-radius:4px;color:var(--text-muted);">⌘K</span>
+                    </div>
+                    <!-- Active Filter Chips -->
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:0.75rem;">
+                        <span style="color:var(--text-muted);">Filter Aktif:</span>
+                        <span style="background:rgba(37,99,235,0.15);color:var(--brand-light);padding:2px 8px;border-radius:99px;display:flex;align-items:center;gap:4px;">Stok Ready <i class="fa-solid fa-xmark"></i></span>
+                        <span style="background:rgba(37,99,235,0.15);color:var(--brand-light);padding:2px 8px;border-radius:99px;display:flex;align-items:center;gap:4px;">Rating 4.5+ <i class="fa-solid fa-xmark"></i></span>
+                        <span style="color:var(--brand-light);cursor:pointer;font-weight:600;text-decoration:underline;">Reset Semua</span>
+                    </div>
+                </div>
+            </div>
+        
+            </div>
+
+            <!-- 9. E-Commerce & Transaksi Finansial (Commerce & Checkout) -->
+            <div class="category-block" id="cat-commerce">
+                <h3 style="color:var(--brand-light);margin-top:28px;display:flex;align-items:center;gap:8px;">
+                    <i class="fa-solid fa-bag-shopping"></i> 9. E-Commerce & Transaksi Finansial (Commerce & Checkout)
+                </h3>
+                <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen khusus alur transaksi belanja online, kalkulasi pembayaran, dan konversi checkout.</p>
+
+                <table class="compare-table comp-table">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;">No</th>
+                            <th style="width:230px;">Nama Komponen UI</th>
+                            <th>Definisi &amp; Peran Fungsional UX</th>
+                            <th>Best Practice &amp; Aksesibilitas (WCAG)</th>
+                            <th style="width:180px;">Contoh Industri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="comp-row" data-cat="cat-commerce" data-name="product card with quick add kartu katalog barang dengan foto, harga coret diskon, lencana stok, dan tombol beli cepat. katalog barang tokopedia, bukalapak.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">96</td>
+                            <td><strong>Product Card with Quick Add</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kartu katalog barang dengan foto, harga coret diskon, lencana stok, dan tombol beli cepat.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Gunakan aspect-ratio 1:1 untuk gambar produk agar tampilan grid seragam.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Katalog barang Tokopedia, Bukalapak.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-commerce" data-name="price breakdown summary rincian kalkulasi belanja (subtotal, diskon voucher, ongkir, ppn 11%, dan total bayar). ringkasan pembayaran di keranjang checkout belanja.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">97</td>
+                            <td><strong>Price Breakdown Summary</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Rincian kalkulasi belanja (Subtotal, Diskon Voucher, Ongkir, PPN 11%, dan Total Bayar).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Beri penekanan visual paling tebal pada baris Total Tagihan Akhir.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Ringkasan pembayaran di keranjang checkout belanja.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-commerce" data-name="slide-out cart drawer panel keranjang belanja yang meluncur dari sisi kanan tanpa memindahkan user ke halaman baru. mini cart toko shopify, nike.com.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">98</td>
+                            <td><strong>Slide-out Cart Drawer</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Panel keranjang belanja yang meluncur dari sisi kanan tanpa memindahkan user ke halaman baru.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Sediakan tombol langsung 'Lanjut ke Pembayaran' di dasar panel drawer.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Mini cart toko Shopify, Nike.com.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-commerce" data-name="coupon / promo code box kolom input kode promo dengan tombol 'terapkan' dan indikator potongan hemat warna hijau. input voucher diskon promo ongkir tokopedia.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">99</td>
+                            <td><strong>Coupon / Promo Code Box</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kolom input kode promo dengan tombol 'Terapkan' dan indikator potongan hemat warna hijau.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Beri pesan selamat yang jelas ketika voucher berhasil digunakan ('Hemat Rp 50.000').</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Input voucher diskon promo ongkir Tokopedia.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-commerce" data-name="payment method selector kartu radio pemilih kanal pembayaran (qris, virtual account, kartu kredit, paylater). pilihan kanal bayar midtrans, xendit.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">100</td>
+                            <td><strong>Payment Method Selector</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kartu radio pemilih kanal pembayaran (QRIS, Virtual Account, Kartu Kredit, Paylater).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tampilkan logo resmi bank/e-wallet untuk membangun rasa aman dan kepercayaan transaksi.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Pilihan kanal bayar Midtrans, Xendit.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-commerce" data-name="address card selector kartu pilihan alamat pengiriman lengkap dengan tombol 'ubah alamat' dan penanda 'utama'. pilihan alamat pengiriman shopee.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">101</td>
+                            <td><strong>Address Card Selector</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Kartu pilihan alamat pengiriman lengkap dengan tombol 'Ubah Alamat' dan penanda 'Utama'.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Beri tombol 'Pilih Alamat Lain' jika user memiliki multi-alamat kantor dan rumah.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Pilihan alamat pengiriman Shopee.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-commerce" data-name="order tracking progress bar bilah status tahapan pesanan (pesanan dibuat > dikemas > sedang dikirim > selesai). lacak kiriman paket j&t, sicepat.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">102</td>
+                            <td><strong>Order Tracking Progress Bar</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Bilah status tahapan pesanan (Pesanan Dibuat > Dikemas > Sedang Dikirim > Selesai).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tampilkan perkiraan tanggal kedatangan paket yang realistis.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Lacak kiriman paket J&T, SiCepat.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-commerce" data-name="sticky buy bar (mobile bottom cta) bilah bawah menempel permanen di layar smartphone berisi harga barang dan tombol beli sekarang. bilah tombol beli di halaman rincian produk mobile tokopedia.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">103</td>
+                            <td><strong>Sticky Buy Bar (Mobile Bottom CTA)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Bilah bawah menempel permanen di layar smartphone berisi harga barang dan tombol Beli Sekarang.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Pastikan tidak menutupi informasi penting di bawahnya dengan memberi padding dasar yang cukup.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Bilah tombol beli di halaman rincian produk mobile Tokopedia.</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
+            <div class="live-preview-box">
+                <div class="live-preview-header">
+                    <div class="live-preview-title"><i class="fa-solid fa-bag-shopping" style="color:var(--brand);"></i> Live Showcase: E-Commerce & Checkout</div>
+                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);">8 Komponen</span>
+                </div>
+                <div style="background:var(--bg-surface-2);border:1px solid var(--border);border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:8px;font-size:0.8rem;">
+                    <div style="display:flex;justify-content:space-between;color:var(--text-secondary);">
+                        <span>Subtotal Belanja (2 Barang)</span>
+                        <span>Rp 1.450.000</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;color:var(--success);">
+                        <span>Diskon Kupon PROMOHEMAT</span>
+                        <span>- Rp 150.000</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;color:var(--text-secondary);">
+                        <span>Biaya Pengiriman Instant</span>
+                        <span>Rp 25.000</span>
+                    </div>
+                    <div style="border-top:1px dashed var(--border);margin:4px 0;"></div>
+                    <div style="display:flex;justify-content:space-between;font-weight:800;font-size:0.95rem;color:var(--text-primary);">
+                        <span>Total Tagihan Akhir:</span>
+                        <span style="color:var(--brand-light);">Rp 1.325.000</span>
+                    </div>
+                </div>
+            </div>
+        
+            </div>
+
+            <!-- 10. Utilitas & Interaksi Sistem (Utilities & System) -->
+            <div class="category-block" id="cat-util">
+                <h3 style="color:var(--brand-light);margin-top:28px;display:flex;align-items:center;gap:8px;">
+                    <i class="fa-solid fa-gears"></i> 10. Utilitas & Interaksi Sistem (Utilities & System)
+                </h3>
+                <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen alat bantu fungsionalitas global aplikasi untuk navigasi cepat, preferensi, dan aksesibilitas.</p>
+
+                <table class="compare-table comp-table">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;">No</th>
+                            <th style="width:230px;">Nama Komponen UI</th>
+                            <th>Definisi &amp; Peran Fungsional UX</th>
+                            <th>Best Practice &amp; Aksesibilitas (WCAG)</th>
+                            <th style="width:180px;">Contoh Industri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="comp-row" data-cat="cat-util" data-name="back to top button tombol bulat panah melayang yang muncul saat layar telah discroll sejauh 400px ke bawah. tombol panah atas di artikel berita kompas, wikipedia.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">104</td>
+                            <td><strong>Back to Top Button</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Tombol bulat panah melayang yang muncul saat layar telah discroll sejauh 400px ke bawah.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Beri animasi smooth scroll (behavior: 'smooth') saat diklik.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Tombol panah atas di artikel berita Kompas, Wikipedia.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-util" data-name="theme switcher toggle saklar pengubah tema antarmuka (terang / gelap / mengikuti sistem os). tombol matahari/bulan di sudut navbar web modern.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">105</td>
+                            <td><strong>Theme Switcher Toggle</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Saklar pengubah tema antarmuka (Terang / Gelap / Mengikuti Sistem OS).</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Simpan pilihan ke localStorage dan pasang script pencegah flash of wrong theme (FOUC).</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Tombol matahari/bulan di sudut navbar web modern.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-util" data-name="language / locale switcher menu pemilih bahasa antarmuka aplikasi dengan teks lokal dan bendera negara. dropdown bahasa di footer google, airbnb.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">106</td>
+                            <td><strong>Language / Locale Switcher</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Menu pemilih bahasa antarmuka aplikasi dengan teks lokal dan bendera negara.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Tuliskan nama bahasa dalam bahasa aslinya (misal: 'Bahasa Indonesia', 'English', '日本語').</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Dropdown bahasa di footer Google, Airbnb.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-util" data-name="keyboard shortcut helper modal dialog pop-up berisi daftar semua pintasan tombol keyboard yang aktif di aplikasi. shortcut helper di github (tekan ?), twitter/x, trello.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">107</td>
+                            <td><strong>Keyboard Shortcut Helper Modal</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Dialog pop-up berisi daftar semua pintasan tombol keyboard yang aktif di aplikasi.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Picukan dialog ini saat pengguna menekan tombol tanda tanya (?) di keyboard.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Shortcut helper di GitHub (tekan ?), Twitter/X, Trello.</span></td>
+                        </tr>
+                        <tr class="comp-row" data-cat="cat-util" data-name="resizer splitter (split pane) garis pembatas vertikal/horizontal fleksibel yang bisa digeser mouse untuk mengubah ukuran panel. pembatas panel editor kode di vs code, jsfiddle.">
+                            <td style="font-weight:700;color:var(--brand-light);text-align:center;">108</td>
+                            <td><strong>Resizer Splitter (Split Pane)</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-secondary);">Garis pembatas vertikal/horizontal fleksibel yang bisa digeser mouse untuk mengubah ukuran panel.</td>
+                            <td style="font-size:0.82rem;color:var(--text-muted);">Ubah kursor mouse menjadi col-resize atau row-resize saat berada di atas splitter.</td>
+                            <td style="font-size:0.82rem;color:var(--text-primary);"><span style="background:var(--bg-surface-2);padding:2px 8px;border-radius:4px;border:1px solid var(--border);display:inline-block;">Pembatas panel editor kode di VS Code, JSFiddle.</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
+            <div class="live-preview-box">
+                <div class="live-preview-header">
+                    <div class="live-preview-title"><i class="fa-solid fa-gears" style="color:var(--brand);"></i> Live Showcase: Utilitas & Aksesibilitas Sistem</div>
+                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);">5 Komponen</span>
+                </div>
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                    <button style="background:var(--bg-surface-2);color:var(--text-primary);border:1px solid var(--border);padding:8px 12px;border-radius:6px;font-size:0.78rem;cursor:pointer;display:flex;align-items:center;gap:6px;">
+                        <i class="fa-solid fa-globe" style="color:var(--brand-light);"></i> ID / English
+                    </button>
+                    <button style="background:var(--bg-surface-2);color:var(--text-primary);border:1px solid var(--border);padding:8px 12px;border-radius:6px;font-size:0.78rem;cursor:pointer;display:flex;align-items:center;gap:6px;">
+                        <i class="fa-solid fa-keyboard"></i> Pintasan Keyboard (Tekan ?)
+                    </button>
+                    <button style="background:var(--brand);color:#fff;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Kembali ke Atas">
+                        <i class="fa-solid fa-arrow-up"></i>
+                    </button>
+                </div>
+            </div>
+        
+            </div>
+
         </section>
 
-        <!-- Section 3 -->
+<!-- Section 3 -->
         <section id="grid-vs-flexbox">
             <h2><i class="fa-solid fa-table-cells"></i> 3. CSS Grid vs Flexbox: Panduan Keputusan Arsitektur</h2>
             <p>
@@ -1155,5 +2060,51 @@
 </div>
 
 <script src="../../assets/script.js?v=2.5.0"></script>
+<script>
+    let currentCategory = 'all';
+
+    function filterCategory(catId, btn) {
+        currentCategory = catId;
+        document.querySelectorAll('.comp-filter-btn').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        filterComponents();
+    }
+
+    function filterComponents() {
+        const query = (document.getElementById('compSearchInput').value || '').toLowerCase().trim();
+        const rows = document.querySelectorAll('.comp-row');
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const cat = row.getAttribute('data-cat');
+            const dataText = row.getAttribute('data-name') || '';
+            const matchCat = (currentCategory === 'all' || cat === currentCategory);
+            const matchQuery = (!query || dataText.includes(query));
+
+            if (matchCat && matchQuery) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Tampilkan atau sembunyikan blok kategori jika kosong
+        document.querySelectorAll('.category-block').forEach(block => {
+            const catId = block.id;
+            if (currentCategory !== 'all' && catId !== currentCategory) {
+                block.style.display = 'none';
+            } else {
+                const visibleInCat = block.querySelectorAll('.comp-row:not([style*="display: none"])').length;
+                block.style.display = visibleInCat > 0 ? '' : 'none';
+            }
+        });
+
+        const counterEl = document.getElementById('compSearchCount');
+        if (counterEl) {
+            counterEl.innerText = `${visibleCount} Komponen Ditemukan`;
+        }
+    }
+</script>
 </body>
 </html>
