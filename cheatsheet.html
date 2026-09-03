@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamus &amp; Cheat Sheet Perintah Server Linux, Git &amp; DevOps — Fundamental Coding</title>
+    <meta name="description" content="Kamus komprehensif perintah produksi Linux, Jaringan, Sockets, Nginx, Docker, Kubernetes, dan Git Plumbing Internals untuk Software Engineer & SRE.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+        .cs-hero {
+            padding: calc(var(--header-h) + 36px) 24px 32px;
+            text-align: center;
+            background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.2) 0%, transparent 65%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cs-badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .cs-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-blue { background: var(--brand); color: #FFFFFF; }
+        .badge-surface { background: var(--bg-surface-2); color: var(--brand-light); border: 1px solid var(--border-light); }
+        .badge-green { background: rgba(16, 185, 129, 0.18); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.4); }
+
+        .cs-hero h1 {
+            font-size: 2.6rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            letter-spacing: -0.025em;
+            margin-bottom: 12px;
+        }
+
+        .cs-hero h1 span {
+            background: linear-gradient(135deg, #60A5FA 0%, #2563EB 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cs-hero p {
+            max-width: 820px;
+            margin: 0 auto 20px;
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Controls: Search & Tabs */
+        .cs-controls-container {
+            max-width: 1300px;
+            margin: 28px auto 20px;
+            padding: 0 20px;
+        }
+
+        .cs-controls-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            padding: 16px 20px;
+            border-radius: var(--r-lg);
+        }
+
+        .cs-search-input-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .cs-search-input-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .cs-search-input-wrap input {
+            width: 100%;
+            padding: 11px 14px 11px 42px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .cs-search-input-wrap input:focus {
+            border-color: var(--brand);
+            box-shadow: 0 0 0 3px var(--brand-subtle);
+        }
+
+        .cs-filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .cs-tab-btn {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 7px 13px;
+            border-radius: var(--r-sm);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .cs-tab-btn:hover {
+            border-color: var(--brand-light);
+            color: var(--text-primary);
+        }
+
+        .cs-tab-btn.active {
+            background: var(--brand);
+            border-color: var(--brand);
+            color: #FFFFFF;
+        }
+
+        /* Commands Grid */
+        .cs-grid-container {
+            max-width: 1300px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .cs-category-section {
+            margin-bottom: 40px;
+        }
+
+        .cs-category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            margin-bottom: 18px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .cs-category-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cs-category-title i {
+            color: var(--brand);
+        }
+
+        .cs-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(390px, 1fr));
+            gap: 18px;
+        }
+
+        .cs-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .cs-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--brand-light);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .cs-card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .cs-cmd-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--brand-light);
+            background: var(--code-bg);
+            padding: 4px 10px;
+            border-radius: var(--r-sm);
+            border: 1px solid var(--code-border);
+            word-break: break-all;
+        }
+
+        .cs-card-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: var(--bg-surface-2);
+            color: var(--text-muted);
+            border: 1px solid var(--border-light);
+            flex-shrink: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .cs-desc-block {
+            margin: 10px 0 14px;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.55;
+        }
+
+        .cs-desc-block strong {
+            color: var(--text-primary);
+        }
+
+        .cs-case-box {
+            background: var(--bg-primary);
+            border-left: 3px solid var(--brand);
+            padding: 8px 12px;
+            border-radius: 0 var(--r-sm) var(--r-sm) 0;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            line-height: 1.45;
+        }
+
+        .cs-case-box span {
+            font-weight: 700;
+            color: var(--brand-light);
+            display: block;
+            margin-bottom: 2px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .cs-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            gap: 10px;
+        }
+
+        .cs-learn-link {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--brand-light);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.15s ease;
+        }
+
+        .cs-learn-link:hover {
+            color: #FFFFFF;
+            text-decoration: underline;
+        }
+
+        .cs-copy-btn {
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: var(--r-sm);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .cs-copy-btn:hover {
+            background: var(--brand);
+            border-color: var(--brand);
+            color: #FFFFFF;
+        }
+
+        .cs-copy-btn.copied {
+            background: var(--success);
+            border-color: var(--success);
+            color: #FFFFFF;
+        }
+
+        @media (max-width: 768px) {
+            .cs-hero h1 { font-size: 2rem; }
+            .cs-cards-grid { grid-template-columns: 1fr; }
+            .cs-controls-bar { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <a href="index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <span style="font-weight:600;color:var(--brand-light);">Kamus Perintah Server &amp; Git</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="index.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-house"></i> Beranda Portal
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-terminal"></i>
+            CLI Cheat Sheet <span>(35+ Perintah)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Lompat Kategori Kamus</div>
+        <nav class="sidebar-nav">
+            <a href="#git-plumbing" class="nav-link"><i class="fa-solid fa-wrench"></i> 1. Git Plumbing (Internals)</a>
+            <a href="#git-forensik" class="nav-link"><i class="fa-solid fa-clock-rotate-left"></i> 2. Git Forensik &amp; Recovery</a>
+            <a href="#server-network" class="nav-link"><i class="fa-solid fa-network-wired"></i> 3. Jaringan &amp; Socket Linux</a>
+            <a href="#server-process" class="nav-link"><i class="fa-solid fa-microchip"></i> 4. Proses &amp; Syscall Linux</a>
+            <a href="#server-web" class="nav-link"><i class="fa-solid fa-server"></i> 5. Web Server &amp; Nginx</a>
+            <a href="#server-devops" class="nav-link"><i class="fa-brands fa-docker"></i> 6. Docker &amp; Kubernetes</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main" style="padding:0;">
+
+        <!-- Hero Section -->
+        <section class="cs-hero">
+            <div class="cs-badges">
+                <span class="cs-badge badge-blue"><i class="fa-solid fa-terminal"></i> CHEAT SHEET &amp; KAMUS RESMI</span>
+                <span class="cs-badge badge-surface"><i class="fa-solid fa-shield-halved"></i> PRODUCTION GRADE SRE</span>
+                <span class="cs-badge badge-green"><i class="fa-solid fa-copy"></i> SALIN CEPAT 1-KLIK</span>
+            </div>
+            <h1>Kamus Perintah <span>Server Linux, Git &amp; DevOps</span></h1>
+            <p>
+                Katalog komprehensif sintaks dan perintah produksi tingkat lanjut untuk Software Engineer, DevOps, dan SRE: membedah cara kerja perintah di balik layar (*kernel syscalls &amp; objects DAG*), fungsi praktis, serta skenario penggunaan riil saat insiden produksi.
+            </p>
+        </section>
+
+        <!-- Search & Category Filters -->
+        <div class="cs-controls-container">
+            <div class="cs-controls-bar">
+                <div class="cs-search-input-wrap">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="csSearchInput" placeholder="Cari perintah atau fungsi (misal: ss, strace, hash-object, lsof, reflog, cgroups, nginx, ulimit)...">
+                </div>
+                <div class="cs-filter-tabs">
+                    <button class="cs-tab-btn active" data-cat="all">Semua Perintah</button>
+                    <button class="cs-tab-btn" data-cat="git">Git Engine</button>
+                    <button class="cs-tab-btn" data-cat="network">Jaringan &amp; Socket</button>
+                    <button class="cs-tab-btn" data-cat="process">Linux Kernel &amp; CPU</button>
+                    <button class="cs-tab-btn" data-cat="nginx">Nginx &amp; Web</button>
+                    <button class="cs-tab-btn" data-cat="devops">Docker &amp; K8s</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Commands Grid Content -->
+        <div class="cs-grid-container">
+
+            <!-- 1. Git Plumbing Internals -->
+            <section id="git-plumbing" class="cs-category-section" data-cat="git">
+                <div class="cs-category-header">
+                    <div class="cs-category-title"><i class="fa-solid fa-wrench"></i> 1. Git Plumbing Commands (Internal Object Engine)</div>
+                    <span class="cs-card-badge">Tingkat Rendah</span>
+                </div>
+                <div class="cs-cards-grid">
+
+                    <!-- Card: git hash-object -->
+                    <div class="cs-card" data-keywords="git hash-object blob sha-1 sha1 kompresi zlib database">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">git hash-object -w --stdin</span>
+                                <span class="cs-card-badge">Plumbing</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Membaca konten teks/biner dari stdin, menghitung checksum SHA-1 40-karakter, mengompresi payload via algoritma zlib Deflate, lalu langsung menulisnya ke <code>.git/objects/xx/yyy</code> sebagai objek Blob.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Menyimpan snapshot konfigurasi secara programatis atau memverifikasi integritas hash file tanpa perlu menyentuh staging area.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/07_runtimes_memory/03_git_internals_advanced.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 25</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'echo &quot;konten rahasia&quot; | git hash-object -w --stdin')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: git cat-file -->
+                    <div class="cs-card" data-keywords="git cat-file inspeksi objek blob tree commit tag">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">git cat-file -p &lt;SHA&gt;</span>
+                                <span class="cs-card-badge">Plumbing</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Mendekompresi objek dari direktori objek Git dan mencetaknya dalam format yang mudah dibaca manusia (*pretty-print*). Gunakan flag <code>-t</code> untuk melihat tipe objeknya (blob, tree, commit, tag).
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Memeriksa isi snapshot commit lama atau melihat referensi pointer Tree internal saat menelusuri bug korupsi repository.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/04_architecture/02_git_internals.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 14</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'git cat-file -p HEAD')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: git write-tree -->
+                    <div class="cs-card" data-keywords="git write-tree staging index tree direktori">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">git write-tree</span>
+                                <span class="cs-card-badge">Plumbing</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Membekukan seluruh struktur file dan subfolder yang saat ini berada di staging index (<code>.git/index</code>) menjadi Tree Object biner, mengembalikan SHA-1 pohon direktori tersebut.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Membuat commit manual atau menyusun snapshot branch dalam script otomatisasi CI/CD bot tanpa campur tangan terminal manusia.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/07_runtimes_memory/03_git_internals_advanced.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 25</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'git write-tree')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: git commit-tree -->
+                    <div class="cs-card" data-keywords="git commit-tree author committer message parent">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">git commit-tree &lt;TREE&gt; -p &lt;PARENT&gt; -m &quot;pesan&quot;</span>
+                                <span class="cs-card-badge">Plumbing</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Merangkai metadata commit (pohon tree, author, committer, timestamp UTC, parent commit hash, dan pesan) menjadi objek commit resmi tanpa perlu perintah <code>git commit</code>.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Membuat commit sintetis, menggabungkan riwayat merge khusus, atau membangun sistem integrasi versi kustom.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/07_runtimes_memory/03_git_internals_advanced.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 25</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'git commit-tree $TREE_SHA -p HEAD -m &quot;Commit otomatis&quot;')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: git update-ref -->
+                    <div class="cs-card" data-keywords="git update-ref branch pointer atomic heads">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">git update-ref refs/heads/main &lt;SHA&gt;</span>
+                                <span class="cs-card-badge">Plumbing</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Memperbarui file referensi pointer branch secara atomik aman (*thread-safe lock*) ke commit SHA yang baru dibuat.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Memindahkan pointer branch ke commit baru tanpa mengubah status direktori kerja (*working tree*) Anda.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/07_runtimes_memory/03_git_internals_advanced.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 25</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'git update-ref refs/heads/main $COMMIT_SHA')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: git verify-pack -->
+                    <div class="cs-card" data-keywords="git verify-pack packfile kompresi delta objek raksasa ukuran">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">git verify-pack -v .git/objects/pack/*.idx</span>
+                                <span class="cs-card-badge">Plumbing</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Mengurai indeks Packfiles Git untuk melihat daftar seluruh objek yang terkompresi, ukuran mentah, ukuran setelah kompresi delta, dan rantai turunan objek.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Mendiagnosa penyebab repository membengkak menjadi puluhan gigabyte dan menemukan objek file raksasa tersembunyi.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/07_runtimes_memory/03_git_internals_advanced.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 25</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -10')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 2. Git Forensik & Recovery -->
+            <section id="git-forensik" class="cs-category-section" data-cat="git">
+                <div class="cs-category-header">
+                    <div class="cs-category-title"><i class="fa-solid fa-clock-rotate-left"></i> 2. Git Forensik &amp; Pemulihan Data (*Disaster Recovery*)</div>
+                    <span class="cs-card-badge">Emergency</span>
+                </div>
+                <div class="cs-cards-grid">
+
+                    <!-- Card: git reflog -->
+                    <div class="cs-card" data-keywords="git reflog pemulihan commit hilang rebase reset hard checkout">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">git reflog</span>
+                                <span class="cs-card-badge">Forensik</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Membaca catatan riwayat pergerakan pointer `HEAD` lokal. Setiap operasi checkout, commit, reset, rebase, atau merge dicatat beserta commit SHA asalnya, bahkan jika commit tersebut sudah tidak punya branch.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Menyelamatkan pekerjaan developer yang panik karena tidak sengaja menjalankan <code>git reset --hard</code> atau salah rebase.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/07_runtimes_memory/03_git_internals_advanced.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 25</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'git reflog')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: git filter-repo -->
+                    <div class="cs-card" data-keywords="git filter-repo bfg rewrite history buang file raksasa secret leak">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">git filter-repo --invert-paths --path &lt;file&gt;</span>
+                                <span class="cs-card-badge">Maintenance</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Menulis ulang seluruh riwayat DAG repository dengan membuang objek file tertentu secara tuntas dari seluruh commit masa lalu, lalu memperbarui pointer parent dan tag secara konsisten.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Membersihkan API key, file .env berharga, atau database dump 2GB yang tidak sengaja terdorong ke GitHub publik.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/07_runtimes_memory/03_git_internals_advanced.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 25</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'git filter-repo --invert-paths --path credentials.json')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: git bisect -->
+                    <div class="cs-card" data-keywords="git bisect binary search bug hunting regression">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">git bisect start / bad / good</span>
+                                <span class="cs-card-badge">Diagnostik</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Menggunakan algoritma pencarian biner (*binary search* O(log N)) pada riwayat commit untuk melacak commit tepat mana yang pertama kali memperkenalkan regresi bug ke dalam sistem.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Menemukan akar penyebab fitur login rusak di antara ratusan commit merge dari 20 engineer selama sprint berlangsung.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/07_runtimes_memory/03_git_internals_advanced.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 25</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'git bisect start &amp;&amp; git bisect bad HEAD &amp;&amp; git bisect good v1.0.0')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 3. Jaringan & Socket Linux -->
+            <section id="server-network" class="cs-category-section" data-cat="network">
+                <div class="cs-category-header">
+                    <div class="cs-category-title"><i class="fa-solid fa-network-wired"></i> 3. Diagnostik Jaringan &amp; Sockets Linux</div>
+                    <span class="cs-card-badge">Networking</span>
+                </div>
+                <div class="cs-cards-grid">
+
+                    <!-- Card: ss -tulnp -->
+                    <div class="cs-card" data-keywords="ss netstat socket listen tcp udp port pid socket exhaustion">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">ss -tulnp</span>
+                                <span class="cs-card-badge">Network</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Mengambil status socket langsung dari subsistem netlink Linux kernel secara instan (jauh lebih cepat dibanding <code>netstat</code>) untuk menampilkan semua port TCP/UDP yang sedang <code>LISTEN</code> beserta Process ID (PID)-nya.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Menemukan proses mana yang menyandera port 80/443 saat web server gagal start karena pesan error <code>Address already in use</code>.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/05_linux_networking/01_networking_sockets.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 17</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'sudo ss -tulnp')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: ip addr -->
+                    <div class="cs-card" data-keywords="ip addr route cidr interface eth0 veth subnetting">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">ip -br a &amp;&amp; ip route</span>
+                                <span class="cs-card-badge">Network</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Menginspeksi interface kartu jaringan fisik/virtual (eth0, lo, veth Docker, flannel.1 K8s), memeriksa netmask CIDR (/24, /16), serta memeriksa tabel routing default gateway kernel.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Memverifikasi IP subnetting server privat VPC dan memastikan paket data tidak tersesat karena kesalahan default gateway.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/05_linux_networking/01_networking_sockets.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 17</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'ip -br a')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: tcpdump -->
+                    <div class="cs-card" data-keywords="tcpdump packet capture raw syn syn-ack ack wireshark handshake">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">sudo tcpdump -nn -i any port 80 -c 20</span>
+                                <span class="cs-card-badge">Sniffer</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Mengaitkan kernel filter libpcap pada driver antarmuka jaringan untuk menyadap paket raw frame secara nyata, menampilkan flag TCP ([S] SYN, [.] ACK, [P] PUSH, [F] FIN).
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Membuktikan apakah firewall cloud memblokir paket SYN atau apakah backend merespons dengan paket TCP Reset (RST).
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/05_linux_networking/01_networking_sockets.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 17</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'sudo tcpdump -nn -i any port 80 -c 20')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: curl timing breakdown -->
+                    <div class="cs-card" data-keywords="curl ttfb dns tcp connect tls latency diagnosa performa">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">curl -w &quot;DNS: %{time_namelookup}s | Connect: %{time_connect}s | TTFB: %{time_starttransfer}s | Total: %{time_total}s\n&quot; -so /dev/null &lt;URL&gt;</span>
+                                <span class="cs-card-badge">Performa</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Memanfaatkan instrumentasi internal libcurl untuk mengukur latensi milidetik di setiap etape: DNS lookup, TCP 3-Way Handshake, negosiasi TLS, hingga respon byte pertama (TTFB).
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Mengetahui letak bottleneck request lambat: apakah di lambatnya DNS resolver, delay handshake TCP, atau query database lambat di backend.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/03_backend/01_http_protocols.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 10</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'curl -w &quot;DNS: %{time_namelookup}s | Connect: %{time_connect}s | TTFB: %{time_starttransfer}s | Total: %{time_total}s\n&quot; -so /dev/null https://google.com')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 4. Proses & Syscall Linux -->
+            <section id="server-process" class="cs-category-section" data-cat="process">
+                <div class="cs-category-header">
+                    <div class="cs-category-title"><i class="fa-solid fa-microchip"></i> 4. Manajemen Proses, Syscall &amp; Batas Kernel</div>
+                    <span class="cs-card-badge">Linux Kernel</span>
+                </div>
+                <div class="cs-cards-grid">
+
+                    <!-- Card: lsof -->
+                    <div class="cs-card" data-keywords="lsof file descriptor socket leak emfile berkas terbuka">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">sudo lsof -p &lt;PID&gt; | wc -l</span>
+                                <span class="cs-card-badge">Diagnostik</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Memindai tabel file descriptor (FD) milik suatu proses di virtual filesystem <code>/proc/&lt;PID&gt;/fd</code> untuk menghitung jumlah file, koneksi socket TCP, dan pipe yang sedang dibuka.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Mendiagnosa socket leak pada aplikasi Node.js atau Go yang menyebabkan crash fatal <code>EMFILE: Too many open files</code>.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/05_linux_networking/02_linux_os_internals.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 18</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'sudo lsof -i :80')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: strace -->
+                    <div class="cs-card" data-keywords="strace system calls syscalls epoll_wait read write kernel monitor">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">sudo strace -p &lt;PID&gt; -f -e trace=network,file</span>
+                                <span class="cs-card-badge">Syscall</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Menggunakan interface debugger kernel <code>ptrace</code> untuk menyadap setiap system call (seperti <code>epoll_wait</code>, <code>read</code>, <code>write</code>, <code>openat</code>) yang dibuat aplikasi ke kernel.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Mengungkap mengapa sebuah proses menggantung (hang 100% CPU): apakah sedang mentok di lock file atau menunggu balasan socket.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/05_linux_networking/02_linux_os_internals.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 18</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'sudo strace -p 1234 -c')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: ulimit -->
+                    <div class="cs-card" data-keywords="ulimit nofile max open files limits.conf kernel resource">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">ulimit -n 65535</span>
+                                <span class="cs-card-badge">Sistem</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Mengubah batas kuota *Resource Limit* (soft limit &amp; hard limit) jumlah File Descriptor per shell session. Standar bawaan Linux biasanya 1024 yang sangat kecil untuk server dengan 10.000 koneksi bersamaan.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Meningkatkan kapasitas server Nginx/Redis agar sanggup menampung 65.000 koneksi konkurensi tinggi tanpa memuntahkan error socket limit.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/05_linux_networking/02_linux_os_internals.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 18</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'ulimit -n 65535')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 5. Web Server & Nginx -->
+            <section id="server-web" class="cs-category-section" data-cat="nginx">
+                <div class="cs-category-header">
+                    <div class="cs-category-title"><i class="fa-solid fa-server"></i> 5. Web Server, Nginx &amp; Systemd Services</div>
+                    <span class="cs-card-badge">Web Server</span>
+                </div>
+                <div class="cs-cards-grid">
+
+                    <!-- Card: nginx -t -->
+                    <div class="cs-card" data-keywords="nginx -t syntax check validasi konfigurasi zero downtime">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">sudo nginx -t</span>
+                                <span class="cs-card-badge">Nginx</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Membaca dan mem-parsing seluruh file konfigurasi di <code>/etc/nginx/nginx.conf</code> dan sub-konfigurasi virtual host tanpa memengaruhi proses master/worker yang sedang melayani pengunjung.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                *Golden Rule* SRE: Selalu jalankan <code>nginx -t</code> sebelum reload agar kesalahan titik-koma (syntax error) tidak menjatuhkan server produksi.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/05_linux_networking/03_web_servers_reverse_proxy.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 19</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'sudo nginx -t')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: nginx -s reload -->
+                    <div class="cs-card" data-keywords="nginx reload zero-downtime hup signal graceful">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">sudo nginx -s reload</span>
+                                <span class="cs-card-badge">Nginx</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Mengirimkan sinyal POSIX <code>SIGHUP</code> ke proses Nginx Master. Master membaca konfigurasi baru, menyalakan worker baru, dan mematikan worker lama secara elegan (*graceful*) setelah koneksi aktifnya selesai.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Memperbarui sertifikat SSL Let's Encrypt atau mengubah upstream proxy tanpa ada 1 pun pengguna yang mengalami kegagalan koneksi (*zero downtime*).
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/05_linux_networking/03_web_servers_reverse_proxy.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 19</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'sudo nginx -s reload')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: journalctl -->
+                    <div class="cs-card" data-keywords="journalctl systemd logs real-time tail error crash">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">journalctl -u nginx -f -n 50</span>
+                                <span class="cs-card-badge">Systemd</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Melakukan streaming biner log sistem dari daemon `systemd-journald` khusus untuk unit service tertentu secara *live* (*follow* flag <code>-f</code>).
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Memantau log proses startup backend API untuk mengetahui penyebab crash instan saat service baru saja di-deploy.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/05_linux_networking/03_web_servers_reverse_proxy.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 19</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'sudo journalctl -u nginx -f -n 50')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 6. Docker & Kubernetes -->
+            <section id="server-devops" class="cs-category-section" data-cat="devops">
+                <div class="cs-category-header">
+                    <div class="cs-category-title"><i class="fa-brands fa-docker"></i> 6. Kontainer, Docker &amp; Kubernetes Orchestration</div>
+                    <span class="cs-card-badge">Cloud Native</span>
+                </div>
+                <div class="cs-cards-grid">
+
+                    <!-- Card: unshare Linux -->
+                    <div class="cs-card" data-keywords="unshare namespaces isolasi kernel container mnt pid net">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">sudo unshare --pid --net --mount --fork /bin/bash</span>
+                                <span class="cs-card-badge">Kernel</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Memanggil *syscall* <code>unshare()</code> Linux Kernel untuk melepaskan proses dari namespace host. Proses di dalamnya melihat PID 1 miliknya sendiri dan stack network tersendiri murni tanpa Docker daemon.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Fondasi inti bagaimana kontainer dibuat: membuktikan bahwa kontainer bukanlah Virtual Machine, melainkan proses Linux biasa yang dibatasi namespace.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/06_devops/01_docker_internals.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 20</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'sudo unshare --pid --net --fork /bin/bash')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: docker run cgroups -->
+                    <div class="cs-card" data-keywords="docker run memory cgroups pids-limit cpu resource throttling">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">docker run --memory=&quot;512m&quot; --pids-limit 100 -d myapp</span>
+                                <span class="cs-card-badge">Docker</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Menginstruksikan kernel cgroups v2 (<code>/sys/fs/cgroup/</code>) untuk menetapkan kuota hard RAM 512MB dan mencegah proses membuat child process lebih dari 100 thread.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Mencegah satu aplikasi yang bocor memori menenggelamkan seluruh node server produksi (*OOM killer containment*).
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/06_devops/01_docker_internals.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 20</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'docker run --memory=&quot;512m&quot; --pids-limit 100 -d myapp')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: kubectl rollout status -->
+                    <div class="cs-card" data-keywords="kubectl rollout status deployment kubernetes zero-downtime">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">kubectl rollout status deployment/web-api --timeout=60s</span>
+                                <span class="cs-card-badge">Kubernetes</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Memantau siklus rolling update Kubernetes. Mengonfirmasi bahwa Pod generasi baru telah lolos uji <code>readinessProbe</code> sebelum mematikan Pod versi sebelumnya.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Kunci dalam pipeline CI/CD otomatis: membatalkan deployment dan melakukan auto-rollback jika Pod baru mengalami crash loop.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/06_devops/02_kubernetes_orchestration.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 21</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'kubectl rollout status deployment/web-api')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<script src="assets/script.js"></script>
+<script>
+    // Copy helper
+    function copySnippet(btn, text) {
+        navigator.clipboard.writeText(text).then(() => {
+            btn.classList.add('copied');
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Tersalin!';
+            setTimeout(() => {
+                btn.classList.remove('copied');
+                btn.innerHTML = orig;
+            }, 1800);
+        });
+    }
+
+    // Instant Filter & Live Search
+    const csInput = document.getElementById('csSearchInput');
+    const csTabs = document.querySelectorAll('.cs-tab-btn');
+    const csCards = document.querySelectorAll('.cs-card');
+    const csSections = document.querySelectorAll('.cs-category-section');
+
+    function applyFilter() {
+        const query = csInput.value.toLowerCase().trim();
+        const activeTab = document.querySelector('.cs-tab-btn.active');
+        const activeCat = activeTab ? activeTab.getAttribute('data-cat') : 'all';
+
+        csCards.forEach(card => {
+            const cardKeywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+            const cardText = card.innerText.toLowerCase();
+            const cardCat = card.closest('.cs-category-section').getAttribute('data-cat');
+
+            const matchesCat = (activeCat === 'all' || cardCat === activeCat);
+            const matchesQuery = !query || cardKeywords.includes(query) || cardText.includes(query);
+
+            if (matchesCat && matchesQuery) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Hide section headers if all cards in section are hidden
+        csSections.forEach(sec => {
+            const visibleCards = sec.querySelectorAll('.cs-card[style*="display: flex"]');
+            sec.style.display = (visibleCards.length > 0) ? 'block' : 'none';
+        });
+    }
+
+    csInput.addEventListener('input', applyFilter);
+
+    csTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            csTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            applyFilter();
+        });
+    });
+</script>
+</body>
+</html>
