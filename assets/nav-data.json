@@ -80,14 +80,13 @@
       "id": "devops_docker",
       "title": "DevOps, Docker & CI/CD",
       "icon": "fa-brands fa-docker",
-      "badge": "Roadmap",
-      "badgeColor": "var(--brand)",
-      "description": "Kontainerisasi dari dasar, arsitektur Docker internals, multi-stage build image ramping, Docker Compose, dan pipeline CI/CD.",
+      "badge": "Aktif (3 Modul)",
+      "badgeColor": "var(--success)",
+      "description": "Docker internals (Namespaces, cgroups v2, Overlay2 COW), Kubernetes Pods & Services, Zero-Downtime Deployment, dan GitHub Actions IaC.",
       "modules": [
-        { "id": "ops_01_container_internals", "title": "1. Container vs VM: Kernel Namespaces & cgroups", "url": "tracks/06_devops_docker/01_container_internals.html", "status": "planned", "duration": "40m" },
-        { "id": "ops_02_dockerfile_best_practices", "title": "2. Dockerfile Production: Multi-Stage Builds & Layer Cache", "url": "tracks/06_devops_docker/02_dockerfile_best_practices.html", "status": "planned", "duration": "45m" },
-        { "id": "ops_03_docker_compose", "title": "3. Multi-Container Orchestration dengan Docker Compose", "url": "tracks/06_devops_docker/03_docker_compose.html", "status": "planned", "duration": "45m" },
-        { "id": "ops_04_cicd_pipeline", "title": "4. Otomasi CI/CD Pipeline dengan GitHub Actions", "url": "tracks/06_devops_docker/04_cicd_pipeline.html", "status": "planned", "duration": "50m" }
+        { "id": "ops_01_docker_internals", "title": "Fase 20: Docker Internals & cgroups", "url": "tracks/06_devops/01_docker_internals.html", "status": "ready", "duration": "55m" },
+        { "id": "ops_02_kubernetes_orchestration", "title": "Fase 21: Orkestrasi Kubernetes", "url": "tracks/06_devops/02_kubernetes_orchestration.html", "status": "ready", "duration": "55m" },
+        { "id": "ops_03_cicd_infrastructure", "title": "Fase 22: CI/CD & Terraform IaC", "url": "tracks/06_devops/03_cicd_infrastructure.html", "status": "ready", "duration": "55m" }
       ]
     },
     {

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 22: Otomasi CI/CD &amp; Infrastruktur Modern — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Kuasai siklus otomatisasi DevOps modern: Pipeline GitHub Actions berkecepatan tinggi, otentikasi aman OIDC tanpa password, Infrastructure as Code (Terraform state & drift), serta GitOps.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 07</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 22: CI/CD &amp; Terraform</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-infinity"></i>
+            DevOps Automation <span>(GitOps &amp; OIDC)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 22</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Filosofi CI/CD Modern</a>
+            <a href="#github-actions" class="nav-link"><i class="fa-brands fa-github"></i> 2. Anatomi GitHub Actions</a>
+            <a href="#oidc-security" class="nav-link"><i class="fa-solid fa-key"></i> 3. Passwordless Auth (OIDC)</a>
+            <a href="#terraform-iac" class="nav-link"><i class="fa-solid fa-cube"></i> 4. Infrastructure as Code (Terraform)</a>
+            <a href="#state-drift" class="nav-link"><i class="fa-solid fa-scale-unbalanced"></i> 5. Bahaya State Drift di Cloud</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-brands fa-docker"></i> Track 07: DevOps &amp; CI/CD</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (DevOps Automation)</span>
+            </div>
+            <h1>Fase 22: Otomasi CI/CD &amp; Infrastruktur Modern</h1>
+            <p class="module-lead">
+                Membangun jalur pipa pengiriman perangkat lunak otomatis kelas dunia: orkestrasi pipeline GitHub Actions berkinerja tinggi dengan smart dependency caching, pengamanan kredensial cloud via OpenID Connect (OIDC), manajemen infrastruktur deklaratif dengan Terraform (State &amp; Drift Detection), serta paradigma GitOps.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Filosofi CI vs CD</h2>
+            <p>
+                Otomasi modern membagi siklus hidup rilis menjadi dua fase berurutan yang saling melengkapi:
+            </p>
+            <ul>
+                <li><strong>Continuous Integration (CI):</strong> Setiap kali developer melakukan push kode atau membuka Pull Request, server otomatis menjalankan linting, typechecking, build kompilasi, dan seluruh unit test untuk memvalidasi integritas kode.</li>
+                <li><strong>Continuous Delivery / Deployment (CD):</strong> Jika CI sukses 100%, artefak image kontainer diproduksi dan di-deploy secara otomatis ke server staging atau produksi tanpa campur tangan manual yang rentan kesalahan manusia.</li>
+            </ul>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="github-actions">
+            <h2><i class="fa-brands fa-github"></i> 2. Anatomi Pipeline GitHub Actions</h2>
+            <p>
+                GitHub Actions menggunakan sintaks deklaratif YAML di dalam direktori <code>.github/workflows/</code>:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-file-code"></i> .github/workflows/ci.yml</span></div>
+                <pre><code>name: Enterprise CI Pipeline
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js dengan Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm' # Menghemat waktu download dependensi!
+          
+      - run: npm ci
+      - run: npm run test:coverage
+      - run: npm run build</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="oidc-security">
+            <h2><i class="fa-solid fa-key"></i> 3. Keamanan Modern: OpenID Connect (OIDC) Tanpa Kunci Statis</h2>
+            <p>
+                Praktek lama menyimpan <code>AWS_ACCESS_KEY_ID</code> dan <code>AWS_SECRET_ACCESS_KEY</code> statis di dalam GitHub Secrets adalah <strong>risiko keamanan besar</strong> jika token tersebut bocor.
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-shield"></i> Passwordless Cloud Authentication (OIDC)</div>
+                <div class="callout-body">
+                    Dengan OIDC:
+                    <br><br>
+                    1. GitHub Actions menerbitkan token identitas JWT sementara (berlaku hanya 10 menit) yang ditandatangani secara kriptografis oleh GitHub.<br>
+                    2. AWS STS (Security Token Service) memverifikasi bahwa token tersebut berasal dari repositori Anda yang sah.<br>
+                    3. AWS memberikan kredensial temporer peran IAM (AssumeRole) dengan izin terbatas.<br>
+                    4. <strong>Nol Kunci Rahasia Statis!</strong> Tidak ada password yang bisa dicuri dari repositori!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="terraform-iac">
+            <h2><i class="fa-solid fa-cube"></i> 4. Infrastructure as Code (IaC) dengan HashiCorp Terraform</h2>
+            <p>
+                Jangan pernah membuat database atau server dengan mengklik tombol di dasbor web AWS Console! Buatlah infrastruktur sebagai kode deklaratif:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> main.tf (HCL Syntax)</span></div>
+                <pre><code># Mendefinisikan bucket penyimpanan AWS S3 secara deklaratif
+resource "aws_s3_bucket" "dokumen_invoice" {
+  bucket = "perusahaan-invoice-production-storage"
+
+  tags = {
+    Environment = "Production"
+    ManagedBy   = "Terraform"
+  }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="state-drift">
+            <h2><i class="fa-solid fa-scale-unbalanced"></i> 5. Manajemen State &amp; Bahaya State Drift</h2>
+            <p>
+                Terraform mencatat seluruh status sumber daya fisik cloud di dalam berkas <strong>State (<code>terraform.tfstate</code>)</strong> yang wajib disimpan di remote storage aman (AWS S3 + DynamoDB State Lock):
+            </p>
+
+            <div class="callout-box callout-pitfall">
+                <div class="callout-header"><i class="fa-solid fa-triangle-exclamation"></i> Apa Itu State Drift?</div>
+                <div class="callout-body">
+                    <strong>State Drift</strong> terjadi ketika seorang insinyur mengubah konfigurasi cloud secara manual lewat web konsol (misal: mengubah ukuran CPU server dari t3.small menjadi t3.large) tanpa melalui kode Terraform.
+                    <br><br>
+                    Ketika Terraform dijalankan berikutnya (<code>terraform plan</code>), Terraform mendeteksi ketidaksesuaian antara kode Git dengan realitas cloud, dan secara default akan <strong>mengembalikan (roll back) konfigurasi tersebut ke kode Git</strong>, yang dapat memicu downtime jika tidak disadari!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-skull-crossbones"></i> War Story: Kunci AWS Bocor ke GitHub Publik Menghasilkan Tagihan Rp 600 Juta</div>
+                <div class="callout-body">
+                    Seorang developer junior tidak sengaja melakukan commit file skrip yang berisi <code>AWS_SECRET_KEY</code> root admin ke repositori publik GitHub.
+                    <br><br>
+                    Bot pemindai hacker otomatis di internet mendeteksi kunci tersebut <strong>dalam waktu 4 menit</strong> setelah commit!
+                    <br><br>
+                    Hacker seketika membuat ratusan instance server GPU AWS EC2 termahal di berbagai region untuk menambang mata uang kripto (Bitcoin/Monero). Dalam 5 jam sebelum akun di-suspend, tagihan cloud perusahaan membengkak hingga <strong>$40.000 USD (sekitar Rp 620.000.000)</strong>!
+                    <br><br>
+                    <strong>Solusi Baku:</strong> Pasang hook <strong>git-secrets / gitleaks</strong> di komputer lokal untuk memblokir commit yang memuat string API key, dan gunakan <strong>OIDC Passwordless Role</strong> untuk seluruh pipeline CI/CD!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: CI/CD &amp; Infrastruktur Modern</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Mengapa otentikasi OIDC (OpenID Connect) jauh lebih direkomendasikan daripada menyimpan Access Key statis di GitHub Actions?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'OIDC tidak mempengaruhi kecepatan compile.')">A. Karena membuat proses compile kode 10x lebih cepat</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! OIDC menggunakan token temporer jangka pendek (short-lived) tanpa menyimpan kunci rahasia permanen di repositori, mengeliminasi risiko kebocoran credential.')">B. OIDC menggunakan token temporer berumur pendek tanpa menyimpan kunci rahasia statis di repositori, menghilangkan risiko pencurian credential permanen</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'OIDC kompatibel dengan seluruh cloud utama.')">C. Karena OIDC hanya bisa digunakan di server lokal</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Dalam pengelolaan Infrastructure as Code menggunakan Terraform, apa yang dimaksud dengan fenomena 'State Drift'?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Drift bukan tentang tagihan.')">A. Kenaikan tagihan cloud yang tidak terduga</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! State drift adalah perbedaan antara kondisi nyata resource di cloud dengan apa yang tercatat di dalam kode dan file terraform.tfstate.')">B. Terjadinya perbedaan antara konfigurasi aktual sumber daya di konsol cloud dengan status yang tercatat di dalam kode Terraform</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Terraform mendukung backup otomatis.')">C. Kerusakan fisik pada server harddisk cloud</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="02_kubernetes_orchestration.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 21: Orkestrasi Kubernetes
+            </a>
+            <a href="../../plan.html" class="btn btn-primary">
+                Lanjut ke Master Roadmap <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

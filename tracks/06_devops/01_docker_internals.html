@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 20: Docker &amp; Containerization Internals — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Bedah tuntas cara kerja kontainer di balik layar: Linux Namespaces, Control Groups (cgroups v2), Storage Driver Overlay2 (Copy-on-Write), dan optimasi Multi-Stage Distroless Image.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 07</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 20: Docker Internals</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-brands fa-docker"></i>
+            cgroups v2 <span>(Overlay2 COW)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 20</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Kontainer Bukan Virtual Machine!</a>
+            <a href="#namespaces" class="nav-link"><i class="fa-solid fa-eye-slash"></i> 2. Linux Namespaces (Isolasi)</a>
+            <a href="#cgroups" class="nav-link"><i class="fa-solid fa-gauge-high"></i> 3. Control Groups (cgroups v2)</a>
+            <a href="#overlay2" class="nav-link"><i class="fa-solid fa-layer-group"></i> 4. Storage Driver Overlay2 (COW)</a>
+            <a href="#multi-stage" class="nav-link"><i class="fa-solid fa-box-archive"></i> 5. Multi-Stage &amp; Distroless</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-brands fa-docker"></i> Track 07: DevOps &amp; CI/CD</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Container Internals)</span>
+            </div>
+            <h1>Fase 20: Docker &amp; Containerization Internals</h1>
+            <p class="module-lead">
+                Membongkar apa yang sebenarnya terjadi saat menjalankan <code>docker run</code>: isolasi proses via Linux Namespaces, pembatasan sumber daya perangkat keras via cgroups v2, sistem berkas bertingkat Overlay2 Copy-on-Write, serta pemangkasan ukuran image dari 1.2 GB menjadi 20 MB menggunakan Multi-Stage Distroless.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Mitos Terbesar: "Kontainer Adalah Virtual Machine Mini"</h2>
+            <p>
+                Banyak insinyur salah mengira bahwa kontainer Docker memuat kernel sistem operasi mandiri seperti halnya VMware atau VirtualBox:
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-bad">
+                    <div class="code-pane-header"><i class="fa-solid fa-server"></i> Virtual Machine (Hypervisor Hardware Emulation)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Menjalankan <strong>Guest OS dan Kernel terpisah</strong> di atas Hypervisor (Type-1 / Type-2).<br>
+                        • Sangat berat (overhead RAM gigabyte, boot time hitungan menit).<br>
+                        • Emulasi perangkat keras fisik virtual.
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-box"></i> Kontainer Docker (Proses Linux Terisolasi)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • <strong>TIDAK MEMILIKI KERNEL SENDIRI!</strong> Seluruh kontainer berbagi 1 Host Kernel Linux yang sama.<br>
+                        • Kontainer hanyalah sebuah <strong>proses Linux biasa</strong> yang dipasangi "kacamata kuda" melalui Namespaces dan dibatasi pemakaian CPU/RAM-nya melalui cgroups.<br>
+                        • Start time instan (kurang dari 100 milidetik)!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="namespaces">
+            <h2><i class="fa-solid fa-eye-slash"></i> 2. Linux Namespaces: Fondasi Isolasi Lingkungan</h2>
+            <p>
+                Kernel Linux menyediakan 6 primitif namespace yang membatasi apa yang dapat <strong>dilihat</strong> oleh sebuah proses:
+            </p>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Linux Namespace</th>
+                        <th>Apa yang Diisolasi oleh Kernel?</th>
+                        <th>Efek di Dalam Kontainer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>PID Namespace</strong></td>
+                        <td>Nomor identitas proses (Process ID)</td>
+                        <td>Aplikasi di dalam kontainer merasa menjadi <strong>PID 1</strong> (init), padahal di host OS nomor PID-nya adalah 38402.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NET Namespace</strong></td>
+                        <td>Perangkat jaringan, IP address, port routing</td>
+                        <td>Kontainer memiliki IP privat sendiri (<code>eth0</code>) dan routing table terisolasi.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MNT (Mount)</strong></td>
+                        <td>Titik mount sistem berkas (Filesystem root)</td>
+                        <td>Proses hanya bisa melihat root directory <code>/</code> miliknya sendiri (chroot di atas steroid).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>UTS Namespace</strong></td>
+                        <td>Hostname dan Domain name</td>
+                        <td>Kontainer dapat memiliki hostname unik sendiri tanpa mengubah hostname host OS.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IPC Namespace</strong></td>
+                        <td>Inter-Process Communication (Shared Memory)</td>
+                        <td>Mencegah proses membaca memori bersama milik proses lain di luar kontainer.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="cgroups">
+            <h2><i class="fa-solid fa-gauge-high"></i> 3. Control Groups (cgroups v2): Membatasi Sumber Daya</h2>
+            <p>
+                Jika Namespaces membatasi apa yang bisa <em>dilihat</em>, maka <strong>cgroups v2</strong> membatasi berapa banyak sumber daya yang boleh <strong>dipakai</strong>:
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-microchip"></i> Pembatasan CPU &amp; Memory OOM Killer</div>
+                <div class="callout-body">
+                    Ketika Anda menjalankan: <code>docker run -m 512m --cpus="1.5" ...</code>:
+                    <br><br>
+                    1. <strong>Memory Throttling:</strong> Jika kontainer mencoba mengalokasikan RAM lebih dari 512MB, kernel Linux akan memicu <strong>OOM (Out-of-Memory) Killer</strong> dan membunuh proses kontainer dengan sinyal <code>SIGKILL (Exit Code 137)</code>.<br>
+                    2. <strong>CPU Quota (CFS Scheduler):</strong> Kernel membatasi durasi siklus CPU proses tersebut dalam jendela 100ms menggunakan CFS (Completely Fair Scheduler), mencegah satu kontainer nakal memonopoli seluruh core prosesor server!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="overlay2">
+            <h2><i class="fa-solid fa-layer-group"></i> 4. Storage Driver Overlay2 &amp; Copy-on-Write (COW)</h2>
+            <p>
+                Bagaimana 10 kontainer dari image Ubuntu yang sama bisa berjalan serempak tanpa memakan ruang disk 10x lipat? Jawabannya adalah sistem berkas <strong>Overlay2</strong>:
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Layer Bawah</div>
+                    <div class="pipeline-step-title">lowerdir (Read-Only)</div>
+                    <div class="pipeline-step-desc">Lapisan image Docker statis yang di-cache di disk dan dipakai bersama oleh seluruh kontainer.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Layer Atas</div>
+                    <div class="pipeline-step-title">upperdir (Read-Write)</div>
+                    <div class="pipeline-step-desc">Lapisan ephemeral tipis khusus milik kontainer tertentu yang menyimpan modifikasi file.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Tampilan Terpadu</div>
+                    <div class="pipeline-step-title">merged view</div>
+                    <div class="pipeline-step-desc">Kernel menyatukan lowerdir dan upperdir menjadi satu tampilan sistem berkas utuh bagi aplikasi.</div>
+                </div>
+            </div>
+            <p>
+                <strong>Mekanisme Copy-on-Write (COW):</strong> Saat kontainer ingin memodifikasi file di <code>lowerdir</code>, kernel menyalin file tersebut ke <code>upperdir</code> terlebih dahulu, sehingga file asli di image tidak pernah terkontaminasi!
+            </p>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="multi-stage">
+            <h2><i class="fa-solid fa-box-archive"></i> 5. Best Practice: Multi-Stage Build &amp; Distroless Minimal Image</h2>
+            <p>
+                Jangan pernah mem-push image berukuran 1.2 GB yang masih berisi compiler GCC, Node.js SDK, git, dan shell bash ke production. Gunakan <strong>Multi-Stage Build dengan Google Distroless</strong>:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-brands fa-docker"></i> Dockerfile Multi-Stage Produksi</span></div>
+                <pre><code># TAHAP 1: Build Environment (Besar: ~900 MB)
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# TAHAP 2: Production Minimal Image (Kecil: ~45 MB!)
+# Distroless TIDAK MEMILIKI package manager, shell bash/sh, atau curl (Bebas CVE Exploit!)
+FROM gcr.io/distroless/nodejs20-debian12
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+USER nonroot:nonroot
+CMD ["dist/index.js"]</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-triangle-exclamation"></i> War Story: Menjalankan Kontainer Sebagai Root Mengakibatkan Host Server Dikuasai Hacker</div>
+                <div class="callout-body">
+                    Sebuah aplikasi web menjalankan kontainer Docker dengan konfigurasi default (user <code>root</code> di dalam kontainer).
+                    <br><br>
+                    Aplikasi tersebut memiliki celah eksekusi perintah arbitrer (Remote Code Execution - RCE). Hacker berhasil mengeksekusi shell di dalam kontainer. Karena kontainer berjalan sebagai root dan memiliki flag mount yang ceroboh, hacker melakukan <em>Container Escape</em> dan mendapatkan akses <strong>root penuh di sistem operasi server utama (Host OS)</strong>!
+                    <br><br>
+                    <strong>Aturan Wajib Keamanan Kontainer:</strong><br>
+                    1. <strong>SELALU</strong> definisikan user non-root (<code>USER node</code> atau <code>USER 1001</code>).<br>
+                    2. Gunakan Distroless Image yang tidak memiliki binary <code>sh</code> atau <code>bash</code>, sehingga hacker tidak memiliki shell interaktif untuk mengeksploitasi sistem!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Docker Internals</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Fitur kernel Linux manakah yang bertanggung jawab membatasi agar sebuah kontainer Docker tidak dapat menggunakan memori RAM melebihi batas yang ditentukan?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'PID Namespace hanya mengisolasi nomor proses.')">A. PID Namespace</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Control Groups (cgroups v2) mengontrol alokasi dan pembatasan sumber daya perangkat keras fisik seperti RAM, batas CPU, dan I/O disk.')">B. Control Groups (cgroups)</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'NET Namespace mengisolasi jaringan.')">C. NET Namespace</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Overlay2 adalah driver storage.')">D. Storage Driver Overlay2</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Mengapa Google Distroless Container Image dianggap jauh lebih aman untuk lingkungan produksi dibandingkan base image OS lengkap seperti Ubuntu?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Distroless mendukung hampir semua bahasa modern.')">A. Karena Distroless hanya mendukung bahasa Python</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Distroless hanya memuat aplikasi runtime Anda dan dependensinya, tanpa utilitas shell, paket manager, atau curl, secara dramatis memperkecil bidang permukaan serangan keamanan (attack surface).')">B. Distroless tidak memiliki shell (bash/sh), package manager (apt/apk), atau utilitas sistem lain, meminimalkan attack surface dari malware dan CVE</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Distroless tetap memerlukan lisensi standar.')">C. Menghilangkan kebutuhan sertifikat SSL</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="../05_linux_networking/03_web_servers_reverse_proxy.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 19: Server Web &amp; Reverse Proxy
+            </a>
+            <a href="02_kubernetes_orchestration.html" class="btn btn-primary">
+                Lanjut ke Fase 21: Orkestrasi Kubernetes <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

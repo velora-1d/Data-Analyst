@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 21: Orkestrasi Kontainer: Docker Compose Menuju Kubernetes — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Kuasai orkestrasi kontainer skala enterprise: Dari Docker Compose lokal menuju arsitektur Kubernetes (Pods, Deployments, Services, Ingress), Health Probes, dan Strategi Deployment Zero-Downtime.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 07</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 21: Kubernetes</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-dharmachakra"></i>
+            Kube Architecture <span>(Zero Downtime)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 21</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Keterbatasan Docker Compose</a>
+            <a href="#kube-primitives" class="nav-link"><i class="fa-solid fa-cubes"></i> 2. Primitif Inti: Pods &amp; Deployments</a>
+            <a href="#kube-services" class="nav-link"><i class="fa-solid fa-network-wired"></i> 3. Kube Services &amp; Ingress</a>
+            <a href="#probes" class="nav-link"><i class="fa-solid fa-heart-pulse"></i> 4. Liveness vs Readiness Probes</a>
+            <a href="#deployment-strategies" class="nav-link"><i class="fa-solid fa-truck-ramp-box"></i> 5. Rolling vs Blue-Green vs Canary</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-brands fa-docker"></i> Track 07: DevOps &amp; CI/CD</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Cloud Orchestration)</span>
+            </div>
+            <h1>Fase 21: Orkestrasi Kontainer: Docker Compose Menuju Kubernetes</h1>
+            <p class="module-lead">
+                Evolusi dari satu server menuju kluster terdistribusi: transisi Docker Compose lokal ke arsitektur kluster Kubernetes, dekonstruksi hierarki Pods, Deployments, Services (ClusterIP/NodePort/LoadBalancer), Ingress Routing, Health Probes (Liveness &amp; Readiness), serta strategi rilis Canary tanpa downtime.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Mengapa Docker Compose Tidak Cukup di Produksi?</h2>
+            <p>
+                <strong>Docker Compose</strong> adalah alat luar biasa untuk pengembangan lokal: ia mengorkestrasi multi-kontainer (App, Redis, PostgreSQL) di satu mesin laptop menggunakan DNS bridge network internal.
+                <br><br>
+                Namun di level produksi industri berskala jutaan pengguna:
+            </p>
+            <ul>
+                <li>Jika server fisik tempat Docker Compose berjalan mati listrik &rarr; <strong>Seluruh aplikasi mati total!</strong></li>
+                <li>Docker Compose tidak bisa melakukan <em>Auto-Healing</em> lintas mesin fisik server yang berbeda.</li>
+                <li>Docker Compose tidak mendukung <em>Horizontal Pod Autoscaling (HPA)</em> dinamis berdasarkan lonjakan beban CPU/RAM.</li>
+            </ul>
+            <p>
+                Untuk mengatasi ini, Google menyumbangkan <strong>Kubernetes (K8s)</strong> ke Cloud Native Computing Foundation (CNCF) sebagai standar de facto orkestrasi kontainer dunia.
+            </p>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="kube-primitives">
+            <h2><i class="fa-solid fa-cubes"></i> 2. Primitif Inti Kubernetes: Pods, ReplicaSets &amp; Deployments</h2>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Unit Terkecil</div>
+                    <div class="pipeline-step-title">Pod</div>
+                    <div class="pipeline-step-desc">Membungkus 1 atau lebih kontainer. Semua kontainer di dalam Pod berbagi IP address yang sama dan dapat berkomunikasi via <code>localhost</code>!</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Penjaga Jumlah</div>
+                    <div class="pipeline-step-title">ReplicaSet</div>
+                    <div class="pipeline-step-desc">Memastikan jumlah replika Pod yang berjalan selalu sesuai dengan target deklaratif (misal: selalu 3 Pod aktif).</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Pengelola Rilis</div>
+                    <div class="pipeline-step-title">Deployment</div>
+                    <div class="pipeline-step-desc">Mengontrol siklus hidup pembaruan versi (Rolling Update), rollback instan, dan deklarasi image baru.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="kube-services">
+            <h2><i class="fa-solid fa-network-wired"></i> 3. Abstraksi Jaringan: Kubernetes Services &amp; Ingress</h2>
+            <p>
+                Karena Pods di Kubernetes bersifat fana (*ephemeral* &mdash; bisa mati dan dibuat ulang dengan IP baru kapan saja), kita tidak boleh mengarahkan trafik langsung ke IP Pod. Kita menggunakan <strong>Kubernetes Service</strong>:
+            </p>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Tipe Service</th>
+                        <th>Cakupan Akses</th>
+                        <th>Karakteristik Operasional</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>ClusterIP (Default)</strong></td>
+                        <td>Internal Kluster Saja</td>
+                        <td>Memberikan 1 IP Virtual stabil yang membagi beban (*Load Balance*) ke seluruh Pod target via iptables/IPVS.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NodePort</strong></td>
+                        <td>Akses Eksternal Tertentu</td>
+                        <td>Membuka satu port statis bernomor <code>30000 - 32767</code> di setiap server node fisik dalam kluster.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LoadBalancer</strong></td>
+                        <td>Publik Internet Penuh</td>
+                        <td>Memerintahkan penyedia cloud (AWS ELB, Google Cloud LB) untuk memprovisi Load Balancer publik otomatis.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ingress Controller</strong></td>
+                        <td>Layer 7 HTTP Routing</td>
+                        <td>Satu pintu gerbang cerdas (biasanya berbasis Nginx / Envoy) untuk routing berbasis nama domain dan URI path (misal: <code>api.domain.com/v1</code>) serta sertifikat SSL.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="probes">
+            <h2><i class="fa-solid fa-heart-pulse"></i> 4. Penjaga Kesehatan Pod: Liveness vs Readiness Probes</h2>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-stethoscope"></i> Liveness Probe (Apakah Pod Masih Hidup?)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Mengecek apakah proses mengalami deadlock atau freeze.<br>
+                        • <strong>Tindakan Jika Gagal:</strong> Kubernetes akan <strong>MEREBOOT / MEMBUNUH Pod</strong> tersebut dan membuat Pod baru pengganti!
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-traffic-light"></i> Readiness Probe (Apakah Pod Siap Terima Trafik?)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Mengecek apakah aplikasi sudah selesai memuat cache atau menyambung ke database saat awal startup.<br>
+                        • <strong>Tindakan Jika Gagal:</strong> Pod <strong>TIDAK DIBUNUH</strong>, namun Kubernetes <strong>MENGHENTIKAN pengiriman trafik pengguna ke Pod tersebut</strong> sampai ia siap!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="deployment-strategies">
+            <h2><i class="fa-solid fa-truck-ramp-box"></i> 5. Strategi Rilis Produksi: Rolling vs Blue-Green vs Canary</h2>
+            <ul>
+                <li><strong>Rolling Update (Standar K8s):</strong> Memperbarui Pod satu per satu secara bergantian (misal 1 Pod dimatikan, 1 Pod baru dinaikkan) hingga seluruh kluster terbarui tanpa downtime.</li>
+                <li><strong>Blue-Green Deployment:</strong> Menyediakan 2 lingkungan kluster identik (Lingkungan Biru = Versi Lama, Hijau = Versi Baru). Begitu pengujian selesai, switch trafik dialihkan 100% dalam 1 milidetik di level Router/Service.</li>
+                <li><strong>Canary Release:</strong> Mengarahkan hanya <strong>5% trafik pengguna</strong> ke Pod versi baru untuk memantau apakah muncul error lonjakan log. Jika aman dalam 1 jam, trafik dinaikkan bertahap menjadi 100%.</li>
+            </ul>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-bomb"></i> War Story: Banjir Error 502 Bad Gateway Saat Deployment Akibat Tanpa Readiness Probe</div>
+                <div class="callout-body">
+                    Sebuah startup fintech melakukan rilis kode baru di Kubernetes menggunakan strategi Rolling Update default.
+                    <br><br>
+                    Setiap kali proses deployment berjalan, ribuan pengguna mengeluh mendapatkan layar putih <strong>502 Bad Gateway</strong> selama 10 detik!
+                    <br><br>
+                    <strong>Penyebab:</strong> Aplikasi Java Spring Boot mereka membutuhkan waktu 12 detik untuk inisialisasi koneksi database saat start. Karena developer <strong>tidak mendefinisikan <code>readinessProbe</code></strong>, Kubernetes menganggap Pod baru sudah aktif begitu proses dimulai dan langsung mengalirkan request pengguna ke Pod yang koneksi databasenya belum siap!
+                    <br><br>
+                    <strong>Solusi:</strong> Pasang endpoint HTTP <code>/health/ready</code> pada spesifikasi deployment Kube. Kubernetes hanya akan mengirimkan trafik ke Pod baru setelah endpoint tersebut mengembalikan status HTTP 200 OK!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Orkestrasi Kubernetes</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Apa yang dilakukan oleh Kubernetes jika sebuah Pod gagal merespons pengujian 'readinessProbe' HTTP?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Membunuh pod adalah tugas livenessProbe.')">A. Langsung membunuh dan mereboot Pod tersebut seketika</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Jika readinessProbe gagal, Kubernetes mencabut IP Pod dari daftar endpoint Service sehingga Pod tidak menerima request pengguna sampai ia siap kembali.')">B. Menghentikan sementara pengiriman trafik pengguna ke Pod tersebut tanpa mematikan proses aplikasinya</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Kubernetes tidak mematikan server fisik node.')">C. Mematikan seluruh server fisik di data center</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Strategi deployment manakah yang mengarahkan persentase kecil pengguna (misal 5%) ke versi aplikasi baru untuk menguji stabilitas sebelum rilis penuh?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Rolling update memperbarui pod secara berurutan.')">A. Rolling Update</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Canary Release membatasi paparan risiko dengan menguji versi baru pada sebagian kecil trafik riil terlebih dahulu.')">B. Canary Release</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Blue-Green beralih 100% serempak.')">C. Blue-Green Deployment</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="01_docker_internals.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 20: Docker Internals
+            </a>
+            <a href="03_cicd_infrastructure.html" class="btn btn-primary">
+                Lanjut ke Fase 22: CI/CD &amp; Infrastruktur <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>
