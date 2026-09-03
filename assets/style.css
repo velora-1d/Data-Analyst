@@ -49,9 +49,9 @@
     --info-bg:        rgba(59, 130, 246, 0.12);
     --info-border:    rgba(59, 130, 246, 0.3);
 
-    --sidebar-w:      290px;
+    --sidebar-w:      320px;
     --header-h:       64px;
-    --content-max:    1600px;
+    --content-max:    100%;
 
     --r-sm:           6px;
     --r:              10px;
@@ -430,15 +430,16 @@ a:hover {
 .main {
     flex: 1;
     margin-left: var(--sidebar-w);
-    padding: 2.25rem 3rem 5rem;
+    padding: 2.25rem 2.5rem 5rem;
     width: calc(100% - var(--sidebar-w));
     min-width: 0;
     display: block;
+    box-sizing: border-box;
 }
 
 .main-inner {
     width: 100%;
-    max-width: var(--content-max);
+    max-width: 100%;
     margin: 0;
 }
 
@@ -2265,11 +2266,12 @@ code:not([class*="language"]):not(.code-block code) {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.65rem 0.6rem;
+    padding: 0.625rem 0.75rem;
+    gap: 10px;
     background: transparent;
     border: none;
     color: var(--text-secondary);
-    font-size: 0.82rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     cursor: pointer;
     text-align: left;
@@ -2291,11 +2293,12 @@ code:not([class*="language"]):not(.code-block code) {
 .track-accordion-title {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 9px;
     flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    min-width: 0;
+    line-height: 1.35;
+    white-space: normal;
+    word-break: normal;
 }
 
 .track-accordion-icon {
