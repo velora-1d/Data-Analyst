@@ -5,149 +5,149 @@
   "tracks": [
     {
       "id": "database_sql",
-      "title": "Database & SQL Analytics",
+      "title": "Database & SQL",
       "icon": "fa-solid fa-database",
       "badge": "Aktif (10 Modul)",
       "badgeColor": "var(--success)",
       "description": "Fondasi basis data relasional, SQL tingkat lanjut, metrik bisnis e-commerce, hingga struktur internal B-Tree & WAL.",
       "modules": [
-        { "id": "01_tipe_data", "title": "Modul 1: Tipe Data SQL", "url": "modul/01_tipe_data.html", "status": "ready", "duration": "45m" },
-        { "id": "02_query_dasar", "title": "Modul 2: Query Dasar, Filtering & Paginasi", "url": "modul/02_query_dasar.html", "status": "ready", "duration": "40m" },
-        { "id": "03_agregasi", "title": "Modul 3: Fungsi Agregasi & Metrik Penjualan", "url": "modul/03_agregasi.html", "status": "ready", "duration": "40m" },
-        { "id": "04_join", "title": "Modul 4: Relasi Multi-Tabel & JOIN", "url": "modul/04_join.html", "status": "ready", "duration": "50m" },
-        { "id": "05_subquery_cte", "title": "Modul 5: Subquery & CTE (WITH ... AS)", "url": "modul/05_subquery_cte.html", "status": "ready", "duration": "45m" },
-        { "id": "06_window_functions", "title": "Modul 6: Window Functions & Tren", "url": "modul/06_window_functions.html", "status": "ready", "duration": "55m" },
-        { "id": "07_analisis_nyata", "title": "Modul 7: Capstone Analisis E-Commerce", "url": "modul/07_analisis_nyata.html", "status": "ready", "duration": "60m" },
-        { "id": "db_01_storage_engine", "title": "Fase 4: Storage Engine & B-Tree", "url": "tracks/01_database_sql/01_storage_engine.html", "status": "ready", "duration": "50m" },
-        { "id": "db_02_indexing_strategy", "title": "Fase 5: Indexing Strategy & EXPLAIN", "url": "tracks/01_database_sql/02_indexing_strategy.html", "status": "ready", "duration": "55m" },
-        { "id": "db_03_transactions_concurrency", "title": "Fase 6: Transaksi & Concurrency Control", "url": "tracks/01_database_sql/03_transactions_concurrency.html", "status": "ready", "duration": "60m" }
+        { "id": "01_tipe_data", "title": "Tipe Data SQL", "url": "modul/01_tipe_data.html", "status": "ready", "duration": "45m" },
+        { "id": "02_query_dasar", "title": "Query & Paginasi", "url": "modul/02_query_dasar.html", "status": "ready", "duration": "40m" },
+        { "id": "03_agregasi", "title": "Agregasi & Metrik", "url": "modul/03_agregasi.html", "status": "ready", "duration": "40m" },
+        { "id": "04_join", "title": "Relasi & JOIN", "url": "modul/04_join.html", "status": "ready", "duration": "50m" },
+        { "id": "05_subquery_cte", "title": "Subquery & CTE", "url": "modul/05_subquery_cte.html", "status": "ready", "duration": "45m" },
+        { "id": "06_window_functions", "title": "Window Functions", "url": "modul/06_window_functions.html", "status": "ready", "duration": "55m" },
+        { "id": "07_analisis_nyata", "title": "Capstone E-Commerce", "url": "modul/07_analisis_nyata.html", "status": "ready", "duration": "60m" },
+        { "id": "db_01_storage_engine", "title": "Storage & B-Tree", "url": "tracks/01_database_sql/01_storage_engine.html", "status": "ready", "duration": "50m" },
+        { "id": "db_02_indexing_strategy", "title": "Indexing & EXPLAIN", "url": "tracks/01_database_sql/02_indexing_strategy.html", "status": "ready", "duration": "55m" },
+        { "id": "db_03_transactions_concurrency", "title": "Transaksi & Concurrency", "url": "tracks/01_database_sql/03_transactions_concurrency.html", "status": "ready", "duration": "60m" }
       ]
     },
     {
       "id": "frontend",
-      "title": "Frontend Engineering",
+      "title": "Frontend",
       "icon": "fa-solid fa-display",
       "badge": "Aktif (3 Modul)",
       "badgeColor": "var(--success)",
       "description": "Browser rendering pipeline, DOM & CSSOM, JS Event Loop, arsitektur CSS modern, dan paradigma framework (React/Vue/Svelte).",
       "modules": [
-        { "id": "fe_01_rendering_pipeline", "title": "Fase 7: Rendering Pipeline & Event Loop", "url": "tracks/02_frontend/01_rendering_pipeline.html", "status": "ready", "duration": "55m" },
-        { "id": "fe_02_css_architecture", "title": "Fase 8: Arsitektur CSS & Design Tokens", "url": "tracks/02_frontend/02_css_architecture.html", "status": "ready", "duration": "45m" },
-        { "id": "fe_03_framework_paradigms", "title": "Fase 9: Paradigma Framework & State", "url": "tracks/02_frontend/03_framework_paradigms.html", "status": "ready", "duration": "55m" }
+        { "id": "fe_01_rendering_pipeline", "title": "Rendering & Event Loop", "url": "tracks/02_frontend/01_rendering_pipeline.html", "status": "ready", "duration": "55m" },
+        { "id": "fe_02_css_architecture", "title": "Arsitektur CSS", "url": "tracks/02_frontend/02_css_architecture.html", "status": "ready", "duration": "45m" },
+        { "id": "fe_03_framework_paradigms", "title": "Paradigma Framework", "url": "tracks/02_frontend/03_framework_paradigms.html", "status": "ready", "duration": "55m" }
       ]
     },
     {
       "id": "backend",
-      "title": "Backend Engineering",
+      "title": "Backend",
       "icon": "fa-solid fa-server",
       "badge": "Aktif (3 Modul)",
       "badgeColor": "var(--success)",
       "description": "Protokol HTTP/1.1 s/d HTTP/3 QUIC, desain API standar industri (REST, GraphQL, gRPC), autentikasi Session/JWT/OAuth 2.0 PKCE, dan OWASP API Security.",
       "modules": [
-        { "id": "be_01_http_protocols", "title": "Fase 10: Protokol HTTP/3 & Real-Time", "url": "tracks/03_backend/01_http_protocols.html", "status": "ready", "duration": "50m" },
-        { "id": "be_02_api_design", "title": "Fase 11: Desain API (REST, GraphQL, gRPC)", "url": "tracks/03_backend/02_api_design.html", "status": "ready", "duration": "55m" },
-        { "id": "be_03_auth_security", "title": "Fase 12: Autentikasi & Keamanan API", "url": "tracks/03_backend/03_auth_security.html", "status": "ready", "duration": "55m" }
+        { "id": "be_01_http_protocols", "title": "HTTP/3 & Real-Time", "url": "tracks/03_backend/01_http_protocols.html", "status": "ready", "duration": "50m" },
+        { "id": "be_02_api_design", "title": "Desain API Modern", "url": "tracks/03_backend/02_api_design.html", "status": "ready", "duration": "55m" },
+        { "id": "be_03_auth_security", "title": "Auth & Keamanan API", "url": "tracks/03_backend/03_auth_security.html", "status": "ready", "duration": "55m" }
       ]
     },
     {
       "id": "arsitektur_sistem",
-      "title": "Arsitektur Sistem & Repositori",
+      "title": "Arsitektur Sistem",
       "icon": "fa-solid fa-sitemap",
       "badge": "Aktif (4 Modul)",
       "badgeColor": "var(--success)",
       "description": "Monorepo vs Polyrepo, Modular Monolith vs Microservices, Clean & Hexagonal Architecture, serta Domain-Driven Design (DDD) & Outbox Pattern.",
       "modules": [
-        { "id": "arch_01_monorepo_polyrepo", "title": "Fase 13: Monorepo vs Polyrepo", "url": "tracks/04_architecture/01_monorepo_polyrepo.html", "status": "ready", "duration": "50m" },
-        { "id": "arch_02_monolith_microservices", "title": "Fase 14: Monolith vs Microservices", "url": "tracks/04_architecture/02_monolith_microservices.html", "status": "ready", "duration": "55m" },
-        { "id": "arch_03_clean_architecture", "title": "Fase 15: Clean & Hexagonal Architecture", "url": "tracks/04_architecture/03_clean_architecture.html", "status": "ready", "duration": "55m" },
-        { "id": "arch_04_ddd_event_driven", "title": "Fase 16: Domain-Driven Design & Outbox", "url": "tracks/04_architecture/04_ddd_event_driven.html", "status": "ready", "duration": "60m" }
+        { "id": "arch_01_monorepo_polyrepo", "title": "Monorepo vs Polyrepo", "url": "tracks/04_architecture/01_monorepo_polyrepo.html", "status": "ready", "duration": "50m" },
+        { "id": "arch_02_monolith_microservices", "title": "Monolith vs Microservices", "url": "tracks/04_architecture/02_monolith_microservices.html", "status": "ready", "duration": "55m" },
+        { "id": "arch_03_clean_architecture", "title": "Clean Architecture", "url": "tracks/04_architecture/03_clean_architecture.html", "status": "ready", "duration": "55m" },
+        { "id": "arch_04_ddd_event_driven", "title": "DDD & Outbox Pattern", "url": "tracks/04_architecture/04_ddd_event_driven.html", "status": "ready", "duration": "60m" }
       ]
     },
     {
       "id": "jaringan_server",
-      "title": "Jaringan Komputer & Server",
+      "title": "Jaringan & Server",
       "icon": "fa-solid fa-network-wired",
       "badge": "Aktif (3 Modul)",
       "badgeColor": "var(--success)",
       "description": "Model OSI vs TCP/IP, Alamat IP & Subnetting CIDR, TCP Handshake, Linux Berkeley Sockets, epoll I/O multiplexing, dan Nginx Reverse Proxy.",
       "modules": [
-        { "id": "net_01_networking_sockets", "title": "Fase 17: Jaringan Komputer & Socket", "url": "tracks/05_linux_networking/01_networking_sockets.html", "status": "ready", "duration": "55m" },
-        { "id": "net_02_linux_os_internals", "title": "Fase 18: Linux OS Internals & epoll", "url": "tracks/05_linux_networking/02_linux_os_internals.html", "status": "ready", "duration": "55m" },
-        { "id": "net_03_web_servers_reverse_proxy", "title": "Fase 19: Server Web & Reverse Proxy", "url": "tracks/05_linux_networking/03_web_servers_reverse_proxy.html", "status": "ready", "duration": "55m" }
+        { "id": "net_01_networking_sockets", "title": "Jaringan & Socket", "url": "tracks/05_linux_networking/01_networking_sockets.html", "status": "ready", "duration": "55m" },
+        { "id": "net_02_linux_os_internals", "title": "Linux OS & epoll", "url": "tracks/05_linux_networking/02_linux_os_internals.html", "status": "ready", "duration": "55m" },
+        { "id": "net_03_web_servers_reverse_proxy", "title": "Web Server & Proxy", "url": "tracks/05_linux_networking/03_web_servers_reverse_proxy.html", "status": "ready", "duration": "55m" }
       ]
     },
     {
       "id": "devops_docker",
-      "title": "DevOps, Docker & CI/CD",
+      "title": "DevOps & CI/CD",
       "icon": "fa-brands fa-docker",
       "badge": "Aktif (3 Modul)",
       "badgeColor": "var(--success)",
       "description": "Docker internals (Namespaces, cgroups v2, Overlay2 COW), Kubernetes Pods & Services, Zero-Downtime Deployment, dan GitHub Actions IaC.",
       "modules": [
-        { "id": "ops_01_docker_internals", "title": "Fase 20: Docker Internals & cgroups", "url": "tracks/06_devops/01_docker_internals.html", "status": "ready", "duration": "55m" },
-        { "id": "ops_02_kubernetes_orchestration", "title": "Fase 21: Orkestrasi Kubernetes", "url": "tracks/06_devops/02_kubernetes_orchestration.html", "status": "ready", "duration": "55m" },
-        { "id": "ops_03_cicd_infrastructure", "title": "Fase 22: CI/CD & Terraform IaC", "url": "tracks/06_devops/03_cicd_infrastructure.html", "status": "ready", "duration": "55m" }
+        { "id": "ops_01_docker_internals", "title": "Docker & cgroups", "url": "tracks/06_devops/01_docker_internals.html", "status": "ready", "duration": "55m" },
+        { "id": "ops_02_kubernetes_orchestration", "title": "Kubernetes K8s", "url": "tracks/06_devops/02_kubernetes_orchestration.html", "status": "ready", "duration": "55m" },
+        { "id": "ops_03_cicd_infrastructure", "title": "CI/CD & Terraform", "url": "tracks/06_devops/03_cicd_infrastructure.html", "status": "ready", "duration": "55m" }
       ]
     },
     {
       "id": "bahasa_pemrograman",
-      "title": "Paradigma Bahasa & Memori",
+      "title": "Bahasa & Runtime",
       "icon": "fa-solid fa-cubes",
       "badge": "Aktif (2 Modul)",
       "badgeColor": "var(--success)",
       "description": "Kompilasi AOT vs Interpreter vs V8 JIT, Hidden Classes, Stack vs Heap, Generational GC, dan Rust Ownership & Borrow Checker.",
       "modules": [
-        { "id": "lang_01_compilation_jit", "title": "Fase 23: Kompilasi, Interpreter & JIT", "url": "tracks/07_runtimes_memory/01_compilation_jit_runtimes.html", "status": "ready", "duration": "50m" },
-        { "id": "lang_02_memory_gc_ownership", "title": "Fase 24: Manajemen Memori & GC vs Rust", "url": "tracks/07_runtimes_memory/02_memory_gc_ownership.html", "status": "ready", "duration": "55m" }
+        { "id": "lang_01_compilation_jit", "title": "Kompilasi & JIT", "url": "tracks/07_runtimes_memory/01_compilation_jit_runtimes.html", "status": "ready", "duration": "50m" },
+        { "id": "lang_02_memory_gc_ownership", "title": "Memori GC vs Rust", "url": "tracks/07_runtimes_memory/02_memory_gc_ownership.html", "status": "ready", "duration": "55m" }
       ]
     },
     {
       "id": "git_workflow",
-      "title": "Git & Engineering Workflow",
+      "title": "Git Internals",
       "icon": "fa-brands fa-git-alt",
       "badge": "Aktif (2 Modul)",
       "badgeColor": "var(--success)",
       "description": "Git Internals (DAG, Tree, Blob), Plumbing Commands, Packfiles Delta Compression, git reflog, dan pemulihan data via git filter-repo.",
       "modules": [
-        { "id": "git_01_dag_internals", "title": "Git Internals: Objects DAG & Three-Way Merge", "url": "tracks/04_architecture/02_git_internals.html", "status": "ready", "duration": "50m" },
-        { "id": "git_02_internals_advanced", "title": "Fase 25: Plumbing Commands & Packfiles Lanjut", "url": "tracks/07_runtimes_memory/03_git_internals_advanced.html", "status": "ready", "duration": "55m" }
+        { "id": "git_01_dag_internals", "title": "Git Objects & DAG", "url": "tracks/04_architecture/02_git_internals.html", "status": "ready", "duration": "50m" },
+        { "id": "git_02_internals_advanced", "title": "Plumbing & Packfiles", "url": "tracks/07_runtimes_memory/03_git_internals_advanced.html", "status": "ready", "duration": "55m" }
       ]
     },
     {
       "id": "testing_observability",
-      "title": "Testing & Observability",
+      "title": "Testing & OTel",
       "icon": "fa-solid fa-vial-circle-check",
       "badge": "Aktif (3 Modul)",
       "badgeColor": "var(--success)",
       "description": "Piramida testing (Unit, Integration, E2E Playwright), TDD, Pact contract testing, 3 pilar observability OpenTelemetry, dan SRE resilience.",
       "modules": [
-        { "id": "test_01_testing_pyramid", "title": "Fase 26: Piramida Testing & Contract", "url": "tracks/08_testing_observability/01_testing_pyramid_contract.html", "status": "ready", "duration": "55m" },
-        { "id": "test_02_opentelemetry", "title": "Fase 27: Tiga Pilar Observability & OTel", "url": "tracks/08_testing_observability/02_observability_opentelemetry.html", "status": "ready", "duration": "55m" },
-        { "id": "test_03_sre_resilience", "title": "Fase 28: SRE & Circuit Breaker", "url": "tracks/08_testing_observability/03_sre_resilience_circuit_breaker.html", "status": "ready", "duration": "55m" }
+        { "id": "test_01_testing_pyramid", "title": "Piramida Testing", "url": "tracks/08_testing_observability/01_testing_pyramid_contract.html", "status": "ready", "duration": "55m" },
+        { "id": "test_02_opentelemetry", "title": "Observability & OTel", "url": "tracks/08_testing_observability/02_observability_opentelemetry.html", "status": "ready", "duration": "55m" },
+        { "id": "test_03_sre_resilience", "title": "SRE & Circuit Breaker", "url": "tracks/08_testing_observability/03_sre_resilience_circuit_breaker.html", "status": "ready", "duration": "55m" }
       ]
     },
     {
       "id": "caching_capstone",
-      "title": "Distributed Caching & Capstone",
+      "title": "Distributed Caching",
       "icon": "fa-solid fa-cloud-bolt",
       "badge": "Aktif (2 Modul)",
       "badgeColor": "var(--success)",
       "description": "Pola caching terdistribusi, Redis internals, mitigasi Cache Stampede via Algoritma XFetch, dan System Design Capstone 100K QPS.",
       "modules": [
-        { "id": "cache_01_redis_xfetch", "title": "Fase 29: Caching & Algoritma XFetch", "url": "tracks/09_caching_scale/01_distributed_caching_xfetch.html", "status": "ready", "duration": "55m" },
-        { "id": "cache_02_system_design_capstone", "title": "Fase 30: Capstone Enterprise 100K QPS", "url": "tracks/09_caching_scale/02_capstone_enterprise_architecture.html", "status": "ready", "duration": "60m" }
+        { "id": "cache_01_redis_xfetch", "title": "Caching & XFetch", "url": "tracks/09_caching_scale/01_distributed_caching_xfetch.html", "status": "ready", "duration": "55m" },
+        { "id": "cache_02_system_design_capstone", "title": "Capstone 100K QPS", "url": "tracks/09_caching_scale/02_capstone_enterprise_architecture.html", "status": "ready", "duration": "60m" }
       ]
     },
     {
       "id": "mobile_engineering",
-      "title": "Mobile Engineering & Cross-Platform",
+      "title": "Mobile App",
       "icon": "fa-solid fa-mobile-screen-button",
       "badge": "Aktif (2 Modul)",
       "badgeColor": "var(--success)",
       "description": "Arsitektur mobile modern: React Native JSI/Fabric, Flutter Impeller engine, Kotlin Multiplatform (KMP), Offline-First SQLite, dan Push Notifications APNs/FCM.",
       "modules": [
-        { "id": "mob_01_runtimes_bridges", "title": "Fase 31: Mobile Runtime, JSI, Fabric & Impeller", "url": "tracks/10_mobile_architecture/01_mobile_runtimes_bridges.html", "status": "ready", "duration": "55m" },
-        { "id": "mob_02_offline_first_push", "title": "Fase 32: Offline-First SQLite Sync & Push APNs/FCM", "url": "tracks/10_mobile_architecture/02_offline_first_sync_push.html", "status": "ready", "duration": "55m" }
+        { "id": "mob_01_runtimes_bridges", "title": "JSI, Fabric & Impeller", "url": "tracks/10_mobile_architecture/01_mobile_runtimes_bridges.html", "status": "ready", "duration": "55m" },
+        { "id": "mob_02_offline_first_push", "title": "Offline-First & Push", "url": "tracks/10_mobile_architecture/02_offline_first_sync_push.html", "status": "ready", "duration": "55m" }
       ]
     }
   ]

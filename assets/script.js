@@ -387,10 +387,7 @@ async function initDynamicMultiTrackSidebar() {
                 <i class="${track.icon} track-accordion-icon"></i>
                 <span class="track-name-text">${track.title}</span>
             </span>
-            <span class="track-accordion-meta">
-                <span class="track-count-pill">${track.modules ? track.modules.length : 0}</span>
-                <i class="fa-solid fa-chevron-down track-accordion-chevron"></i>
-            </span>
+            <i class="fa-solid fa-chevron-down track-accordion-chevron"></i>
         `;
 
         btn.addEventListener('click', (e) => {
@@ -402,7 +399,7 @@ async function initDynamicMultiTrackSidebar() {
         content.className = 'track-accordion-content';
 
         if (track.modules && track.modules.length > 0) {
-            track.modules.forEach((mod, modIdx) => {
+            track.modules.forEach((mod) => {
                 const link = document.createElement('a');
                 link.href = prefix + mod.url;
                 link.className = 'sidebar-module-link';
@@ -420,7 +417,7 @@ async function initDynamicMultiTrackSidebar() {
                     .replace(/^Fase \d+:\s*/i, '');
 
                 link.innerHTML = `
-                    <div class="num">${modIdx + 1}</div>
+                    <i class="fa-solid fa-angle-right mod-link-bullet"></i>
                     <span class="mod-title-text">${cleanTitle}</span>
                 `;
                 content.appendChild(link);
