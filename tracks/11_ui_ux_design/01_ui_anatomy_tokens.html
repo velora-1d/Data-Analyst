@@ -219,12 +219,13 @@
         <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Modul 38</div>
         <nav class="sidebar-nav">
             <a href="#layout-anatomy" class="nav-link active"><i class="fa-solid fa-diagram-project"></i> 1. Anatomi Kerangka Layar</a>
-            <a href="#grid-vs-flexbox" class="nav-link"><i class="fa-solid fa-table-cells"></i> 2. CSS Grid vs Flexbox</a>
-            <a href="#header-hero" class="nav-link"><i class="fa-solid fa-heading"></i> 3. Header &amp; Hero Section</a>
-            <a href="#banner-announcement" class="nav-link"><i class="fa-solid fa-bullhorn"></i> 4. Banner &amp; Announcement Bar</a>
-            <a href="#sidebar-drawer" class="nav-link"><i class="fa-solid fa-bars-progress"></i> 5. Sidebar Navigation &amp; Rail</a>
-            <a href="#footer-container" class="nav-link"><i class="fa-solid fa-shoe-prints"></i> 6. Footer &amp; Responsive Container</a>
-            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman Layout</a>
+            <a href="#component-taxonomy" class="nav-link"><i class="fa-solid fa-cubes"></i> 2. Taksonomi 35+ Komponen UI</a>
+            <a href="#grid-vs-flexbox" class="nav-link"><i class="fa-solid fa-table-cells"></i> 3. CSS Grid vs Flexbox</a>
+            <a href="#header-hero" class="nav-link"><i class="fa-solid fa-heading"></i> 4. Header &amp; Hero Section</a>
+            <a href="#banner-announcement" class="nav-link"><i class="fa-solid fa-bullhorn"></i> 5. Banner &amp; Announcement Bar</a>
+            <a href="#sidebar-drawer" class="nav-link"><i class="fa-solid fa-bars-progress"></i> 6. Sidebar Navigation &amp; Rail</a>
+            <a href="#footer-container" class="nav-link"><i class="fa-solid fa-shoe-prints"></i> 7. Footer &amp; Responsive Container</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman Layout</a>
         </nav>
     </aside>
 
@@ -313,9 +314,417 @@
             </div>
         </section>
 
-        <!-- Section 2 -->
+        <!-- Section 2: Taksonomi & Kamus Lengkap 35+ Komponen UI -->
+        <section id="component-taxonomy">
+            <h2><i class="fa-solid fa-cubes"></i> 2. Taksonomi &amp; Kamus Lengkap 35+ Komponen UI</h2>
+            <p>
+                Di industri teknologi profesional, sebuah aplikasi tidak hanya terdiri dari tombol dan input biasa. Berdasarkan standar desain global (*Apple Human Interface Guidelines, Google Material 3, Tailwind UI, Radix UI, Shopify Polaris*), komponen antarmuka diklasifikasikan ke dalam <strong>5 domain fungsional besar</strong>:
+            </p>
+
+            <!-- KATEGORI 1: NAVIGASI & WAYFINDING -->
+            <h3 style="color:var(--brand-light);margin-top:24px;"><i class="fa-solid fa-compass"></i> Kategori 1: Navigasi &amp; Orientasi (Wayfinding)</h3>
+            <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen yang membantu pengguna mengetahui posisinya saat ini dan berpindah antar-layar tanpa tersesat.</p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Nama Komponen</th>
+                        <th>Definisi &amp; Perilaku Antarmuka</th>
+                        <th>Kapan Wajib Digunakan?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Navbar / Top Navigation</strong></td>
+                        <td>Pita menu horizontal di puncak halaman berisi logo brand, tautan utama, dan tombol profil.</td>
+                        <td>Navigasi tingkat paling atas (*root level*) pada aplikasi desktop dan tablet.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sidebar Accordion</strong></td>
+                        <td>Panel menu samping bertingkat yang dapat dibuka-tutup (*expand/collapse*).</td>
+                        <td>Dashboard aplikasi bisnis yang memiliki lebih dari 15 modul atau sub-menu.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Breadcrumbs</strong></td>
+                        <td>Jejak remah roti horizontal penunjuk hierarki lokasi data (<code>Home &gt; Kategori &gt; Sepatu</code>).</td>
+                        <td>E-commerce atau dokumentasi teknis dengan kedalaman struktur lebih dari 2 lapis.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tabs / Segmented Control</strong></td>
+                        <td>Pengalih tampilan tab dalam satu kontainer tanpa memicu reload halaman web.</td>
+                        <td>Menampilkan data yang saling berkaitan (misal tab *'Deskripsi'*, *'Spesifikasi'*, *'Ulasan'*).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pagination</strong></td>
+                        <td>Kontrol pemecah daftar data per lembar (<code>&lt; 1 2 3 ... 10 &gt;</code>).</td>
+                        <td>Tabel database besar (misal 5.600 data transaksi) agar query backend ringan dan terukur.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Steppers / Wizard</strong></td>
+                        <td>Indikator langkah berurutan (Langkah 1: Keranjang &gt; 2: Alamat &gt; 3: Pembayaran).</td>
+                        <td>Alur transaksi multi-fase yang membutuhkan data berurutan agar user tidak kewalahan.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bottom Navigation Bar</strong></td>
+                        <td>Menu tab 4-5 ikon yang menempel di bagian bawah layar smartphone.</td>
+                        <td>Navigasi utama aplikasi mobile agar mudah dijangkau ibu jari (*Natural Thumb Zone*).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Floating Action Button (FAB)</strong></td>
+                        <td>Tombol bulat mengambang di pojok kanan-bawah layar.</td>
+                        <td>Aksi tunggal paling sering digunakan dalam satu layar (contoh: *'Tulis Pesan Baru'*, *'Buat Pesanan'*).</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- LIVE BOX: KOMPONEN NAVIGASI -->
+            <div class="live-preview-box">
+                <div class="live-preview-header">
+                    <div class="live-preview-title"><i class="fa-solid fa-compass" style="color:var(--brand);"></i> Contoh UI Nyata: Komponen Navigasi &amp; Orientasi</div>
+                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);"><i class="fa-solid fa-eye"></i> Live Interactive</span>
+                </div>
+
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                    <!-- Breadcrumbs -->
+                    <div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text-muted);background:var(--bg-surface-2);padding:8px 14px;border-radius:var(--r-sm);border:1px solid var(--border);">
+                        <span><i class="fa-solid fa-house"></i> Home</span>
+                        <i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i>
+                        <span>Katalog Elektronik</span>
+                        <i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i>
+                        <span style="color:var(--brand-light);font-weight:700;">MacBook Pro M3 Max</span>
+                    </div>
+
+                    <!-- Segmented Tabs -->
+                    <div style="display:inline-flex;background:var(--bg-surface-2);padding:4px;border-radius:var(--r-sm);border:1px solid var(--border);max-width:360px;">
+                        <button style="background:var(--brand);color:#fff;border:none;padding:6px 14px;border-radius:4px;font-size:0.78rem;font-weight:600;cursor:pointer;">Semua Transaksi</button>
+                        <button style="background:transparent;color:var(--text-secondary);border:none;padding:6px 14px;font-size:0.78rem;cursor:pointer;">Sukses (4.820)</button>
+                        <button style="background:transparent;color:var(--text-secondary);border:none;padding:6px 14px;font-size:0.78rem;cursor:pointer;">Pending (38)</button>
+                    </div>
+
+                    <!-- Stepper Wizard -->
+                    <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg-surface-2);padding:14px 20px;border-radius:var(--r-sm);border:1px solid var(--border);">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span style="width:24px;height:24px;background:var(--success);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;"><i class="fa-solid fa-check"></i></span>
+                            <span style="font-size:0.8rem;font-weight:600;color:var(--text-primary);">1. Keranjang</span>
+                        </div>
+                        <div style="flex:1;height:2px;background:var(--success);margin:0 12px;"></div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span style="width:24px;height:24px;background:var(--brand);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;">2</span>
+                            <span style="font-size:0.8rem;font-weight:700;color:var(--brand-light);">2. Pengiriman</span>
+                        </div>
+                        <div style="flex:1;height:2px;background:var(--border);margin:0 12px;"></div>
+                        <div style="display:flex;align-items:center;gap:8px;opacity:0.5;">
+                            <span style="width:24px;height:24px;background:var(--bg-surface);color:var(--text-muted);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;">3</span>
+                            <span style="font-size:0.8rem;color:var(--text-muted);">3. Pembayaran</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KATEGORI 2: AKSI & PEMICU INTERAKSI -->
+            <h3 style="color:var(--brand-light);margin-top:28px;"><i class="fa-solid fa-play"></i> Kategori 2: Aksi &amp; Pemicu Interaksi (Actions &amp; Triggers)</h3>
+            <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen yang dieksekusi pengguna untuk mengirimkan perintah atau mengubah kondisi sistem.</p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Tipe Tombol</th>
+                        <th>Karakter Visual</th>
+                        <th>Aturan Penggunaan Industri</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Primary Button</strong></td>
+                        <td>Solid warna brand (`#2563EB`) teks kontras tinggi putih.</td>
+                        <td>Hanya 1 per layar utama untuk aksi konversi paling krusial (*'Bayar Sekarang'*, *'Daftar'*).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Secondary Button</strong></td>
+                        <td>Latar netral lembut (`var(--bg-surface-2)`) berbingkai tipis.</td>
+                        <td>Aksi pendukung penting yang tidak menyelesaikan alur (*'Simpan Draf'*, *'Lihat Preview'*).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Outline Button</strong></td>
+                        <td>Transparan dengan garis tepi (*stroke*) sewarna tema.</td>
+                        <td>Tombol aksi sekunder, filter pencarian, atau navigasi pagination.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ghost / Text Button</strong></td>
+                        <td>Hanya teks tanpa bingkai; background baru muncul saat kursor hover.</td>
+                        <td>Aksi netral ringan (*'Batal'*, *'Tutup'*, *'Lewati Langkah'*).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Destructive / Danger Button</strong></td>
+                        <td>Warna merah terang (`#EF4444`).</td>
+                        <td>Aksi permanen berisiko tinggi (*'Hapus Database'*, *'Keluar Akun'*).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Icon Button</strong></td>
+                        <td>Bentuk 40x40px hanya berisi simbol ikon grafis.</td>
+                        <td>Bilah toolbar sempit. Wajib menyertakan atribut aksesibilitas <code>aria-label</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Split / Dropdown Button</strong></td>
+                        <td>Tombol terbelah (klik kiri = aksi cepat, klik kanan panah = menu opsi).</td>
+                        <td>Aksi majemuk (contoh: *'Publikasikan'* vs *'Jadwalkan Besok'*).</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- KATEGORI 3: FORM CONTROLS & INPUT DATA -->
+            <h3 style="color:var(--brand-light);margin-top:28px;"><i class="fa-solid fa-pen-to-square"></i> Kategori 3: Kontrol Formulir &amp; Input Data (Form Controls)</h3>
+            <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen penangkap input teks, pilihan numerik, tanggal, dan berkas dari pengguna.</p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Kontrol Input</th>
+                        <th>Fungsi Spesifik</th>
+                        <th>Contoh Skenario Nyata</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Text Input (Single Line)</strong></td>
+                        <td>Masukan teks pendek 1 baris.</td>
+                        <td>Nama lengkap pelanggan, alamat email, kode kupon diskon.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Password Field</strong></td>
+                        <td>Teks tersensor titik dengan tombol mata (*toggle show/hide*).</td>
+                        <td>Formulir login dan pembuatan kata sandi baru.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Textarea (Multi Line)</strong></td>
+                        <td>Kotak teks luas yang dapat di-scroll atau resize.</td>
+                        <td>Catatan kurir pengiriman, ulasan testimoni pembeli produk.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Select / Dropdown</strong></td>
+                        <td>Pemilih 1 opsi dari daftar tersembunyi yang hemat ruang layar.</td>
+                        <td>Pilihan Provinsi pengiriman, pilihan metode kurir ekspedisi.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Combobox / Autocomplete</strong></td>
+                        <td>Kotak ketik dengan pencarian in-memory dinamis.</td>
+                        <td>Pencarian nama kecamatan / kelurahan dari 80.000+ data wilayah.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Checkbox</strong></td>
+                        <td>Pemilih multi-pilihan (bisa memilih 0, 1, atau banyak opsi sekaligus).</td>
+                        <td>Pilihan filter produk: [x] Gratis Ongkir [x] Bintang 4+ [x] COD.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Radio Button</strong></td>
+                        <td>Pemilih opsi tunggal mutlak yang mutually exclusive.</td>
+                        <td>Pilihan metode pembayaran: (o) QRIS ( ) Transfer Bank ( ) COD.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Toggle Switch</strong></td>
+                        <td>Saklar geser on/off instan tanpa perlu tombol 'Simpan'.</td>
+                        <td>Pengaturan sistem: Aktifkan Mode Gelap, Nyalakan Notifikasi Push.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Range Slider</strong></td>
+                        <td>Penggeser nilai numerik kontinu.</td>
+                        <td>Filter rentang harga: Rp 50.000 s/d Rp 2.500.000.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OTP / Pin Input</strong></td>
+                        <td>Deretan 4-6 kotak kecil terpisah yang otomatis lompat ke kotak berikutnya.</td>
+                        <td>Verifikasi keamanan 2FA SMS/WhatsApp kode OTP.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>File Dropzone</strong></td>
+                        <td>Area drag-and-drop berkas dokumen atau gambar.</td>
+                        <td>Unggah bukti transfer pembayaran atau foto KTP verifikasi.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- LIVE BOX: FORM CONTROLS SHOWCASE -->
+            <div class="live-preview-box">
+                <div class="live-preview-header">
+                    <div class="live-preview-title"><i class="fa-solid fa-pen-to-square" style="color:var(--brand);"></i> Contoh UI Nyata: Ragam Kontrol Formulir Modern</div>
+                    <span class="badge" style="background:rgba(16,185,129,0.15);color:var(--success);"><i class="fa-solid fa-check"></i> Interactive Form</span>
+                </div>
+
+                <div class="form-control-row">
+                    <!-- OTP Input -->
+                    <div class="form-field">
+                        <label class="form-label"><i class="fa-solid fa-shield-halved"></i> Kode OTP 4-Digit</label>
+                        <div style="display:flex;gap:8px;">
+                            <input type="text" maxlength="1" value="7" style="width:38px;height:42px;text-align:center;font-size:1.1rem;font-weight:700;background:var(--bg-surface-2);border:1px solid var(--brand);color:#fff;border-radius:6px;outline:none;">
+                            <input type="text" maxlength="1" value="4" style="width:38px;height:42px;text-align:center;font-size:1.1rem;font-weight:700;background:var(--bg-surface-2);border:1px solid var(--brand);color:#fff;border-radius:6px;outline:none;">
+                            <input type="text" maxlength="1" value="9" style="width:38px;height:42px;text-align:center;font-size:1.1rem;font-weight:700;background:var(--bg-surface-2);border:1px solid var(--brand);color:#fff;border-radius:6px;outline:none;">
+                            <input type="text" maxlength="1" value="" placeholder="•" style="width:38px;height:42px;text-align:center;font-size:1.1rem;font-weight:700;background:var(--bg-surface-2);border:1px solid var(--border);color:#fff;border-radius:6px;outline:none;">
+                        </div>
+                    </div>
+
+                    <!-- Range Slider -->
+                    <div class="form-field">
+                        <div style="display:flex;justify-content:space-between;">
+                            <label class="form-label"><i class="fa-solid fa-sliders"></i> Batas Anggaran</label>
+                            <span style="font-size:0.75rem;color:var(--brand-light);font-weight:700;">Rp 750.000</span>
+                        </div>
+                        <input type="range" min="100000" max="2000000" value="750000" style="accent-color:var(--brand);margin-top:10px;">
+                    </div>
+
+                    <!-- Tag / Chip Input -->
+                    <div class="form-field">
+                        <label class="form-label"><i class="fa-solid fa-tags"></i> Tag Topik Terpilih</label>
+                        <div style="display:flex;flex-wrap:wrap;gap:6px;background:var(--bg-surface-2);padding:6px;border-radius:6px;border:1px solid var(--border);">
+                            <span style="background:var(--brand);color:#fff;font-size:0.72rem;padding:2px 8px;border-radius:99px;display:flex;align-items:center;gap:4px;">PostgreSQL <i class="fa-solid fa-xmark" style="cursor:pointer;"></i></span>
+                            <span style="background:var(--brand);color:#fff;font-size:0.72rem;padding:2px 8px;border-radius:99px;display:flex;align-items:center;gap:4px;">Docker <i class="fa-solid fa-xmark" style="cursor:pointer;"></i></span>
+                            <span style="color:var(--text-muted);font-size:0.75rem;padding:2px 4px;">+ Ketik tag...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KATEGORI 4: UMPAN BALIK & NOTIFIKASI -->
+            <h3 style="color:var(--brand-light);margin-top:28px;"><i class="fa-solid fa-bell"></i> Kategori 4: Umpan Balik &amp; Notifikasi (Feedback &amp; Overlays)</h3>
+            <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen penunjuk status operasi, pemberi peringatan, dan dialog aksi mendesak.</p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Komponen Feedback</th>
+                        <th>Tingkat Gangguan (*Disruption*)</th>
+                        <th>Waktu &amp; Skenario Muncul</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Toast / Snackbar</strong></td>
+                        <td><strong>Rendah (Non-blocking):</strong> Melayang di sudut layar, hilang otomatis dalam 3-5 detik.</td>
+                        <td>Konfirmasi aksi sukses instan (contoh: <em>'Link berhasil disalin ke clipboard'</em>).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alert Banner / Callout</strong></td>
+                        <td><strong>Sedang (In-page):</strong> Kotak berwarna statis di dalam alur halaman.</td>
+                        <td>Peringatan akun belum diverifikasi atau panduan tips keamanan.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Modal Dialog</strong></td>
+                        <td><strong>Sangat Tinggi (Blocking):</strong> Membekukan seluruh layar dengan backdrop gelap.</td>
+                        <td>Persetujuan penting yang tidak boleh diabaikan (*'Konfirmasi Hapus Data'*).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Drawer / Bottom Sheet</strong></td>
+                        <td><strong>Tinggi (Slide-in):</strong> Panel geser dari sisi layar atau bagian bawah smartphone.</td>
+                        <td>Keranjang belanja kilat, filter produk kompleks di mobile, atau form komentar.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tooltip</strong></td>
+                        <td><strong>Mikro (On Hover/Focus):</strong> Gelembung teks kecil saat mouse mendekat.</td>
+                        <td>Menjelaskan arti tombol yang hanya berupa ikon tanpa teks label.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Skeleton Loader</strong></td>
+                        <td><strong>Persepsi Positif:</strong> Kerangka shimmer abu-abu yang meniru bentuk asli konten.</td>
+                        <td>Saat aplikasi sedang menunggu respons API data jaringan asinkron.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- KATEGORI 5: PENYAJIAN & PENGELOMPOKAN DATA -->
+            <h3 style="color:var(--brand-light);margin-top:28px;"><i class="fa-solid fa-table"></i> Kategori 5: Penyajian &amp; Pengelompokan Data (Data Display)</h3>
+            <p style="font-size:0.88rem;color:var(--text-secondary);">Komponen perangkum informasi agar data besar mudah dicerna otak pengguna secara cepat.</p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Komponen Tampilan</th>
+                        <th>Karakter Desain</th>
+                        <th>Contoh Penggunaan Industri</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Bento Card</strong></td>
+                        <td>Kartu modular dengan elevasi, radius halus, dan perpaduan hierarki visual tegas.</td>
+                        <td>Menampilkan kartu ringkasan fitur produk, kartu modul belajar, atau metrik KPI.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Table</strong></td>
+                        <td>Tabel baris-kolom dengan sticky header, pagination, dan fungsi pengurutan (*sorting*).</td>
+                        <td>Daftar transaksi order e-commerce, laporan keuangan, log aktivitas pengguna.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Badge / Status Pill</strong></td>
+                        <td>Lencana oval kecil berwarna kontras dengan teks singkat.</td>
+                        <td>Penunjuk status real-time (*'Aktif'*, *'Selesai'*, *'Gagal'*, *'Diskon 50%'*).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Avatar Group</strong></td>
+                        <td>Tumpukan foto profil bulat bertingkat yang saling tumpang-tindih.</td>
+                        <td>Menampilkan anggota tim proyek atau kolaborator yang sedang online.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Accordion / Collapse</strong></td>
+                        <td>Panel bertingkat yang mengembang saat diklik untuk menghemat ruang vertikal.</td>
+                        <td>Halaman Tanya Jawab (*FAQ*), spesifikasi teknis, atau filter kategori samping.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Timeline</strong></td>
+                        <td>Garis vertikal/horizontal historis dengan titik simpul kejadian.</td>
+                        <td>Pelacakan paket kurir pengiriman e-commerce atau riwayat audit log.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Empty State</strong></td>
+                        <td>Ilustrasi ramah dengan teks panduan saat data masih kosong.</td>
+                        <td>Tampilan ketika keranjang belanja masih 0 barang atau kotak masuk belum ada pesan.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- LIVE BOX: DATA DISPLAY SHOWCASE -->
+            <div class="live-preview-box">
+                <div class="live-preview-header">
+                    <div class="live-preview-title"><i class="fa-solid fa-table" style="color:var(--brand);"></i> Contoh UI Nyata: Penyajian Data (Badge, Avatar Stack &amp; Timeline)</div>
+                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);"><i class="fa-solid fa-chart-pie"></i> Visual Data</span>
+                </div>
+
+                <div class="demo-split-box">
+                    <!-- Avatar Stack & Badges -->
+                    <div style="background:var(--bg-surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;">
+                        <strong style="font-size:0.82rem;color:var(--text-primary);display:block;margin-bottom:8px;">Avatar Stack Kolaborator:</strong>
+                        <div style="display:flex;align-items:center;margin-bottom:12px;">
+                            <div style="width:32px;height:32px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;border:2px solid var(--bg-surface-2);">MU</div>
+                            <div style="width:32px;height:32px;border-radius:50%;background:#10B981;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;border:2px solid var(--bg-surface-2);margin-left:-8px;">VL</div>
+                            <div style="width:32px;height:32px;border-radius:50%;background:#F59E0B;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;border:2px solid var(--bg-surface-2);margin-left:-8px;">AG</div>
+                            <div style="width:32px;height:32px;border-radius:50%;background:var(--bg-surface);color:var(--text-muted);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;border:2px solid var(--bg-surface-2);margin-left:-8px;">+9</div>
+                        </div>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            <span class="badge" style="background:rgba(16,185,129,0.15);color:var(--success);border-color:rgba(16,185,129,0.3);"><i class="fa-solid fa-circle-check"></i> Selesai</span>
+                            <span class="badge" style="background:rgba(245,158,11,0.15);color:#F59E0B;border-color:rgba(245,158,11,0.3);"><i class="fa-solid fa-clock"></i> Diproses</span>
+                            <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);border-color:rgba(37,99,235,0.3);"><i class="fa-solid fa-tag"></i> 12 Track</span>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Tracking -->
+                    <div style="background:var(--bg-surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;">
+                        <strong style="font-size:0.82rem;color:var(--text-primary);display:block;margin-bottom:8px;">Timeline Status Logistik:</strong>
+                        <div style="display:flex;flex-direction:column;gap:10px;font-size:0.78rem;">
+                            <div style="display:flex;gap:10px;align-items:flex-start;">
+                                <i class="fa-solid fa-circle-dot" style="color:var(--success);margin-top:2px;"></i>
+                                <div><strong style="color:var(--text-primary);">Paket Diterima Pembeli</strong><br><span style="color:var(--text-muted);font-size:0.72rem;">Jakarta Pusat • 14:20 WIB</span></div>
+                            </div>
+                            <div style="display:flex;gap:10px;align-items:flex-start;">
+                                <i class="fa-solid fa-circle" style="color:var(--brand);margin-top:2px;font-size:0.7rem;"></i>
+                                <div><span style="color:var(--text-secondary);">Kurir Menuju Alamat Tujuan</span><br><span style="color:var(--text-muted);font-size:0.72rem;">Jakarta Selatan • 10:15 WIB</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
         <section id="grid-vs-flexbox">
-            <h2><i class="fa-solid fa-table-cells"></i> 2. CSS Grid vs Flexbox: Panduan Keputusan Arsitektur</h2>
+            <h2><i class="fa-solid fa-table-cells"></i> 3. CSS Grid vs Flexbox: Panduan Keputusan Arsitektur</h2>
             <p>
                 Salah satu kesalahan paling mendasar frontend engineer adalah memaksakan Flexbox untuk mengatur seluruh halaman, atau menggunakan Grid untuk hal-hal sepele. Berikut adalah aturan baku industri:
             </p>
@@ -417,9 +826,9 @@
 }</code></pre>
         </section>
 
-        <!-- Section 3 -->
+        <!-- Section 4 -->
         <section id="header-hero">
-            <h2><i class="fa-solid fa-heading"></i> 3. Bedah Komponen: Header &amp; Hero Section</h2>
+            <h2><i class="fa-solid fa-heading"></i> 4. Bedah Komponen: Header &amp; Hero Section</h2>
             
             <!-- LIVE PREVIEW BOX: BROWSER MOCKUP HEADER & HERO -->
             <div class="live-preview-box">
@@ -509,9 +918,9 @@
             </div>
         </section>
 
-        <!-- Section 4 -->
+        <!-- Section 5 -->
         <section id="banner-announcement">
-            <h2><i class="fa-solid fa-bullhorn"></i> 4. Announcement Banner &amp; Alert Strip</h2>
+            <h2><i class="fa-solid fa-bullhorn"></i> 5. Announcement Banner &amp; Alert Strip</h2>
             <p>
                 Banner adalah komponen tata letak yang digunakan untuk menyampaikan informasi yang bersifat <strong>mendesak, menyeluruh (*global*), dan sementara</strong>:
             </p>
@@ -561,9 +970,9 @@
             </ul>
         </section>
 
-        <!-- Section 5 -->
+        <!-- Section 6 -->
         <section id="sidebar-drawer">
-            <h2><i class="fa-solid fa-bars-progress"></i> 5. Sidebar Navigation (Drawer vs Rail)</h2>
+            <h2><i class="fa-solid fa-bars-progress"></i> 6. Sidebar Navigation (Drawer vs Rail)</h2>
             <p>
                 Ketika sebuah aplikasi memiliki lebih dari 10 fitur utama, menu atas (*header*) tidak akan muat lagi. Di sinilah peran Sidebar:
             </p>
@@ -636,9 +1045,9 @@
             </table>
         </section>
 
-        <!-- Section 6 -->
+        <!-- Section 7 -->
         <section id="footer-container">
-            <h2><i class="fa-solid fa-shoe-prints"></i> 6. Footer &amp; Responsive Container Constraints</h2>
+            <h2><i class="fa-solid fa-shoe-prints"></i> 7. Footer &amp; Responsive Container Constraints</h2>
             <p>
                 Bagian penutup halaman dan batas fisik lebar layar:
             </p>
@@ -709,9 +1118,9 @@
             </ul>
         </section>
 
-        <!-- Section 7: Quiz -->
+        <!-- Section 8: Quiz -->
         <section id="quiz">
-            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman Komponen Layout</h2>
+            <h2><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman Komponen Layout</h2>
             <div class="quiz-box">
                 <div class="quiz-question">1. Kapan seorang frontend engineer wajib memilih CSS Grid daripada Flexbox?</div>
                 <div class="quiz-options">
