@@ -331,7 +331,7 @@ function getRootPrefix() {
 async function loadNavData() {
     if (navDataCache) return navDataCache;
     try {
-        const fetchPath = getRootPrefix() + 'assets/nav-data.json?v=2.4.0';
+        const fetchPath = getRootPrefix() + 'assets/nav-data.json?v=2.5.0';
         const res = await fetch(fetchPath);
         if (res.ok) {
             navDataCache = await res.json();
@@ -371,7 +371,7 @@ function initFavicon() {
         document.head.appendChild(link);
     }
     const prefix = getRootPrefix();
-    link.href = prefix + 'assets/favicon.svg?v=2.4.0';
+    link.href = prefix + 'assets/favicon.svg?v=2.5.0';
 }
 
 async function initDynamicMultiTrackSidebar() {
@@ -394,6 +394,22 @@ async function initDynamicMultiTrackSidebar() {
     const currentFileName = currentPath.split('/').pop().toLowerCase();
 
     const fragment = document.createDocumentFragment();
+
+    // Quick Utility Navigation (Portal Utama & Kamus Perintah)
+    const quickNav = document.createElement('div');
+    quickNav.className = 'sidebar-quick-nav';
+    quickNav.innerHTML = `
+        <a href="${prefix}index.html" class="quick-nav-link ${currentFileName === 'index.html' || !currentFileName ? 'active' : ''}">
+            <i class="fa-solid fa-house"></i>
+            <span>Portal Utama</span>
+        </a>
+        <a href="${prefix}cheatsheet.html" class="quick-nav-link ${currentFileName === 'cheatsheet.html' ? 'active' : ''}">
+            <i class="fa-solid fa-terminal"></i>
+            <span>Kamus Perintah (Git & CLI)</span>
+        </a>
+    `;
+    fragment.appendChild(quickNav);
+
     const accordionWrapper = document.createElement('div');
     accordionWrapper.className = 'sidebar-track-accordion';
 
@@ -447,8 +463,13 @@ async function initDynamicMultiTrackSidebar() {
                     .replace(/^Modul \d+:\s*/i, '')
                     .replace(/^Fase \d+:\s*/i, '');
 
+                const isCheatsheet = mod.url.includes('cheatsheet');
+                const bulletIcon = isCheatsheet 
+                    ? '<i class="fa-solid fa-terminal mod-link-bullet" style="color:var(--brand);font-size:0.75rem;"></i>' 
+                    : '<i class="fa-solid fa-angle-right mod-link-bullet"></i>';
+
                 link.innerHTML = `
-                    <i class="fa-solid fa-angle-right mod-link-bullet"></i>
+                    ${bulletIcon}
                     <span class="mod-title-text">${cleanTitle}</span>
                 `;
                 content.appendChild(link);

@@ -2520,4 +2520,51 @@ code:not([class*="language"]):not(.code-block code) {
     white-space: nowrap;
 }
 
+/* Sidebar Quick Navigation (Home & Cheatsheet) */
+.sidebar-quick-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.quick-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.55rem 0.75rem;
+    border-radius: var(--r-sm);
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.quick-nav-link i {
+    font-size: 0.88rem;
+    color: var(--brand);
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.quick-nav-link:hover {
+    background: var(--bg-surface-2);
+    color: var(--text-primary);
+}
+
+.quick-nav-link.active {
+    background: var(--brand-subtle);
+    color: var(--brand-light);
+    font-weight: 700;
+}
+
+[data-theme="light"] .quick-nav-link.active {
+    color: var(--brand);
+}
+
+
 

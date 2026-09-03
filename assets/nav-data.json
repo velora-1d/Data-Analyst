@@ -103,14 +103,15 @@
     },
     {
       "id": "git_workflow",
-      "title": "Git Internals",
+      "title": "Git & GitHub",
       "icon": "fa-brands fa-git-alt",
-      "badge": "Aktif (2 Modul)",
+      "badge": "Aktif (3 Modul)",
       "badgeColor": "var(--success)",
-      "description": "Git Internals (DAG, Tree, Blob), Plumbing Commands, Packfiles Delta Compression, git reflog, dan pemulihan data via git filter-repo.",
+      "description": "Git & GitHub Internals (DAG, Tree, Blob), Plumbing Commands, Packfiles Delta Compression, git reflog, serta Kamus Perintah Developer CLI.",
       "modules": [
         { "id": "git_01_dag_internals", "title": "Git Objects & DAG", "url": "tracks/04_architecture/02_git_internals.html", "status": "ready", "duration": "50m" },
-        { "id": "git_02_internals_advanced", "title": "Plumbing & Packfiles", "url": "tracks/07_runtimes_memory/03_git_internals_advanced.html", "status": "ready", "duration": "55m" }
+        { "id": "git_02_internals_advanced", "title": "Plumbing & Packfiles", "url": "tracks/07_runtimes_memory/03_git_internals_advanced.html", "status": "ready", "duration": "55m" },
+        { "id": "git_03_cheatsheet", "title": "Kamus Perintah CLI", "url": "cheatsheet.html", "status": "ready", "duration": "Ref" }
       ]
     },
     {
