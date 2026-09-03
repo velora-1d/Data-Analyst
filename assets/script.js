@@ -1,8 +1,16 @@
 // ============================================================
-// Belajar Data — Shared Script
+// Belajar Data — Shared Script (SPA Smooth Navigation)
 // ============================================================
 
 const THEME_KEY = 'sql-da-theme';
+
+// Immediate theme execution to prevent dark/light flash (FOUT)
+(function () {
+    try {
+        const theme = localStorage.getItem(THEME_KEY) || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {}
+})();
 
 // --- Theme ---
 function getTheme() {
@@ -68,12 +76,17 @@ function applycopied(btn, success) {
 }
 
 // --- Sidebar Active Tracking ---
+let sidebarObserver = null;
 function initSidebar() {
+    if (sidebarObserver) {
+        sidebarObserver.disconnect();
+        sidebarObserver = null;
+    }
     const sections  = document.querySelectorAll('section[id]');
     const navLinks  = document.querySelectorAll('.nav-link[href^="#"]');
     if (!sections.length || !navLinks.length) return;
 
-    const io = new IntersectionObserver(entries => {
+    sidebarObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const id = entry.target.id;
@@ -84,7 +97,7 @@ function initSidebar() {
         });
     }, { rootMargin: `-${60}px 0px -55% 0px`, threshold: 0 });
 
-    sections.forEach(s => io.observe(s));
+    sections.forEach(s => sidebarObserver.observe(s));
 }
 
 // --- Mobile Sidebar Drawer Toggle ---
@@ -108,23 +121,23 @@ function initMobileSidebar() {
     }
 
     if (toggleBtn) {
-        toggleBtn.addEventListener('click', (e) => {
+        toggleBtn.onclick = (e) => {
             e.stopPropagation();
             sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
-        });
+        };
     }
 
     if (overlay) {
-        overlay.addEventListener('click', closeSidebar);
+        overlay.onclick = closeSidebar;
     }
 
     const navLinks = sidebar.querySelectorAll('a');
     navLinks.forEach(link => {
-        link.addEventListener('click', () => {
+        link.onclick = () => {
             if (window.innerWidth <= 820) {
                 closeSidebar();
             }
-        });
+        };
     });
 }
 
@@ -298,15 +311,172 @@ function initSupabaseERDCanvas() {
     window.addEventListener('resize', renderConnections);
 }
 
-// --- Init ---
-document.addEventListener('DOMContentLoaded', () => {
+// --- Page Lifecycle Re-initialization ---
+function reinitPage() {
     setTheme(getTheme());
 
     const themeBtn = document.getElementById('themeToggle');
-    if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+    if (themeBtn) {
+        themeBtn.onclick = toggleTheme;
+    }
 
     initSidebar();
     initMobileSidebar();
     initSupabaseERDCanvas();
+    idlePrefetchLinks();
+}
+
+// ============================================================
+// Instant Seamless Page Router (Zero Reload, Zero Flicker)
+// ============================================================
+const pageCache = new Map();
+
+function prefetchUrl(url) {
+    if (!url || pageCache.has(url)) return;
+    fetch(url, { priority: 'low' })
+        .then(res => {
+            if (!res.ok) throw new Error('Prefetch failed');
+            return res.text();
+        })
+        .then(html => {
+            pageCache.set(url, html);
+        })
+        .catch(() => {});
+}
+
+function idlePrefetchLinks() {
+    const prefetchTargets = () => {
+        const links = document.querySelectorAll('.sidebar-module-link, .module-card, .module-nav a, .mod-nav-footer a, .hero-actions a');
+        links.forEach(link => {
+            try {
+                if (link.hasAttribute('download') || link.target === '_blank') return;
+                const u = new URL(link.href, window.location.href);
+                if (u.origin === window.location.origin && u.pathname !== window.location.pathname) {
+                    prefetchUrl(u.href);
+                }
+            } catch(e) {}
+        });
+    };
+
+    if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(prefetchTargets);
+    } else {
+        setTimeout(prefetchTargets, 500);
+    }
+}
+
+async function navigateTo(url, push = true) {
+    try {
+        let html = pageCache.get(url);
+        if (!html) {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('Failed to fetch page');
+            html = await res.text();
+            pageCache.set(url, html);
+        }
+
+        const parser = new DOMParser();
+        const newDoc = parser.parseFromString(html, 'text/html');
+
+        // Update document title
+        document.title = newDoc.title;
+
+        // Instant DOM swap without unloading document
+        const updateDOM = () => {
+            document.body.innerHTML = newDoc.body.innerHTML;
+            reinitPage();
+        };
+
+        if (document.startViewTransition) {
+            document.startViewTransition(updateDOM);
+        } else {
+            updateDOM();
+        }
+
+        if (push) {
+            history.pushState({ url }, '', url);
+        }
+
+        // Handle scrolling to hash anchor or reset to top cleanly
+        const targetUrlObj = new URL(url, window.location.href);
+        if (targetUrlObj.hash) {
+            const el = document.querySelector(targetUrlObj.hash);
+            if (el) {
+                el.scrollIntoView();
+            }
+        } else {
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        }
+    } catch (err) {
+        console.warn('Seamless navigation fallback to native reload:', err);
+        window.location.href = url;
+    }
+}
+
+// Global click interceptor for internal links
+document.addEventListener('click', e => {
+    // Only handle primary button clicks without modifier keys
+    if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+
+    const link = e.target.closest('a');
+    if (!link) return;
+
+    if (link.hasAttribute('download') || link.target === '_blank') return;
+
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) return;
+
+    // Anchor link on current page: let native smooth scrolling handle it
+    if (href.startsWith('#')) return;
+
+    try {
+        const urlObj = new URL(link.href, window.location.href);
+        if (urlObj.origin !== window.location.origin) return;
+
+        // If same pathname and hash: let anchor handle it
+        if (urlObj.pathname === window.location.pathname) return;
+
+        e.preventDefault();
+        navigateTo(urlObj.href, true);
+    } catch (err) {}
+});
+
+// Prefetch on hover and touch (0ms instant transition when clicked)
+document.addEventListener('mouseover', e => {
+    const link = e.target.closest('a');
+    if (!link || link.hasAttribute('download') || link.target === '_blank') return;
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+
+    try {
+        const urlObj = new URL(link.href, window.location.href);
+        if (urlObj.origin === window.location.origin && urlObj.pathname !== window.location.pathname) {
+            prefetchUrl(urlObj.href);
+        }
+    } catch (err) {}
+}, { passive: true });
+
+document.addEventListener('touchstart', e => {
+    const link = e.target.closest('a');
+    if (!link || link.hasAttribute('download') || link.target === '_blank') return;
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#')) return;
+
+    try {
+        const urlObj = new URL(link.href, window.location.href);
+        if (urlObj.origin === window.location.origin && urlObj.pathname !== window.location.pathname) {
+            prefetchUrl(urlObj.href);
+        }
+    } catch (err) {}
+}, { passive: true });
+
+// Handle Browser Back / Forward buttons seamlessly
+window.addEventListener('popstate', () => {
+    navigateTo(window.location.href, false);
+});
+
+// Initial boot
+document.addEventListener('DOMContentLoaded', () => {
+    reinitPage();
 });
 
