@@ -13,16 +13,86 @@
       "humanDefinition": "Tempat menyimpan jutaan catatan transaksi secara permanen dan aman. Beda dengan Excel, database tidak akan rusak walau dibuka ribuan kasir bersamaan.",
       "description": "Fondasi basis data relasional, SQL tingkat lanjut, metrik bisnis e-commerce, hingga struktur internal B-Tree & WAL.",
       "modules": [
-        { "id": "01_tipe_data", "title": "Tipe Data SQL", "url": "modul/01_tipe_data.html", "status": "ready", "duration": "45m" },
-        { "id": "02_query_dasar", "title": "Query & Paginasi", "url": "modul/02_query_dasar.html", "status": "ready", "duration": "40m" },
-        { "id": "03_agregasi", "title": "Agregasi & Metrik", "url": "modul/03_agregasi.html", "status": "ready", "duration": "40m" },
-        { "id": "04_join", "title": "Relasi & JOIN", "url": "modul/04_join.html", "status": "ready", "duration": "50m" },
-        { "id": "05_subquery_cte", "title": "Subquery & CTE", "url": "modul/05_subquery_cte.html", "status": "ready", "duration": "45m" },
-        { "id": "06_window_functions", "title": "Window Functions", "url": "modul/06_window_functions.html", "status": "ready", "duration": "55m" },
-        { "id": "07_analisis_nyata", "title": "Capstone E-Commerce", "url": "modul/07_analisis_nyata.html", "status": "ready", "duration": "60m" },
-        { "id": "db_01_storage_engine", "title": "Storage & B-Tree", "url": "tracks/01_database_sql/01_storage_engine.html", "status": "ready", "duration": "50m" },
-        { "id": "db_02_indexing_strategy", "title": "Indexing & EXPLAIN", "url": "tracks/01_database_sql/02_indexing_strategy.html", "status": "ready", "duration": "55m" },
-        { "id": "db_03_transactions_concurrency", "title": "Transaksi & Concurrency", "url": "tracks/01_database_sql/03_transactions_concurrency.html", "status": "ready", "duration": "60m" }
+        {
+          "id": "01_tipe_data",
+          "title": "Tipe Data SQL",
+          "url": "modul/01_tipe_data.html",
+          "status": "ready",
+          "duration": "45m",
+          "humanSubtitle": "Membedakan Wadah Angka, Teks & Tanggal"
+        },
+        {
+          "id": "02_query_dasar",
+          "title": "Query & Paginasi",
+          "url": "modul/02_query_dasar.html",
+          "status": "ready",
+          "duration": "40m",
+          "humanSubtitle": "Mengambil Data Tertentu & Membatasi Halaman"
+        },
+        {
+          "id": "03_agregasi",
+          "title": "Agregasi & Metrik",
+          "url": "modul/03_agregasi.html",
+          "status": "ready",
+          "duration": "40m",
+          "humanSubtitle": "Menghitung Omzet, Rata-rata & Total Belanja"
+        },
+        {
+          "id": "04_join",
+          "title": "Relasi & JOIN",
+          "url": "modul/04_join.html",
+          "status": "ready",
+          "duration": "50m",
+          "humanSubtitle": "Menjodohkan Dua Buku Catatan Berbeda"
+        },
+        {
+          "id": "05_subquery_cte",
+          "title": "Subquery & CTE",
+          "url": "modul/05_subquery_cte.html",
+          "status": "ready",
+          "duration": "45m",
+          "humanSubtitle": "Pertanyaan Bersarang di Dalam Pertanyaan"
+        },
+        {
+          "id": "06_window_functions",
+          "title": "Window Functions",
+          "url": "modul/06_window_functions.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Melihat Peringkat Juara & Tren dari Waktu ke Waktu"
+        },
+        {
+          "id": "07_analisis_nyata",
+          "title": "Capstone E-Commerce",
+          "url": "modul/07_analisis_nyata.html",
+          "status": "ready",
+          "duration": "60m",
+          "humanSubtitle": "Praktik Kasus Nyata Transaksi Toko Online"
+        },
+        {
+          "id": "db_01_storage_engine",
+          "title": "Storage & B-Tree",
+          "url": "tracks/01_database_sql/01_storage_engine.html",
+          "status": "ready",
+          "duration": "50m",
+          "humanSubtitle": "Melihat Cara Harddisk Menata Lembar Arsip"
+        },
+        {
+          "id": "db_02_indexing_strategy",
+          "title": "Indexing & EXPLAIN",
+          "url": "tracks/01_database_sql/02_indexing_strategy.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Daftar Isi Cepat Supaya Pencarian Tanpa Antre"
+        },
+        {
+          "id": "db_03_transactions_concurrency",
+          "title": "Transaksi & Concurrency",
+          "url": "tracks/01_database_sql/03_transactions_concurrency.html",
+          "status": "ready",
+          "duration": "60m",
+          "humanSubtitle": "Brankas Anti Uang Tertukar Saat Kasir Sibuk"
+        }
       ]
     },
     {
@@ -35,9 +105,30 @@
       "humanDefinition": "Semua bagian aplikasi yang dilihat dan disentuh manusia di layar—mulai dari warna tombol, animasi halus, hingga susunan teks yang nyaman dibaca.",
       "description": "Browser rendering pipeline, DOM & CSSOM, JS Event Loop, arsitektur CSS modern, dan paradigma framework (React/Vue/Svelte).",
       "modules": [
-        { "id": "fe_01_rendering_pipeline", "title": "Rendering & Event Loop", "url": "tracks/02_frontend/01_rendering_pipeline.html", "status": "ready", "duration": "55m" },
-        { "id": "fe_02_css_architecture", "title": "Arsitektur CSS", "url": "tracks/02_frontend/02_css_architecture.html", "status": "ready", "duration": "45m" },
-        { "id": "fe_03_framework_paradigms", "title": "Paradigma Framework", "url": "tracks/02_frontend/03_framework_paradigms.html", "status": "ready", "duration": "55m" }
+        {
+          "id": "fe_01_rendering_pipeline",
+          "title": "Rendering & Event Loop",
+          "url": "tracks/02_frontend/01_rendering_pipeline.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Bagaimana Layar Komputer Melukis Warna & Piksel"
+        },
+        {
+          "id": "fe_02_css_architecture",
+          "title": "Arsitektur CSS",
+          "url": "tracks/02_frontend/02_css_architecture.html",
+          "status": "ready",
+          "duration": "45m",
+          "humanSubtitle": "Menata Warna & Ukuran Tanpa Kode Berantakan"
+        },
+        {
+          "id": "fe_03_framework_paradigms",
+          "title": "Paradigma Framework",
+          "url": "tracks/02_frontend/03_framework_paradigms.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Kenapa Butuh React/Vue Ketimbang Tulis Tangan Manual"
+        }
       ]
     },
     {
@@ -50,9 +141,30 @@
       "humanDefinition": "Mesin logika di belakang layar yang tidak terlihat pengunjung. Bertugas memasak pesanan, memverifikasi uang pembayaran kasir, dan menjaga brankas rahasia.",
       "description": "Protokol HTTP/1.1 s/d HTTP/3 QUIC, desain API standar industri (REST, GraphQL, gRPC), autentikasi Session/JWT/OAuth 2.0 PKCE, dan OWASP API Security.",
       "modules": [
-        { "id": "be_01_http_protocols", "title": "HTTP/3 & Real-Time", "url": "tracks/03_backend/01_http_protocols.html", "status": "ready", "duration": "50m" },
-        { "id": "be_02_api_design", "title": "Desain API Modern", "url": "tracks/03_backend/02_api_design.html", "status": "ready", "duration": "55m" },
-        { "id": "be_03_auth_security", "title": "Auth & Keamanan API", "url": "tracks/03_backend/03_auth_security.html", "status": "ready", "duration": "55m" }
+        {
+          "id": "be_01_http_protocols",
+          "title": "HTTP/3 & Real-Time",
+          "url": "tracks/03_backend/01_http_protocols.html",
+          "status": "ready",
+          "duration": "50m",
+          "humanSubtitle": "Surat-Menyurat Antar Komputer di Seluruh Dunia"
+        },
+        {
+          "id": "be_02_api_design",
+          "title": "Desain API Modern",
+          "url": "tracks/03_backend/02_api_design.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Membuat Buku Menu Pesanan Data yang Rapi"
+        },
+        {
+          "id": "be_03_auth_security",
+          "title": "Auth & Keamanan API",
+          "url": "tracks/03_backend/03_auth_security.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Kunci Sandi & Kartu Akses Supaya Akun Tidak Dibobol"
+        }
       ]
     },
     {
@@ -65,10 +177,38 @@
       "humanDefinition": "Rancangan pondasi tata letak agar bangunan software tidak roboh saat diserbu jutaan pengunjung, serta memastikan ribuan programmer bisa bekerja kompak tanpa tabrakan.",
       "description": "Monorepo vs Polyrepo, Modular Monolith vs Microservices, Clean & Hexagonal Architecture, serta Domain-Driven Design (DDD) & Outbox Pattern.",
       "modules": [
-        { "id": "arch_01_monorepo_polyrepo", "title": "Monorepo vs Polyrepo", "url": "tracks/04_architecture/01_monorepo_polyrepo.html", "status": "ready", "duration": "50m" },
-        { "id": "arch_02_monolith_microservices", "title": "Monolith vs Microservices", "url": "tracks/04_architecture/02_monolith_microservices.html", "status": "ready", "duration": "55m" },
-        { "id": "arch_03_clean_architecture", "title": "Clean Architecture", "url": "tracks/04_architecture/03_clean_architecture.html", "status": "ready", "duration": "55m" },
-        { "id": "arch_04_ddd_event_driven", "title": "DDD & Outbox Pattern", "url": "tracks/04_architecture/04_ddd_event_driven.html", "status": "ready", "duration": "60m" }
+        {
+          "id": "arch_01_monorepo_polyrepo",
+          "title": "Monorepo vs Polyrepo",
+          "url": "tracks/04_architecture/01_monorepo_polyrepo.html",
+          "status": "ready",
+          "duration": "50m",
+          "humanSubtitle": "Satu Lemari Barengan vs Lemari Sendiri-sendiri"
+        },
+        {
+          "id": "arch_02_monolith_microservices",
+          "title": "Monolith vs Microservices",
+          "url": "tracks/04_architecture/02_monolith_microservices.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Satu Gedung Terpadu vs Kompleks Ruko Terpisah"
+        },
+        {
+          "id": "arch_03_clean_architecture",
+          "title": "Clean Architecture",
+          "url": "tracks/04_architecture/03_clean_architecture.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Memisahkan Logika Bisnis dari Colokan Database"
+        },
+        {
+          "id": "arch_04_ddd_event_driven",
+          "title": "DDD & Outbox Pattern",
+          "url": "tracks/04_architecture/04_ddd_event_driven.html",
+          "status": "ready",
+          "duration": "60m",
+          "humanSubtitle": "Bahasa Bisnis Nyata & Kabar Berita Otomatis"
+        }
       ]
     },
     {
@@ -81,9 +221,30 @@
       "humanDefinition": "Aturan pengiriman paket data yang memungkinkan HP Anda mengirimkan pesan WhatsApp ke server di Amerika Serikat hanya dalam kedipan mata.",
       "description": "Model OSI vs TCP/IP, Alamat IP & Subnetting CIDR, TCP Handshake, Linux Berkeley Sockets, epoll I/O multiplexing, dan Nginx Reverse Proxy.",
       "modules": [
-        { "id": "net_01_networking_sockets", "title": "Jaringan & Socket", "url": "tracks/05_linux_networking/01_networking_sockets.html", "status": "ready", "duration": "55m" },
-        { "id": "net_02_linux_os_internals", "title": "Linux OS & epoll", "url": "tracks/05_linux_networking/02_linux_os_internals.html", "status": "ready", "duration": "55m" },
-        { "id": "net_03_web_servers_reverse_proxy", "title": "Web Server & Proxy", "url": "tracks/05_linux_networking/03_web_servers_reverse_proxy.html", "status": "ready", "duration": "55m" }
+        {
+          "id": "net_01_networking_sockets",
+          "title": "Jaringan & Socket",
+          "url": "tracks/05_linux_networking/01_networking_sockets.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Kabel Telepon Digital Penghubung Dua Mesin"
+        },
+        {
+          "id": "net_02_linux_os_internals",
+          "title": "Linux OS & epoll",
+          "url": "tracks/05_linux_networking/02_linux_os_internals.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Mandor Pabrik yang Mengatur Giliran Kerja CPU"
+        },
+        {
+          "id": "net_03_web_servers_reverse_proxy",
+          "title": "Web Server & Proxy",
+          "url": "tracks/05_linux_networking/03_web_servers_reverse_proxy.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Satpam Pintu Gerbang Pengatur Antrean Pengunjung"
+        }
       ]
     },
     {
@@ -96,9 +257,30 @@
       "humanDefinition": "Mengemas program beserta perabotannya ke dalam peti kemas (Docker) agar bisa dijalankan di komputer mana saja tanpa alasan 'di laptop saya bisa kok'.",
       "description": "Docker internals (Namespaces, cgroups v2, Overlay2 COW), Kubernetes Pods & Services, Zero-Downtime Deployment, dan GitHub Actions IaC.",
       "modules": [
-        { "id": "ops_01_docker_internals", "title": "Docker & cgroups", "url": "tracks/06_devops/01_docker_internals.html", "status": "ready", "duration": "55m" },
-        { "id": "ops_02_kubernetes_orchestration", "title": "Kubernetes K8s", "url": "tracks/06_devops/02_kubernetes_orchestration.html", "status": "ready", "duration": "55m" },
-        { "id": "ops_03_cicd_infrastructure", "title": "CI/CD & Terraform", "url": "tracks/06_devops/03_cicd_infrastructure.html", "status": "ready", "duration": "55m" }
+        {
+          "id": "ops_01_docker_internals",
+          "title": "Docker & cgroups",
+          "url": "tracks/06_devops/01_docker_internals.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Peti Kemas Digital Agar Program Jalan di Mana Saja"
+        },
+        {
+          "id": "ops_02_kubernetes_orchestration",
+          "title": "Kubernetes K8s",
+          "url": "tracks/06_devops/02_kubernetes_orchestration.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Nahkoda Otomatis Pengganda Peti Kemas Saat Ramai"
+        },
+        {
+          "id": "ops_03_cicd_infrastructure",
+          "title": "CI/CD & Terraform",
+          "url": "tracks/06_devops/03_cicd_infrastructure.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Ban Berjalan Pabrik Penguji & Pengirim Software"
+        }
       ]
     },
     {
@@ -111,8 +293,22 @@
       "humanDefinition": "Bagaimana baris kode buatan manusia diterjemahkan menjadi bahasa mesin (0 dan 1), serta bagaimana komputer membersihkan meja kerja RAM agar tidak lemot.",
       "description": "Kompilasi AOT vs Interpreter vs V8 JIT, Hidden Classes, Stack vs Heap, Generational GC, dan Rust Ownership & Borrow Checker.",
       "modules": [
-        { "id": "lang_01_compilation_jit", "title": "Kompilasi & JIT", "url": "tracks/07_runtimes_memory/01_compilation_jit_runtimes.html", "status": "ready", "duration": "50m" },
-        { "id": "lang_02_memory_gc_ownership", "title": "Memori GC vs Rust", "url": "tracks/07_runtimes_memory/02_memory_gc_ownership.html", "status": "ready", "duration": "55m" }
+        {
+          "id": "lang_01_compilation_jit",
+          "title": "Kompilasi & JIT",
+          "url": "tracks/07_runtimes_memory/01_compilation_jit_runtimes.html",
+          "status": "ready",
+          "duration": "50m",
+          "humanSubtitle": "Penerjemah Bahasa Manusia ke Bahasa Mesin (0 & 1)"
+        },
+        {
+          "id": "lang_02_memory_gc_ownership",
+          "title": "Memori GC vs Rust",
+          "url": "tracks/07_runtimes_memory/02_memory_gc_ownership.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Tukang Sapu Meja RAM Agar Laptop Tidak Cepat Lemot"
+        }
       ]
     },
     {
@@ -125,9 +321,30 @@
       "humanDefinition": "Mencatat setiap jengkal perubahan dokumen secara otomatis, sehingga Anda bisa memutar balik waktu ke masa lalu jika terjadi kesalahan fatal pada program.",
       "description": "Git & GitHub Internals (DAG, Tree, Blob), Plumbing Commands, Packfiles Delta Compression, git reflog, serta Kamus Perintah Developer CLI.",
       "modules": [
-        { "id": "git_01_dag_internals", "title": "Git Objects & DAG", "url": "tracks/04_architecture/02_git_internals.html", "status": "ready", "duration": "50m" },
-        { "id": "git_02_internals_advanced", "title": "Plumbing & Packfiles", "url": "tracks/07_runtimes_memory/03_git_internals_advanced.html", "status": "ready", "duration": "55m" },
-        { "id": "git_03_cheatsheet", "title": "Kamus Perintah CLI", "url": "cheatsheet.html", "status": "ready", "duration": "Ref" }
+        {
+          "id": "git_01_dag_internals",
+          "title": "Git Objects & DAG",
+          "url": "tracks/04_architecture/02_git_internals.html",
+          "status": "ready",
+          "duration": "50m",
+          "humanSubtitle": "Pohon Silsilah Pencatat Tiap Huruf Perubahan"
+        },
+        {
+          "id": "git_02_internals_advanced",
+          "title": "Plumbing & Packfiles",
+          "url": "tracks/07_runtimes_memory/03_git_internals_advanced.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Membuka Brankas Rahasia di Balik Folder .git"
+        },
+        {
+          "id": "git_03_cheatsheet",
+          "title": "Kamus Perintah CLI",
+          "url": "cheatsheet.html",
+          "status": "ready",
+          "duration": "Ref",
+          "humanSubtitle": "Kamus Cepat Mantra Perintah Terminal Sehari-hari"
+        }
       ]
     },
     {
@@ -140,9 +357,30 @@
       "humanDefinition": "Menguji baut dan roda sebelum mobil dijual ke jalan raya, serta memasang sensor detak jantung untuk mengawasi kesehatan server 24 jam nonstop.",
       "description": "Piramida testing (Unit, Integration, E2E Playwright), TDD, Pact contract testing, 3 pilar observability OpenTelemetry, dan SRE resilience.",
       "modules": [
-        { "id": "test_01_testing_pyramid", "title": "Piramida Testing", "url": "tracks/08_testing_observability/01_testing_pyramid_contract.html", "status": "ready", "duration": "55m" },
-        { "id": "test_02_opentelemetry", "title": "Observability & OTel", "url": "tracks/08_testing_observability/02_observability_opentelemetry.html", "status": "ready", "duration": "55m" },
-        { "id": "test_03_sre_resilience", "title": "SRE & Circuit Breaker", "url": "tracks/08_testing_observability/03_sre_resilience_circuit_breaker.html", "status": "ready", "duration": "55m" }
+        {
+          "id": "test_01_testing_pyramid",
+          "title": "Piramida Testing",
+          "url": "tracks/08_testing_observability/01_testing_pyramid_contract.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Tes Sekrup Kecil vs Tes Menyetir Mobil di Jalanan"
+        },
+        {
+          "id": "test_02_opentelemetry",
+          "title": "Observability & OTel",
+          "url": "tracks/08_testing_observability/02_observability_opentelemetry.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Memasang Alat Detak Jantung di Seluruh Tubuh Server"
+        },
+        {
+          "id": "test_03_sre_resilience",
+          "title": "SRE & Circuit Breaker",
+          "url": "tracks/08_testing_observability/03_sre_resilience_circuit_breaker.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Sekring Pengaman yang Padam Otomatis Saat Banjir Data"
+        }
       ]
     },
     {
@@ -155,8 +393,22 @@
       "humanDefinition": "Menaruh data yang sering dipesan pembeli tepat di meja kasir paling depan, sehingga pelayan tidak perlu lari ke gudang belakang setiap ada yang bertanya.",
       "description": "Pola caching terdistribusi, Redis internals, mitigasi Cache Stampede via Algoritma XFetch, dan System Design Capstone 100K QPS.",
       "modules": [
-        { "id": "cache_01_redis_xfetch", "title": "Caching & XFetch", "url": "tracks/09_caching_scale/01_distributed_caching_xfetch.html", "status": "ready", "duration": "55m" },
-        { "id": "cache_02_system_design_capstone", "title": "Capstone 100K QPS", "url": "tracks/09_caching_scale/02_capstone_enterprise_architecture.html", "status": "ready", "duration": "60m" }
+        {
+          "id": "cache_01_redis_xfetch",
+          "title": "Caching & XFetch",
+          "url": "tracks/09_caching_scale/01_distributed_caching_xfetch.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Menaruh Makanan Paling Laris di Meja Kasir Depan"
+        },
+        {
+          "id": "cache_02_system_design_capstone",
+          "title": "Capstone 100K QPS",
+          "url": "tracks/09_caching_scale/02_capstone_enterprise_architecture.html",
+          "status": "ready",
+          "duration": "60m",
+          "humanSubtitle": "Desain Sistem yang Mampu Layani 100 Ribu Orang"
+        }
       ]
     },
     {
@@ -169,8 +421,22 @@
       "humanDefinition": "Merancang aplikasi smartphone yang hemat baterai, lancar disentuh jari, dan tetap bisa dipakai belanja meskipun pengguna sedang terjebak di dalam lift tanpa internet.",
       "description": "Arsitektur mobile modern: React Native JSI/Fabric, Flutter Impeller engine, Kotlin Multiplatform (KMP), Offline-First SQLite, dan Push Notifications APNs/FCM.",
       "modules": [
-        { "id": "mob_01_runtimes_bridges", "title": "JSI, Fabric & Impeller", "url": "tracks/10_mobile_architecture/01_mobile_runtimes_bridges.html", "status": "ready", "duration": "55m" },
-        { "id": "mob_02_offline_first_push", "title": "Offline-First & Push", "url": "tracks/10_mobile_architecture/02_offline_first_sync_push.html", "status": "ready", "duration": "55m" }
+        {
+          "id": "mob_01_runtimes_bridges",
+          "title": "JSI, Fabric & Impeller",
+          "url": "tracks/10_mobile_architecture/01_mobile_runtimes_bridges.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Jembatan Penghubung Kode dengan Mesin Smartphone"
+        },
+        {
+          "id": "mob_02_offline_first_push",
+          "title": "Offline-First & Push",
+          "url": "tracks/10_mobile_architecture/02_offline_first_sync_push.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Aplikasi Tahan Sinyal Lift & Notifikasi Kilat"
+        }
       ]
     },
     {
@@ -183,9 +449,30 @@
       "humanDefinition": "Menciptakan ruang aplikasi yang nyaman dipandang, tidak membuat pengguna tersesat, serta ramah bagi siapa pun termasuk penyandang tunanetra dan tunadaksa.",
       "description": "Layout Engine & Ensiklopedia 108 Komponen UI, Ensiklopedia 100 Pola & Arsitektur Tata Letak, dan Arsitektur UX Aksesibilitas WCAG 2.1 AA.",
       "modules": [
-        { "id": "uiux_01_layout_wireframe", "title": "Layout & 108 Komponen UI", "url": "tracks/11_ui_ux_design/01_ui_anatomy_tokens.html", "status": "ready", "duration": "50m" },
-        { "id": "uiux_02_components_catalog", "title": "100 Pola & Arsitektur Layout", "url": "tracks/11_ui_ux_design/02_ux_heuristics_journey.html", "status": "ready", "duration": "55m" },
-        { "id": "uiux_03_a11y_design_systems", "title": "Arsitektur UX & Aksesibilitas", "url": "tracks/11_ui_ux_design/03_a11y_design_systems.html", "status": "ready", "duration": "55m" }
+        {
+          "id": "uiux_01_layout_wireframe",
+          "title": "Layout & 108 Komponen UI",
+          "url": "tracks/11_ui_ux_design/01_ui_anatomy_tokens.html",
+          "status": "ready",
+          "duration": "50m",
+          "humanSubtitle": "Pondasi Tata Letak & Katalog 108 Komponen Antarmuka"
+        },
+        {
+          "id": "uiux_02_components_catalog",
+          "title": "100 Pola & Arsitektur Layout",
+          "url": "tracks/11_ui_ux_design/02_ux_heuristics_journey.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Ensiklopedia 100 Pola & Arsitektur Tata Letak Aplikasi"
+        },
+        {
+          "id": "uiux_03_a11y_design_systems",
+          "title": "Arsitektur UX & Aksesibilitas",
+          "url": "tracks/11_ui_ux_design/03_a11y_design_systems.html",
+          "status": "ready",
+          "duration": "55m",
+          "humanSubtitle": "Jalur Ramah Disabilitas & Bahasa Desain Terpadu Tim"
+        }
       ]
     }
   ]

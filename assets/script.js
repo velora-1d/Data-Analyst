@@ -504,9 +504,16 @@ async function initDynamicMultiTrackSidebar() {
                     ? '<i class="fa-solid fa-terminal mod-link-bullet" style="color:var(--brand);font-size:0.75rem;"></i>' 
                     : '<i class="fa-solid fa-angle-right mod-link-bullet"></i>';
 
+                const humanSubHtml = mod.humanSubtitle 
+                    ? `<span class="mod-human-sub">${mod.humanSubtitle}</span>` 
+                    : '';
+
                 link.innerHTML = `
                     ${bulletIcon}
-                    <span class="mod-title-text">${cleanTitle}</span>
+                    <div class="mod-title-group">
+                        <span class="mod-title-text">${cleanTitle}</span>
+                        ${humanSubHtml}
+                    </div>
                 `;
                 content.appendChild(link);
             });
