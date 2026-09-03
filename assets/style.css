@@ -108,7 +108,7 @@
 }
 
 /* Light Theme Component Overrides for Maximum Readability */
-[data-theme="light"] code:not([class*="language"]):not(.code-block code) {
+[data-theme="light"] :not(pre) > code:not([class*="language"]) {
     color: #1D4ED8;
     background: #EFF6FF;
     border-color: #BFDBFE;
@@ -710,26 +710,50 @@ section p {
     border-color: var(--success);
 }
 
+pre,
 .code-block pre {
-    margin: 0;
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: var(--r-lg);
+    margin: 1.5rem 0;
     padding: 1.25rem 1.25rem;
     overflow-x: auto;
     scrollbar-width: thin;
     scrollbar-color: #334155 transparent;
+    box-shadow: var(--shadow-sm);
+    font-family: var(--mono);
+    line-height: 1.75;
 }
-.code-block pre::-webkit-scrollbar {
+
+.code-block pre {
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+.code-block pre::-webkit-scrollbar,
+pre::-webkit-scrollbar {
     height: 6px;
 }
-.code-block pre::-webkit-scrollbar-thumb {
+.code-block pre::-webkit-scrollbar-thumb,
+pre::-webkit-scrollbar-thumb {
     background: #334155;
     border-radius: 3px;
 }
 
+pre code,
 .code-block code {
     font-family: var(--mono);
     font-size: 0.9rem;
     line-height: 1.75;
-    color: var(--code-text);
+    color: var(--code-text) !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    font-weight: 400 !important;
+    display: block;
 }
 
 /* Syntax Highlighting */
@@ -869,7 +893,7 @@ section p {
 .callout.danger  .callout-body p { color: var(--text-secondary); }
 
 /* --- 12. Inline Code --- */
-code:not([class*="language"]):not(.code-block code) {
+:not(pre) > code:not([class*="language"]) {
     font-family: var(--mono);
     font-size: 0.85em;
     background: var(--bg-surface-2);
@@ -878,6 +902,55 @@ code:not([class*="language"]):not(.code-block code) {
     border-radius: var(--r-sm);
     border: 1px solid var(--border);
     font-weight: 600;
+}
+
+/* --- 12b. Global Grid, Card & Blockquote Utilities --- */
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin: 1.5rem 0;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin: 1.5rem 0;
+}
+
+@media (max-width: 768px) {
+    .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--t);
+}
+
+.card:hover {
+    border-color: var(--border-light);
+}
+
+blockquote {
+    border-left: 4px solid var(--brand);
+    padding: 1rem 1.25rem;
+    background: var(--bg-surface-2);
+    font-style: italic;
+    margin: 1.5rem 0;
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    color: var(--text-secondary);
+    line-height: 1.75;
+}
+blockquote strong {
+    color: var(--text-primary);
+    font-style: normal;
 }
 
 /* --- 13. Comparison & Data Tables --- */
