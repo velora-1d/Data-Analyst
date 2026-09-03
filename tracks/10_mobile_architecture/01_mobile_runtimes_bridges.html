@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 31: Mobile Runtime, JSI, Fabric &amp; Flutter Impeller — Fundamental Coding</title>
+    <meta name="description" content="Bedah tuntas arsitektur mobile runtime dari first principles: React Native JSI & Fabric C++, Flutter Impeller vs Skia, Kotlin Multiplatform (KMP), serta komparasi manajemen memori ARC vs Android ART.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 11</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 31: Mobile Runtimes &amp; Bridges</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../cheatsheet.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-terminal"></i> Kamus Perintah
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-mobile-screen"></i>
+            JSI &amp; Impeller Engine <span>(60-120 FPS)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 31</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Lanskap Arsitektur Mobile</a>
+            <a href="#rn-bridge-vs-jsi" class="nav-link"><i class="fa-solid fa-bolt"></i> 2. React Native: Old Bridge vs JSI &amp; Fabric</a>
+            <a href="#flutter-impeller" class="nav-link"><i class="fa-solid fa-palette"></i> 3. Flutter: Skia vs Impeller (Eliminasi Shader Jank)</a>
+            <a href="#kmp-compilation" class="nav-link"><i class="fa-solid fa-cubes"></i> 4. Kotlin Multiplatform (KMP) Bytecode</a>
+            <a href="#memory-arc-vs-art" class="nav-link"><i class="fa-solid fa-microchip"></i> 5. Memori Mobile: iOS ARC vs Android ART GC</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Story: Bridge Bottleneck</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-mobile-screen-button"></i> Track 11: Mobile Engineering</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Mobile Engine Internals)</span>
+            </div>
+            <h1>Fase 31: Arsitektur Mobile Runtimes, JSI, Fabric &amp; Flutter Impeller</h1>
+            <p class="module-lead">
+                Membedah bagaimana kode aplikasi dieksekusi di perangkat keras seluler (smartphone): evolusi komunikasi antar-bahasa dari serialisasi JSON asinkronus (*Old Bridge*) ke pointer C++ langsung (*JSI &amp; Fabric*), revolusi GPU renderer Flutter Impeller yang membasmi lag animasi iOS, kompilasi biner Kotlin Multiplatform, hingga manajemen memori perangkat keras (iOS ARC vs Android ART Garbage Collection).
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Tiga Spektrum Arsitektur Mobile di Industri</h2>
+            <p>
+                Ketika membangun aplikasi mobile skala enterprise, software engineer dihadapkan pada tiga pendekatan arsitektur mendasar dengan karakteristik runtime yang sangat berbeda:
+            </p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Paradigma</th>
+                        <th>Teknologi</th>
+                        <th>Mekanisme Rendering UI</th>
+                        <th>Kecepatan Eksekusi Logika</th>
+                        <th>Trade-off Utama</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Murni Native</strong></td>
+                        <td>Swift/SwiftUI (iOS)<br>Kotlin/Jetpack Compose (Android)</td>
+                        <td>Komponen widget native langsung dari OS (UIKit / Android View)</td>
+                        <td>Maksimal (Kompilasi LLVM / AOT mesin)</td>
+                        <td>Wajib menulis dua basis kode (*codebase*) terpisah untuk tim iOS dan Android.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bridge / JSI Cross-Platform</strong></td>
+                        <td>React Native (Meta)</td>
+                        <td>Komponen Native OS yang dikendalikan oleh engine JavaScript (Hermes)</td>
+                        <td>Sangat Cepat via pointer C++ (JSI &amp; TurboModules)</td>
+                        <td>Membutuhkan integrasi binding C++ jika memanggil API native khusus yang belum didukung.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Owner-Drawn Canvas Engine</strong></td>
+                        <td>Flutter (Google)</td>
+                        <td>Menggambar sendiri setiap piksel di atas canvas GPU via C++ Impeller / Metal / Vulkan</td>
+                        <td>Tinggi (Kompilasi Dart AOT ke binary ARM64)</td>
+                        <td>Ukuran file APK/IPA lebih besar (~15-30MB) karena menyertakan engine grafis sendiri di dalam aplikasi.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="rn-bridge-vs-jsi">
+            <h2><i class="fa-solid fa-bolt"></i> 2. React Native Internals: Runtuhnya Old Bridge &amp; Lahirnya JSI / Fabric</h2>
+            <p>
+                Selama hampir satu dekade, React Native dikritik karena masalah performa (*frame drop* saat scrolling cepat). Untuk memahami solusinya, kita wajib membedah apa yang terjadi di tingkat memori:
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-bad">
+                    <div class="code-pane-header"><i class="fa-solid fa-triangle-exclamation"></i> Arsitektur Lama: The JSON Bridge (Async Bottleneck)</div>
+                    <div style="padding:16px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • <strong>Pemisahan Ketat:</strong> Thread JavaScript (V8/JSC) dan Thread Native (Objective-C/Java) berada di semesta memori terpisah.<br>
+                        • <strong>Serialisasi JSON Lambat:</strong> Setiap sentuhan jari (Touch Event) diubah menjadi string JSON mentah <code>JSON.stringify()</code>, dilempar melintasi bridge asinkronus, lalu di-parse ulang di sisi JS.<br>
+                        • <strong>Masalah White Screen:</strong> Saat scrolling daftar 10.000 produk secara cepat, antrean pesan bridge penuh (*congested*), menyebabkan layar putih karena instruksi render tertunda.
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-check"></i> New Architecture: JSI (JavaScript Interface) &amp; Fabric</div>
+                    <div style="padding:16px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • <strong>Zero Serialization:</strong> JSI mengekspos objek C++ Host langsung ke runtime JavaScript (Hermes).<br>
+                        • <strong>Sinkronus &amp; Instan:</strong> Kode JS dapat memegang referensi memori langsung ke fungsi native C++ tanpa melewati jembatan JSON.<br>
+                        • <strong>Fabric Renderer:</strong> Pembuatan pohon UI kini dihitung di thread background C++ menggunakan konsep immutable element trees, menjamin 60-120 FPS konstan.
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-code"></i> Konsep Inti JSI (JavaScript Interface) dalam C++</div>
+                <div class="callout-body">
+                    Di bawah kap mesin JSI, JavaScript dapat memanggil fungsi C++ seolah-olah fungsi lokal:
+                    <pre style="margin-top:8px;background:var(--code-bg);padding:10px;border-radius:6px;font-family:'JetBrains Mono',monospace;"><code>// Native C++ mengekspos pointer langsung ke JS Host Object
+jsi::Value calculateDistance(jsi::Runtime& rt, const jsi::Value& thisVal, const jsi::Value* args, size_t count) {
+    double lat = args[0].asNumber();
+    double lon = args[1].asNumber();
+    return jsi::Value(nativeHardwareGPS(lat, lon)); // Eksekusi 0ms tanpa JSON serialization!
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="flutter-impeller">
+            <h2><i class="fa-solid fa-palette"></i> 3. Flutter Internals: Mengapa Skia Diganti Impeller?</h2>
+            <p>
+                Flutter tidak menggunakan widget bawaan iOS atau Android. Flutter membawa mesin grafisnya sendiri. Namun pengguna iOS generasi awal sering mengeluhkan <em>Jank</em> (patah-patah) saat animasi pertama kali dijalankan.
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Masalah Lama: Skia Engine</div>
+                    <div class="pipeline-step-title">Shader Compilation Jank</div>
+                    <div class="pipeline-step-desc">Skia mengompilasi shader grafis GPU (GLSL) secara Just-in-Time (JIT) di saat animasi sedang bergerak di layar. Kompilasi ini memakan waktu 30-80ms, melebihi anggaran frame 16.6ms sehingga animasi patah-patah.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Solusi Modern: Impeller Engine</div>
+                    <div class="pipeline-step-title">Ahead-of-Time Pre-compiled Shaders</div>
+                    <div class="pipeline-step-desc">Impeller mengompilasi seluruh shader grafis GPU saat aplikasi di-build (AOT). Saat aplikasi dijalankan, GPU tinggal mengeksekusi pipeline Metal (iOS) atau Vulkan (Android) tanpa ada waktu henti kompilasi!</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="kmp-compilation">
+            <h2><i class="fa-solid fa-cubes"></i> 4. Kotlin Multiplatform (KMP): Berbagi Logika, Mempertahankan UI Native</h2>
+            <p>
+                Berbeda dengan Flutter dan React Native yang berusaha menyatukan logika dan UI, **Kotlin Multiplatform (KMP)** mengambil pendekatan pragmatis: <em>"Share business logic, keep the UI native."</em>
+            </p>
+            <ul>
+                <li><strong>Di Android:</strong> Kode Kotlin bersama dikompilasi langsung menjadi bytecode JVM / Android DEX murni. Nol overhead performa.</li>
+                <li><strong>Di iOS:</strong> Kompiler **Kotlin/Native (berbasis LLVM)** mengubah kode Kotlin bersama langsung menjadi binary statis berkas Framework Objective-C/Swift (Mach-O ARM64).</li>
+                <li><strong>Lapisan UI:</strong> Tim iOS bebas mendesain menggunakan deklaratif **SwiftUI** murni, sementara tim Android menggunakan **Jetpack Compose** murni.</li>
+            </ul>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="memory-arc-vs-art">
+            <h2><i class="fa-solid fa-microchip"></i> 5. Memori Mobile: iOS ARC vs Android ART Garbage Collection</h2>
+            <p>
+                Salah satu penyebab terbesar perbedaan perilaku aplikasi di mobile adalah cara sistem operasi mengelola RAM:
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-brands fa-apple"></i> iOS: Automatic Reference Counting (ARC)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • <strong>Deterministik Waktu Nyata:</strong> Setiap objek memiliki penghitung referensi (*reference counter*). Saat counter mencapai 0, memori <strong>seketika itu juga</strong> dibebaskan (nol pause).<br>
+                        • <strong>Bahaya Utama:</strong> <em>Retain Cycles</em> (dua objek saling memegang referensi <code>strong</code>). Wajib dipecahkan menggunakan pointer <code>weak</code> atau <code>unowned</code>.
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-brands fa-android"></i> Android: ART Generational Garbage Collection</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • <strong>Asinkronus Tracing:</strong> Objek dialokasikan di Young Generation Heap. Garbage Collector (Concurrent Mark-Sweep) berjalan periodik membersihkan objek mati.<br>
+                        • <strong>Tantangan:</strong> Jika aplikasi mengalokasikan ribuan objek saat scrolling (misal parsing JSON di loop), GC memicu *GC pauses* yang menyebabkan *frame drop*.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Story: Bottleneck Jembatan Serialisasi JSON</h2>
+            <div class="callout-box callout-warn">
+                <div class="callout-header"><i class="fa-solid fa-triangle-exclamation"></i> Bencana Kasus Nyata: Aplikasi Peta Finansial Drop dari 60 FPS ke 12 FPS</div>
+                <div class="callout-body">
+                    <p>
+                        Sebuah aplikasi dompet digital menampilkan peta interaktif lokasi merchant terdekat di kota Jakarta. Setiap kali pengguna menggeser peta (*onRegionChange*), aplikasi mengirim koordinat lat/long ke sisi JavaScript untuk mencari 500 merchant terdekat, lalu mengirimkan array marker kembali ke sisi native iOS/Android.
+                    </p>
+                    <p>
+                        <strong>Dampak yang Terjadi:</strong> Karena masih menggunakan arsitektur <em>Old Bridge</em>, setiap pergeseran jari 1 piksel memicu ratusan pesan <code>JSON.stringify()</code> dan <code>JSON.parse()</code> seberat 2MB melintasi jembatan thread. Thread bridge mengalami kemacetan total (*choke*). Tampilan peta membeku, animasi rute anjlok ke 12 FPS, dan HP pengguna menjadi sangat panas dalam 3 menit.
+                    </p>
+                    <p>
+                        <strong>Solusi Arsitektur Baru:</strong> Tim memigrasikan modul peta ke <strong>React Native New Architecture (JSI / TurboModules)</strong>. Alih-alih melempar string JSON melintasi jembatan, fungsi native C++ memanipulasi koordinat marker secara langsung di memori GPU shared pointer. Kemacetan JSON lenyap 100%, penggunaan CPU merosot 75%, dan peta kembali meluncur mulus di 60 FPS mentok!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman Arsitektur Mobile</h2>
+            <div class="quiz-box">
+                <div class="quiz-question">1. Apa keunggulan teknis paling mendasar dari JSI (JavaScript Interface) pada arsitektur baru React Native dibanding arsitektur JSON Bridge lama?</div>
+                <div class="quiz-options">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. JSI bukan sekadar mengubah format kompresi.')">A. JSI mengompresi payload JSON menggunakan format Protocol Buffers</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat sekali! JSI memungkinkan JavaScript memegang pointer langsung ke objek host C++ di memori, menghilangkan kebutuhan serialisasi string JSON bolak-balik.')">B. JSI mengizinkan runtime JavaScript memegang referensi memori pointer langsung ke Host Object C++ tanpa serialisasi JSON string</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. JSI tidak mengganti JavaScript dengan Java.')">C. JSI menghapus JavaScript dan menggantinya dengan kompilasi Java bytecode</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <div class="quiz-box" style="margin-top:20px;">
+                <div class="quiz-question">2. Mengapa Google mengembangkan engine grafis Impeller untuk menggantikan Skia pada Flutter?</div>
+                <div class="quiz-options">
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Impeller melakukan kompilasi shader AOT (Ahead-of-Time) saat build aplikasi, menghilangkan jeda kompilasi JIT GPU yang memicu jank animasi di iOS.')">A. Mengeliminasi masalah Shader Compilation Jank di iOS dengan mengompilasi shader grafis GPU secara AOT (Ahead-of-Time) saat build</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. Impeller justru dibangun khusus untuk memanfaatkan Metal dan Vulkan secara maksimal.')">B. Menghilangkan ketergantungan pada API grafis Apple Metal</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. Impeller tidak mengubah bahasa Dart menjadi Kotlin.')">C. Mengubah kode Dart menjadi kode Kotlin secara otomatis</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="../09_caching_scale/02_capstone_enterprise_architecture.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 30: Capstone Enterprise 100K QPS
+            </a>
+            <a href="02_offline_first_sync_push.html" class="btn btn-primary">
+                Lanjut ke Fase 32: Offline-First &amp; Push Notifications <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

@@ -397,6 +397,7 @@
                     <button class="cs-tab-btn" data-cat="process">Linux Kernel &amp; CPU</button>
                     <button class="cs-tab-btn" data-cat="nginx">Nginx &amp; Web</button>
                     <button class="cs-tab-btn" data-cat="devops">Docker &amp; K8s</button>
+                    <button class="cs-tab-btn" data-cat="mobile">Mobile &amp; App</button>
                 </div>
             </div>
         </div>
@@ -926,6 +927,80 @@
                         <div class="cs-card-footer">
                             <a href="tracks/06_devops/02_kubernetes_orchestration.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 21</a>
                             <button class="cs-copy-btn" onclick="copySnippet(this, 'kubectl rollout status deployment/web-api')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 7. Mobile Engineering & Diagnostik -->
+            <section id="server-mobile" class="cs-category-section" data-cat="mobile">
+                <div class="cs-category-header">
+                    <div class="cs-category-title"><i class="fa-solid fa-mobile-screen-button"></i> 7. Diagnostik Mobile, Android ADB &amp; iOS Simulator</div>
+                    <span class="cs-card-badge">Mobile CLI</span>
+                </div>
+                <div class="cs-cards-grid">
+
+                    <!-- Card: adb logcat -->
+                    <div class="cs-card" data-keywords="adb logcat android crash fatal exception stacktrace">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">adb logcat *:E --buffer=crash</span>
+                                <span class="cs-card-badge">Android</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Melakukan streaming biner log sistem Android OS dari daemon ADB, difilter khusus untuk menangkap pesan error fatal (*Fatal Exception*), NullPointer, dan Native SIGSEGV crash.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Mengungkap stacktrace crash aplikasi Android saat diuji di HP fisik tanpa IDE Android Studio terbuka.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/10_mobile_architecture/01_mobile_runtimes_bridges.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 31</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'adb logcat *:E')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: xcrun simctl -->
+                    <div class="cs-card" data-keywords="xcrun simctl ios simulator push notification payload">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">xcrun simctl push booted &lt;bundle.id&gt; payload.json</span>
+                                <span class="cs-card-badge">iOS</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Mengirimkan simulasi payload notifikasi APNs langsung ke simulator iPhone yang sedang aktif (*booted*) tanpa membutuhkan sertifikat Apple Developer berbayar.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Menguji penanganan Push Notification di aplikasi iOS dan memverifikasi *deep link navigation* saat notifikasi diklik.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/10_mobile_architecture/02_offline_first_sync_push.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 32</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'xcrun simctl push booted com.myapp payload.json')"><i class="fa-solid fa-copy"></i> Salin</button>
+                        </div>
+                    </div>
+
+                    <!-- Card: flutter profile -->
+                    <div class="cs-card" data-keywords="flutter run profile impeller devtools jank 60fps 120fps">
+                        <div>
+                            <div class="cs-card-top">
+                                <span class="cs-cmd-name">flutter run --profile</span>
+                                <span class="cs-card-badge">Flutter</span>
+                            </div>
+                            <div class="cs-desc-block">
+                                <strong>Fungsi Internal:</strong> Mengompilasi aplikasi Flutter dengan optimasi AOT penuh mendekati mode rilis, namun tetap mempertahankan instrumentasi Dart DevTools Timeline untuk mengukur performa rendering GPU Impeller per frame.
+                            </div>
+                            <div class="cs-case-box">
+                                <span>Kasus Nyata Produksi</span>
+                                Mendiagnosa frame drop pada layar daftar produk panjang untuk memastikan widget UI berjalan stabil di 60-120 FPS.
+                            </div>
+                        </div>
+                        <div class="cs-card-footer">
+                            <a href="tracks/10_mobile_architecture/01_mobile_runtimes_bridges.html" class="cs-learn-link"><i class="fa-solid fa-book-open"></i> Pelajari di Fase 31</a>
+                            <button class="cs-copy-btn" onclick="copySnippet(this, 'flutter run --profile')"><i class="fa-solid fa-copy"></i> Salin</button>
                         </div>
                     </div>
 

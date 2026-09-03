@@ -137,6 +137,18 @@
         { "id": "cache_01_redis_xfetch", "title": "Fase 29: Caching & Algoritma XFetch", "url": "tracks/09_caching_scale/01_distributed_caching_xfetch.html", "status": "ready", "duration": "55m" },
         { "id": "cache_02_system_design_capstone", "title": "Fase 30: Capstone Enterprise 100K QPS", "url": "tracks/09_caching_scale/02_capstone_enterprise_architecture.html", "status": "ready", "duration": "60m" }
       ]
+    },
+    {
+      "id": "mobile_engineering",
+      "title": "Mobile Engineering & Cross-Platform",
+      "icon": "fa-solid fa-mobile-screen-button",
+      "badge": "Aktif (2 Modul)",
+      "badgeColor": "var(--success)",
+      "description": "Arsitektur mobile modern: React Native JSI/Fabric, Flutter Impeller engine, Kotlin Multiplatform (KMP), Offline-First SQLite, dan Push Notifications APNs/FCM.",
+      "modules": [
+        { "id": "mob_01_runtimes_bridges", "title": "Fase 31: Mobile Runtime, JSI, Fabric & Impeller", "url": "tracks/10_mobile_architecture/01_mobile_runtimes_bridges.html", "status": "ready", "duration": "55m" },
+        { "id": "mob_02_offline_first_push", "title": "Fase 32: Offline-First SQLite Sync & Push APNs/FCM", "url": "tracks/10_mobile_architecture/02_offline_first_sync_push.html", "status": "ready", "duration": "55m" }
+      ]
     }
   ]
 }

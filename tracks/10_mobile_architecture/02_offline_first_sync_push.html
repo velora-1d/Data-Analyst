@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 32: Arsitektur Offline-First, Local SQLite Sync &amp; Push Notifications — Fundamental Coding</title>
+    <meta name="description" content="Bedah arsitektur mobile offline-first: Local Database SQLite sebagai Single Source of Truth, sinkronisasi resolusi konflik CRDTs vs LWW, Android WorkManager, iOS BackgroundTasks, dan sistem Push Notifications APNs/FCM.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 11</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 32: Offline-First &amp; Push Notifications</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../cheatsheet.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-terminal"></i> Kamus Perintah
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-database"></i>
+            SQLite &amp; APNs/FCM <span>(Zero-Latency UI)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 32</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Paradigma Offline-First Mobile</a>
+            <a href="#local-db-architecture" class="nav-link"><i class="fa-solid fa-database"></i> 2. Local DB sebagai Single Source of Truth</a>
+            <a href="#sync-conflicts" class="nav-link"><i class="fa-solid fa-arrows-split-up-and-off"></i> 3. Sinkronisasi &amp; Resolusi Konflik (LWW vs CRDTs)</a>
+            <a href="#background-tasks" class="nav-link"><i class="fa-solid fa-battery-half"></i> 4. Background Execution &amp; Budget Baterai</a>
+            <a href="#push-notifications" class="nav-link"><i class="fa-solid fa-bell"></i> 5. Arsitektur Push Notifications (APNs &amp; FCM)</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Story: Airplane Retry Storm</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-mobile-screen-button"></i> Track 11: Mobile Engineering</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Mobile Data &amp; Networking)</span>
+            </div>
+            <h1>Fase 32: Arsitektur Mobile Offline-First, Local Database &amp; Push Notifications</h1>
+            <p class="module-lead">
+                Membangun aplikasi mobile kelas dunia yang tangguh di segala kondisi jaringan internet: arsitektur *Local-First* berbasis SQLite, sinkronisasi dua arah dengan resolusi konflik data (CRDTs vs LWW), manajemen background worker ramah baterai (Android WorkManager &amp; iOS BackgroundTasks), serta bedah protokol transmisi *Push Notifications* waktu-nyata (Apple APNs &amp; Google FCM).
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Realitas Jaringan Mobile: Jaringan Selalu Fluktuatif (*Flaky Network*)</h2>
+            <p>
+                Berbeda dengan komputer server di data center yang terhubung kabel serat optik gigabit tanpa putus, smartphone hidup di dunia yang sangat tidak menentu:
+            </p>
+            <ul>
+                <li>Pengguna masuk ke dalam lift beton atau terowongan kereta (kehilangan sinyal seketika).</li>
+                <li>Perpindahan antena seluler (*tower handoff*) dari 5G ke 3G yang memicu lonjakan latensi dari 20ms ke 3.000ms.</li>
+                <li>Pengguna menyalakan Mode Pesawat (*Airplane Mode*).</li>
+            </ul>
+            <div class="callout-box callout-good">
+                <div class="callout-header"><i class="fa-solid fa-lightbulb"></i> Prinsip Dasar Offline-First</div>
+                <div class="callout-body">
+                    Aplikasi mobile yang baik tidak boleh menampilkan layar pemuatan (*loading spinner*) berputar-putar tanpa henti hanya karena koneksi internet mati. Aplikasi wajib <strong>langsung terbuka dan menampilkan data terakhir yang tersimpan di perangkat dalam waktu 0 milidetik</strong>.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="local-db-architecture">
+            <h2><i class="fa-solid fa-database"></i> 2. Local Database sebagai Single Source of Truth (SSOT)</h2>
+            <p>
+                Dalam arsitektur *Offline-First*, antarmuka (UI) tidak pernah membaca data langsung dari network API. UI hanya boleh mengamati (*observe*) **Database Lokal**:
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Langkah 1: User Action</div>
+                    <div class="pipeline-step-title">Optimistic UI Update</div>
+                    <div class="pipeline-step-desc">Pengguna mengklik tombol "Like" atau mengirim pesan chat. Pesan langsung muncul di layar dengan tanda centang abu-abu (0ms delay).</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Langkah 2: Local Write</div>
+                    <div class="pipeline-step-title">Tulis ke SQLite Lokal</div>
+                    <div class="pipeline-step-desc">Data disimpan ke database lokal (SQLite/Room/CoreData) dengan status <code>sync_status = 'PENDING'</code> dan dicatat ke antrean mutasi (Outbox Queue).</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Langkah 3: Background Sync</div>
+                    <div class="pipeline-step-title">Sinkronisasi ke Server API</div>
+                    <div class="pipeline-step-desc">Saat koneksi internet tersedia, background worker mengirim mutasi ke backend. Begitu server membalas 200 OK, status diubah menjadi <code>'SYNCED'</code>.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="sync-conflicts">
+            <h2><i class="fa-solid fa-arrows-split-up-and-off"></i> 3. Sinkronisasi Data &amp; Resolusi Konflik: LWW vs CRDTs</h2>
+            <p>
+                Ketika pengguna mengedit data secara offline di dua HP berbeda pada saat yang sama, timbul konflik data saat kedua HP online kembali. Bagaimana menyelesaikannya?
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-clock"></i> 1. Last-Write-Wins (LWW)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • <strong>Mekanisme:</strong> Mutasi yang memiliki timestamp paling akhir menimpa mutasi sebelumnya.<br>
+                        • <strong>Kelemahan Fatal:</strong> *Clock Skew* (jam pada HP pengguna bisa diatur manual oleh user atau berbeda beberapa detik antar pabrikan ponsel), menyebabkan data baru justru tertimpa data lama!<br>
+                        • <strong>Pencegahan:</strong> Menggunakan Logical Lamport Timestamps atau Server-side Timestamping.
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-code-merge"></i> 2. Conflict-free Replicated Data Types (CRDTs)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • <strong>Mekanisme:</strong> Struktur data matematis yang menjamin bahwa jika beberapa replika menerima perubahan dalam urutan acak, status akhirnya akan <strong>selalu identik (konvergen)</strong> tanpa membutuhkan server penengah.<br>
+                        • <strong>Penerapan:</strong> Google Docs mobile, Notion offline editor, dan aplikasi kolaborasi teks modern.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="background-tasks">
+            <h2><i class="fa-solid fa-battery-half"></i> 4. Background Execution &amp; Anggaran Baterai Ponsel</h2>
+            <p>
+                Sistem operasi modern (iOS &amp; Android) menerapkan aturan agresif untuk menghemat baterai. Aplikasi yang berjalan di background akan dibekukan (*suspended*) atau dimatikan oleh sistem.
+            </p>
+
+            <ul>
+                <li>
+                    <strong>Android WorkManager:</strong> Framework resmi untuk tugas tertunda yang terjamin dieksekusi. Mendukung *Constraints*:
+                    <code>setRequiredNetworkType(NetworkType.UNMETERED)</code> (hanya jalan saat Wi-Fi) dan <code>setRequiresCharging(true)</code> (hanya saat dicas).
+                </li>
+                <li>
+                    <strong>Android Doze Mode:</strong> Saat layar HP mati dan tidak bergerak di atas meja, OS menunda semua akses network hingga jendela pemeliharaan (*maintenance window*) berikutnya.
+                </li>
+                <li>
+                    <strong>iOS BackgroundTasks Framework:</strong> Menggunakan <code>BGAppRefreshTask</code> (refresh konten pendek) dan <code>BGProcessingTask</code> (tugas berat seperti sinkronisasi database offline saat HP dicas di malam hari).
+                </li>
+            </ul>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="push-notifications">
+            <h2><i class="fa-solid fa-bell"></i> 5. Arsitektur Push Notifications: Apple APNs &amp; Google FCM</h2>
+            <p>
+                Bagaimana aplikasi seperti WhatsApp atau Gojek dapat menampilkan notifikasi pesanan secara instan meskipun aplikasinya sedang dimatikan total (*swiped away*) oleh pengguna?
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-tower-broadcast"></i> Koneksi Tunggal Berdaya Rendah (The Single Persistent TCP TLS Connection)</div>
+                <div class="callout-body">
+                    Smartphone tidak membuka koneksi terpisah untuk tiap aplikasi (karena akan menguras baterai dalam 2 jam). Sebaliknya, sistem operasi menjaga <strong>1 buah koneksi TCP socket TLS tunggal</strong> berdaya sangat rendah ke server Apple (APNs) atau Google (FCM).
+                </div>
+            </div>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Tahap 1: Registrasi</div>
+                    <div class="pipeline-step-title">Pendaftaran Device Token</div>
+                    <div class="pipeline-step-desc">Aplikasi meminta token perangkat ke OS. OS menghubungi APNs/FCM dan mengembalikan 64-karakter <code>Device Token</code> unik ke backend server Anda.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Tahap 2: Pengiriman</div>
+                    <div class="pipeline-step-title">Backend &rarr; APNs/FCM via HTTP/2</div>
+                    <div class="pipeline-step-desc">Backend Anda memanggil API APNs/FCM via protokol HTTP/2 dengan autentikasi JWT token (p8 key untuk Apple).</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Tahap 3: Delivery</div>
+                    <div class="pipeline-step-title">OS Menampilkan Notifikasi</div>
+                    <div class="pipeline-step-desc">APNs/FCM mendorong payload JSON ke HP via koneksi socket yang sudah standby. OS memproses payload dan menampilkan banner notifikasi di layar kunci.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Story: Badai 100K Mutasi Pesawat (*Airplane Retry Storm*)</h2>
+            <div class="callout-box callout-warn">
+                <div class="callout-header"><i class="fa-solid fa-triangle-exclamation"></i> Bencana Kasus Nyata: Server Backend Ambruk Pasca Musim Mudik Lebaran</div>
+                <div class="callout-body">
+                    <p>
+                        Sebuah aplikasi e-commerce tiket dan perhotelan memiliki fitur ulasan hotel offline. Ribuan pengguna yang berada di pesawat menulis ulasan dan mengunggah foto hotel secara offline sepanjang penerbangan 2 jam.
+                    </p>
+                    <p>
+                        <strong>Dampak yang Terjadi:</strong> Saat pesawat mendarat di bandara dan ratusan penumpang mematikan Mode Pesawat secara bersamaan, aplikasi mendeteksi sinyal internet dan seketika mengeksekusi antrean mutasi lokal tanpa *jitter*. Lebih dari 100.000 aplikasi serentak meluncurkan request mutasi HTTP POST ke backend di detik yang sama. Server database origin kolaps, CPU load melonjak ke 98%, dan API gateway menolak koneksi dengan error 504 Gateway Timeout.
+                    </p>
+                    <p>
+                        <strong>Solusi Arsitektur:</strong> Tim merekayasa ulang modul sinkronisasi mobile dengan menerapkan:
+                        <br>1. <strong>Exponential Backoff with Full Jitter:</strong> Penjadwalan retry acak <code>rand(0, min(cap, base * 2^attempt))</code> sehingga pengiriman mutasi terdistribusi merata dalam rentang 3-15 menit.
+                        <br>2. <strong>Batch Mutation API:</strong> Menggabungkan 50 mutasi lokal menjadi 1 payload biner tunggal (gRPC/Protobuf), menghemat 90% round-trip HTTP overhead!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman Mobile Data &amp; Networking</h2>
+            <div class="quiz-box">
+                <div class="quiz-question">1. Mengapa pada arsitektur mobile modern smartphone tidak mengizinkan setiap aplikasi membuka koneksi polling background sendiri-sendiri untuk menerima notifikasi?</div>
+                <div class="quiz-options">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. Bukan masalah izin akses pengguna.')">A. Karena sistem operasi melarang aplikasi mengakses internet di background</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat sekali! Membiarkan puluhan aplikasi memelihara koneksi socket terpisah akan memaksa antena seluler (modem baseband) terus menyala dalam status daya tinggi, menguras baterai ponsel dalam hitungan jam.')">B. Karena membuka puluhan koneksi socket terpisah akan menguras baterai ponsel secara drastis; OS menggantinya dengan 1 koneksi socket terpusat berdaya rendah via APNs/FCM</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. Format data tidak berhubungan dengan konsumsi daya radio baseband.')">C. Karena protokol HTTP tidak mendukung format pesan push</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <div class="quiz-box" style="margin-top:20px;">
+                <div class="quiz-question">2. Apa risiko utama dari strategi resolusi konflik data Last-Write-Wins (LWW) di aplikasi mobile offline?</div>
+                <div class="quiz-options">
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Benar! Jam (clock) perangkat ponsel pengguna dapat mengalami clock skew atau diatur mundur/maju secara manual oleh pengguna, sehingga mutasi baru dapat tertimpa mutasi lama secara keliru.')">A. Adanya fenomena Clock Skew pada jam ponsel pengguna yang dapat menyebabkan data terbaru justru tertimpa secara keliru oleh data lama</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. SQLite mendukung penyimpanan tanggal dan waktu ISO8601.')">B. Database SQLite tidak mampu menyimpan data timestamp</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. LWW justru merupakan mekanisme yang sederhana.')">C. LWW membutuhkan ukuran memori RAM yang terlalu besar</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="01_mobile_runtimes_bridges.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 31: Mobile Runtimes &amp; Bridges
+            </a>
+            <a href="../../index.html" class="btn btn-primary" style="background:var(--success);border-color:var(--success);">
+                <i class="fa-solid fa-house"></i> Selesai Seluruh Kurikulum! Kembali ke Beranda
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>
