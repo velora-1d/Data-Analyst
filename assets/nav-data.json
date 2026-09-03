@@ -121,6 +121,31 @@
         { "id": "git_03_branching_strategies", "title": "3. Trunk-Based Development vs GitFlow di Tim Industri", "url": "tracks/08_git_workflow/03_branching_strategies.html", "status": "planned", "duration": "40m" },
         { "id": "git_04_reflog_disaster_recovery", "title": "4. Disaster Recovery: git reflog, bisect & cherry-pick", "url": "tracks/08_git_workflow/04_reflog_disaster_recovery.html", "status": "planned", "duration": "45m" }
       ]
+    },
+    {
+      "id": "testing_observability",
+      "title": "Testing & Observability",
+      "icon": "fa-solid fa-vial-circle-check",
+      "badge": "Roadmap",
+      "badgeColor": "var(--brand)",
+      "description": "Piramida testing (Unit, Integration, E2E Playwright), TDD, Pact contract testing, 3 pilar observability OpenTelemetry, dan SRE resilience.",
+      "modules": [
+        { "id": "test_01_testing_pyramid", "title": "1. Piramida Testing: Unit, Integration, E2E & TDD Cycle", "url": "tracks/09_testing_observability/01_testing_pyramid.html", "status": "planned", "duration": "45m" },
+        { "id": "test_02_opentelemetry", "title": "2. Tiga Pilar Observability: Logs, Metrics & W3C Tracing", "url": "tracks/09_testing_observability/02_opentelemetry.html", "status": "planned", "duration": "50m" },
+        { "id": "test_03_sre_resilience", "title": "3. SRE, SLI/SLO/Error Budget & Circuit Breaker Pattern", "url": "tracks/09_testing_observability/03_sre_resilience.html", "status": "planned", "duration": "50m" }
+      ]
+    },
+    {
+      "id": "caching_capstone",
+      "title": "Distributed Caching & Capstone",
+      "icon": "fa-solid fa-cloud-bolt",
+      "badge": "Capstone",
+      "badgeColor": "var(--warning)",
+      "description": "Pola caching terdistribusi, Redis internals, mitigasi Cache Stampede via Algoritma XFetch, dan System Design Capstone 100K QPS.",
+      "modules": [
+        { "id": "cache_01_redis_xfetch", "title": "1. Distributed Caching, Redis Internals & Algoritma XFetch", "url": "tracks/10_caching_capstone/01_redis_xfetch.html", "status": "planned", "duration": "55m" },
+        { "id": "cache_02_system_design_capstone", "title": "2. Capstone: Rancang Bangun Arsitektur Sistem 100K QPS", "url": "tracks/10_caching_capstone/02_system_design_capstone.html", "status": "planned", "duration": "75m" }
+      ]
     }
   ]
 }
