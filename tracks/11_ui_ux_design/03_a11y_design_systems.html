@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Modul 40: Aksesibilitas Web (WCAG 2.1 AA) &amp; Design System — Fundamental Coding</title>
+    <meta name="description" content="Kajian rekayasa aksesibilitas web (A11y) standar WCAG 2.1 level AA/AAA: 4 pilar POUR, rasio kontras 4.5:1, HTML semantik vs ARIA, navigasi keyboard murni, focus-visible, dan arsitektur Design System multi-tier tokens.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css?v=2.5.0">
+    <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg?v=2.5.0">
+    <style>
+        .contrast-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            border-radius: var(--r);
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+        .contrast-pass {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.4);
+            color: #10B981;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        .contrast-fail {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #EF4444;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <div class="header-brand-author">
+            <span class="brand-pill"><i class="fa-solid fa-shield-halved"></i> Velora</span>
+            <span class="brand-divider">•</span>
+            <span class="author-pill"><i class="fa-solid fa-user-graduate"></i> Mahin Utsman Nawawi, S.H</span>
+        </div>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 12</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Modul 40: Aksesibilitas Web &amp; Design System</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <span class="db-badge">
+            <i class="fa-solid fa-universal-access"></i>
+            WCAG 2.1 AA <span>(Enterprise Scale)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Modul 40</div>
+        <nav class="sidebar-nav">
+            <a href="#a11y-importance" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Mengapa Aksesibilitas Web Mutlak?</a>
+            <a href="#pour-principles" class="nav-link"><i class="fa-solid fa-shield-halved"></i> 2. 4 Pilar WCAG 2.1 (POUR)</a>
+            <a href="#contrast-ratios" class="nav-link"><i class="fa-solid fa-circle-half-stroke"></i> 3. Rasio Kontras Warna (4.5:1)</a>
+            <a href="#html-vs-aria" class="nav-link"><i class="fa-solid fa-code"></i> 4. Semantic HTML vs ARIA Rules</a>
+            <a href="#keyboard-focus" class="nav-link"><i class="fa-solid fa-keyboard"></i> 5. Navigasi Keyboard &amp; Focus Rings</a>
+            <a href="#design-system-scale" class="nav-link"><i class="fa-solid fa-cubes"></i> 6. Tata Kelola Design System</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman A11y</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-bezier-curve"></i> Track 12: UI/UX Design Engineering</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Enterprise A11y &amp; Scale)</span>
+            </div>
+            <h1>Modul 40: Aksesibilitas Web (WCAG 2.1 AA) &amp; Tata Kelola Design System Skala Industri</h1>
+            <p class="module-lead">
+                Membangun antarmuka perangkat lunak yang inklusif, tahan uji hukum, dan dapat diakses oleh seluruh manusia tanpa diskriminasi kemampuan fisik: standar internasional W3C Web Content Accessibility Guidelines (WCAG 2.1 Level AA/AAA), hukum pertama ARIA, eliminasi kecacatan navigasi keyboard murni, audit rasio kontras warna, hingga tata kelola arsitektur Design Tokens berjenjang (*multi-tier tokens*) untuk tim multi-disiplin.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="a11y-importance">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Mengapa Aksesibilitas (A11y) Adalah Hak Asasi &amp; Kebutuhan Bisnis?</h2>
+            <p>
+                Aksesibilitas digital (sering disingkat <strong>A11y</strong> karena ada 11 huruf di antara huruf 'A' dan 'y') bukan sekadar fitur pelengkap. Menurut World Health Organization (WHO), lebih dari <strong>1,3 miliar orang (16% populasi dunia)</strong> mengalami disabilitas signifikan.
+            </p>
+
+            <div class="grid-3">
+                <div class="card">
+                    <h4 style="color:var(--brand-light);margin-top:0;"><i class="fa-solid fa-wheelchair"></i> Disabilitas Permanen</h4>
+                    <p style="font-size:0.88rem;color:var(--text-secondary);">
+                        Tuna netra total, buta warna parsial (*daltonisme*), amputasi fisik lengan, gangguan motorik tremor Parkinson.
+                    </p>
+                </div>
+                <div class="card">
+                    <h4 style="color:var(--brand-light);margin-top:0;"><i class="fa-solid fa-bandage"></i> Disabilitas Temporer</h4>
+                    <p style="font-size:0.88rem;color:var(--text-secondary);">
+                        Lengan kanan patah saat bermain olahraga sehingga harus mengoperasikan komputer hanya dengan satu tangan kiri.
+                    </p>
+                </div>
+                <div class="card">
+                    <h4 style="color:var(--brand-light);margin-top:0;"><i class="fa-solid fa-sun"></i> Disabilitas Situasional</h4>
+                    <p style="font-size:0.88rem;color:var(--text-secondary);">
+                        Menggunakan smartphone di bawah terik matahari ekstrem (kontras rendah), atau berada di kereta berisik tanpa headphone.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="pour-principles">
+            <h2><i class="fa-solid fa-shield-halved"></i> 2. Empat Pilar Utama WCAG 2.1 (Prinsip POUR)</h2>
+            <p>
+                Seluruh pedoman aksesibilitas resmi dunia di bawah konsorsium W3C bertumpu pada akronim <strong>POUR</strong>:
+            </p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Pilar POUR</th>
+                        <th>Kriteria Keberhasilan</th>
+                        <th>Implementasi Teknis Frontend</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. Perceivable (Dapat Dilihat/Didengar)</strong></td>
+                        <td>Informasi dan komponen UI harus dapat disajikan kepada pengguna dengan cara yang dapat mereka tangkap indranya.</td>
+                        <td>Menyediakan teks alternatif <code>alt="..."</code> pada elemen gambar, menyertakan subtitle pada video, dan menjamin rasio kontras warna minimal 4.5:1.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. Operable (Dapat Dioperasikan)</strong></td>
+                        <td>Komponen antarmuka dan navigasi wajib dapat dikontrol dengan berbagai perangkat input fisik.</td>
+                        <td>Semua tombol, link, dan modal dialog wajib bisa dibuka, ditutup, dan dinavigasi hanya dengan <strong>tombol Keyboard murni</strong> tanpa bantuan mouse.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. Understandable (Dapat Dipahami)</strong></td>
+                        <td>Informasi dan operasi antarmuka pengguna harus dapat dipahami secara logis tanpa memicu kebingungan.</td>
+                        <td>Deklarasikan bahasa dokumen <code>&lt;html lang="id"&gt;</code>, berikan instruksi error form yang jelas, dan hindari perubahan konteks tiba-tiba.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4. Robust (Tangguh &amp; Kompatibel)</strong></td>
+                        <td>Konten harus cukup tangguh agar dapat diinterpretasikan secara andal oleh ragam user agent, termasuk <em>Assistive Technologies</em>.</td>
+                        <td>Gunakan HTML5 semantik standar yang valid sehingga screen reader (seperti NVDA, Apple VoiceOver, JAWS) dapat mem-parsing pohon aksesibilitas (*Accessibility Tree*).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="contrast-ratios">
+            <h2><i class="fa-solid fa-circle-half-stroke"></i> 3. Rasio Kontras Warna Matematis (WCAG 2.1 AA)</h2>
+            <p>
+                Algoritma WCAG mengukur luminansi relatif antara teks latar depan (*foreground*) dan warna latar belakang (*background*):
+            </p>
+
+            <div class="contrast-card" style="background:#0B132B;">
+                <div>
+                    <strong style="color:#F1F5F9;font-size:1.05rem;">Teks Putih di atas Latar Navy Slate (#0B132B)</strong>
+                    <div style="font-size:0.85rem;color:#94A3B8;margin-top:2px;">Rasio Kontras: <strong>14.2 : 1</strong></div>
+                </div>
+                <span class="contrast-pass"><i class="fa-solid fa-circle-check"></i> LULUS WCAG AAA</span>
+            </div>
+
+            <div class="contrast-card" style="background:#1E293B;">
+                <div>
+                    <strong style="color:#60A5FA;font-size:1.05rem;">Teks Biru Cerah (#60A5FA) di atas Slate Card (#1E293B)</strong>
+                    <div style="font-size:0.85rem;color:#94A3B8;margin-top:2px;">Rasio Kontras: <strong>5.8 : 1</strong></div>
+                </div>
+                <span class="contrast-pass"><i class="fa-solid fa-circle-check"></i> LULUS WCAG AA (Target Minimal 4.5:1)</span>
+            </div>
+
+            <div class="contrast-card" style="background:#1E293B;">
+                <div>
+                    <strong style="color:#475569;font-size:1.05rem;">Teks Abu Gelap (#475569) di atas Slate Card (#1E293B)</strong>
+                    <div style="font-size:0.85rem;color:#EF4444;margin-top:2px;">Rasio Kontras: <strong>2.1 : 1</strong> (Sangat Buruk, Mata Normal Sekalipun Kesulitan Membaca)</div>
+                </div>
+                <span class="contrast-fail"><i class="fa-solid fa-circle-xmark"></i> GAGAL WCAG</span>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="html-vs-aria">
+            <h2><i class="fa-solid fa-code"></i> 4. Semantic HTML vs Atribut WAI-ARIA</h2>
+            <p>
+                Aturan nomor 1 dari W3C ARIA Specification berbunyi tegas:
+            </p>
+            <blockquote style="border-left:4px solid var(--brand);padding:10px 16px;background:var(--bg-surface-2);font-style:italic;margin:16px 0;border-radius:4px;">
+                "Jika Anda dapat menggunakan elemen HTML bawaan yang memiliki semantik dan perilaku yang sudah disediakan oleh browser, maka <strong>GUNAKANLAH ITU</strong> daripada menggunakan elemen generik lalu menambahkan atribut ARIA!"
+            </blockquote>
+
+            <div class="grid-2">
+                <div class="card" style="border-left:4px solid var(--danger);">
+                    <h4 style="color:var(--danger);margin-top:0;"><i class="fa-solid fa-xmark"></i> Anti-Pattern (Div Soup)</h4>
+<pre><code>&lt;!-- SANGAT BURUK --&gt;
+&lt;div class="btn" onclick="openModal()"&gt;
+    Buka Modal
+&lt;/div&gt;
+
+&lt;!-- Masalah Teknis: --&gt;
+1. Tidak bisa di-fokus dengan tombol Tab.
+2. Tidak bisa ditekan dengan tombol Enter atau Space.
+3. Screen reader membaca sebagai 'text biasa', bukan kontrol interaktif.</code></pre>
+                </div>
+
+                <div class="card" style="border-left:4px solid var(--success);">
+                    <h4 style="color:var(--success);margin-top:0;"><i class="fa-solid fa-check"></i> Standar Semantik Modern</h4>
+<pre><code>&lt;!-- SANGAT BAIK &amp; ACCESSIBLE --&gt;
+&lt;button type="button" aria-expanded="false" aria-controls="cartDrawer"&gt;
+    Buka Keranjang
+&lt;/button&gt;
+
+&lt;!-- Keunggulan Bawaan Browser: --&gt;
+1. Otomatis masuk urutan Tab navigasi keyboard.
+2. Otomatis merespons Enter &amp; Space.
+3. Screen reader mengumumkan: 'Buka Keranjang, button, collapsed'.</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="keyboard-focus">
+            <h2><i class="fa-solid fa-keyboard"></i> 5. Navigasi Keyboard, Focus Rings &amp; :focus-visible</h2>
+            <p>
+                Dosa arsitektur frontend paling sering terjadi adalah mematikan outline fokus secara sembrono di file reset CSS:
+            </p>
+            <div class="code-block-header">
+                <span><i class="fa-brands fa-css3-alt"></i> bad-reset.css — Dosa Terbesar Frontend</span>
+            </div>
+<pre><code>/* 🚫 JANGAN PERNAH LAKUKAN INI TANPA ALTERNATIF! */
+* {
+    outline: none !important;
+}</code></pre>
+            <p>
+                Kode di atas membutakan seluruh pengguna tunadaksa yang menavigasi situs menggunakan keyboard. Solusi modern adalah menggunakan pseudoclass <code>:focus-visible</code>:
+            </p>
+
+            <div class="code-block-header">
+                <span><i class="fa-brands fa-css3-alt"></i> accessible-focus.css — Standar Cincin Fokus Modern</span>
+                <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
+            </div>
+<pre><code>/* Hilangkan outline saat diklik mouse, TAPI tampilkan cincin tegas saat navigasi keyboard */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 3px solid var(--brand);
+    outline-offset: 2px;
+    border-radius: var(--r-sm);
+    box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.25);
+}</code></pre>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="design-system-scale">
+            <h2><i class="fa-solid fa-cubes"></i> 6. Tata Kelola Design System Skala Industri (Multi-Tier Tokens)</h2>
+            <p>
+                Pada tim rekayasa perangkat lunak enterprise (skala ratusan engineer dan puluhan desainer), Design Tokens disusun menjadi 3 lapisan hierarki:
+            </p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Tingkatan Token</th>
+                        <th>Contoh Nama Token</th>
+                        <th>Nilai Riil (Primitive)</th>
+                        <th>Siapa yang Mengelola?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. Global Tokens (Primitive)</strong></td>
+                        <td><code>--blue-500</code>, <code>--slate-900</code>, <code>--font-sans</code></td>
+                        <td><code>#2563EB</code>, <code>#0F172A</code>, <code>'Inter', sans-serif</code></td>
+                        <td>Brand Identity Core Designer. Nilai mentah yang tidak terikat konteks semantik.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. Semantic Tokens (Contextual)</strong></td>
+                        <td><code>--color-bg-canvas</code>, <code>--color-text-primary</code>, <code>--color-action-cta</code></td>
+                        <td>Merujuk ke token global sesuai mode terang/gelap: <code>var(--blue-500)</code></td>
+                        <td>Design System Guild. Menentukan makna warna di setiap tema.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. Component Tokens</strong></td>
+                        <td><code>--button-primary-bg</code>, <code>--card-border-width</code></td>
+                        <td>Merujuk ke token semantik: <code>var(--color-action-cta)</code></td>
+                        <td>Frontend Component Engineers saat membungkus UI library (React/Vue/Web Components).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 7: Quiz -->
+        <section id="quiz">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman Aksesibilitas Web</h2>
+            <div class="quiz-box">
+                <div class="quiz-question">1. Menurut standar WCAG 2.1 Level AA, berapakah rasio kontras warna minimal antara teks berukuran normal (body text) dengan latar belakangnya?</div>
+                <div class="quiz-options">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. 2:1 melanggar seluruh kriteria aksesibilitas.')">A. 2.0 : 1</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. 3:1 adalah batas untuk teks besar atau komponen grafis.')">B. 3.0 : 1</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Rasio 4.5:1 adalah standar absolut WCAG 2.1 Level AA untuk teks reguler agar terbaca oleh penderita gangguan penglihatan sedang.')">C. 4.5 : 1</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. 7:1 adalah standar Level AAA.')">D. 10.0 : 1</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <div class="quiz-box" style="margin-top:20px;">
+                <div class="quiz-question">2. Mengapa pseudoclass CSS ':focus-visible' jauh lebih disukai daripada ':focus' biasa?</div>
+                <div class="quiz-options">
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat sekali! :focus-visible cerdas mengenali apakah pengguna berinteraksi via keyboard (tampilkan focus ring) atau via klik mouse (tanpa focus ring mengganggu).')">A. Karena hanya menampilkan cincin fokus ketika pengguna bernavigasi menggunakan keyboard (seperti tombol Tab), sehingga tidak merusak estetika klik mouse normal</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. :focus-visible tidak mengubah kecepatan GPU rendering.')">B. Karena secara otomatis mempercepat render browser</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. :focus-visible didukung penuh di semua browser modern.')">C. Karena hanya bisa berjalan di Google Chrome</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="02_ux_heuristics_journey.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Modul 39: Arsitektur UX &amp; Heuristik Usabilitas
+            </a>
+            <a href="../../index.html" class="btn btn-primary" style="background:var(--success);border-color:var(--success);">
+                <i class="fa-solid fa-graduation-cap"></i> Selamat! Anda Telah Menyelesaikan Seluruh 12 Track <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js?v=2.5.0"></script>
+</body>
+</html>

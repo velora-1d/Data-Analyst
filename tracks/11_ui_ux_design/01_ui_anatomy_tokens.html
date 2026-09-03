@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Modul 38: Anatomi UI, Visual Hierarchy &amp; Design Tokens — Fundamental Coding</title>
+    <meta name="description" content="Bedah komprehensif anatomi User Interface (UI): Visual Hierarchy, eye-tracking F & Z patterns, skala tipografi modular, sistem spacing 8pt grid, teori warna 60-30-10, Atomic Design, dan 6-state component matrix.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css?v=2.5.0">
+    <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg?v=2.5.0">
+    <style>
+        .ui-token-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .ui-token-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .state-matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .state-matrix-table th, .state-matrix-table td {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            text-align: left;
+            font-size: 0.88rem;
+        }
+        .state-matrix-table th {
+            background: var(--bg-surface-2);
+            font-weight: 700;
+        }
+        .state-preview-btn {
+            padding: 8px 16px;
+            border-radius: var(--r-sm);
+            font-weight: 600;
+            font-size: 0.82rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        .btn-preview-normal { background: var(--brand); color: #fff; }
+        .btn-preview-hover { background: var(--brand-hover); color: #fff; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,0.4); }
+        .btn-preview-active { background: #1D4ED8; color: #fff; transform: translateY(1px); }
+        .btn-preview-focus { background: var(--brand); color: #fff; outline: 3px solid #60A5FA; outline-offset: 2px; }
+        .btn-preview-disabled { background: var(--bg-surface-2); color: var(--text-muted); cursor: not-allowed; opacity: 0.5; border-color: var(--border); }
+        .btn-preview-loading { background: var(--brand); color: transparent; position: relative; pointer-events: none; }
+        .btn-preview-loading::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            top: calc(50% - 7px);
+            left: calc(50% - 7px);
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <div class="header-brand-author">
+            <span class="brand-pill"><i class="fa-solid fa-shield-halved"></i> Velora</span>
+            <span class="brand-divider">•</span>
+            <span class="author-pill"><i class="fa-solid fa-user-graduate"></i> Mahin Utsman Nawawi, S.H</span>
+        </div>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 12</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Modul 38: Anatomi UI &amp; Design Tokens</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <span class="db-badge">
+            <i class="fa-solid fa-bezier-curve"></i>
+            Design System <span>(8pt Grid / Tokens)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Modul 38</div>
+        <nav class="sidebar-nav">
+            <a href="#ui-vs-ux" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Anatomi UI vs UX</a>
+            <a href="#visual-hierarchy" class="nav-link"><i class="fa-solid fa-eye"></i> 2. Visual Hierarchy &amp; F/Z Pattern</a>
+            <a href="#typography-scale" class="nav-link"><i class="fa-solid fa-font"></i> 3. Skala Tipografi Modular</a>
+            <a href="#spacing-grid" class="nav-link"><i class="fa-solid fa-border-all"></i> 4. Sistem Spacing 8pt Grid &amp; Tokens</a>
+            <a href="#color-theory" class="nav-link"><i class="fa-solid fa-palette"></i> 5. Teori Warna 60-30-10 &amp; Dark Mode</a>
+            <a href="#component-states" class="nav-link"><i class="fa-solid fa-toggle-on"></i> 6. 6-State Component Matrix</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman UI</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-bezier-curve"></i> Track 12: UI/UX Design Engineering</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 50 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Menengah (Human Interface Foundations)</span>
+            </div>
+            <h1>Modul 38: Anatomi UI (User Interface), Visual Hierarchy &amp; Design Tokens</h1>
+            <p class="module-lead">
+                Membedah secara ilmiah apa saja organ penyusun User Interface (UI): bagaimana mata manusia memindai layar melalui pola F dan Z, membangun skala tipografi matematis, menerapkan hukum spasi 8pt Grid System, merancang harmoni warna 60-30-10 dan kedalaman Dark Mode HSL, serta menyusun 6 status mutlak komponen digital (*State Matrix*) agar antarmuka komunikatif dan bebas ambiguitas.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="ui-vs-ux">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Anatomi UI vs UX: Di Mana Garis Batasnya?</h2>
+            <p>
+                Seringkali terjadi kesalahpahaman bahwa UI adalah "memilih warna tombol" dan UX adalah "desain aplikasi". Secara rekayasa perangkat lunak modern:
+            </p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Dimensi</th>
+                        <th>User Interface (UI) — Bagian Permukaan</th>
+                        <th>User Experience (UX) — Bagian Struktur &amp; Logika</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Definisi</strong></td>
+                        <td>Jembatan sensorik visual dan taktil yang dilihat, disentuh, dan didengar oleh pengguna.</td>
+                        <td>Keseluruhan proses mental, kepuasan, kemudahan, dan friksi kognitif yang dirasakan pengguna saat mencapai tujuannya.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Organ/Bagian Inti</strong></td>
+                        <td>Tipografi, Warna, Spacing, Ikonografi, Micro-animations, Elevation/Shadow, dan Form Controls.</td>
+                        <td>User Journey, Information Architecture (IA), Wireframe Flows, Usability Heuristics, dan Error Prevention.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pertanyaan Utama</strong></td>
+                        <td><em>"Apakah antarmuka ini jelas terbaca, memiliki hirarki visual tegas, konsisten, dan menyenangkan mata?"</em></td>
+                        <td><em>"Dapatkah pengguna menyelesaikan checkout belanja dalam 3 langkah tanpa merasa bingung atau tersesat?"</em></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kegagalan Fatal</strong></td>
+                        <td>Kontras teks buruk (teks hitam di latar navy), jarak antar-elemen tidak teratur, tombol tidak terlihat bisa diklik.</td>
+                        <td>Alur form terlalu berbelit, tombol 'Batal' lebih mencolok dari 'Bayar', error message tidak memberi tahu cara memperbaiki.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="visual-hierarchy">
+            <h2><i class="fa-solid fa-eye"></i> 2. Visual Hierarchy &amp; Eye-Tracking Scan Patterns</h2>
+            <p>
+                Pengguna internet tidak membaca kata per kata seperti membaca buku novel; <strong>pengguna memindai (*scanning*)</strong> layar untuk mencari titik fokal yang menarik perhatian. Dua pola pergerakan mata paling fundamental menurut riset Nielsen Norman Group:
+            </p>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3 style="color:var(--brand-light);margin-bottom:8px;"><i class="fa-solid fa-bars-staggered"></i> Pola F (F-Scan Pattern)</h3>
+                    <p style="font-size:0.9rem;color:var(--text-secondary);">
+                        Dominan pada antarmuka padat informasi dan teks (artikel berita, dokumentasi teknis, tabel data, daftar produk).
+                    </p>
+                    <ol style="margin-left:18px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        <li>Mata membaca baris horizontal atas secara penuh (puncak huruf F).</li>
+                        <li>Mata turun ke bawah di sisi kiri dan membaca baris horizontal kedua yang lebih pendek.</li>
+                        <li>Mata menyusuri sisi kiri secara vertikal ke bawah mencari kata kunci atau heading.</li>
+                    </ol>
+                    <div style="background:var(--bg-surface-2);border-left:3px solid var(--brand);padding:8px 12px;font-size:0.82rem;margin-top:10px;border-radius:4px;">
+                        <strong>Penerapan UI:</strong> Selalu letakkan kata kunci penting, ikon, dan heading di sisi <em>kiri rata</em> (*left-aligned*). Hindari teks tengah (*center-aligned*) pada paragraf panjang.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="color:var(--brand-light);margin-bottom:8px;"><i class="fa-solid fa-bolt-lightning"></i> Pola Z (Z-Scan Pattern)</h3>
+                    <p style="font-size:0.9rem;color:var(--text-secondary);">
+                        Dominan pada halaman berorientasi aksi cepat (Landing Page, Banner Promosi, Login Screen, Modal dialog).
+                    </p>
+                    <ol style="margin-left:18px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        <li>Mata mulai dari kiri-atas (Logo/Brand).</li>
+                        <li>Menyapu ke kanan-atas (Menu/Tombol Login).</li>
+                        <li>Memotong diagonal ke kiri-bawah (Judul Hero / Penawaran Utama).</li>
+                        <li>Berhenti di kanan-bawah pada Call-To-Action (Tombol Konversi / Checkout).</li>
+                    </ol>
+                    <div style="background:var(--bg-surface-2);border-left:3px solid var(--brand);padding:8px 12px;font-size:0.82rem;margin-top:10px;border-radius:4px;">
+                        <strong>Penerapan UI:</strong> Letakkan tombol CTA utama (*Primary Button*) di ujung kanan-bawah alur Z untuk memanen konversi maksimal.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="typography-scale">
+            <h2><i class="fa-solid fa-font"></i> 3. Skala Tipografi Modular (Modular Scale)</h2>
+            <p>
+                Ukuran font dalam UI tidak boleh ditentukan secara acak (misal: 13px, 17px, 23px). Desain profesional menggunakan <strong>rasio matematis modular</strong> (seperti rasio <em>Major Third</em> bernilai <code>1.250</code> dengan basis <code>16px / 1rem</code>):
+            </p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Tingkatan Role</th>
+                        <th>Ukuran CSS</th>
+                        <th>Line-Height Ideal</th>
+                        <th>Font-Weight</th>
+                        <th>Fungsi Antarmuka</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Display / Hero H1</code></td>
+                        <td><code>3.05rem (~48px)</code></td>
+                        <td><code>1.15 - 1.2</code></td>
+                        <td><code>800 - 900</code></td>
+                        <td>Pernyataan proposisi nilai utama di atas lipatan layar (*Above-the-Fold*).</td>
+                    </tr>
+                    <tr>
+                        <td><code>Section Heading H2</code></td>
+                        <td><code>1.95rem (~31px)</code></td>
+                        <td><code>1.25 - 1.3</code></td>
+                        <td><code>700 - 800</code></td>
+                        <td>Pemisah bab utama modul atau bagian konten besar.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Card Title H3</code></td>
+                        <td><code>1.25rem (~20px)</code></td>
+                        <td><code>1.35 - 1.4</code></td>
+                        <td><code>600 - 700</code></td>
+                        <td>Judul kartu fitur, heading dialog popup, atau nama produk e-commerce.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Body Regular (Base)</code></td>
+                        <td><code>1.00rem (16px)</code></td>
+                        <td><code>1.60 - 1.75</code></td>
+                        <td><code>400 - 500</code></td>
+                        <td>Paragraf bacaan utama. Rasio 1.6+ mencegah mata melompati baris (*eye tracking fatigue*).</td>
+                    </tr>
+                    <tr>
+                        <td><code>Caption / Meta Small</code></td>
+                        <td><code>0.80rem (~13px)</code></td>
+                        <td><code>1.40</code></td>
+                        <td><code>500 - 600</code></td>
+                        <td>Timestamp, label input formulir, status pill badge, dan footnote legal.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="spacing-grid">
+            <h2><i class="fa-solid fa-border-all"></i> 4. Sistem Spacing 8pt Grid &amp; Design Tokens</h2>
+            <p>
+                Mengapa industri teknologi (Google Material, Apple Human Interface, GitHub Primer) menstandarkan <strong>8-Point Grid System</strong>?
+            </p>
+            <ul>
+                <li><strong>Skalabilitas Layar Matematis:</strong> Hampir semua layar monitor dan smartphone modern memiliki resolusi yang habis dibagi 8 (misal: 1920x1080, 1440x900, 360x780). Pada layar Retina `@2x` atau `@3x`, nilai 8px tetap menghasilkan piksel bulat tanpa rendering pecahan desimal (*subpixel anti-aliasing blur*).</li>
+                <li><strong>Mengeliminasi Debat Margin:</strong> Developer dan desainer tidak perlu bingung memilih margin 13px atau 15px. Pilihannya selalu kelipatan 4px/8px.</li>
+            </ul>
+
+            <div class="code-block-header">
+                <span><i class="fa-brands fa-css3-alt"></i> tokens.css — Implementasi Spacing &amp; Radius Token Standar</span>
+                <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
+            </div>
+<pre><code>:root {
+    /* 8pt Grid Spacing Scale */
+    --space-1: 0.25rem;  /* 4px  - Micro gap (icon & text) */
+    --space-2: 0.50rem;  /* 8px  - Tight padding (tags, small buttons) */
+    --space-3: 0.75rem;  /* 12px - Medium gap */
+    --space-4: 1.00rem;  /* 16px - Base layout spacing (card padding) */
+    --space-6: 1.50rem;  /* 24px - Section inner gap */
+    --space-8: 2.00rem;  /* 32px - Large container margins */
+    --space-12: 3.00rem; /* 48px - Macro section rhythm */
+
+    /* Curvature / Border-Radius Tokens */
+    --r-xs: 4px;   /* Small chip badges */
+    --r-sm: 8px;   /* Buttons & Inputs */
+    --r-md: 12px;  /* Dropdown menus & popovers */
+    --r-lg: 16px;  /* Feature cards & modals */
+    --r-full: 9999px; /* Status pill badges */
+}</code></pre>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="color-theory">
+            <h2><i class="fa-solid fa-palette"></i> 5. Teori Warna 60-30-10 &amp; Dark Mode HSL</h2>
+            <p>
+                Aturan harmoni interior dan desain produk yang terbukti efektif menenangkan mata pengguna:
+            </p>
+            <div class="ui-token-demo">
+                <div class="ui-token-card" style="border-top: 4px solid var(--bg-surface-2);">
+                    <strong style="color:var(--text-primary);font-size:1.1rem;">60% Warna Dominan</strong>
+                    <span style="font-size:0.85rem;color:var(--text-muted);">Background &amp; Kanvas Utama</span>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);margin:0;">Latar belakang utama aplikasi (`#0B132B` di dark mode / `#FFFFFF` di light mode). Menciptakan ketenangan visual dan fondasi kontras.</p>
+                </div>
+                <div class="ui-token-card" style="border-top: 4px solid var(--border);">
+                    <strong style="color:var(--text-primary);font-size:1.1rem;">30% Warna Sekunder</strong>
+                    <span style="font-size:0.85rem;color:var(--text-muted);">Card Surface, Sidebar &amp; Borders</span>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);margin:0;">Container elemen, sidebar panel, bingkai kartu (`#111C38`), dan teks sekunder pembantu membaca.</p>
+                </div>
+                <div class="ui-token-card" style="border-top: 4px solid var(--brand);">
+                    <strong style="color:var(--brand-light);font-size:1.1rem;">10% Warna Aksen (Pop)</strong>
+                    <span style="font-size:0.85rem;color:var(--text-muted);">Call-To-Action (CTA) &amp; Badges</span>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);margin:0;">Warna primer khas (`#2563EB` biru Velora). Menarik perhatian mata langsung ke tombol pembelian atau titik aksi penting.</p>
+                </div>
+            </div>
+
+            <div class="alert alert-tip">
+                <div class="alert-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                <div class="alert-content">
+                    <div class="alert-title">Kunci Sukses Dark Mode Modern</div>
+                    <div class="alert-desc">
+                        Hindari warna hitam mutlak <code>#000000</code> sebagai background kartu di mode gelap! Warna hitam pekat menciptakan kontras ekstrem dengan teks putih yang melelahkan mata (*Halation Effect*). Gunakan percampuran HSL biru gelap seperti <code>hsl(222, 47%, 11%)</code> untuk elevasi permukaan yang nyaman dipandang berjam-jam.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="component-states">
+            <h2><i class="fa-solid fa-toggle-on"></i> 6. 6-State Component Matrix (Matriks Status Komponen)</h2>
+            <p>
+                Kesalahan fatal junior developer adalah hanya mendesain satu status komponen (status diam/normal). Di dunia nyata, komponen interaktif seperti tombol dan input wajib menangani <strong>6 status perilaku mutlak</strong>:
+            </p>
+
+            <table class="state-matrix-table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Perilaku &amp; Visual Feedback</th>
+                        <th>Preview Komponen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. Default (Normal)</strong></td>
+                        <td>Status diam sebelum interaksi. Jelas menunjukkan komponen bisa diklik (*affordance*).</td>
+                        <td><button type="button" class="state-preview-btn btn-preview-normal"><i class="fa-solid fa-cart-shopping"></i> Checkout</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. Hover</strong></td>
+                        <td>Kursor berada di atas komponen. Warna menjadi sedikit lebih terang/gelap dan naik tipis (*micro-lift*).</td>
+                        <td><button type="button" class="state-preview-btn btn-preview-hover"><i class="fa-solid fa-cart-shopping"></i> Checkout</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. Active (Pressed)</strong></td>
+                        <td>Momen ketika tombol sedang ditekan klik fisik atau sentuhan jari. Tombol turun 1px meniru tombol nyata.</td>
+                        <td><button type="button" class="state-preview-btn btn-preview-active"><i class="fa-solid fa-cart-shopping"></i> Checkout</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>4. Focus-Visible</strong></td>
+                        <td>Navigasi keyboard menggunakan tombol Tab. Wajib menampilkan cincin fokus (*focus ring*) 2-3px kontras tinggi untuk aksesibilitas WCAG.</td>
+                        <td><button type="button" class="state-preview-btn btn-preview-focus"><i class="fa-solid fa-cart-shopping"></i> Checkout</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>5. Disabled</strong></td>
+                        <td>Aksi tidak tersedia (misal formulir belum valid). Kursor berubah `not-allowed`, opacity berkurang 50%.</td>
+                        <td><button type="button" class="state-preview-btn btn-preview-disabled" disabled><i class="fa-solid fa-lock"></i> Terkunci</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>6. Loading State</strong></td>
+                        <td>Permintaan API asinkron sedang berjalan. Teks disembunyikan dan diganti spinner pemutar agar pengguna tidak mengklik ganda (*double submit*).</td>
+                        <td><button type="button" class="state-preview-btn btn-preview-loading">Menyimpan</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 7: Quiz -->
+        <section id="quiz">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman Anatomi UI</h2>
+            <div class="quiz-box">
+                <div class="quiz-question">1. Mengapa skala 8pt Grid System diadopsi secara luas dalam arsitektur CSS dan desain antarmuka modern?</div>
+                <div class="quiz-options">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. Browser tidak otomatis memblokir nilai ganjil.')">A. Karena browser HTML5 hanya bisa merender elemen yang berukuran genap</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat sekali! Kelipatan 8 habis membagi resolusi layar populer dan menghasilkan angka bulat tanpa blur anti-aliasing saat scaling retina @2x/@3x.')">B. Karena kelipatan 8 habis membagi hampir seluruh resolusi layar digital dan menjamin render piksel bulat presisi pada display retina @2x/@3x</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. Grid 8pt bukan untuk menghemat konsumsi memori cache CPU.')">C. Untuk mempercepat eksekusi V8 engine saat parsing DOM</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <div class="quiz-box" style="margin-top:20px;">
+                <div class="quiz-question">2. Dalam aturan harmoni warna 60-30-10, porsi 10% dialokasikan secara spesifik untuk apa?</div>
+                <div class="quiz-options">
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! 10% aksen adalah magnet visual yang memandu mata pengguna ke titik konversi utama seperti tombol CTA, status aktif, atau badge notifikasi.')">A. Elemen aksen fokal seperti Tombol Call-To-Action (CTA), link penting, dan badge notifikasi aktif</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. Background kanvas mengambil porsi 60%.')">B. Background kanvas layar utama</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. Bingkai kartu dan sidebar mengambil porsi 30%.')">C. Seluruh border kartu dan panel sidebar</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="../10_mobile_architecture/02_offline_first_sync_push.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Modul 37: Offline-First &amp; Push Notifications
+            </a>
+            <a href="02_ux_heuristics_journey.html" class="btn btn-primary">
+                Lanjut ke Modul 39: Arsitektur UX &amp; Heuristik Usabilitas <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js?v=2.5.0"></script>
+</body>
+</html>

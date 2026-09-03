@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Modul 39: Arsitektur UX, Heuristik Usabilitas &amp; Beban Kognitif — Fundamental Coding</title>
+    <meta name="description" content="Kajian mendalam User Experience (UX): 5 Planes of UX, 10 Usability Heuristics Jakob Nielsen, hukum psikologi kognitif (Hick's Law, Fitts's Law, Miller's Law), User Journey Mapping, dan rekayasa Form UX anti-abandonment.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css?v=2.5.0">
+    <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg?v=2.5.0">
+    <style>
+        .heuristic-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .heuristic-badge {
+            background: var(--brand);
+            color: #fff;
+            font-weight: 800;
+            font-size: 0.85rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .law-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        .law-formula {
+            background: var(--bg-surface-2);
+            padding: 10px 14px;
+            border-radius: var(--r-sm);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--brand-light);
+            margin: 10px 0;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <div class="header-brand-author">
+            <span class="brand-pill"><i class="fa-solid fa-shield-halved"></i> Velora</span>
+            <span class="brand-divider">•</span>
+            <span class="author-pill"><i class="fa-solid fa-user-graduate"></i> Mahin Utsman Nawawi, S.H</span>
+        </div>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 12</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Modul 39: Arsitektur UX &amp; Heuristik Usabilitas</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <span class="db-badge">
+            <i class="fa-solid fa-brain"></i>
+            Cognitive UX <span>(Nielsen Heuristics)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Modul 39</div>
+        <nav class="sidebar-nav">
+            <a href="#planes-of-ux" class="nav-link active"><i class="fa-solid fa-layer-group"></i> 1. 5 Planes of UX</a>
+            <a href="#nielsen-heuristics" class="nav-link"><i class="fa-solid fa-list-ol"></i> 2. 10 Usability Heuristics Nielsen</a>
+            <a href="#cognitive-laws" class="nav-link"><i class="fa-solid fa-brain"></i> 3. Hukum Psikologi Kognitif UX</a>
+            <a href="#information-architecture" class="nav-link"><i class="fa-solid fa-sitemap"></i> 4. Information Architecture &amp; Journey</a>
+            <a href="#form-ux" class="nav-link"><i class="fa-solid fa-clipboard-check"></i> 5. Form UX &amp; Error Prevention</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 6. Kuis Uji Pemahaman UX</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-bezier-curve"></i> Track 12: UI/UX Design Engineering</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Menengah (Cognitive Architecture)</span>
+            </div>
+            <h1>Modul 39: Arsitektur UX (User Experience), Heuristik Usabilitas &amp; Beban Kognitif</h1>
+            <p class="module-lead">
+                Membedah bagaimana manusia berpikir dan mengambil keputusan saat menggunakan software: kerangka kerja 5 Planes of UX dari Jesse James Garrett, audit 10 Usability Heuristics Jakob Nielsen, hukum-hukum psikologi kognitif (Hick's Law, Fitts's Law, Miller's Law, Jakob's Law), Information Architecture (IA) yang intuitif, serta rekayasa formulir digital anti-kebingungan (*zero error friction*).
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="planes-of-ux">
+            <h2><i class="fa-solid fa-layer-group"></i> 1. Kerangka Kerja 5 Planes of UX (Jesse James Garrett)</h2>
+            <p>
+                Produk digital yang sukses tidak dibangun langsung dari menggambar tombol (*Surface*). Setiap antarmuka berdiri di atas 5 lapisan konseptual dari yang paling abstrak hingga paling konkret:
+            </p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Lapisan (Plane)</th>
+                        <th>Pertanyaan yang Dijawab</th>
+                        <th>Output / Artefak Desain</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. Strategy Plane</strong> (Paling Abstrak)</td>
+                        <td><em>"Masalah bisnis apa yang diselesaikan? Siapa target pengguna dan apa metrik suksesnya (KPI)?"</em></td>
+                        <td>User Persona, Value Proposition Canvas, Analisis Kompetitif.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. Scope Plane</strong></td>
+                        <td><em>"Fitur apa yang wajib ada dan apa yang ditunda ke fase rilis berikutnya?"</em></td>
+                        <td>Spesifikasi Kebutuhan Fungsional, User Stories, MoSCoW Prioritization.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. Structure Plane</strong></td>
+                        <td><em>"Bagaimana alur pengguna (User Flow) dan bagaimana data dikelompokkan secara logis?"</em></td>
+                        <td>Information Architecture (IA), Site Map, Interaction Design Flows.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4. Skeleton Plane</strong></td>
+                        <td><em>"Di mana posisi tombol, navigasi, form, dan teks pada layar sebelum diberi warna?"</em></td>
+                        <td>Wireframe Hitam-Putih (Lo-Fi), Prototipe Navigasi, Layout Grid.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5. Surface Plane</strong> (Paling Konkret)</td>
+                        <td><em>"Bagaimana visual estetika akhir: warna, font, bayangan, dan animasi?"</em></td>
+                        <td>High-Fidelity UI Design, Design Tokens, Micro-interactions, A11y Contrast.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="nielsen-heuristics">
+            <h2><i class="fa-solid fa-list-ol"></i> 2. 10 Usability Heuristics Jakob Nielsen</h2>
+            <p>
+                Sepuluh hukum emas usability yang dirumuskan oleh pionir web Jakob Nielsen untuk mengaudit kelayakan antarmuka:
+            </p>
+
+            <div class="heuristic-item">
+                <div class="heuristic-badge">1</div>
+                <div>
+                    <h4 style="margin:0 0 4px 0;color:var(--text-primary);">Visibility of System Status</h4>
+                    <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">
+                        Sistem harus selalu memberi tahu pengguna apa yang sedang terjadi lewat feedback wajar dalam waktu singkat (contoh: loading progress bar, indikator status pesanan 'Sedang Dikirim', toast notifikasi).
+                    </p>
+                </div>
+            </div>
+
+            <div class="heuristic-item">
+                <div class="heuristic-badge">2</div>
+                <div>
+                    <h4 style="margin:0 0 4px 0;color:var(--text-primary);">Match Between System and the Real World</h4>
+                    <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">
+                        Gunakan istilah, frase, dan konsep yang akrab bagi pengguna, bukan jargon teknis internal backend (contoh: gunakan istilah "Keranjang Belanja" daripada "Array of OrderLineItems", hindari menampilkan error <code>SQLException NullPointerException</code> ke pengguna awam).
+                    </p>
+                </div>
+            </div>
+
+            <div class="heuristic-item">
+                <div class="heuristic-badge">3</div>
+                <div>
+                    <h4 style="margin:0 0 4px 0;color:var(--text-primary);">User Control and Freedom</h4>
+                    <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">
+                        Pengguna sering salah klik dan membutuhkan "pintu darurat" yang jelas untuk membatalkan aksi tanpa harus melewati alur panjang (contoh: tombol Undo kirim email di Gmail, tombol Batal Pesanan sebelum diproses).
+                    </p>
+                </div>
+            </div>
+
+            <div class="heuristic-item">
+                <div class="heuristic-badge">4</div>
+                <div>
+                    <h4 style="margin:0 0 4px 0;color:var(--text-primary);">Consistency and Standards (Jakob's Law)</h4>
+                    <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">
+                        Pengguna tidak boleh ragu apakah kata, situasi, atau aksi yang berbeda memiliki arti yang sama. Ikuti konvensi platform (contoh: ikon kaca pembesar selalu berarti Cari, logo di pojok kiri atas selalu mengarah ke beranda).
+                    </p>
+                </div>
+            </div>
+
+            <div class="heuristic-item">
+                <div class="heuristic-badge">5</div>
+                <div>
+                    <h4 style="margin:0 0 4px 0;color:var(--text-primary);">Error Prevention</h4>
+                    <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">
+                        Mencegah error jauh lebih baik daripada pesan error yang bagus sekalipun (contoh: nonaktifkan tombol submit jika form belum lengkap, konfirmasi modal sebelum menghapus database secara permanen).
+                    </p>
+                </div>
+            </div>
+
+            <div class="heuristic-item">
+                <div class="heuristic-badge">6</div>
+                <div>
+                    <h4 style="margin:0 0 4px 0;color:var(--text-primary);">Recognition Rather Than Recall</h4>
+                    <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">
+                        Kurangi beban memori pengguna dengan membuat elemen, aksi, dan opsi terlihat jelas. Pengguna tidak boleh dipaksa mengingat informasi dari halaman sebelumnya (contoh: riwayat pencarian terakhir, ringkasan produk di halaman checkout).
+                    </p>
+                </div>
+            </div>
+
+            <div class="heuristic-item">
+                <div class="heuristic-badge">7</div>
+                <div>
+                    <h4 style="margin:0 0 4px 0;color:var(--text-primary);">Flexibility and Efficiency of Use</h4>
+                    <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">
+                        Sediakan akselerator seperti keyboard shortcut (misal: <code>Ctrl+K</code> untuk command palette) yang tidak terlihat oleh pemula tetapi sangat mempercepat kerja pengguna mahir (*power users*).
+                    </p>
+                </div>
+            </div>
+
+            <div class="heuristic-item">
+                <div class="heuristic-badge">8</div>
+                <div>
+                    <h4 style="margin:0 0 4px 0;color:var(--text-primary);">Aesthetic and Minimalist Design</h4>
+                    <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">
+                        Setiap unit informasi tambahan dalam antarmuka bersaing dengan informasi utama dan mengurangi visibilitas relatifnya. Eliminasi dekorasi visual berlebih yang tidak memiliki fungsi (*Signal-to-Noise Ratio*).
+                    </p>
+                </div>
+            </div>
+
+            <div class="heuristic-item">
+                <div class="heuristic-badge">9</div>
+                <div>
+                    <h4 style="margin:0 0 4px 0;color:var(--text-primary);">Help Users Recognize, Diagnose, and Recover from Errors</h4>
+                    <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">
+                        Pesan error harus ditulis dengan bahasa manusia yang santun, secara tepat menunjukkan akar masalah, dan memberikan saran solusi konstruktif (contoh: <em>"Kata sandi minimal 8 karakter dengan 1 angka"</em>, BUKAN <em>"Input Invalid"</em>).
+                    </p>
+                </div>
+            </div>
+
+            <div class="heuristic-item">
+                <div class="heuristic-badge">10</div>
+                <div>
+                    <h4 style="margin:0 0 4px 0;color:var(--text-primary);">Help and Documentation</h4>
+                    <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">
+                        Meskipun sistem ideal dapat digunakan tanpa manual, bantuan dan FAQ harus mudah dicari, fokus pada tugas pengguna saat itu, dan memuat langkah-langkah konkret yang tidak terlalu panjang.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="cognitive-laws">
+            <h2><i class="fa-solid fa-brain"></i> 3. Hukum Psikologi Kognitif UX</h2>
+            <p>
+                Desain UX modern berakar pada batasan neurobiologis otak manusia dalam mengolah informasi visual:
+            </p>
+
+            <div class="law-box">
+                <h3 style="color:var(--brand-light);margin-top:0;"><i class="fa-solid fa-stopwatch"></i> Hick's Law (Hukum Hick-Hyman)</h3>
+                <p style="font-size:0.9rem;color:var(--text-secondary);">
+                    Waktu yang dibutuhkan seseorang untuk mengambil keputusan meningkat secara logaritmik seiring bertambahnya jumlah dan kompleksitas pilihan:
+                </p>
+                <div class="law-formula">RT = a + b · log₂(n + 1)</div>
+                <p style="font-size:0.88rem;color:var(--text-secondary);margin-bottom:0;">
+                    <strong>Dampak Desain:</strong> Jika Anda memberikan 20 opsi pada menu navigasi utama, pengguna akan mengalami kelelahan analisis (*analysis paralysis*). Batasi menu navigasi utama maksimal 5 hingga 7 kategori, lalu gunakan sub-kategori bertingkat.
+                </p>
+            </div>
+
+            <div class="law-box">
+                <h3 style="color:var(--brand-light);margin-top:0;"><i class="fa-solid fa-hand-pointer"></i> Fitts's Law (Hukum Fitts)</h3>
+                <p style="font-size:0.9rem;color:var(--text-secondary);">
+                    Waktu untuk menggerakkan kursor atau jari ke area target bergantung pada jarak ke target dan ukuran target:
+                </p>
+                <div class="law-formula">MT = a + b · log₂(2D / W)</div>
+                <p style="font-size:0.88rem;color:var(--text-secondary);margin-bottom:0;">
+                    <strong>Dampak Desain:</strong> Tombol aksi utama (*CTA*) wajib memiliki ukuran fisik yang cukup besar dan diletakkan dekat dengan jangkauan jari (pada layar smartphone: di bagian bawah layar / <em>Natural Thumb Zone</em>).
+                </p>
+            </div>
+
+            <div class="law-box">
+                <h3 style="color:var(--brand-light);margin-top:0;"><i class="fa-solid fa-memory"></i> Miller's Law (Hukum Miller)</h3>
+                <p style="font-size:0.9rem;color:var(--text-secondary);">
+                    Kapasitas memori kerja jangka pendek rata-rata orang dewasa normal hanya mampu menampung <strong>7 ± 2 unit informasi</strong> dalam satu waktu.
+                </p>
+                <p style="font-size:0.88rem;color:var(--text-secondary);margin-bottom:0;">
+                    <strong>Dampak Desain:</strong> Lakukan <em>Chunking</em> (pengelompokan potongan data). Jangan pernah menampilkan 16 digit nomor rekening atau kartu kredit tanpa spasi (`1234567890123456`). Kelompokkan menjadi 4 blok: `1234 5678 9012 3456`.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="information-architecture">
+            <h2><i class="fa-solid fa-sitemap"></i> 4. Information Architecture &amp; User Journey Mapping</h2>
+            <p>
+                Arsitektur Informasi (IA) adalah ilmu mengorganisasi dan menstrukturkan konten agar mudah ditemukan pengguna (*findability*). Tiga model struktur navigasi digital:
+            </p>
+            <ul>
+                <li><strong>Hierarchical Model (Pohon Hirarki):</strong> Pengguna bergerak dari kategori umum (Elektronik) ke subkategori (Laptop) ke halaman spesifik (MacBook Air). Sangat cocok untuk e-commerce besar.</li>
+                <li><strong>Hub and Spoke:</strong> Terdapat satu halaman pusat (Dashboard) yang menjadi titik awal menuju fitur-fitur satelit, dan pengguna selalu kembali ke hub. Sangat cocok untuk aplikasi SaaS analytics dan POS Mart.</li>
+                <li><strong>Linear / Sequential Flow:</strong> Pengguna dipandu langkah demi langkah tanpa bisa melompat (Alur Checkout Belanja: Keranjang -> Alamat Kirim -> Pembayaran -> Konfirmasi Selesai).</li>
+            </ul>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="form-ux">
+            <h2><i class="fa-solid fa-clipboard-check"></i> 5. Form UX &amp; Error Prevention (Zero-Abandonment)</h2>
+            <p>
+                Halaman checkout e-commerce adalah area dengan tingkat kegagalan (*drop-off*) paling tinggi di dunia internet (rata-rata 70% keranjang belanja ditinggalkan). Praktik terbaik form engineering:
+            </p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Aspek Form</th>
+                        <th>Anti-Pattern (Memicu Frustrasi)</th>
+                        <th>Best Practice (Standar Industri)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tata Letak Kolom</strong></td>
+                        <td>Form 2 kolom menyamping (mata pengguna bingung menentukan arah tab berikutnya).</td>
+                        <td><strong>Single Column Vertical Layout:</strong> Satu kolom lurus ke bawah memudahkan pemindaian mata dari atas ke bawah.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Waktu Validasi</strong></td>
+                        <td>Validasi baru muncul setelah tombol Submit ditekan (pengguna harus scroll ke atas mencari field yang merah).</td>
+                        <td><strong>Inline Real-Time Validation:</strong> Tampilkan ikon centang hijau atau pesan bantuan tepat saat kursor pengguna keluar dari input field (*onBlur*).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Label vs Placeholder</strong></td>
+                        <td>Hanya mengandalkan placeholder tanpa label (`<input placeholder="Email">`). Saat pengguna mengetik, teks petunjuk hilang dan mereka lupa apa yang harus diisi.</td>
+                        <td><strong>Floating Label atau Top Label:</strong> Label selalu terlihat jelas di atas kotak input sepanjang waktu.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 6: Quiz -->
+        <section id="quiz">
+            <h2><i class="fa-solid fa-circle-question"></i> 6. Kuis Uji Pemahaman Arsitektur UX</h2>
+            <div class="quiz-box">
+                <div class="quiz-question">1. Menurut Hick's Law, bagaimana cara terbaik mengurangi waktu kebingungan pengguna saat memilih paket langganan produk?</div>
+                <div class="quiz-options">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. Menambah opsi justru menaikkan waktu analisis logaritmik.')">A. Menyediakan 15 opsi paket yang sangat spesifik dengan rincian teknis lengkap</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat sekali! Membatasi opsi (misal 3 tier: Starter, Pro, Enterprise) dengan rekomendasi badge mengurangi beban mental pengambilan keputusan.')">B. Membatasi pilihan menjadi 3 opsi yang jelas dan menyorot 1 paket paling populer sebagai rekomendasi default</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. Menghapus harga justru memicu kecurigaan dan friksi.')">C. Menghilangkan tabel harga dan meminta pengguna mengirim email penawaran</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <div class="quiz-box" style="margin-top:20px;">
+                <div class="quiz-question">2. Manakah implementasi yang mencerminkan prinsip 'Recognition Rather Than Recall' pada antarmuka e-commerce?</div>
+                <div class="quiz-options">
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Pengguna dapat mengenali barang yang baru saja mereka lihat tanpa harus mengingat-ingat nama atau kode SKU barang tersebut.')">A. Menampilkan bagian 'Produk yang Baru Saja Anda Lihat' dan ringkasan keranjang di sisi kanan halaman checkout</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. Meminta input kode SKU memaksa pengguna mengingat memori teknis.')">B. Meminta pengguna mengetik kode SKU produk secara manual dari memori saat konfirmasi pesanan</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah. Menghapus riwayat transaksi menyulitkan pengguna melacak riwayat.')">C. Menghapus riwayat transaksi otomatis setiap 24 jam</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="01_ui_anatomy_tokens.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Modul 38: Anatomi UI &amp; Design Tokens
+            </a>
+            <a href="03_a11y_design_systems.html" class="btn btn-primary">
+                Lanjut ke Modul 40: Aksesibilitas Web &amp; Design System Skala Industri <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js?v=2.5.0"></script>
+</body>
+</html>
