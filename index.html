@@ -11,7 +11,7 @@
     <style>
         /* Modern Enhancements for Multi-Track Learning Portal */
         .portal-hero {
-            padding: 56px 20px 40px;
+            padding: calc(var(--header-h) + 40px) 20px 44px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -361,12 +361,6 @@
         </a>
     </div>
     <div class="header-right">
-        <a href="plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
-            <i class="fa-solid fa-map-location-dot"></i> Master Plan (30 Fase)
-        </a>
-        <a href="PLAN.md" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
-            <i class="fa-brands fa-markdown"></i> PLAN.md
-        </a>
         <span class="db-badge">
             <i class="fa-solid fa-database"></i>
             ecommerce.db <span>(20 Tabel)</span>
@@ -393,9 +387,6 @@
     <div class="hero-actions" style="justify-content:center;">
         <a href="modul/01_tipe_data.html" class="btn btn-primary btn-lg">
             <i class="fa-solid fa-play"></i> Mulai Belajar Modul 01
-        </a>
-        <a href="plan.html" class="btn btn-secondary btn-lg">
-            <i class="fa-solid fa-map-location-dot"></i> Buka Interactive Roadmap (30 Fase)
         </a>
         <a href="#struktur-database" class="btn btn-secondary btn-lg">
             <i class="fa-solid fa-folder-tree"></i> Berkas DB &amp; Query
@@ -478,7 +469,7 @@
             </div>
             <div class="track-card-footer">
                 <span class="track-phase-count">Fase 01 - 03</span>
-                <a href="plan.html" class="track-action-btn">Lihat Silabus <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="tracks/01_database_sql/01_storage_engine.html" class="track-action-btn">Mulai Belajar <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
 
@@ -511,7 +502,7 @@
             <div>
                 <div class="track-card-top">
                     <div class="track-icon-wrapper"><i class="fa-solid fa-display"></i></div>
-                    <span class="track-status-pill pill-planned">Terencana</span>
+                    <span class="track-status-pill pill-active">Aktif (3 Modul)</span>
                 </div>
                 <div class="track-title">03. Frontend Engineering &amp; Browser Internals</div>
                 <div class="track-desc">
@@ -525,7 +516,7 @@
             </div>
             <div class="track-card-footer">
                 <span class="track-phase-count">Fase 07 - 09</span>
-                <a href="plan.html" class="track-action-btn">Buka Roadmap <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="tracks/02_frontend/01_rendering_pipeline.html" class="track-action-btn">Mulai Belajar <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
 
@@ -534,7 +525,7 @@
             <div>
                 <div class="track-card-top">
                     <div class="track-icon-wrapper"><i class="fa-solid fa-server"></i></div>
-                    <span class="track-status-pill pill-planned">Terencana</span>
+                    <span class="track-status-pill pill-active">Aktif (3 Modul)</span>
                 </div>
                 <div class="track-title">04. Backend Engineering &amp; Protokol Jaringan</div>
                 <div class="track-desc">
@@ -548,7 +539,7 @@
             </div>
             <div class="track-card-footer">
                 <span class="track-phase-count">Fase 10 - 12</span>
-                <a href="plan.html" class="track-action-btn">Buka Roadmap <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="tracks/03_backend/01_http_protocols.html" class="track-action-btn">Mulai Belajar <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
 
@@ -557,7 +548,7 @@
             <div>
                 <div class="track-card-top">
                     <div class="track-icon-wrapper"><i class="fa-solid fa-sitemap"></i></div>
-                    <span class="track-status-pill pill-planned">Terencana</span>
+                    <span class="track-status-pill pill-active">Aktif (4 Modul)</span>
                 </div>
                 <div class="track-title">05. Arsitektur Sistem &amp; Repositori</div>
                 <div class="track-desc">
@@ -571,7 +562,7 @@
             </div>
             <div class="track-card-footer">
                 <span class="track-phase-count">Fase 13 - 16</span>
-                <a href="plan.html" class="track-action-btn">Buka Roadmap <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="tracks/04_architecture/01_monorepo_polyrepo.html" class="track-action-btn">Mulai Belajar <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
 
@@ -580,7 +571,7 @@
             <div>
                 <div class="track-card-top">
                     <div class="track-icon-wrapper"><i class="fa-solid fa-network-wired"></i></div>
-                    <span class="track-status-pill pill-planned">Terencana</span>
+                    <span class="track-status-pill pill-active">Aktif (3 Modul)</span>
                 </div>
                 <div class="track-title">06. Linux, Server &amp; Jaringan Komputer</div>
                 <div class="track-desc">
@@ -594,7 +585,7 @@
             </div>
             <div class="track-card-footer">
                 <span class="track-phase-count">Fase 17 - 19</span>
-                <a href="plan.html" class="track-action-btn">Buka Roadmap <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="tracks/05_linux_networking/01_networking_sockets.html" class="track-action-btn">Mulai Belajar <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
 
@@ -603,7 +594,7 @@
             <div>
                 <div class="track-card-top">
                     <div class="track-icon-wrapper"><i class="fa-brands fa-docker"></i></div>
-                    <span class="track-status-pill pill-planned">Terencana</span>
+                    <span class="track-status-pill pill-active">Aktif (3 Modul)</span>
                 </div>
                 <div class="track-title">07. DevOps, Docker &amp; CI/CD Pipeline</div>
                 <div class="track-desc">
@@ -617,7 +608,7 @@
             </div>
             <div class="track-card-footer">
                 <span class="track-phase-count">Fase 20 - 22</span>
-                <a href="plan.html" class="track-action-btn">Buka Roadmap <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="tracks/06_devops/01_docker_internals.html" class="track-action-btn">Mulai Belajar <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
 
@@ -626,7 +617,7 @@
             <div>
                 <div class="track-card-top">
                     <div class="track-icon-wrapper"><i class="fa-solid fa-code-branch"></i></div>
-                    <span class="track-status-pill pill-planned">Terencana</span>
+                    <span class="track-status-pill pill-active">Aktif (3 Modul)</span>
                 </div>
                 <div class="track-title">08. Paradigma Bahasa, Memori &amp; Git Internals</div>
                 <div class="track-desc">
@@ -640,7 +631,7 @@
             </div>
             <div class="track-card-footer">
                 <span class="track-phase-count">Fase 23 - 25</span>
-                <a href="plan.html" class="track-action-btn">Buka Roadmap <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="tracks/07_runtimes_memory/01_compilation_jit_runtimes.html" class="track-action-btn">Mulai Belajar <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
 
@@ -649,7 +640,7 @@
             <div>
                 <div class="track-card-top">
                     <div class="track-icon-wrapper"><i class="fa-solid fa-vial-circle-check"></i></div>
-                    <span class="track-status-pill pill-planned">Terencana</span>
+                    <span class="track-status-pill pill-active">Aktif (3 Modul)</span>
                 </div>
                 <div class="track-title">09. Testing, Observability &amp; Reliability (SRE)</div>
                 <div class="track-desc">
@@ -663,7 +654,7 @@
             </div>
             <div class="track-card-footer">
                 <span class="track-phase-count">Fase 26 - 28</span>
-                <a href="plan.html" class="track-action-btn">Buka Roadmap <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="tracks/08_testing_observability/01_testing_pyramid_contract.html" class="track-action-btn">Mulai Belajar <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
 
@@ -672,7 +663,7 @@
             <div>
                 <div class="track-card-top">
                     <div class="track-icon-wrapper"><i class="fa-solid fa-cloud-bolt"></i></div>
-                    <span class="track-status-pill pill-planned">Terencana</span>
+                    <span class="track-status-pill pill-active">Aktif (2 Modul)</span>
                 </div>
                 <div class="track-title">10. Distributed Caching &amp; Capstone 100K QPS</div>
                 <div class="track-desc">
@@ -686,7 +677,7 @@
             </div>
             <div class="track-card-footer">
                 <span class="track-phase-count">Fase 29 - 30</span>
-                <a href="plan.html" class="track-action-btn">Buka Roadmap <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="tracks/09_caching_scale/01_distributed_caching_xfetch.html" class="track-action-btn">Mulai Belajar <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
 
@@ -864,8 +855,7 @@
     </div>
     <div class="footer-credits">
         Dikembangkan oleh <strong>Velora</strong> &nbsp;|&nbsp; 
-        Disusun oleh <strong>Mahin Utsman Nawawi, S.H</strong> &nbsp;|&nbsp;
-        <a href="plan.html" style="color:var(--brand-light);text-decoration:none;">Master Roadmap (30 Fase)</a>
+        Disusun oleh <strong>Mahin Utsman Nawawi, S.H</strong>
     </div>
 </footer>
 
