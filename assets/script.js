@@ -390,8 +390,19 @@ async function initDynamicMultiTrackSidebar() {
     if (!data || !data.tracks) return;
 
     const prefix = getRootPrefix();
+    function normalizePageName(str) {
+        return (str || '').split('/').pop().toLowerCase().replace(/\.html$/, '');
+    }
+
     const currentPath = window.location.pathname.replace(/\\/g, '/');
-    const currentFileName = currentPath.split('/').pop().toLowerCase();
+    const cleanCurrent = normalizePageName(currentPath);
+    const isHomePage = (cleanCurrent === '' || cleanCurrent === 'index');
+
+    const TRACK_STATE_KEY = 'velora-track-accordions-v2';
+    let userTrackPrefs = {};
+    try {
+        userTrackPrefs = JSON.parse(localStorage.getItem(TRACK_STATE_KEY) || '{}');
+    } catch (e) {}
 
     const fragment = document.createDocumentFragment();
 
@@ -399,11 +410,11 @@ async function initDynamicMultiTrackSidebar() {
     const quickNav = document.createElement('div');
     quickNav.className = 'sidebar-quick-nav';
     quickNav.innerHTML = `
-        <a href="${prefix}index.html" class="quick-nav-link ${currentFileName === 'index.html' || !currentFileName ? 'active' : ''}">
+        <a href="${prefix}index.html" class="quick-nav-link ${isHomePage ? 'active' : ''}">
             <i class="fa-solid fa-house"></i>
             <span>Portal Utama</span>
         </a>
-        <a href="${prefix}cheatsheet.html" class="quick-nav-link ${currentFileName === 'cheatsheet.html' ? 'active' : ''}">
+        <a href="${prefix}cheatsheet.html" class="quick-nav-link ${cleanCurrent === 'cheatsheet' ? 'active' : ''}">
             <i class="fa-solid fa-terminal"></i>
             <span>Kamus Perintah (Git & CLI)</span>
         </a>
@@ -418,11 +429,21 @@ async function initDynamicMultiTrackSidebar() {
         item.className = 'track-accordion-item';
 
         const isCurrentTrack = track.modules && track.modules.some(m => {
-            const mFile = m.url.split('/').pop().toLowerCase();
-            return currentFileName === mFile;
+            return cleanCurrent === normalizePageName(m.url);
         });
 
-        if (isCurrentTrack || (idx === 0 && !currentFileName.includes('.html'))) {
+        // Tentukan apakah accordion dibuka:
+        let shouldExpand = false;
+        if (userTrackPrefs[track.id] !== undefined) {
+            shouldExpand = userTrackPrefs[track.id];
+            // Jika sedang berada di modul track ini, pastikan tetap terbuka agar user tahu posisinya
+            if (isCurrentTrack) shouldExpand = true;
+        } else {
+            // Default awal: Buka hanya track yang sedang aktif, atau track 1 jika di homepage
+            shouldExpand = isCurrentTrack || (idx === 0 && isHomePage);
+        }
+
+        if (shouldExpand) {
             item.classList.add('expanded');
         }
 
@@ -439,7 +460,11 @@ async function initDynamicMultiTrackSidebar() {
 
         btn.addEventListener('click', (e) => {
             e.preventDefault();
-            item.classList.toggle('expanded');
+            const nowExpanded = item.classList.toggle('expanded');
+            userTrackPrefs[track.id] = nowExpanded;
+            try {
+                localStorage.setItem(TRACK_STATE_KEY, JSON.stringify(userTrackPrefs));
+            } catch (err) {}
         });
 
         const content = document.createElement('div');
@@ -451,8 +476,8 @@ async function initDynamicMultiTrackSidebar() {
                 link.href = prefix + mod.url;
                 link.className = 'sidebar-module-link';
 
-                const modFileName = mod.url.split('/').pop().toLowerCase();
-                const isCurrentMod = (currentFileName === modFileName);
+                const modFileName = normalizePageName(mod.url);
+                const isCurrentMod = (cleanCurrent === modFileName);
 
                 if (isCurrentMod) {
                     link.classList.add('current');
