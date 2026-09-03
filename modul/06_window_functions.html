@@ -86,6 +86,53 @@
             </div>
         </div>
 
+        <!-- Fondasi Konsep Manusiawi (Fase 5 Refactor) -->
+        <div class="concept-foundation-box">
+            <div class="concept-box-header">
+                <div class="concept-box-title">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <span>Fondasi Konsep: Apa Itu Window Functions?</span>
+                </div>
+                <div class="concept-analogy-badge">
+                    <i class="fa-solid fa-magnifying-glass"></i> Ibarat Kaca Jendela Pembesar di Atas Ban Berjalan
+                </div>
+            </div>
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-card-label what">
+                        <i class="fa-solid fa-cube"></i> Apa Ini Sebenarnya?
+                    </div>
+                    <p class="concept-card-text">
+                        Window Functions adalah teknik menghitung statistik (seperti ranking juara atau saldo berjalan) <strong>tanpa menciutkan atau menghilangkan baris data aslinya</strong>.
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label why">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Masalah Nyata Apa yang Diselesaikan?
+                    </div>
+                    <p class="concept-card-text">
+                        GROUP BY biasa akan melebur 1.000 transaksi menjadi 1 angka total, sehingga rincian belanja tiap orang lenyap. Window function mempertahankan seluruh 1.000 baris, lalu menempelkan kolom peringkat di sampingnya!
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label analogy">
+                        <i class="fa-solid fa-medal"></i> Analogi Kehidupan Sehari-Hari
+                    </div>
+                    <p class="concept-card-text">
+                        Ibarat rapor sekolah: Anda ingin tahu ranking 1, 2, dan 3 di setiap kelas (PARTITION BY kelas ORDER BY nilai DESC), tetapi nama seluruh murid di kelas tersebut tetap dicetak lengkap di buku rapor, bukan hanya dicetak nama juara satunya saja.
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label when">
+                        <i class="fa-solid fa-bullseye"></i> Kapan Kita Memakainya?
+                    </div>
+                    <p class="concept-card-text">
+                        Mencari 3 produk terlaris di setiap kategori, menghitung saldo rekening bank berjalan (running total) dari mutasi buku tabungan, atau menghitung pertumbuhan omzet bulan ini dibanding bulan lalu (MoM Growth).
+                    </p>
+                </div>
+            </div>
+        </div>
+
         <!-- 1. Intro -->
         <section id="intro">
             <h2><i class="fa-solid fa-circle-info"></i> 1. Konsep Dasar Window Function vs GROUP BY</h2>
