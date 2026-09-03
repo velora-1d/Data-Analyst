@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 07: Browser Rendering Pipeline &amp; The Event Loop — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Bedah tuntas proses konversi kode HTML, CSS, dan JS menjadi piksel di monitor: DOM, CSSOM, Render Tree, Layout Reflow, GPU Compositing, Layout Thrashing, dan Event Loop Microtasks vs Macrotasks.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <style>
+        .pipeline-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .pipeline-step {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 16px 12px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .pipeline-step:hover {
+            transform: translateY(-3px);
+            border-color: var(--brand-light);
+        }
+
+        .pipeline-step-num {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--brand-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+        }
+
+        .pipeline-step-title {
+            font-weight: 700;
+            font-size: 0.92rem;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .pipeline-step-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Event Loop Diagram */
+        .event-loop-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .loop-track {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 16px;
+            margin: 16px 0;
+            overflow-x: auto;
+        }
+
+        .loop-node {
+            padding: 10px 16px;
+            border-radius: var(--r-sm);
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .node-stack { background: rgba(37, 99, 235, 0.2); color: #60A5FA; border: 1px solid #3B82F6; }
+        .node-micro { background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid #10B981; }
+        .node-raf { background: rgba(245, 158, 11, 0.2); color: #FBBF24; border: 1px solid #F59E0B; }
+        .node-render { background: rgba(239, 68, 68, 0.2); color: #F87171; border: 1px solid #EF4444; }
+        .node-macro { background: rgba(148, 163, 184, 0.2); color: #CBD5E1; border: 1px solid #64748B; }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 03</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 07: Rendering Pipeline</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-display"></i>
+            Chromium Blink <span>(60 FPS Budget)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 07</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Frame Budget 16.6ms</a>
+            <a href="#crp-pipeline" class="nav-link"><i class="fa-solid fa-arrows-split-up-and-off"></i> 2. The Critical Rendering Path</a>
+            <a href="#reflow-paint-composite" class="nav-link"><i class="fa-solid fa-layer-group"></i> 3. Reflow vs Paint vs Composite</a>
+            <a href="#layout-thrashing" class="nav-link"><i class="fa-solid fa-triangle-exclamation"></i> 4. Bahaya Layout Thrashing</a>
+            <a href="#event-loop" class="nav-link"><i class="fa-solid fa-rotate"></i> 5. Anatomi JS Event Loop</a>
+            <a href="#micro-vs-macro" class="nav-link"><i class="fa-solid fa-clock-rotate-left"></i> 6. Microtasks vs Macrotasks vs rAF</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 7. Production War Story</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-display"></i> Track 03: Frontend Engineering</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Engine Internals)</span>
+            </div>
+            <h1>Fase 07: Browser Rendering Pipeline &amp; The Event Loop</h1>
+            <p class="module-lead">
+                Bagaimana peramban web modern (Chromium Blink, WebKit, Gecko) mengubah teks mentah HTML/CSS menjadi piksel visual berkecepatan 60 FPS (16.6ms per frame): dari Critical Rendering Path, Layout Reflow, GPU Layer Compositing, hingga mikro-arsitektur JavaScript Event Loop.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Matematika Frame Budget 16.6ms (Standar 60 FPS)</h2>
+            <p>
+                Monitor standar bekerja pada frekuensi penyegaran (refresh rate) <strong>60 Hz</strong>, yang berarti monitor menggambar ulang seluruh piksel di layar sebanyak 60 kali setiap detik.
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-calculator"></i> Hukum 16.6 Milliseconds Budget</div>
+                <div class="callout-body">
+                    <code>1.000 ms / 60 frames = 16.66 ms per frame.</code>
+                    <br><br>
+                    Namun, browser memiliki housekeeping internal (overhead OS dan komposisi GPU) sekitar 6 ms. Artinya, total waktu yang Anda miliki untuk menjalankan JavaScript, menghitung CSS style, dan melakukan layout hanyalah sekitar <strong>10 ms</strong>!
+                    <br><br>
+                    Jika kode JavaScript Anda memakan waktu 20 ms, browser akan melewatkan 1 frame refresh (<strong>Dropped Frame / Jank</strong>). Layar akan terlihat patah-patah dan animasi terasa tersendat bagi pengguna.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="crp-pipeline">
+            <h2><i class="fa-solid fa-arrows-split-up-and-off"></i> 2. The Critical Rendering Path (CRP)</h2>
+            <p>
+                Ketika browser menerima respons byte HTML dari server, data mengalir melalui 6 tahap deterministik berurutan:
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Tahap 1</div>
+                    <div class="pipeline-step-title">DOM Tree</div>
+                    <div class="pipeline-step-desc">Bytes &rarr; Characters &rarr; Tokens &rarr; Nodes &rarr; Document Object Model</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Tahap 2</div>
+                    <div class="pipeline-step-title">CSSOM Tree</div>
+                    <div class="pipeline-step-desc">Parsing CSS rules &rarr; Cascading Selector Matching &rarr; CSS Object Model</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Tahap 3</div>
+                    <div class="pipeline-step-title">Render Tree</div>
+                    <div class="pipeline-step-desc">Gabungan DOM + CSSOM (mengabaikan <code>display: none</code> dan <code>&lt;head&gt;</code>)</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Tahap 4</div>
+                    <div class="pipeline-step-title">Layout (Reflow)</div>
+                    <div class="pipeline-step-desc">Kalkulasi geometri presisi: koordinat (x, y), lebar, tinggi tiap node di layar</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Tahap 5</div>
+                    <div class="pipeline-step-title">Paint (Raster)</div>
+                    <div class="pipeline-step-desc">Mengisi piksel visual: warna teks, borders, background, shadows ke memory buffer</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Tahap 6</div>
+                    <div class="pipeline-step-title">Compositing</div>
+                    <div class="pipeline-step-desc">Layer dikirim ke GPU VRAM untuk digabungkan dan ditampilkan di monitor</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="reflow-paint-composite">
+            <h2><i class="fa-solid fa-layer-group"></i> 3. Pemicu Pipeline: Layout Reflow vs Repaint vs Composite</h2>
+            <p>
+                Kunci utama optimasi performa frontend adalah memahami operasi mana yang memaksa browser mengulang tahap kalkulasi:
+            </p>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Tingkat Biaya</th>
+                        <th>Tahapan Yang Dipicu</th>
+                        <th>Contoh Properti CSS</th>
+                        <th>Dampak Performa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span style="color:#F87171;font-weight:700;">Sangat Mahal</span></td>
+                        <td><strong>Reflow (Layout) + Repaint + Composite</strong></td>
+                        <td><code>width</code>, <code>height</code>, <code>margin</code>, <code>padding</code>, <code>left</code>, <code>top</code>, <code>fontSize</code></td>
+                        <td>CPU intensif. Memicu kalkulasi ulang geometri seluruh elemen turunan di halaman!</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:#FBBF24;font-weight:700;">Sedang</span></td>
+                        <td><strong>Repaint + Composite (Lewati Reflow)</strong></td>
+                        <td><code>color</code>, <code>background-color</code>, <code>box-shadow</code>, <code>border-color</code>, <code>visibility</code></td>
+                        <td>Geometri tidak berubah, namun GPU harus menggambar ulang piksel warna ke memori.</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:#34D399;font-weight:700;">Sangat Cepat</span></td>
+                        <td><strong>Hanya Composite (Lewati Reflow &amp; Paint!)</strong></td>
+                        <td><code>transform: translate3d()</code>, <code>opacity</code></td>
+                        <td><strong>Zero CPU Reflow!</strong> Dihitung langsung oleh GPU Hardware Acceleration pada thread Compositor. 60 FPS terjamin.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="layout-thrashing">
+            <h2><i class="fa-solid fa-triangle-exclamation"></i> 4. Bahaya Layout Thrashing (Forced Synchronous Layout)</h2>
+            <p>
+                Secara default, browser sangat cerdas: browser mengantrekan perubahan style DOM dan mengeksekusinya secara batch sekaligus di akhir frame.
+            </p>
+            <p>
+                Namun jika Anda <strong>membaca properti geometri geometris</strong> (seperti <code>offsetHeight</code>, <code>clientWidth</code>, <code>getBoundingClientRect</code>) tepat setelah mengubah style di dalam sebuah loop, Anda memaksa browser melakukan <strong>Forced Synchronous Layout (Layout Thrashing)</strong>!
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-bad">
+                    <div class="code-pane-header"><i class="fa-solid fa-xmark"></i> Kode Berbahaya: Layout Thrashing</div>
+                    <pre><code>// Browser dipaksa reflow 1000 kali berturut-turut!
+const boxes = document.querySelectorAll('.box');
+
+boxes.forEach(box => {
+    // 1. BACA Geometri (Forces immediate Reflow!)
+    const currentHeight = box.offsetHeight; 
+    
+    // 2. TULIS Style (Invalidates Layout!)
+    box.style.height = (currentHeight + 10) + 'px';
+});</code></pre>
+                </div>
+
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-check"></i> Kode Bersih: Pisahkan Read &amp; Write</div>
+                    <pre><code>// 1. Kumpulkan semua READ terlebih dahulu (1 kali Reflow)
+const boxes = document.querySelectorAll('.box');
+const heights = Array.from(boxes).map(b => b.offsetHeight);
+
+// 2. Lakukan semua WRITE secara batch
+requestAnimationFrame(() => {
+    boxes.forEach((box, i) => {
+        box.style.height = (heights[i] + 10) + 'px';
+    });
+});</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="event-loop">
+            <h2><i class="fa-solid fa-rotate"></i> 5. Anatomi JavaScript Event Loop: Microtasks, rAF &amp; Macrotasks</h2>
+            <p>
+                JavaScript di browser adalah bahasa <strong>Single-Threaded</strong>. Bagaimana JS dapat menangani event klik, request API jaringan, dan animasi secara bersamaan tanpa membekukan layar? Jawabannya adalah <strong>Event Loop</strong>.
+            </p>
+
+            <div class="event-loop-box">
+                <div style="font-weight:700;color:var(--text-primary);margin-bottom:8px;">
+                    <i class="fa-solid fa-arrows-spin" style="color:var(--brand-light);"></i> Siklus 1 Putaran Event Loop Browser (Frame Turn)
+                </div>
+
+                <div class="loop-track">
+                    <div class="loop-node node-stack">1. Call Stack (Sync)</div>
+                    <i class="fa-solid fa-arrow-right" style="color:var(--text-muted)"></i>
+                    <div class="loop-node node-micro">2. Flush All Microtasks</div>
+                    <i class="fa-solid fa-arrow-right" style="color:var(--text-muted)"></i>
+                    <div class="loop-node node-raf">3. requestAnimationFrame</div>
+                    <i class="fa-solid fa-arrow-right" style="color:var(--text-muted)"></i>
+                    <div class="loop-node node-render">4. Render (Layout/Paint)</div>
+                    <i class="fa-solid fa-arrow-right" style="color:var(--text-muted)"></i>
+                    <div class="loop-node node-macro">5. One Macrotask</div>
+                </div>
+
+                <div class="callout-box callout-tradeoff" style="margin:0;">
+                    <div class="callout-header"><i class="fa-solid fa-scale-unbalanced-flip"></i> Urutan Prioritas Eksekusi Event Loop:</div>
+                    <div class="callout-body">
+                        <strong>Synchronous Code &gt; Microtasks (Durasinya dihabiskan sampai kosong) &gt; rAF &gt; Render Opportunity &gt; Tepat 1 Macrotask.</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="micro-vs-macro">
+            <h2><i class="fa-solid fa-clock-rotate-left"></i> 6. Uji Analisis Antrean: Tebak Urutan Output Console</h2>
+            <p>
+                Perhatikan potongan kode wawancara rekayasa sistem tingkat senior berikut:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-brands fa-js"></i> Event Loop Priority Puzzle</span></div>
+                <pre><code>console.log('1: Synchronous Awal');
+
+setTimeout(() => {
+    console.log('2: Macrotask (setTimeout)');
+}, 0);
+
+Promise.resolve().then(() => {
+    console.log('3: Microtask 1');
+}).then(() => {
+    console.log('4: Microtask 2');
+});
+
+requestAnimationFrame(() => {
+    console.log('5: rAF Callback');
+});
+
+console.log('6: Synchronous Akhir');</code></pre>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-terminal"></i> Urutan Output Sebenarnya di Browser:</span></div>
+                <pre><code>1: Synchronous Awal
+6: Synchronous Akhir
+3: Microtask 1        <-- Microtask queue dikuras habis segera setelah stack kosong!
+4: Microtask 2        <-- Chained Promise dijalankan sebelum browser menyentuh antrean lain
+5: rAF Callback       <-- Dijalankan tepat sebelum browser melakukan paint piksel
+2: Macrotask (setTimeout) <-- Macrotask dieksekusi di putaran event loop berikutnya!</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 7. Production War Story: Bencana Infinite Microtask Loop</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-skull-crossbones"></i> War Story: Tab Browser Hang Total Akibat queueMicrotask Recursion</div>
+                <div class="callout-body">
+                    Seorang developer junior ingin memproses 500.000 data array tanpa memblokir UI. Ia menggunakan rekursi Promise:
+                    <br>
+                    <code>function process() { queueMicrotask(process); }</code>
+                    <br><br>
+                    <strong>Apa yang terjadi?</strong> Layar browser langsung freeze putih seketika! User tidak bisa mengklik tombol apa pun atau melakukan scroll.
+                    <br><br>
+                    <strong>Penyebab:</strong> Spesifikasi W3C menyatakan bahwa <strong>Event Loop TIDAK AKAN PERNAH beralih ke tahap Render atau Macrotask sebelum Microtask Queue benar-benar KOSONG</strong>. Karena <code>queueMicrotask</code> terus menambahkan tugas baru tanpa henti, browser kelaparan (*Microtask Starvation*) dan tidak pernah sempat merender layar!
+                    <br><br>
+                    <strong>Solusi Industri:</strong> Gunakan Macrotask (<code>setTimeout</code>) atau rAF untuk me-yield kontrol kembali ke UI thread:
+                    <br>
+                    <code>await new Promise(requestAnimationFrame);</code>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman: Browser Pipeline &amp; Event Loop</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Manakah properti CSS di bawah ini yang dapat dianimasikan pada 60 FPS tanpa memicu tahapan Layout (Reflow) atau Repaint sama sekali?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Mengubah margin memicu Reflow dan kalkulasi geometri seluruh dokumen.')">A. margin-left</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Mengubah left memicu Reflow geometri.')">B. left: 50px</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! transform (translate3d/scale) dan opacity ditangani langsung oleh GPU Compositor thread tanpa menyentuh CPU main thread.')">C. transform: translate3d(50px, 0, 0)</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Mengubah width memicu Full Reflow.')">D. width: 200px</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Jika Microtask Queue terus-menerus diisi oleh rekursi Promise tanpa henti, apa yang terjadi pada antrean requestAnimationFrame dan setTimeout?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'rAF tidak memiliki prioritas lebih tinggi daripada Microtask.')">A. rAF akan memotong antrean dan berjalan mendahului Promise</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Event Loop wajib menguras seluruh isi antrean microtask sampai kosong sebelum beralih ke rendering atau macrotask berikutnya, menyebabkan tab browser hang total (UI starvation).')">B. rAF dan setTimeout tidak akan pernah dieksekusi, menyebabkan antrean rendering kelaparan (UI starvation) dan halaman macet total</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Browser tidak menghentikan runtime kecuali terjadi out-of-memory.')">C. Browser otomatis mengubah Promise menjadi Web Worker terpisah</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="../01_database_sql/03_transactions_concurrency.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 06: Concurrency Control
+            </a>
+            <a href="02_css_architecture.html" class="btn btn-primary">
+                Lanjut ke Fase 08: Arsitektur CSS Modern <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

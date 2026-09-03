@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 08: Modern CSS Architecture &amp; Design Systems — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Arsitektur CSS modern: Perbedaan mendalam Flexbox 1D vs CSS Grid 2D, responsive grid tanpa media query, Design Tokens CSS variables, zero-flicker dark mode, dan eliminasi specificity hell.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 03</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 08: Arsitektur CSS Modern</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-palette"></i>
+            CSS Tokens <span>(Zero FOUC)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 08</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Paradigma Layout: Flexbox vs Grid</a>
+            <a href="#responsive-grid" class="nav-link"><i class="fa-solid fa-table-cells"></i> 2. Auto-Fit vs Auto-Fill Tanpa Media Query</a>
+            <a href="#design-tokens" class="nav-link"><i class="fa-solid fa-droplet"></i> 3. Design Tokens (CSS Variables)</a>
+            <a href="#zero-flicker" class="nav-link"><i class="fa-solid fa-moon"></i> 4. Zero-Flicker Dark Mode (Anti FOUC)</a>
+            <a href="#specificity" class="nav-link"><i class="fa-solid fa-shield"></i> 5. Menghindari Specificity Hell &amp; CSS @layer</a>
+            <a href="#css-methodologies" class="nav-link"><i class="fa-solid fa-scale-unbalanced-flip"></i> 6. BEM vs Utility vs CSS-in-JS</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 7. War Story: Penalti INP CSS-in-JS</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-display"></i> Track 03: Frontend Engineering</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 45 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Menengah s/d Mahir</span>
+            </div>
+            <h1>Fase 08: Modern CSS Architecture &amp; Responsive Design Systems</h1>
+            <p class="module-lead">
+                Membangun antarmuka web skala besar yang bersih, cepat, dan mudah dirawat: perbedaan algoritma Flexbox 1D vs CSS Grid 2D, formula grid responsif otomatis tanpa media query, arsitektur Design Tokens berbasis CSS Variables, serta teknik eliminasi kedipan Dark Mode (Zero FOUC).
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Paradigma Layout: 1D Flexbox vs 2D CSS Grid</h2>
+            <p>
+                Banyak developer memperlakukan Flexbox dan CSS Grid sebagai alat yang saling bersaing. Padahal di level arsitektur browser, keduanya memiliki model mental yang berbeda secara fundamental:
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-arrows-left-right"></i> Flexbox (1-Dimensional: Content-Driven)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Bekerja pada <strong>satu dimensi</strong> (baris <em>atau</em> kolom).<br>
+                        • <strong>Content-Driven:</strong> Ukuran item fleksibel ditentukan oleh konten di dalamnya.<br>
+                        • <strong>Kapan Digunakan:</strong> Navbar horizontal, tombol dengan icon, pagination bar, pemusatan vertikal modal (alignment).
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-table-cells"></i> CSS Grid (2-Dimensional: Container-Driven)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Bekerja pada <strong>dua dimensi secara serentak</strong> (baris <em>dan</em> kolom).<br>
+                        • <strong>Container-Driven:</strong> Induk kontainer mendefinisikan kisi matriks yang kaku; anak elemen menempati sel yang ditentukan.<br>
+                        • <strong>Kapan Digunakan:</strong> Layout halaman utama, dashboard kartu, galeri produk e-commerce.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="responsive-grid">
+            <h2><i class="fa-solid fa-table-cells"></i> 2. Formula Responsif Otomatis: auto-fit vs auto-fill</h2>
+            <p>
+                Bagaimana cara membuat grid kartu produk yang otomatis beradaptasi dari 1 kolom di HP, 2 kolom di tablet, dan 4 kolom di desktop <strong>tanpa menulis satu baris pun <code>@media (max-width: ...)</code></strong>?
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-brands fa-css3-alt"></i> The Holy Grail CSS Grid Formula</span></div>
+                <pre><code>.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+}</code></pre>
+            </div>
+
+            <div class="callout-box callout-tradeoff">
+                <div class="callout-header"><i class="fa-solid fa-scale-unbalanced-flip"></i> Perbedaan Vital: auto-fit vs auto-fill</div>
+                <div class="callout-body">
+                    <ul>
+                        <li><strong><code>auto-fill</code>:</strong> Browser membuat kolom sebanyak mungkin sesuai lebar 280px. Jika item data hanya ada 2 di layar lebar 1920px, browser tetap menyisakan kolom-kolom kosong hantu di samping kanan.</li>
+                        <li><strong><code>auto-fit</code>:</strong> Kolom kosong hantu akan <strong>diciutkan (collapsed) menjadi 0px</strong>, dan item yang ada akan meregang (stretch berkat unit <code>1fr</code>) untuk mengisi seluruh sisa ruang kontainer secara elegan!</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="design-tokens">
+            <h2><i class="fa-solid fa-droplet"></i> 3. Arsitektur Design Tokens Berbasis CSS Custom Properties</h2>
+            <p>
+                Jangan pernah menulis nilai warna statis (misalnya <code>#2563EB</code>) berulang-ulang di ratusan selector. Definisikan <strong>Design Tokens</strong> di tingkat root:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-brands fa-css3-alt"></i> assets/style.css Design Tokens</span></div>
+                <pre><code>:root {
+    /* Semantic Color Tokens */
+    --brand: #2563EB;
+    --brand-light: #60A5FA;
+    --bg-primary: #0B132B;
+    --bg-surface: #111C38;
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+
+    /* Spacing & Radii Tokens */
+    --r-sm: 6px;
+    --r-lg: 12px;
+}
+
+[data-theme="light"] {
+    --bg-primary: #F8FAFC;
+    --bg-surface: #FFFFFF;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="zero-flicker">
+            <h2><i class="fa-solid fa-moon"></i> 4. Zero-Flicker Dark Mode (Mencegah Kilatan Putih FOUC)</h2>
+            <p>
+                Banyak website memiliki bug yang menyebalkan: saat pengguna yang memilih Dark Mode me-refresh halaman di malam hari, layar <strong>berkedip putih sesaat (Flash of Unstyled Content - FOUC)</strong> sebelum berubah menjadi gelap.
+            </p>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-eye-slash"></i> Kenapa FOUC Terjadi dan Bagaimana Mengatasinya?</div>
+                <div class="callout-body">
+                    <strong>Penyebab:</strong> Skrip JavaScript ditaruh di bawah tag <code>&lt;body&gt;</code> atau dijalankan saat event <code>DOMContentLoaded</code>. Pada saat script dieksekusi, browser sudah terlanjur melakukan First Paint dengan latar putih default!
+                    <br><br>
+                    <strong>Solusi Zero-Flicker (Render-Blocking Head Script):</strong> Letakkan skrip IIFE mini sinkron di dalam <code>&lt;head&gt;</code> sebelum browser mulai menggambar piksel:
+                    <br><br>
+                    <code>&lt;head&gt;<br>
+                    &nbsp;&nbsp;&lt;script&gt;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;const t = localStorage.getItem('theme') || 'dark';<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;document.documentElement.setAttribute('data-theme', t);<br>
+                    &nbsp;&nbsp;&lt;/script&gt;<br>
+                    &lt;/head&gt;</code>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="specificity">
+            <h2><i class="fa-solid fa-shield"></i> 5. Menghindari Specificity Hell &amp; CSS @layer</h2>
+            <p>
+                Ketika dua selector menargetkan elemen yang sama, browser menghitung skor spesifisitas berdasarkan bobot numerik <code>(Inline, ID, Class, Element)</code>:
+            </p>
+            <ul>
+                <li><strong>Inline style:</strong> <code>1, 0, 0, 0</code> (1000 poin)</li>
+                <li><strong>ID selector (<code>#header</code>):</strong> <code>0, 1, 0, 0</code> (100 poin)</li>
+                <li><strong>Class / Attribute / Pseudo-class (<code>.btn:hover</code>):</strong> <code>0, 0, 1, 0</code> (10 poin)</li>
+                <li><strong>Element tag (<code>div</code>, <code>p</code>):</strong> <code>0, 0, 0, 1</code> (1 poin)</li>
+            </ul>
+
+            <div class="callout-box callout-pitfall">
+                <div class="callout-header"><i class="fa-solid fa-bomb"></i> Anti-Pattern: Penggunaan !important</div>
+                <div class="callout-body">
+                    Menggunakan <code>!important</code> untuk menimpa gaya adalah tanda arsitektur CSS yang rusak. Satu <code>!important</code> akan memicu kebutuhan <code>!important</code> lain di masa depan, merusak prinsip modularitas CSS secara permanen.
+                    <br><br>
+                    <strong>Fitur Modern CSS: <code>@layer</code></strong><br>
+                    CSS `@layer` memungkinkan Anda mengelompokkan aturan ke dalam lapisan prioritas (misal: <code>@layer reset, base, components, utilities;</code>). Selector di layer utilitas akan selalu menang tanpa perlu menaikkan skor spesifisitas!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="css-methodologies">
+            <h2><i class="fa-solid fa-scale-unbalanced-flip"></i> 6. Komparasi Metodologi CSS: BEM vs Utility vs CSS-in-JS</h2>
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Metodologi</th>
+                        <th>Kelebihan Utama</th>
+                        <th>Kekurangan &amp; Trade-Off</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>BEM (Block Element Modifier)</strong></td>
+                        <td>Struktur nama bersih, spesifisitas selalu 1 kelas (<code>.card__title</code>), zero runtime.</td>
+                        <td>Nama kelas panjang, ukuran file CSS bisa membengkak jika tidak di-purge.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Utility-First (Tailwind)</strong></td>
+                        <td>Pengembangan UI sangat cepat, bundle CSS mungil (~15KB) setelah purging, tidak ada pergantian konteks file.</td>
+                        <td>Markup HTML menjadi ramai dengan ratusan class string, ketergantungan pada build tooling compiler.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CSS-in-JS (Emotion / Styled)</strong></td>
+                        <td>Scoping lokal sempurna berbasis komponen React, dinamis terhadap props JS.</td>
+                        <td><strong>Beban Runtime Berat:</strong> JS harus mem-parse string CSS dan menyuntikkan tag <code>&lt;style&gt;</code> ke DOM, memperburuk skor INP Core Web Vitals.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 7. Production War Story: Bencana Skor INP Akibat CSS-in-JS</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-triangle-exclamation"></i> War Story: E-Commerce Kehilangan Peringkat SEO Akibat Style Re-serialization</div>
+                <div class="callout-body">
+                    Sebuah platform ritel daring besar menggunakan library runtime CSS-in-JS untuk mendesain komponen tabel katalog mereka. Setiap kali pengguna mengklik filter kategori atau mengetik di search bar, React me-render ulang 50 baris produk.
+                    <br><br>
+                    Di setiap render, runtime CSS-in-JS menghitung ulang hash style, membuat string CSS baru, dan menyisipkan tag <code>&lt;style&gt;</code> baru ke dalam <code>&lt;head&gt;</code>. Hal ini memicu browser melakukan kalkulasi ulang CSSOM dan Layout berulang kali di main thread!
+                    <br><br>
+                    <strong>Dampak:</strong> Skor <strong>Interaction to Next Paint (INP)</strong> melonjak drastis hingga 480 ms (kategori 'Poor' di Google Search Console), menurunkan ranking SEO organik mereka.
+                    <br><br>
+                    <strong>Solusi:</strong> Migrasi ke <strong>Pure Vanilla CSS Design Tokens</strong> atau Zero-Runtime CSS (Tailwind / Vanilla Extract), yang memangkas waktu eksekusi CPU hingga 85% dan mengembalikan INP ke angka hijau 45 ms!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman: Arsitektur CSS Modern</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Pada CSS Grid, apa perbedaan utama antara 'auto-fit' dan 'auto-fill' ketika jumlah item yang tersedia lebih sedikit daripada ruang baris?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'auto-fill tidak menyembunyikan item.')">A. auto-fill akan menyembunyikan elemen yang tidak muat</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! auto-fit menciutkan kolom kosong yang tidak terpakai sehingga item yang ada meregang mengisi seluruh kontainer, sedangkan auto-fill membiarkan kolom kosong tetap ada.')">B. auto-fit menciutkan kolom kosong sehingga item yang ada meregang memenuhi kontainer, sedangkan auto-fill tetap mempertahankan kolom kosong</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Keduanya didukung oleh seluruh browser modern.')">C. auto-fit hanya didukung di Firefox</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Mengapa skrip pendeteksi tema Dark Mode (data-theme) harus diletakkan di dalam tag &lt;head&gt; dan dieksekusi secara sinkron?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Script di head justru memblokir parsing sesaat untuk menetapkan atribut tema.')">A. Agar halaman memuat gambar lebih cepat</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Script sinkron di head memastikan data-theme sudah diterapkan pada tag html sebelum browser melakukan First Paint pertama kali, mencegah kilatan putih menyilaukan (FOUC).')">B. Mencegah terjadinya Flash of Unstyled Content (FOUC) atau kilatan putih sesaat sebelum layar dirender</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'localStorage dapat diakses di mana saja.')">C. Karena localStorage tidak bisa diakses dari body</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="01_rendering_pipeline.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 07: Rendering Pipeline
+            </a>
+            <a href="03_framework_paradigms.html" class="btn btn-primary">
+                Lanjut ke Fase 09: Paradigma Framework <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

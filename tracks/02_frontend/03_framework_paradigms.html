@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 09: Paradigma Frontend Framework &amp; State Management — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Bedah komparatif arsitektur frontend modern: Virtual DOM Diffing (React) vs Compile-Time (Svelte 5 Runes) vs Fine-Grained Signals (SolidJS/Vue/Angular), Model Rendering CSR/SSR/SSG/ISR/Islands, dan Server State Cache.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 03</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 09: Paradigma Framework</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-brands fa-react"></i>
+            Reactivity Internals <span>(Signals vs VDOM)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 09</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Mengapa Butuh Reaktivitas?</a>
+            <a href="#three-paradigms" class="nav-link"><i class="fa-solid fa-cubes"></i> 2. Tiga Paradigma Reaktivitas</a>
+            <a href="#signals-deepdive" class="nav-link"><i class="fa-solid fa-bolt"></i> 3. Revolusi Fine-Grained Signals</a>
+            <a href="#rendering-models" class="nav-link"><i class="fa-solid fa-server"></i> 4. Spektrum Rendering: CSR s/d Islands</a>
+            <a href="#state-architecture" class="nav-link"><i class="fa-solid fa-database"></i> 5. Client State vs Server Cache</a>
+            <a href="#mini-engine" class="nav-link"><i class="fa-solid fa-flask"></i> 6. Lab: Membuat Mini Reactive Proxy</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 7. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-display"></i> Track 03: Frontend Engineering</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Architect Level)</span>
+            </div>
+            <h1>Fase 09: Paradigma Frontend Framework &amp; State Management</h1>
+            <p class="module-lead">
+                Membedah filosofi di balik framework JavaScript modern: Virtual DOM Diffing (React) vs Compile-Time Code Generation (Svelte) vs Fine-Grained Signals (SolidJS/Vue/Angular), evaluasi model rendering web dari CSR hingga Islands Architecture, dan pemisahan arsitektur Client State vs Server Cache.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Mengapa Kita Butuh Reaktivitas UI?</h2>
+            <p>
+                Di era jQuery atau JavaScript Vanilla mentah, developer harus menulis manipulasi DOM imperatif secara manual:
+            </p>
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-brands fa-js"></i> Kode Imperatif Tradisional</span></div>
+                <pre><code>// Setiap kali data berubah, developer harus mencari elemen DOM dan mengubahnya manual
+count += 1;
+document.getElementById('counterDisplay').textContent = count;
+if (count &gt; 10) {
+    document.getElementById('badgeWarning').classList.add('visible');
+}</code></pre>
+            </div>
+            <p>
+                Pada aplikasi skala besar dengan ribuan elemen, pendekatan imperatif ini rentan menghasilkan <strong>Inconsistent UI Bugs</strong>: ada elemen yang lupa di-update saat state berubah.
+                <br>
+                Framework modern menawarkan <strong>Deklaratif UI</strong>: <code>UI = f(State)</code>. Ketika State bermutasi, tampilan UI otomatis menyesuaikan diri secara otomatis.
+            </p>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="three-paradigms">
+            <h2><i class="fa-solid fa-cubes"></i> 2. Tiga Mazhab Besar Paradigma Reaktivitas</h2>
+            
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Mazhab Reaktivitas</th>
+                        <th>Contoh Framework</th>
+                        <th>Mekanisme Kerja Internal</th>
+                        <th>Ukuran Runtime &amp; Trade-off</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Virtual DOM Diffing</strong></td>
+                        <td>React 19</td>
+                        <td>Membuat pohon objek JS virtual di memori, membandingkan (diffing) dengan pohon sebelumnya (Fiber reconciliation), lalu menambal perbedaan ke real DOM.</td>
+                        <td>Ukuran bundle sedang (~45KB), re-render seluruh subtree kecuali di-memoize manual.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Compile-Time Reactivity</strong></td>
+                        <td>Svelte 5 (Runes)</td>
+                        <td><strong>Tanpa Virtual DOM!</strong> Kompiler mengubah sintaks reaktif pada saat build menjadi manipulasi DOM JavaScript murni yang super efisien.</td>
+                        <td>Ukuran runtime sangat mungil (~3-5KB), performa awal kilat.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fine-Grained Signals</strong></td>
+                        <td>SolidJS, Vue 3, Angular 20</td>
+                        <td>Variabel diikat dalam <em>dependency graph</em> (Pub/Sub). Ketika signal berubah, hanya node teks/elemen spesifik yang terhubung langsung yang diubah secara <strong>O(1)</strong>!</td>
+                        <td>Kecepatan runtime nomor 1 di industri, bundle hemat (~7KB), zero diffing overhead.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="signals-deepdive">
+            <h2><i class="fa-solid fa-bolt"></i> 3. Mengapa Industri Frontend Berkonvergensi ke "Signals"?</h2>
+            <p>
+                Pada framework Virtual DOM seperti React, ketika sebuah state di komponen induk berubah, <strong>seluruh fungsi komponen beserta seluruh anak-anaknya di bawah pohon akan dipanggil ulang (re-rendered)</strong>:
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-network-wired"></i> Model Mental Signals: Bedah O(1) Surgical Update</div>
+                <div class="callout-body">
+                    Pada model Signals (SolidJS, Vue, Angular):
+                    <br><br>
+                    1. Fungsi komponen <strong>HANYA BERJALAN 1 KALI SEUMUR HIDUP</strong> saat inisialisasi awal.<br>
+                    2. Getter signal (misal <code>count()</code>) otomatis mencatat subscriber mana yang membacanya.<br>
+                    3. Ketika <code>setCount(count() + 1)</code> dipanggil, framework <strong>tidak menjalankan ulang fungsi komponen</strong>. Framework melompat langsung ke satu TextNode spesifik di DOM via pointer memori dan menimpa teksnya secara instan!<br><br>
+                    Inilah alasan mengapa SolidJS secara konsisten mengalahkan React dalam benchmark kecepatan CPU manipulasi tabel data.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="rendering-models">
+            <h2><i class="fa-solid fa-server"></i> 4. Spektrum Model Rendering: CSR s/d Islands Architecture</h2>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">CSR</div>
+                    <div class="pipeline-step-title">Client-Side Rendering</div>
+                    <div class="pipeline-step-desc">HTML kosong, JS bundle besar dikirim ke browser untuk merender layar. Cocok untuk dashboard privat.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">SSR</div>
+                    <div class="pipeline-step-title">Server-Side Rendering</div>
+                    <div class="pipeline-step-desc">Server merender HTML penuh per request. Bagus untuk SEO &amp; First Contentful Paint. Butuh server compute.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">SSG</div>
+                    <div class="pipeline-step-title">Static Site Generation</div>
+                    <div class="pipeline-step-desc">HTML dipanggang saat build time. Disajikan instan dari CDN (0ms TTFB). Seperti modul portal kita saat ini!</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Islands</div>
+                    <div class="pipeline-step-title">Islands Architecture (Astro)</div>
+                    <div class="pipeline-step-desc">Halaman 95% murni HTML statis, hanya komponen interaktif tertentu (pulau) yang di-hidrasi JavaScript.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="state-architecture">
+            <h2><i class="fa-solid fa-database"></i> 5. Arsitektur State: Client State vs Server Cache State</h2>
+            <p>
+                Salah satu kesalahan arsitektur terbesar di kalangan pengembang adalah mencampuradukkan <strong>Client State</strong> dengan <strong>Server State</strong> ke dalam satu global store besar (seperti Redux monolitis):
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-bad">
+                    <div class="code-pane-header"><i class="fa-solid fa-xmark"></i> Anti-Pattern: Manual Redux untuk Data API</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Menaruh data produk dari server ke dalam Redux/Zustand secara manual.<br>
+                        • Developer harus mengelola state <code>isLoading</code>, <code>isError</code>, dan <code>data</code> sendiri.<br>
+                        • Tidak ada deduplikasi request: 3 komponen yang butuh data user akan menembak 3 kali fetch ke server.<br>
+                        • Data cepat basi (stale) jika tidak di-refetch manual.
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-check"></i> Modern Architecture: Server State Caching</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Gunakan <strong>TanStack Query (React Query / SWR)</strong>.<br>
+                        • <strong>Stale-While-Revalidate:</strong> Tampilkan data cache instan, perbarui di latar belakang.<br>
+                        • <strong>Query Deduplication:</strong> 5 komponen meminta user yang sama &rarr; hanya 1 network request!<br>
+                        • Auto-refetch saat window kembali aktif (*window focus refetching*).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="mini-engine">
+            <h2><i class="fa-solid fa-flask"></i> 6. Lab Hands-on: Membangun Mini Reactivity Engine Berbasis Proxy</h2>
+            <p>
+                Bagaimana cara kerja library reaktivitas modern seperti Vue 3 atau MobX di balik layar? Mari kita bangun mesin reaktif sederhana menggunakan JavaScript ES6 <code>Proxy</code>:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label"><i class="fa-brands fa-js"></i> Vanilla JS Reactive Engine</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
+                </div>
+                <pre><code>// 1. Dependency Tracker
+let activeEffect = null;
+
+function createReactive(target) {
+    const deps = new Map();
+
+    return new Proxy(target, {
+        get(obj, key) {
+            // Track dependency
+            if (activeEffect) {
+                if (!deps.has(key)) deps.set(key, new Set());
+                deps.get(key).add(activeEffect);
+            }
+            return obj[key];
+        },
+        set(obj, key, value) {
+            obj[key] = value;
+            // Trigger subscribers
+            if (deps.has(key)) {
+                deps.get(key).forEach(effect => effect());
+            }
+            return true;
+        }
+    });
+}
+
+function watchEffect(fn) {
+    activeEffect = fn;
+    fn(); // Jalankan pertama kali untuk merekam ketergantungan
+    activeEffect = null;
+}
+
+// Penggunaan Nyata:
+const state = createReactive({ harga: 50000, jumlah: 2 });
+
+watchEffect(() => {
+    // Otomatis dipanggil ulang setiap kali state.harga atau state.jumlah dimutasi!
+    console.log('Total Belanja Terkalkulasi:', state.harga * state.jumlah);
+});
+
+// Mutasi state:
+state.jumlah = 4; // Output: Total Belanja Terkalkulasi: 200000</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 7. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-burst"></i> War Story: Bencana Waterfall Hydration di Situs E-Commerce</div>
+                <div class="callout-body">
+                    Sebuah perusahaan marketplace menerapkan Server-Side Rendering (SSR) React penuh untuk halaman produk mereka. Meskipun HTML pertama kali muncul dengan cepat, pengguna di HP Android murah mengeluh bahwa tombol "Beli Sekarang" <strong>tidak bisa diklik selama 8 detik pertama</strong>!
+                    <br><br>
+                    <strong>Penyebab (The Hydration Trap):</strong> Browser menerima 1.8 MB bundle JavaScript React. Sebelum pengguna bisa berinteraksi, React harus mem-parse seluruh script, membangun ulang pohon Virtual DOM di client, dan mencocokkannya dengan HTML dari server (*Full Page Hydration*). Main thread CPU terkunci 100% (High Total Blocking Time - TBT).
+                    <br><br>
+                    <strong>Solusi:</strong> Mengadopsi <strong>Islands Architecture (Astro / Qwik)</strong>. Bagian header, deskripsi produk, ulasan, dan footer disajikan sebagai <em>Zero-JS HTML</em> murni. Hanya tombol "Beli Sekarang" yang dimuat sebagai pulau JavaScript interaktif (~8KB), memangkas waktu TBT dari 8 detik menjadi <strong>0.1 detik</strong>!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman: Paradigma Frontend Framework</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Apa keunggulan mendasar Fine-Grained Signals (SolidJS/Vue/Angular) dibandingkan Virtual DOM diffing (React tradisional)?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Signals tidak bergantung pada server.')">A. Signals hanya dapat dieksekusi di server</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Signals mengikat ketergantungan state langsung ke pointer node DOM spesifik, sehingga perubahan state hanya memperbarui elemen target secara bedah (surgical) tanpa merekonsiliasi seluruh subtree komponen.')">B. Signals mengikat perubahan state langsung ke node DOM spesifik tanpa perlu menjalankan ulang fungsi komponen atau membandingkan seluruh pohon Virtual DOM</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Signals justru mengeliminasi kebutuhan virtual DOM.')">C. Signals menghasilkan Virtual DOM yang dua kali lebih besar</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Dalam arsitektur Islands Architecture (seperti Astro), bagaimana cara kerja hidrasi JavaScript pada halaman web?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Islands architecture justru menghindari hidrasi seluruh halaman.')">A. Seluruh halaman di-hidrasi secara serempak oleh satu bundel runtime monolitik</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Islands Architecture membiarkan mayoritas halaman berupa HTML statis murni tanpa beban JavaScript, dan hanya mengunduh serta menghidrasi komponen kecil yang benar-benar memerlukan interaktivitas pengguna.')">B. Mayoritas halaman tetap berupa HTML statis murni (Zero-JS), dan hanya komponen interaktif tertentu ('islands') yang diunduh dan di-hidrasi kodenya secara terisolasi</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Islands architecture mendukung SSR dan SSG.')">C. Mengharuskan aplikasi berjalan sepenuhnya di client tanpa SSR</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="02_css_architecture.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 08: Arsitektur CSS Modern
+            </a>
+            <a href="../../plan.html" class="btn btn-primary">
+                Lanjut ke Master Roadmap <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

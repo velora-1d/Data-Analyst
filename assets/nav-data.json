@@ -26,16 +26,14 @@
     {
       "id": "frontend",
       "title": "Frontend Engineering",
-      "icon": "fa-solid fa-code",
-      "badge": "Roadmap",
-      "badgeColor": "var(--brand)",
+      "icon": "fa-solid fa-display",
+      "badge": "Aktif (3 Modul)",
+      "badgeColor": "var(--success)",
       "description": "Browser rendering pipeline, DOM & CSSOM, JS Event Loop, arsitektur CSS modern, dan paradigma framework (React/Vue/Svelte).",
       "modules": [
-        { "id": "fe_01_rendering", "title": "1. Browser Rendering Pipeline (DOM, Reflow & Repaint)", "url": "tracks/02_frontend/01_rendering.html", "status": "planned", "duration": "45m" },
-        { "id": "fe_02_event_loop", "title": "2. JS Engine Internals & Asynchronous Event Loop", "url": "tracks/02_frontend/02_event_loop.html", "status": "planned", "duration": "50m" },
-        { "id": "fe_03_css_architecture", "title": "3. Modern CSS Architecture & Design Tokens", "url": "tracks/02_frontend/03_css_architecture.html", "status": "planned", "duration": "40m" },
-        { "id": "fe_04_framework_paradigms", "title": "4. Virtual DOM vs Compiler vs Fine-Grained Reactivity", "url": "tracks/02_frontend/04_framework_paradigms.html", "status": "planned", "duration": "50m" },
-        { "id": "fe_05_rendering_models", "title": "5. Arsitektur Rendering: CSR, SSR, SSG & ISR", "url": "tracks/02_frontend/05_rendering_models.html", "status": "planned", "duration": "45m" }
+        { "id": "fe_01_rendering_pipeline", "title": "Fase 7: Rendering Pipeline & Event Loop", "url": "tracks/02_frontend/01_rendering_pipeline.html", "status": "ready", "duration": "55m" },
+        { "id": "fe_02_css_architecture", "title": "Fase 8: Arsitektur CSS & Design Tokens", "url": "tracks/02_frontend/02_css_architecture.html", "status": "ready", "duration": "45m" },
+        { "id": "fe_03_framework_paradigms", "title": "Fase 9: Paradigma Framework & State", "url": "tracks/02_frontend/03_framework_paradigms.html", "status": "ready", "duration": "55m" }
       ]
     },
     {
