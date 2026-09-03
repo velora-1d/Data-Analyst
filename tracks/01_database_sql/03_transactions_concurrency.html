@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 06: Transaksi Database, 4 Anomali ANSI SQL &amp; Concurrency Control — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Kuasai integritas transaksi perbankan & e-commerce: 4 Anomali ANSI SQL (Dirty, Fuzzy, Phantom, Write Skew), MVCC vs 2PL, Optimistic vs Pessimistic Locking, dan Distributed Saga Pattern.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <style>
+        .anomaly-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 20px;
+            margin-bottom: 18px;
+            border-left: 4px solid var(--brand);
+        }
+
+        .anomaly-card.danger { border-left-color: var(--danger); }
+        .anomaly-card.warning { border-left-color: var(--warning); }
+        .anomaly-card.info { border-left-color: var(--brand-light); }
+
+        .timeline-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 14px;
+            margin: 12px 0;
+            font-family: var(--mono);
+            font-size: 0.82rem;
+        }
+
+        .timeline-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 1fr;
+            gap: 12px;
+            padding: 4px 0;
+            border-bottom: 1px dashed rgba(255,255,255,0.06);
+        }
+
+        .timeline-time { color: var(--text-muted); font-weight: 700; }
+        .timeline-tx1 { color: #60A5FA; }
+        .timeline-tx2 { color: #34D399; }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 02</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 06: Concurrency Control</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-database"></i>
+            ecommerce.db <span>(ACID Engine)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 06</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-shield-halved"></i> 1. Masalah Konkurensi &amp; ACID</a>
+            <a href="#anomalies" class="nav-link"><i class="fa-solid fa-triangle-exclamation"></i> 2. 4 Anomali Standar ANSI SQL</a>
+            <a href="#isolation-levels" class="nav-link"><i class="fa-solid fa-layer-group"></i> 3. 4 Level Isolasi Transaksi</a>
+            <a href="#mvcc-vs-2pl" class="nav-link"><i class="fa-solid fa-scale-unbalanced-flip"></i> 4. MVCC vs Two-Phase Locking (2PL)</a>
+            <a href="#locking-strategies" class="nav-link"><i class="fa-solid fa-lock"></i> 5. Pessimistic vs Optimistic Locking</a>
+            <a href="#saga-pattern" class="nav-link"><i class="fa-solid fa-diagram-project"></i> 6. Transaksi Terdistribusi &amp; Saga</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 7. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-database"></i> Track 02: Database Internals</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 60 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Architect Level)</span>
+            </div>
+            <h1>Fase 06: Transaksi Database, 4 Anomali ANSI SQL &amp; Concurrency Control</h1>
+            <p class="module-lead">
+                Pertahanan mutlak terhadap hilangnya uang nasabah, race condition checkout flash sale, dan saldo minus: membedah 4 anomali data ANSI SQL, Snapshot Isolation Write Skew, arsitektur Multi-Version Concurrency Control (MVCC), hingga orkestrasi Saga pada sistem terdistribusi.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-shield-halved"></i> 1. Masalah Konkurensi: Saat Ribuan User Menyerbu Database</h2>
+            <p>
+                Jika database hanya melayani satu pengguna pada satu waktu (Single Thread), konsistensi data adalah hal yang sepele. Namun di dunia nyata, sistem e-commerce seperti Tokopedia atau Amazon melayani <strong>puluhan ribu request per detik (QPS)</strong> yang berusaha membaca dan memodifikasi baris data yang sama secara serentak.
+            </p>
+            <p>
+                Tanpa mekanisme <strong>Concurrency Control</strong> yang ketat, database akan mengalami bencana <em>Race Condition</em>: dua pembeli sama-sama membeli sisa 1 unit barang terakhir pada milidetik yang sama, menyebabkan stok barang menjadi <code>-1</code> (Over-selling).
+            </p>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="anomalies">
+            <h2><i class="fa-solid fa-triangle-exclamation"></i> 2. 4 Anomali Standar ANSI SQL 92</h2>
+            <p>
+                Standar internasional ANSI SQL mengklasifikasikan fenomena inkonsistensi data konkurensi menjadi 4 fenomena utama:
+            </p>
+
+            <!-- 1. Dirty Read -->
+            <div class="anomaly-card danger">
+                <div style="font-weight:700;color:#F87171;margin-bottom:6px;">
+                    <i class="fa-solid fa-biohazard"></i> 1. Dirty Read (Membaca Data Kotor/Palsu)
+                </div>
+                <p style="font-size:0.9rem;color:var(--text-secondary);margin:0 0 10px;">
+                    Transaksi A mengubah data namun <strong>belum COMMIT</strong>. Transaksi B membaca data perubahan tersebut. Tiba-tiba Transaksi A mengalami error dan melakukan <strong>ROLLBACK</strong>. Data yang dibaca Transaksi B menjadi "hantu" fiktif yang tidak pernah sah ada di database!
+                </p>
+                <div class="timeline-diagram">
+                    <div class="timeline-row"><span class="timeline-time">T1</span><span class="timeline-tx1">TX 1: UPDATE saldo = 10jt</span><span class="timeline-tx2">TX 2: Tunggu...</span></div>
+                    <div class="timeline-row"><span class="timeline-time">T2</span><span class="timeline-tx1">TX 1: Masih proses...</span><span class="timeline-tx2">TX 2: SELECT saldo &rarr; 10jt (DIRTY!)</span></div>
+                    <div class="timeline-row"><span class="timeline-time">T3</span><span class="timeline-tx1">TX 1: ROLLBACK! (Kembali 1jt)</span><span class="timeline-tx2">TX 2: Mengirim barang senilai 10jt!</span></div>
+                </div>
+            </div>
+
+            <!-- 2. Non-Repeatable Read -->
+            <div class="anomaly-card warning">
+                <div style="font-weight:700;color:#FBBF24;margin-bottom:6px;">
+                    <i class="fa-solid fa-repeat"></i> 2. Non-Repeatable Read (Fuzzy Read)
+                </div>
+                <p style="font-size:0.9rem;color:var(--text-secondary);margin:0;">
+                    Transaksi A membaca baris pelanggan dengan saldo 5 juta. Selagi Transaksi A masih berjalan, Transaksi B melakukan UPDATE saldo menjadi 2 juta dan <strong>COMMIT</strong>. Ketika Transaksi A membaca ulang baris yang sama, nilainya mendadak berubah menjadi 2 juta di tengah-tengah transaksi!
+                </p>
+            </div>
+
+            <!-- 3. Phantom Read -->
+            <div class="anomaly-card info">
+                <div style="font-weight:700;color:#60A5FA;margin-bottom:6px;">
+                    <i class="fa-solid fa-ghost"></i> 3. Phantom Read (Baris Siluman)
+                </div>
+                <p style="font-size:0.9rem;color:var(--text-secondary);margin:0;">
+                    Transaksi A menghitung jumlah transaksi: <code>SELECT COUNT(*) WHERE status = 'Selesai'</code> dan mendapatkan 100 baris. Bersamaan dengan itu, Transaksi B melakukan <code>INSERT</code> transaksi baru dan COMMIT. Saat Transaksi A membaca range yang sama, jumlah baris bertambah menjadi 101. Baris baru ini muncul layaknya "siluman".
+                </p>
+            </div>
+
+            <!-- 4. Write Skew -->
+            <div class="anomaly-card">
+                <div style="font-weight:700;color:var(--brand-light);margin-bottom:6px;">
+                    <i class="fa-solid fa-user-doctor"></i> 4. Write Skew &amp; Serialization Anomaly (Paradoks Dokter Jaga)
+                </div>
+                <p style="font-size:0.9rem;color:var(--text-secondary);margin:0;">
+                    <strong>Studi Kasus Rumah Sakit:</strong> Aturan RS mensyaratkan <em>"Minimal harus ada 1 dokter yang berjaga di malam hari"</em>. Saat ini ada 2 dokter jaga: Dokter Alice dan Dokter Bob.
+                    <br><br>
+                    Dokter Alice membuka aplikasi, melihat Bob sedang jaga, lalu mengajukan cuti (Alice off). Pada detik yang persis sama, Bob membuka aplikasi, melihat Alice sedang jaga, lalu mengajukan cuti (Bob off).
+                    <br><br>
+                    Kedua transaksi valid secara terisolasi, namun ketika keduanya COMMIT, rumah sakit <strong>tidak memiliki dokter jaga sama sekali</strong>! Inilah anomali <strong>Write Skew</strong> yang lolos di bawah isolasi Snapshot Isolation standard.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="isolation-levels">
+            <h2><i class="fa-solid fa-layer-group"></i> 3. Matriks 4 Tingkat Isolasi Transaksi</h2>
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Tingkat Isolasi</th>
+                        <th>Dirty Read</th>
+                        <th>Non-Repeatable Read</th>
+                        <th>Phantom Read</th>
+                        <th>Write Skew</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>READ UNCOMMITTED</strong></td>
+                        <td><span style="color:#F87171;">Bisa Terjadi</span></td>
+                        <td><span style="color:#F87171;">Bisa Terjadi</span></td>
+                        <td><span style="color:#F87171;">Bisa Terjadi</span></td>
+                        <td><span style="color:#F87171;">Bisa Terjadi</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>READ COMMITTED</strong> (Default Postgres)</td>
+                        <td><span style="color:#34D399;">Dicegah</span></td>
+                        <td><span style="color:#F87171;">Bisa Terjadi</span></td>
+                        <td><span style="color:#F87171;">Bisa Terjadi</span></td>
+                        <td><span style="color:#F87171;">Bisa Terjadi</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>REPEATABLE READ</strong> (Default MySQL InnoDB)</td>
+                        <td><span style="color:#34D399;">Dicegah</span></td>
+                        <td><span style="color:#34D399;">Dicegah</span></td>
+                        <td><span style="color:#34D399;">Dicegah (via Gap Lock)</span></td>
+                        <td><span style="color:#F87171;">Bisa Terjadi</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>SERIALIZABLE</strong></td>
+                        <td><span style="color:#34D399;">Dicegah</span></td>
+                        <td><span style="color:#34D399;">Dicegah</span></td>
+                        <td><span style="color:#34D399;">Dicegah</span></td>
+                        <td><span style="color:#34D399;">Dicegah</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="mvcc-vs-2pl">
+            <h2><i class="fa-solid fa-scale-unbalanced-flip"></i> 4. MVCC vs Two-Phase Locking (2PL)</h2>
+            <p>
+                Bagaimana database menerapkan isolasi tersebut di tingkat arsitektur perangkat lunak?
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-bad">
+                    <div class="code-pane-header"><i class="fa-solid fa-lock"></i> Two-Phase Locking (2PL Tradisional)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • <strong>Growing Phase:</strong> Transaksi meminta shared lock (S-Lock) untuk read dan exclusive lock (X-Lock) untuk write.<br>
+                        • <strong>Shrinking Phase:</strong> Lock dilepas setelah commit.<br>
+                        • <strong>Kelemahan Fatal:</strong> <em>Readers memblokir Writers, dan Writers memblokir Readers!</em> Menyebabkan deadlock dan antrean query macet pada sistem ber-traffic tinggi.
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-copy"></i> Multi-Version Concurrency Control (MVCC)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Database menyimpan beberapa versi sekaligus dari baris data yang sama.<br>
+                        • Setiap transaksi membaca snapshot konsisten berdasarkan timestamp atau Transaction ID (<code>xmin</code>/<code>xmax</code>).<br>
+                        • <strong>Keunggulan Revolusioner:</strong> <strong>Readers TIDAK PERNAH memblokir Writers, dan Writers TIDAK PERNAH memblokir Readers!</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="locking-strategies">
+            <h2><i class="fa-solid fa-lock"></i> 5. Strategi Penguncian di Level Aplikasi: Pessimistic vs Optimistic Locking</h2>
+
+            <div class="callout-box callout-tradeoff">
+                <div class="callout-header"><i class="fa-solid fa-shield"></i> Pessimistic Locking (SELECT ... FOR UPDATE)</div>
+                <div class="callout-body">
+                    Aplikasi mengasumsikan konflik pasti akan terjadi. Database mengunci baris secara eksklusif segera setelah baris dibaca:
+                    <br>
+                    <code>BEGIN TRANSACTION;<br>
+                    SELECT stok FROM produk WHERE id = 101 FOR UPDATE;<br>
+                    UPDATE produk SET stok = stok - 1 WHERE id = 101;<br>
+                    COMMIT;</code>
+                    <br><br>
+                    <strong>Kapan Digunakan:</strong> Kontensi sangat tinggi (kursi bioskop, tiket konser) di mana kegagalan transaksi tidak dapat ditoleransi.
+                </div>
+            </div>
+
+            <div class="callout-box callout-dod">
+                <div class="callout-header"><i class="fa-solid fa-bolt"></i> Optimistic Concurrency Control (OCC - Versioning)</div>
+                <div class="callout-body">
+                    Aplikasi mengasumsikan konflik jarang terjadi. Baris dibaca tanpa lock sama sekali, namun dilengkapi kolom <code>version INT</code>:
+                    <br>
+                    <code>-- 1. Baca data dan versi saat ini (misal version = 4):<br>
+                    SELECT stok, version FROM produk WHERE id = 101;<br><br>
+                    -- 2. Update secara atomik dengan syarat versi belum berubah:<br>
+                    UPDATE produk<br>
+                    SET stok = stok - 1, version = version + 1<br>
+                    WHERE id = 101 AND version = 4;</code>
+                    <br><br>
+                    Jika <code>rows_affected == 0</code>, artinya ada transaksi lain yang mendahului! Aplikasi cukup me-retry transaksi secara otomatis. Bebas dari deadlock dan sangat scalable!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="saga-pattern">
+            <h2><i class="fa-solid fa-diagram-project"></i> 6. Transaksi Terdistribusi &amp; Pola Saga</h2>
+            <p>
+                Dalam arsitektur Microservices di mana Service Pesanan, Service Pembayaran, dan Service Gudang memiliki database terpisah, transaksi ACID lokal tidak lagi bisa digunakan.
+            </p>
+            <p>
+                Protokol tradisional <strong>Two-Phase Commit (2PC)</strong> memiliki kelemahan kritis: jika Coordinator mati di tengah jalan, seluruh database downstream terkunci tanpa batas waktu (Blocking Protocol).
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-arrows-spin"></i> Pola Saga: Rangkaian Transaksi Lokal &amp; Kompensasi</div>
+                <div class="callout-body">
+                    Saga memecah transaksi terdistribusi menjadi serangkaian transaksi lokal yang dieksekusi berurutan:
+                    <ol style="margin-left:20px;margin-top:8px;">
+                        <li><strong>Order Service:</strong> Buat pesanan status <code>PENDING</code>.</li>
+                        <li><strong>Payment Service:</strong> Debet kartu kredit pelanggan.</li>
+                        <li><strong>Inventory Service:</strong> Kurangi stok di gudang.</li>
+                    </ol>
+                    Jika pada langkah ke-3 inventaris habis, Saga memicu <strong>Compensating Transaction (Rollback Semantik)</strong>:
+                    <ul>
+                        <li>Payment Service membatalkan tagihan (Refund).</li>
+                        <li>Order Service mengubah status pesanan menjadi <code>CANCELLED</code>.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 7. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-bomb"></i> War Story: Bencana Double Refund FinTech Senilai 2.4 Miliar</div>
+                <div class="callout-body">
+                    Sebuah dompet digital mengalami eksploitasi di mana pengguna sengaja menekan tombol "Refund" 10 kali secara paralel menggunakan bot multi-threading.
+                    <br><br>
+                    Aplikasi menggunakan query:
+                    <br>
+                    <code>if (status == 'SUCCESS') { refundMoney(); updateStatus('REFUNDED'); }</code>
+                    <br>
+                    Karena transaksi berjalan di bawah isolasi <code>READ COMMITTED</code> tanpa Pessimistic Lock atau CAS Versioning, ke-10 thread membaca <code>status == 'SUCCESS'</code> secara bersamaan sebelum thread pertama sempat meng-update status! Akibatnya dana di-refund 10 kali untuk 1 transaksi.
+                    <br><br>
+                    <strong>Perbaikan:</strong> Menambahkan <em>Idempotency Key</em> unik pada setiap permintaan refund dan menggunakan Optimistic CAS atomic conditional update.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman: Concurrency &amp; Transactions</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Manakah anomali transaksi yang tetap bisa terjadi di bawah Snapshot Isolation (MVCC) namun berhasil dicegah oleh Serializable Isolation?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Dirty Read dicegah oleh Snapshot Isolation.')">A. Dirty Read</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Non-repeatable read dicegah oleh Snapshot Isolation.')">B. Non-Repeatable Read</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Write Skew (seperti kasus dua dokter jaga yang sama-sama cuti) lolos pada Snapshot Isolation karena kedua transaksi menulis baris yang berbeda berdasarkan pembacaan snapshot yang valid, namun melanggar invariant global.')">C. Write Skew (Serialization Anomaly)</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'SQL Injection adalah celah keamanan query parsing, bukan anomali isolasi transaksi.')">D. SQL Injection</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Mengapa Optimistic Locking dengan kolom 'version' lebih disukai daripada Pessimistic Locking (SELECT ... FOR UPDATE) pada API RESTful stateless skala tinggi?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Optimistic locking tidak memakan disk storage tambahan selain 1 kolom integer.')">A. Karena membutuhkan kapasitas disk 10 kali lebih besar</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Optimistic locking tidak menahan koneksi dan lock baris di database selama pengguna membaca data, sehingga ribuan request dapat berjalan paralel tanpa bottleneck lock contention atau risiko deadlock.')">B. Karena tidak mengunci baris data di database selama interaksi pengguna, memaksimalkan throughput konkurensi tanpa risiko deadlock</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Optimistic locking tetap mendukung rollback jika update gagal.')">C. Karena menonaktifkan fitur rollback transaksi secara permanen</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="02_indexing_strategy.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 05: Indexing Strategy
+            </a>
+            <a href="../../plan.html" class="btn btn-primary">
+                Lanjut ke Master Roadmap <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

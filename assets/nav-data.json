@@ -19,7 +19,8 @@
         { "id": "06_window_functions", "title": "Modul 6: Window Functions & Tren", "url": "modul/06_window_functions.html", "status": "ready", "duration": "55m" },
         { "id": "07_analisis_nyata", "title": "Modul 7: Capstone Analisis E-Commerce", "url": "modul/07_analisis_nyata.html", "status": "ready", "duration": "60m" },
         { "id": "db_01_storage_engine", "title": "Fase 4: Storage Engine & B-Tree", "url": "tracks/01_database_sql/01_storage_engine.html", "status": "ready", "duration": "50m" },
-        { "id": "db_02_indexing_strategy", "title": "Fase 5: Indexing Strategy & EXPLAIN", "url": "tracks/01_database_sql/02_indexing_strategy.html", "status": "ready", "duration": "55m" }
+        { "id": "db_02_indexing_strategy", "title": "Fase 5: Indexing Strategy & EXPLAIN", "url": "tracks/01_database_sql/02_indexing_strategy.html", "status": "ready", "duration": "55m" },
+        { "id": "db_03_transactions_concurrency", "title": "Fase 6: Transaksi & Concurrency Control", "url": "tracks/01_database_sql/03_transactions_concurrency.html", "status": "ready", "duration": "60m" }
       ]
     },
     {
