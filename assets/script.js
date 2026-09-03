@@ -312,15 +312,26 @@ function initSupabaseERDCanvas() {
 }
 
 // ============================================================
-// DYNAMIC MULTI-TRACK SIDEBAR LOADER (FASE 2)
+// ============================================================
+// DYNAMIC MULTI-TRACK SIDEBAR LOADER (UNIFIED DASHBOARD)
 // ============================================================
 let navDataCache = null;
+
+function getRootPrefix() {
+    const p = window.location.pathname.replace(/\\/g, '/');
+    if (p.includes('/tracks/')) {
+        return '../../';
+    }
+    if (p.includes('/modul/')) {
+        return '../';
+    }
+    return '';
+}
 
 async function loadNavData() {
     if (navDataCache) return navDataCache;
     try {
-        const isInSubdir = window.location.pathname.includes('/modul/') || window.location.pathname.includes('/tracks/');
-        const fetchPath = isInSubdir ? '../assets/nav-data.json' : 'assets/nav-data.json';
+        const fetchPath = getRootPrefix() + 'assets/nav-data.json';
         const res = await fetch(fetchPath);
         if (res.ok) {
             navDataCache = await res.json();
@@ -333,13 +344,24 @@ async function loadNavData() {
 }
 
 async function initDynamicMultiTrackSidebar() {
-    const container = document.getElementById('dynamicSidebarNav');
+    let container = document.getElementById('dynamicSidebarNav');
+    if (!container) {
+        const oldList = document.querySelector('.sidebar-module-list');
+        if (oldList) {
+            container = document.createElement('div');
+            container.id = 'dynamicSidebarNav';
+            oldList.parentNode.replaceChild(container, oldList);
+        }
+    }
     if (!container) return;
 
     const data = await loadNavData();
     if (!data || !data.tracks) return;
 
-    const currentPath = window.location.pathname;
+    const prefix = getRootPrefix();
+    const currentPath = window.location.pathname.replace(/\\/g, '/');
+    const currentFileName = currentPath.split('/').pop().toLowerCase();
+
     const fragment = document.createDocumentFragment();
     const accordionWrapper = document.createElement('div');
     accordionWrapper.className = 'sidebar-track-accordion';
@@ -348,19 +370,31 @@ async function initDynamicMultiTrackSidebar() {
         const item = document.createElement('div');
         item.className = 'track-accordion-item';
 
-        const isCurrentTrack = track.modules && track.modules.some(m => currentPath.endsWith(m.url) || currentPath.includes(m.id));
-        if (isCurrentTrack || idx === 0) {
+        const isCurrentTrack = track.modules && track.modules.some(m => {
+            const mFile = m.url.split('/').pop().toLowerCase();
+            return currentFileName === mFile;
+        });
+
+        if (isCurrentTrack || (idx === 0 && !currentFileName.includes('.html'))) {
             item.classList.add('expanded');
         }
 
         const btn = document.createElement('button');
         btn.className = `track-accordion-btn ${isCurrentTrack ? 'active' : ''}`;
+        btn.type = 'button';
         btn.innerHTML = `
-            <span><i class="${track.icon} track-accordion-icon"></i> ${track.title}</span>
-            <i class="fa-solid fa-chevron-down track-accordion-chevron"></i>
+            <span class="track-accordion-title">
+                <i class="${track.icon} track-accordion-icon"></i>
+                <span class="track-name-text">${track.title}</span>
+            </span>
+            <span class="track-accordion-meta">
+                <span class="track-count-pill">${track.modules ? track.modules.length : 0}</span>
+                <i class="fa-solid fa-chevron-down track-accordion-chevron"></i>
+            </span>
         `;
 
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
             item.classList.toggle('expanded');
         });
 
@@ -370,14 +404,25 @@ async function initDynamicMultiTrackSidebar() {
         if (track.modules && track.modules.length > 0) {
             track.modules.forEach((mod, modIdx) => {
                 const link = document.createElement('a');
-                const isInSubdir = currentPath.includes('/modul/') || currentPath.includes('/tracks/');
-                const linkHref = isInSubdir ? `../${mod.url}` : mod.url;
-                link.href = linkHref;
+                link.href = prefix + mod.url;
                 link.className = 'sidebar-module-link';
-                if (currentPath.endsWith(mod.url) || currentPath.includes(mod.id)) {
+
+                const modFileName = mod.url.split('/').pop().toLowerCase();
+                const isCurrentMod = (currentFileName === modFileName);
+
+                if (isCurrentMod) {
                     link.classList.add('current');
                 }
-                link.innerHTML = `<div class="num">${modIdx + 1}</div> ${mod.title.replace(/^Modul \d+:\s*/, '')}`;
+
+                // Shorten module label
+                let cleanTitle = mod.title
+                    .replace(/^Modul \d+:\s*/i, '')
+                    .replace(/^Fase \d+:\s*/i, '');
+
+                link.innerHTML = `
+                    <div class="num">${modIdx + 1}</div>
+                    <span class="mod-title-text">${cleanTitle}</span>
+                `;
                 content.appendChild(link);
             });
         }
@@ -390,6 +435,14 @@ async function initDynamicMultiTrackSidebar() {
     fragment.appendChild(accordionWrapper);
     container.innerHTML = '';
     container.appendChild(fragment);
+
+    // Scroll active module into view smoothly in sidebar
+    const activeLink = container.querySelector('.sidebar-module-link.current');
+    if (activeLink) {
+        setTimeout(() => {
+            activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }, 150);
+    }
 }
 
 // --- Page Lifecycle Re-initialization ---

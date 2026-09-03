@@ -2249,7 +2249,7 @@ code:not([class*="language"]):not(.code-block code) {
     gap: 0.5rem;
 }
 
-/* Dynamic Multi-Track Sidebar Accordion (Fase 2) */
+/* Dynamic Multi-Track Sidebar Accordion (Unified Dashboard) */
 .sidebar-track-accordion {
     margin-bottom: 1.25rem;
 }
@@ -2257,6 +2257,7 @@ code:not([class*="language"]):not(.code-block code) {
 .track-accordion-item {
     border-bottom: 1px solid var(--border);
     overflow: hidden;
+    margin-bottom: 2px;
 }
 
 .track-accordion-btn {
@@ -2264,7 +2265,7 @@ code:not([class*="language"]):not(.code-block code) {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.65rem 0.75rem;
+    padding: 0.65rem 0.6rem;
     background: transparent;
     border: none;
     color: var(--text-secondary);
@@ -2284,16 +2285,58 @@ code:not([class*="language"]):not(.code-block code) {
 .track-accordion-btn.active {
     color: var(--brand-light);
     font-weight: 700;
+    background: var(--brand-xlight);
+}
+
+.track-accordion-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .track-accordion-icon {
-    margin-right: 0.5rem;
     color: var(--brand);
+    font-size: 0.88rem;
+    flex-shrink: 0;
+    width: 16px;
+    text-align: center;
+}
+
+.track-accordion-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.track-count-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.68rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: var(--bg-surface-3);
+    color: var(--text-muted);
+    border: 1px solid var(--border-light);
+    min-width: 22px;
+}
+
+.track-accordion-item.expanded .track-count-pill {
+    background: var(--brand-subtle);
+    color: var(--brand-light);
+    border-color: rgba(37, 99, 235, 0.4);
 }
 
 .track-accordion-chevron {
     font-size: 0.7rem;
-    transition: transform 0.2s ease;
+    transition: transform 0.25s ease;
     color: var(--text-muted);
 }
 
@@ -2304,12 +2347,19 @@ code:not([class*="language"]):not(.code-block code) {
 .track-accordion-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease;
-    padding-left: 0.75rem;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    padding-left: 0.4rem;
 }
 
 .track-accordion-item.expanded .track-accordion-content {
-    max-height: 500px;
+    max-height: 1200px;
+}
+
+.sidebar-module-link .mod-title-text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 

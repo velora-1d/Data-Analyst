@@ -7,7 +7,7 @@
       "id": "database_sql",
       "title": "Database & SQL Analytics",
       "icon": "fa-solid fa-database",
-      "badge": "Aktif (7 Modul)",
+      "badge": "Aktif (10 Modul)",
       "badgeColor": "var(--success)",
       "description": "Fondasi basis data relasional, SQL tingkat lanjut, metrik bisnis e-commerce, hingga struktur internal B-Tree & WAL.",
       "modules": [
