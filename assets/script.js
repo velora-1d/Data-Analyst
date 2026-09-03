@@ -470,15 +470,9 @@ async function initDynamicMultiTrackSidebar() {
         const content = document.createElement('div');
         content.className = 'track-accordion-content';
 
-        // Kartu Pengantar Definisi Humanis (Fase 1 Refactor)
-        if (track.realWorldAnalogy || track.humanDefinition) {
-            const introBox = document.createElement('div');
-            introBox.className = 'sidebar-track-intro';
-            introBox.innerHTML = `
-                ${track.realWorldAnalogy ? `<div class="track-analogy-pill"><i class="fa-solid fa-lightbulb"></i> ${track.realWorldAnalogy}</div>` : ''}
-                ${track.humanDefinition ? `<p class="track-human-desc">${track.humanDefinition}</p>` : ''}
-            `;
-            content.appendChild(introBox);
+        // Penjelasan track dipindahkan ke dalam halaman (bukan di sidebar menu)
+        if (isCurrentTrack && (track.realWorldAnalogy || track.humanDefinition)) {
+            injectPageTrackBanner(track);
         }
 
         if (track.modules && track.modules.length > 0) {
@@ -534,6 +528,31 @@ async function initDynamicMultiTrackSidebar() {
         setTimeout(() => {
             activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
         }, 150);
+    }
+}
+
+// Injeksi Banner Penjelasan Track di DALAM HALAMAN (Bukan di Sidebar)
+function injectPageTrackBanner(track) {
+    if (document.getElementById('pageTrackScopeBanner')) return;
+    const target = document.querySelector('.main-inner') || document.querySelector('.main');
+    if (!target) return;
+
+    const banner = document.createElement('div');
+    banner.id = 'pageTrackScopeBanner';
+    banner.className = 'page-track-scope-banner';
+    banner.innerHTML = `
+        <div class="track-scope-top">
+            <span class="track-scope-badge"><i class="${track.icon}"></i> Track: ${track.title}</span>
+            ${track.realWorldAnalogy ? `<span class="track-scope-analogy"><i class="fa-solid fa-lightbulb"></i> ${track.realWorldAnalogy}</span>` : ''}
+        </div>
+        ${track.humanDefinition ? `<p class="track-scope-desc">${track.humanDefinition}</p>` : ''}
+    `;
+
+    const firstChild = target.firstElementChild;
+    if (firstChild) {
+        target.insertBefore(banner, firstChild);
+    } else {
+        target.appendChild(banner);
     }
 }
 
