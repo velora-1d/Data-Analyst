@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 05: Indexing Strategy, B-Tree Traversal &amp; EXPLAIN QUERY PLAN — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Kuasai strategi indexing basis data tingkat tinggi: Leftmost Prefix Rule, Covering Index, eliminasi Full Table Scan O(N) via EXPLAIN QUERY PLAN, dan optimalisasi query SARGable.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <style>
+        .plan-diff-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 850px) {
+            .plan-diff-grid { grid-template-columns: 1fr; }
+        }
+
+        .plan-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 20px;
+        }
+
+        .plan-badge-slow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(239, 68, 68, 0.15);
+            color: #F87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .plan-badge-fast {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(16, 185, 129, 0.15);
+            color: #34D399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 02</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 05: Indexing Strategy</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-database"></i>
+            ecommerce.db <span>(Query Optimizer)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 05</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Anatomi B-Tree Index Sekunder</a>
+            <a href="#leftmost-prefix" class="nav-link"><i class="fa-solid fa-arrow-down-a-z"></i> 2. Aturan Leftmost Prefix</a>
+            <a href="#cardinality" class="nav-link"><i class="fa-solid fa-chart-pie"></i> 3. Selektivitas &amp; Kardinalitas Index</a>
+            <a href="#explain-query-plan" class="nav-link"><i class="fa-solid fa-magnifying-glass-chart"></i> 4. Membedah EXPLAIN QUERY PLAN</a>
+            <a href="#covering-index" class="nav-link"><i class="fa-solid fa-bolt"></i> 5. Kekuatan Sakti Covering Index</a>
+            <a href="#sargable" class="nav-link"><i class="fa-solid fa-filter"></i> 6. Desain Query SARGable</a>
+            <a href="#lab-optimizer" class="nav-link"><i class="fa-solid fa-flask"></i> 7. Lab Empiris Optimasi Query</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-database"></i> Track 02: Database Internals</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Deep Dive)</span>
+            </div>
+            <h1>Fase 05: Indexing Strategy, B-Tree Traversal &amp; EXPLAIN QUERY PLAN</h1>
+            <p class="module-lead">
+                Transformasi query yang lambat menjadi secepat kilat: membedah cara kerja internal B-Tree Index Sekunder, aturan absolut Leftmost Prefix pada Compound Index, eliminasi disk seek tabel via Covering Index, dan rekayasa query SARGable anti-full scan.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Anatomi B-Tree Index Sekunder</h2>
+            <p>
+                Ketika Anda mengeksekusi <code>CREATE INDEX idx_pesanan_tgl ON pesanan(tanggal_pesanan);</code>, apa yang sebenarnya terjadi di dalam disk storage database?
+            </p>
+            <p>
+                Database tidak sekadar menduplikasi baris tabel. Database membangun <strong>pohon B-Tree terpisah (Secondary B-Tree)</strong>. Pada B-Tree sekunder ini:
+            </p>
+            <ul>
+                <li><strong>Key:</strong> Nilai kolom yang diindeks (misalnya <code>tanggal_pesanan</code>), tersusun rapi secara terurut (sorted).</li>
+                <li><strong>Payload:</strong> Pointer penunjuk balik berupa <strong>RowID</strong> (Primary Key) dari baris tabel utama.</li>
+            </ul>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-microchip"></i> Dua Langkah Pencarian Index Lookup (Index Seek + Table Seek)</div>
+                <div class="callout-body">
+                    Ketika query menjalankan <code>SELECT total_bayar FROM pesanan WHERE tanggal_pesanan = '2024-03-01'</code>:
+                    <ol style="margin-left: 20px; margin-top: 8px;">
+                        <li><strong>Langkah 1 (Index Seek):</strong> Database mencari key <code>'2024-03-01'</code> di B-Tree Index secara binary search dengan kompleksitas <strong>O(log N)</strong>, lalu menemukan RowID = <code>1042</code>.</li>
+                        <li><strong>Langkah 2 (Table Random Seek / Bookmark Lookup):</strong> Database mengambil RowID <code>1042</code>, lalu melompat ke B-Tree Tabel Utama untuk mengambil kolom <code>total_bayar</code>. Langkah kedua ini membutuhkan random I/O disk tambahan jika kolom tidak ada di dalam index!</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="leftmost-prefix">
+            <h2><i class="fa-solid fa-arrow-down-a-z"></i> 2. Aturan Emas Leftmost Prefix pada Compound Index</h2>
+            <p>
+                Sebuah <strong>Compound Index</strong> (indeks gabungan beberapa kolom) dibuat untuk mengoptimasi query multi-kondisi, contohnya:
+            </p>
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> DDL Compound Index</span></div>
+                <pre><code>CREATE INDEX idx_order_comp ON pesanan(status_pesanan, tanggal_pesanan, total_bayar);</code></pre>
+            </div>
+
+            <p>
+                Bagaimana database menyusun data dalam compound index ini? Pahami <strong>Analogi Buku Telepon Klasik</strong>:
+            </p>
+
+            <div class="callout-box callout-tradeoff">
+                <div class="callout-header"><i class="fa-solid fa-book-open"></i> Analogi Buku Telepon: (Nama Belakang, Nama Depan)</div>
+                <div class="callout-body">
+                    Buku telepon dicetak terurut abjad berdasarkan <strong>Nama Belakang</strong> terlebih dahulu, baru kemudian <strong>Nama Depan</strong>.
+                    <ul>
+                        <li>Jika Anda mencari <em>"Siapa saja yang bernama belakang 'Nawawi'?"</em> &rarr; <strong>Sangat Cepat</strong> (Index Digunakan).</li>
+                        <li>Jika Anda mencari <em>"Siapa yang bernama belakang 'Nawawi' dan nama depan 'Mahin'?"</em> &rarr; <strong>Sangat Cepat</strong> (Index Digunakan Penuh).</li>
+                        <li>Namun jika Anda mencari <em>"Siapa saja yang nama depannya 'Mahin' tanpa peduli nama belakangnya?"</em> &rarr; Anda terpaksa <strong>membalik lembar demi lembar dari halaman 1 sampai akhir buku</strong> (Full Scan O(N)) karena nama depan tersebar acak di setiap nama belakang yang berbeda!</li>
+                    </ul>
+                    <strong>Aturan Leftmost Prefix:</strong> Indeks <code>(A, B, C)</code> hanya dapat melayani query yang memfilter <code>(A)</code>, <code>(A, B)</code>, atau <code>(A, B, C)</code>. Indeks ini <strong>TIDAK DAPAT DIGUNAKAN</strong> oleh query yang hanya memfilter <code>(B)</code> atau <code>(C)</code>!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="cardinality">
+            <h2><i class="fa-solid fa-chart-pie"></i> 3. Selektivitas &amp; Kardinalitas Index</h2>
+            <p>
+                Apakah kita harus mengindeks semua kolom? <strong>TIDAK!</strong> Query Optimizer memutuskan apakah akan menggunakan index atau melakukan Full Table Scan berdasarkan rasio <strong>Selektivitas (Kardinalitas)</strong>:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-calculator"></i> Rumus Selektivitas Index</span></div>
+                <pre><code>Rasio Selektivitas = COUNT(DISTINCT kolom) / COUNT(*)</code></pre>
+            </div>
+
+            <div class="callout-box callout-pitfall">
+                <div class="callout-header"><i class="fa-solid fa-triangle-exclamation"></i> Mengapa Mengindeks Kolom Boolean (Status Aktif) Sering Diabaikan Optimizer?</div>
+                <div class="callout-body">
+                    Jika sebuah tabel pelanggan memiliki 1.000.000 baris dengan kolom <code>is_active BOOLEAN</code> di mana 90% bernilai <code>TRUE</code> dan 10% bernilai <code>FALSE</code>:
+                    <br><br>
+                    Rasio selektivitas kolom hanya <code>2 / 1.000.000 = 0.000002</code> (sangat buruk!). Jika query mencari <code>WHERE is_active = TRUE</code>, membaca B-Tree lalu melakukan 900.000 kali random seek ke tabel utama jauh lebih lambat daripada membaca file tabel secara berurutan (Sequential Scan) dari awal sampai akhir!
+                    <br><br>
+                    <strong>Solusi:</strong> Gunakan <strong>Partial Index</strong>:
+                    <br>
+                    <code>CREATE INDEX idx_inactive ON pelanggan(email) WHERE is_active = 0;</code>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="explain-query-plan">
+            <h2><i class="fa-solid fa-magnifying-glass-chart"></i> 4. Membedah Makna Output EXPLAIN QUERY PLAN</h2>
+            <p>
+                Jangan pernah menebak-nebak kecepatan query Anda. Periksa rencana eksekusi compiler menggunakan perintah <code>EXPLAIN QUERY PLAN</code>:
+            </p>
+
+            <div class="plan-diff-grid">
+                <div class="plan-box">
+                    <span class="plan-badge-slow"><i class="fa-solid fa-triangle-exclamation"></i> BAHAYA: Full Table Scan</span>
+                    <pre><code>QUERY PLAN
+`--SCAN pesanan</code></pre>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);margin-top:10px;">
+                        Database membaca setiap halaman 4KB di tabel dari awal sampai habis. Kompleksitas <strong>O(N)</strong>. Menyebabkan CPU 100% dan disk saturation di sistem produksi.
+                    </p>
+                </div>
+                <div class="plan-box">
+                    <span class="plan-badge-fast"><i class="fa-solid fa-bolt"></i> OPTIMAL: Index Search</span>
+                    <pre><code>QUERY PLAN
+`--SEARCH pesanan USING INDEX idx_tgl (tgl=?)</code></pre>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);margin-top:10px;">
+                        Database melompati jutaan baris langsung ke leaf page yang tepat menggunakan binary search tree. Kompleksitas <strong>O(log N)</strong>. Latensi hanya 0.1ms.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="covering-index">
+            <h2><i class="fa-solid fa-bolt"></i> 5. Kekuatan Sakti Covering Index</h2>
+            <p>
+                Apa tingkat efisiensi tertinggi dalam indexing? Jawabannya adalah <strong>Covering Index</strong>.
+            </p>
+            <p>
+                Covering Index terjadi ketika <strong>seluruh kolom yang ada di klausa SELECT, WHERE, JOIN, dan ORDER BY sudah tercakup di dalam node leaf B-Tree Index itu sendiri</strong>!
+            </p>
+
+            <div class="callout-box callout-dod">
+                <div class="callout-header"><i class="fa-solid fa-circle-check"></i> Output Nyata Covering Index di SQLite:</div>
+                <div class="callout-body">
+                    <code>QUERY PLAN<br>
+                    `--SEARCH pesanan USING COVERING INDEX idx_pesanan_status (status_pesanan=?)</code>
+                    <br><br>
+                    <strong>Keuntungan 10x Lipat:</strong> Database tidak perlu melakukan disk seek ke tabel utama sama sekali! Seluruh data langsung diambil dari index leaf, memotong latensi I/O hingga 70-90%.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="sargable">
+            <h2><i class="fa-solid fa-filter"></i> 6. Desain Query SARGable (Search Argument Able)</h2>
+            <p>
+                Seringkali developer sudah membuat index dengan benar, namun index tersebut sama sekali tidak terpakai karena penulisan query yang melanggar kaidah <strong>SARGable</strong>:
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-bad">
+                    <div class="code-pane-header"><i class="fa-solid fa-xmark"></i> Non-SARGable (Index Gugur &rarr; SCAN TABLE)</div>
+                    <pre><code>-- 1. Membungkus kolom dengan fungsi
+WHERE strftime('%Y', tanggal_pesanan) = '2024'
+
+-- 2. Wildcard di awal string
+WHERE nama_pelanggan LIKE '%budi'
+
+-- 3. Operasi aritmatika pada kolom
+WHERE total_bayar + 10000 &gt; 500000
+
+-- 4. Implicit Type Conversion (Teks vs Angka)
+WHERE nomor_hp = 6281234567</code></pre>
+                </div>
+
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-check"></i> SARGable (Index B-Tree Aktif &rarr; SEARCH TABLE)</div>
+                    <pre><code>-- 1. Gunakan range comparison langsung
+WHERE tanggal_pesanan &gt;= '2024-01-01'
+  AND tanggal_pesanan &lt;  '2025-01-01'
+
+-- 2. Wildcard hanya di akhir (Prefix Search)
+WHERE nama_pelanggan LIKE 'budi%'
+
+-- 3. Pindahkan kalkulasi ke sisi nilai konstan
+WHERE total_bayar &gt; 500000 - 10000
+
+-- 4. Tipe data cocok persis
+WHERE nomor_hp = '6281234567'</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="lab-optimizer">
+            <h2><i class="fa-solid fa-flask"></i> 7. Lab Empiris: Pembuktian Nyata pada ecommerce.db</h2>
+            <p>
+                Mari kita buktikan secara empiris pada database <code>ecommerce.db</code> kita menggunakan skrip Node.js runtime bawaan:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label"><i class="fa-solid fa-terminal"></i> Terminal Command</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
+                </div>
+                <pre><code>node --eval "
+const { DatabaseSync } = require('node:sqlite');
+const db = new DatabaseSync('database/ecommerce.db');
+
+// Buat Indeks Tanggal
+db.exec('CREATE INDEX IF NOT EXISTS idx_test_tgl ON pesanan(tanggal_pesanan);');
+
+console.log('Query Non-SARGable (strftime):');
+console.log(db.prepare(\"EXPLAIN QUERY PLAN SELECT * FROM pesanan WHERE strftime('%Y', tanggal_pesanan) = '2024'\").all());
+
+console.log('Query SARGable (Range Comparison):');
+console.log(db.prepare(\"EXPLAIN QUERY PLAN SELECT * FROM pesanan WHERE tanggal_pesanan >= '2024-01-01' AND tanggal_pesanan < '2025-01-01'\").all());
+
+db.exec('DROP INDEX IF EXISTS idx_test_tgl;');
+"</code></pre>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label"><i class="fa-solid fa-square-poll-horizontal"></i> Hasil Eksekusi Empiris di Terminal</span>
+                </div>
+                <pre><code>Query Non-SARGable (strftime):
+[ { id: 2, parent: 0, notused: 216, detail: 'SCAN pesanan' } ]
+
+Query SARGable (Range Comparison):
+[ { id: 3, parent: 0, notused: 162, detail: 'SEARCH pesanan USING INDEX idx_test_tgl (tanggal_pesanan>? AND tanggal_pesanan<?)' } ]</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 8: Quiz -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman: Indexing &amp; Query Optimizer</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Diberikan compound index pada kolom (kota_pengiriman, status_pesanan, total_bayar). Manakah query di bawah yang TIDAK BISA memanfaatkan index tersebut secara efisien?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Query ini memanfaatkan leftmost column kota_pengiriman, sehingga index aktif.')">A. WHERE kota_pengiriman = 'Surabaya' AND status_pesanan = 'Selesai'</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Query ini memanfaatkan prefix kolom pertama kota_pengiriman.')">B. WHERE kota_pengiriman = 'Jakarta'</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Berdasarkan Leftmost Prefix Rule, kolom pertama (kota_pengiriman) dilewati, sehingga B-Tree index tidak dapat mencari status_pesanan secara terurut dan terpaksa melakukan SCAN TABLE.')">C. WHERE status_pesanan = 'Selesai' AND total_bayar > 500000</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Query ini mencakup ketiga kolom secara lengkap.')">D. WHERE kota_pengiriman = 'Bandung' AND status_pesanan = 'Dikirim' AND total_bayar > 100000</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Apa keuntungan utama dari output 'USING COVERING INDEX' dibandingkan 'USING INDEX' biasa?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Covering index tidak membatasi jumlah baris yang dihasilkan.')">A. Menghasilkan jumlah baris maksimal 10 record saja</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Covering index menampung semua kolom yang diminta query di dalam daun indeks, sehingga menghilangkan kebutuhan melompat ke file tabel utama (zero table lookup disk seek).')">B. Database tidak perlu melakukan disk seek ke tabel utama sama sekali karena semua kolom yang diminta sudah berada di dalam index B-Tree</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Covering index tidak secara otomatis mengubah tipe data.')">C. Mengubah tipe data teks menjadi integer secara otomatis</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="01_storage_engine.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 04: Storage Engine
+            </a>
+            <a href="../../plan.html" class="btn btn-primary">
+                Lanjut ke Master Roadmap <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>
