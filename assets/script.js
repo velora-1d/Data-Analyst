@@ -362,6 +362,18 @@ function initHeaderBrand() {
     }
 }
 
+function initFavicon() {
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        link.type = 'image/svg+xml';
+        document.head.appendChild(link);
+    }
+    const prefix = getRootPrefix();
+    link.href = prefix + 'assets/favicon.svg?v=2.2.0';
+}
+
 async function initDynamicMultiTrackSidebar() {
     let container = document.getElementById('dynamicSidebarNav');
     if (!container) {
@@ -473,6 +485,7 @@ function reinitPage() {
     initSidebar();
     initMobileSidebar();
     initHeaderBrand();
+    initFavicon();
     initDynamicMultiTrackSidebar();
     initSupabaseERDCanvas();
     idlePrefetchLinks();

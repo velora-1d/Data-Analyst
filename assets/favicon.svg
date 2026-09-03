@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="60%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="codeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#93C5FD"/>
+      <stop offset="50%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="slashGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Squircle Background -->
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#bgGrad)" stroke="#38BDF8" stroke-width="2.5" stroke-opacity="0.4"/>
+
+  <!-- Subtle grid pattern in background -->
+  <path d="M4 64 H124 M64 4 V124" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+
+  <!-- Code Glyphs </> -->
+  <g filter="url(#glow)">
+    <!-- Left Bracket < -->
+    <path d="M46 44 L28 64 L46 84" fill="none" stroke="url(#codeGrad)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Slash / -->
+    <path d="M72 36 L56 92" fill="none" stroke="url(#slashGrad)" stroke-width="9.5" stroke-linecap="round"/>
+
+    <!-- Right Bracket > -->
+    <path d="M82 44 L100 64 L82 84" fill="none" stroke="url(#codeGrad)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Glowing Accent Dot (Active Node) -->
+  <circle cx="104" cy="24" r="5" fill="#38BDF8"/>
+</svg>
