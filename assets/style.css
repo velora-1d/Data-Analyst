@@ -857,20 +857,24 @@ code:not([class*="language"]):not(.code-block code) {
     font-weight: 600;
 }
 
-/* --- 13. Comparison Tables --- */
-.compare-table {
+/* --- 13. Comparison & Data Tables --- */
+.compare-table,
+.hex-table {
     width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 1.75rem 0;
     font-size: 0.90625rem;
     background: var(--bg-surface);
     border: 1px solid var(--border);
     border-radius: var(--r-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
+    transition: background var(--t), border-color var(--t);
 }
 
-.compare-table thead th {
+.compare-table thead th,
+.hex-table thead th {
     padding: 0.875rem 1.125rem;
     background: var(--bg-surface-2);
     color: var(--text-primary);
@@ -880,19 +884,99 @@ code:not([class*="language"]):not(.code-block code) {
     font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    white-space: nowrap;
 }
 
-.compare-table tbody td {
-    padding: 0.875rem 1.125rem;
+.compare-table tbody td,
+.hex-table tbody td {
+    padding: 0.95rem 1.125rem;
     border-bottom: 1px solid var(--border);
     color: var(--text-secondary);
     vertical-align: middle;
+    line-height: 1.65;
 }
-.compare-table tbody tr:last-child td {
+
+.compare-table tbody tr:last-child td,
+.hex-table tbody tr:last-child td {
     border-bottom: none;
 }
-.compare-table tbody tr:hover td {
-    background: var(--bg-surface-2);
+
+.compare-table tbody tr:hover td,
+.hex-table tbody tr:hover td {
+    background: var(--brand-xlight);
+}
+
+.hex-table td strong {
+    color: var(--text-primary);
+}
+
+.hex-table td code {
+    display: inline-block;
+    margin: 2px 2px;
+}
+
+/* Status & Cost Badges inside tables */
+.hex-table td span[style*="#F87171"],
+.hex-table td span[style*="red"],
+.badge-cost-high {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.65rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700 !important;
+    background: rgba(239, 68, 68, 0.1);
+    color: #DC2626 !important;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    white-space: nowrap;
+}
+
+.hex-table td span[style*="#FBBF24"],
+.hex-table td span[style*="yellow"],
+.badge-cost-med {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.65rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700 !important;
+    background: rgba(245, 158, 11, 0.1);
+    color: #B45309 !important;
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    white-space: nowrap;
+}
+
+.hex-table td span[style*="#34D399"],
+.hex-table td span[style*="green"],
+.badge-cost-low {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.65rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700 !important;
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669 !important;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    white-space: nowrap;
+}
+
+[data-theme="dark"] .hex-table td span[style*="#F87171"],
+[data-theme="dark"] .badge-cost-high {
+    color: #F87171 !important;
+    background: rgba(239, 68, 68, 0.15);
+}
+
+[data-theme="dark"] .hex-table td span[style*="#FBBF24"],
+[data-theme="dark"] .badge-cost-med {
+    color: #FBBF24 !important;
+    background: rgba(245, 158, 11, 0.15);
+}
+
+[data-theme="dark"] .hex-table td span[style*="#34D399"],
+[data-theme="dark"] .badge-cost-low {
+    color: #34D399 !important;
+    background: rgba(16, 185, 129, 0.15);
 }
 
 /* --- 14. Quiz Section --- */

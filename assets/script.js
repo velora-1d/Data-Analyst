@@ -331,7 +331,7 @@ function getRootPrefix() {
 async function loadNavData() {
     if (navDataCache) return navDataCache;
     try {
-        const fetchPath = getRootPrefix() + 'assets/nav-data.json?v=2.3.0';
+        const fetchPath = getRootPrefix() + 'assets/nav-data.json?v=2.4.0';
         const res = await fetch(fetchPath);
         if (res.ok) {
             navDataCache = await res.json();
@@ -371,7 +371,7 @@ function initFavicon() {
         document.head.appendChild(link);
     }
     const prefix = getRootPrefix();
-    link.href = prefix + 'assets/favicon.svg?v=2.3.0';
+    link.href = prefix + 'assets/favicon.svg?v=2.4.0';
 }
 
 async function initDynamicMultiTrackSidebar() {

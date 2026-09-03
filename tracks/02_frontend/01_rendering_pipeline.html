@@ -10,7 +10,7 @@
     <meta name="description" content="Bedah tuntas proses konversi kode HTML, CSS, dan JS menjadi piksel di monitor: DOM, CSSOM, Render Tree, Layout Reflow, GPU Compositing, Layout Thrashing, dan Event Loop Microtasks vs Macrotasks.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/style.css?v=2.3.0">
+    <link rel="stylesheet" href="../../assets/style.css?v=2.4.0">
     <style>
         .pipeline-flow {
             display: grid;
@@ -93,7 +93,7 @@
         .node-render { background: rgba(239, 68, 68, 0.2); color: #F87171; border: 1px solid #EF4444; }
         .node-macro { background: rgba(148, 163, 184, 0.2); color: #CBD5E1; border: 1px solid #64748B; }
     </style>
-    <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg?v=2.3.0">
+    <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg?v=2.4.0">
 </head>
 <body>
 
@@ -231,36 +231,38 @@
                 Kunci utama optimasi performa frontend adalah memahami operasi mana yang memaksa browser mengulang tahap kalkulasi:
             </p>
 
-            <table class="hex-table">
-                <thead>
-                    <tr>
-                        <th>Tingkat Biaya</th>
-                        <th>Tahapan Yang Dipicu</th>
-                        <th>Contoh Properti CSS</th>
-                        <th>Dampak Performa</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><span style="color:#F87171;font-weight:700;">Sangat Mahal</span></td>
-                        <td><strong>Reflow (Layout) + Repaint + Composite</strong></td>
-                        <td><code>width</code>, <code>height</code>, <code>margin</code>, <code>padding</code>, <code>left</code>, <code>top</code>, <code>fontSize</code></td>
-                        <td>CPU intensif. Memicu kalkulasi ulang geometri seluruh elemen turunan di halaman!</td>
-                    </tr>
-                    <tr>
-                        <td><span style="color:#FBBF24;font-weight:700;">Sedang</span></td>
-                        <td><strong>Repaint + Composite (Lewati Reflow)</strong></td>
-                        <td><code>color</code>, <code>background-color</code>, <code>box-shadow</code>, <code>border-color</code>, <code>visibility</code></td>
-                        <td>Geometri tidak berubah, namun GPU harus menggambar ulang piksel warna ke memori.</td>
-                    </tr>
-                    <tr>
-                        <td><span style="color:#34D399;font-weight:700;">Sangat Cepat</span></td>
-                        <td><strong>Hanya Composite (Lewati Reflow &amp; Paint!)</strong></td>
-                        <td><code>transform: translate3d()</code>, <code>opacity</code></td>
-                        <td><strong>Zero CPU Reflow!</strong> Dihitung langsung oleh GPU Hardware Acceleration pada thread Compositor. 60 FPS terjamin.</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="hex-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 150px;">Tingkat Biaya</th>
+                            <th style="width: 260px;">Tahapan Yang Dipicu</th>
+                            <th>Contoh Properti CSS</th>
+                            <th>Dampak Performa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge-cost-high"><i class="fa-solid fa-triangle-exclamation"></i> Sangat Mahal</span></td>
+                            <td><strong>Reflow (Layout) + Repaint + Composite</strong></td>
+                            <td><code>width</code> <code>height</code> <code>margin</code> <code>padding</code> <code>left</code> <code>top</code> <code>fontSize</code></td>
+                            <td>CPU intensif. Memicu kalkulasi ulang geometri seluruh elemen turunan di halaman!</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-cost-med"><i class="fa-solid fa-clock"></i> Sedang</span></td>
+                            <td><strong>Repaint + Composite (Lewati Reflow)</strong></td>
+                            <td><code>color</code> <code>background-color</code> <code>box-shadow</code> <code>border-color</code> <code>visibility</code></td>
+                            <td>Geometri tidak berubah, namun GPU harus menggambar ulang piksel warna ke memori.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-cost-low"><i class="fa-solid fa-bolt"></i> Sangat Cepat</span></td>
+                            <td><strong>Hanya Composite (Lewati Reflow &amp; Paint!)</strong></td>
+                            <td><code>transform: translate3d()</code> <code>opacity</code></td>
+                            <td><strong>Zero CPU Reflow!</strong> Dihitung langsung oleh GPU Hardware Acceleration pada thread Compositor. 60 FPS terjamin.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <!-- Section 4 -->
@@ -438,6 +440,6 @@ console.log('6: Synchronous Akhir');</code></pre>
     </main>
 </div>
 
-<script src="../../assets/script.js?v=2.3.0"></script>
+<script src="../../assets/script.js?v=2.4.0"></script>
 </body>
 </html>
