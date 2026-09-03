@@ -98,6 +98,81 @@
             .wireframe-sidebar { display: none; }
             .wireframe-grid { grid-template-columns: 1fr; }
         }
+
+        /* Live Visual Example Boxes */
+        .live-preview-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 20px;
+            margin: 24px 0;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+        }
+        .live-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+        .live-preview-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--brand-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .browser-mockup {
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            overflow: hidden;
+            background: var(--bg-surface-2);
+            margin: 16px 0;
+        }
+        .browser-chrome {
+            background: var(--bg-surface);
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .browser-dots {
+            display: flex;
+            gap: 6px;
+        }
+        .browser-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .dot-red { background: #EF4444; }
+        .dot-yellow { background: #F59E0B; }
+        .dot-green { background: #10B981; }
+        .browser-address {
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            flex: 1;
+            max-width: 300px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .demo-split-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 12px;
+        }
+        @media (max-width: 768px) {
+            .demo-split-box { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -245,6 +320,44 @@
                 Salah satu kesalahan paling mendasar frontend engineer adalah memaksakan Flexbox untuk mengatur seluruh halaman, atau menggunakan Grid untuk hal-hal sepele. Berikut adalah aturan baku industri:
             </p>
 
+            <!-- LIVE PREVIEW BOX: GRID VS FLEXBOX -->
+            <div class="live-preview-box">
+                <div class="live-preview-header">
+                    <div class="live-preview-title"><i class="fa-solid fa-play" style="color:var(--brand);"></i> Contoh Visual Nyata: CSS Flexbox (1D) vs CSS Grid (2D)</div>
+                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);"><i class="fa-solid fa-eye"></i> Render Langsung</span>
+                </div>
+                
+                <div class="demo-split-box">
+                    <!-- Left: Flexbox 1D -->
+                    <div style="background:var(--bg-surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:16px;">
+                        <strong style="font-size:0.85rem;color:var(--brand-light);display:block;margin-bottom:8px;">
+                            <i class="fa-solid fa-arrows-left-right"></i> Flexbox 1-Dimensi (Main Axis: space-between)
+                        </strong>
+                        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-surface);padding:12px;border-radius:var(--r-xs);border:1px dashed var(--brand);">
+                            <span style="font-weight:700;font-size:0.82rem;color:var(--text-primary);"><i class="fa-solid fa-shield-halved" style="color:var(--brand);"></i> Velora App</span>
+                            <div style="display:flex;gap:8px;">
+                                <button style="background:var(--brand);color:#fff;border:none;padding:5px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">Masuk</button>
+                                <button style="background:var(--bg-surface-2);color:var(--text-primary);border:1px solid var(--border);padding:5px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">Daftar</button>
+                            </div>
+                        </div>
+                        <p style="font-size:0.75rem;color:var(--text-muted);margin:8px 0 0 0;">Elemen fleksibel menyejajarkan diri secara horizontal pada satu baris.</p>
+                    </div>
+
+                    <!-- Right: CSS Grid 2D -->
+                    <div style="background:var(--bg-surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:16px;">
+                        <strong style="font-size:0.85rem;color:var(--brand-light);display:block;margin-bottom:8px;">
+                            <i class="fa-solid fa-table-cells"></i> CSS Grid 2-Dimensi (Bento Matrix: 2 Kolom x 2 Baris)
+                        </strong>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--bg-surface);padding:12px;border-radius:var(--r-xs);border:1px dashed var(--brand);">
+                            <div style="background:var(--bg-surface-2);padding:8px;border-radius:4px;font-size:0.75rem;text-align:center;border:1px solid var(--border);"><strong>Item A</strong> (1x1)</div>
+                            <div style="background:var(--bg-surface-2);padding:8px;border-radius:4px;font-size:0.75rem;text-align:center;border:1px solid var(--border);"><strong>Item B</strong> (1x1)</div>
+                            <div style="background:rgba(37,99,235,0.15);padding:8px;border-radius:4px;font-size:0.75rem;text-align:center;border:1px solid var(--brand);grid-column:span 2;color:var(--brand-light);"><strong>Item C</strong> (Span 2 Kolom Penuh)</div>
+                        </div>
+                        <p style="font-size:0.75rem;color:var(--text-muted);margin:8px 0 0 0;">Elemen C melintasi 2 kolom sekaligus membentuk struktur Bento.</p>
+                    </div>
+                </div>
+            </div>
+
             <table class="compare-table">
                 <thead>
                     <tr>
@@ -308,6 +421,66 @@
         <section id="header-hero">
             <h2><i class="fa-solid fa-heading"></i> 3. Bedah Komponen: Header &amp; Hero Section</h2>
             
+            <!-- LIVE PREVIEW BOX: BROWSER MOCKUP HEADER & HERO -->
+            <div class="live-preview-box">
+                <div class="live-preview-header">
+                    <div class="live-preview-title"><i class="fa-solid fa-window-maximize" style="color:var(--brand);"></i> Contoh UI Nyata: Browser Mockup Header &amp; Hero Section</div>
+                    <span class="badge" style="background:rgba(16,185,129,0.15);color:var(--success);"><i class="fa-solid fa-circle-check"></i> Above-The-Fold</span>
+                </div>
+
+                <div class="browser-mockup">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <span class="browser-dot dot-red"></span>
+                            <span class="browser-dot dot-yellow"></span>
+                            <span class="browser-dot dot-green"></span>
+                        </div>
+                        <div class="browser-address">
+                            <i class="fa-solid fa-lock" style="color:var(--success);font-size:0.7rem;"></i>
+                            <span>https://cloud.velora.id/enterprise</span>
+                        </div>
+                    </div>
+
+                    <!-- Rendered Header -->
+                    <div style="background:rgba(11,19,43,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;">
+                        <div style="display:flex;align-items:center;gap:8px;font-weight:800;font-size:0.9rem;color:var(--text-primary);">
+                            <i class="fa-solid fa-cube" style="color:var(--brand);"></i> Velora OS
+                        </div>
+                        <div style="display:flex;gap:14px;font-size:0.8rem;color:var(--text-secondary);">
+                            <span style="color:var(--brand-light);font-weight:600;cursor:pointer;">Fitur</span>
+                            <span style="cursor:pointer;">Integrasi</span>
+                            <span style="cursor:pointer;">Dokumentasi</span>
+                            <span style="cursor:pointer;">Harga</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-magnifying-glass"></i> Cari...</span>
+                            <button style="background:var(--brand);color:#fff;border:none;padding:5px 12px;border-radius:var(--r-sm);font-weight:600;font-size:0.78rem;cursor:pointer;">Mulai Gratis</button>
+                        </div>
+                    </div>
+
+                    <!-- Rendered Hero Section -->
+                    <div style="padding:40px 20px;text-align:center;background:radial-gradient(ellipse at top, rgba(37,99,235,0.18), transparent 70%);">
+                        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.3);padding:4px 12px;border-radius:99px;font-size:0.75rem;color:var(--brand-light);font-weight:600;margin-bottom:14px;">
+                            <i class="fa-solid fa-star" style="color:#F59E0B;"></i> Dipercaya oleh 15.000+ Software Engineer Dunia
+                        </div>
+                        <h2 style="font-size:1.8rem;font-weight:900;color:var(--text-primary);max-width:620px;margin:0 auto 12px;line-height:1.25;">
+                            Arsitektur Sistem Skala Tinggi Tanpa Friksi Infrastruktur
+                        </h2>
+                        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:520px;margin:0 auto 20px;line-height:1.5;">
+                            Automasi pipeline deployment, observabilitas terdistribusi 0ms latency, dan integritas basis data ACID dalam satu konsol cerdas.
+                        </p>
+                        <div style="display:flex;justify-content:center;gap:10px;">
+                            <button style="background:var(--brand);color:#fff;border:none;padding:10px 20px;border-radius:var(--r-sm);font-weight:700;font-size:0.85rem;cursor:pointer;box-shadow:0 4px 14px rgba(37,99,235,0.4);">
+                                <i class="fa-solid fa-rocket"></i> Buat Akun Enterprise
+                            </button>
+                            <button style="background:var(--bg-surface);color:var(--text-primary);border:1px solid var(--border);padding:10px 18px;border-radius:var(--r-sm);font-weight:600;font-size:0.85rem;cursor:pointer;">
+                                <i class="fa-solid fa-circle-play"></i> Tonton Demo (2 Menit)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="grid-2">
                 <div class="card">
                     <h3 style="color:var(--brand-light);margin-top:0;"><i class="fa-solid fa-window-maximize"></i> Header / App Bar</h3>
@@ -342,6 +515,44 @@
             <p>
                 Banner adalah komponen tata letak yang digunakan untuk menyampaikan informasi yang bersifat <strong>mendesak, menyeluruh (*global*), dan sementara</strong>:
             </p>
+
+            <!-- LIVE PREVIEW BOX: 3 TIPE ANNOUNCEMENT BANNER -->
+            <div class="live-preview-box">
+                <div class="live-preview-header">
+                    <div class="live-preview-title"><i class="fa-solid fa-bullhorn" style="color:var(--brand);"></i> Contoh UI Nyata: 3 Varian Announcement Banner</div>
+                    <span class="badge" style="background:rgba(245,158,11,0.15);color:#F59E0B;"><i class="fa-solid fa-triangle-exclamation"></i> State Alerts</span>
+                </div>
+
+                <!-- 1. Flash Sale Banner -->
+                <div style="background:linear-gradient(90deg, #1E3260, #2563EB);border-radius:var(--r-sm);padding:10px 16px;color:#fff;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:0.85rem;">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <span style="background:rgba(255,255,255,0.2);padding:3px 8px;border-radius:4px;font-weight:800;font-size:0.75rem;">PROMO</span>
+                        <span>Diskon Tahunan 40% untuk Cloud Dedicated! Berakhir dalam <strong>14:22:05</strong></span>
+                    </div>
+                    <button style="background:#fff;color:#1E3260;border:none;padding:4px 10px;border-radius:4px;font-weight:700;font-size:0.75rem;cursor:pointer;">Klaim Promo</button>
+                </div>
+
+                <!-- 2. Maintenance Alert Banner -->
+                <div style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.35);border-radius:var(--r-sm);padding:10px 16px;color:#FBBF24;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:0.85rem;">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <i class="fa-solid fa-wrench" style="font-size:1rem;"></i>
+                        <span><strong>Jadwal Maintenance:</strong> Kluster Database SG-1 akan reboot pada pukul 02:00 WIB (Estimasi jeda 3 menit).</span>
+                    </div>
+                    <span style="font-size:0.75rem;text-decoration:underline;cursor:pointer;">Status Page</span>
+                </div>
+
+                <!-- 3. Cookie Consent Banner -->
+                <div style="background:var(--bg-surface-2);border:1px solid var(--border);border-left:4px solid var(--success);border-radius:var(--r-sm);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;font-size:0.82rem;">
+                    <span style="color:var(--text-secondary);">
+                        <i class="fa-solid fa-cookie-bite" style="color:var(--success);margin-right:6px;"></i> Kami menggunakan cookie esensial untuk menjamin performa keamanan sesi &amp; preferensi akun Anda.
+                    </span>
+                    <div style="display:flex;gap:6px;">
+                        <button style="background:transparent;border:1px solid var(--border);color:var(--text-secondary);padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">Tolak</button>
+                        <button style="background:var(--success);color:#fff;border:none;padding:4px 12px;border-radius:4px;font-weight:600;font-size:0.75rem;cursor:pointer;">Terima Semua</button>
+                    </div>
+                </div>
+            </div>
+
             <ul>
                 <li><strong>Maintenance / Downtime Alert:</strong> Pemberitahuan pemeliharaan server terjadwal agar pengguna tidak panik saat API terputus.</li>
                 <li><strong>Marketing Flash Sale:</strong> Hitung mundur promo dengan link langsung ke katalog diskon.</li>
@@ -356,6 +567,47 @@
             <p>
                 Ketika sebuah aplikasi memiliki lebih dari 10 fitur utama, menu atas (*header*) tidak akan muat lagi. Di sinilah peran Sidebar:
             </p>
+
+            <!-- LIVE PREVIEW BOX: SIDEBAR RAIL VS EXPANDED -->
+            <div class="live-preview-box">
+                <div class="live-preview-header">
+                    <div class="live-preview-title"><i class="fa-solid fa-bars-progress" style="color:var(--brand);"></i> Contoh UI Nyata: Navigation Rail (64px) vs Expanded Sidebar (240px)</div>
+                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);"><i class="fa-solid fa-layer-group"></i> Nav Hierarchy</span>
+                </div>
+
+                <div class="demo-split-box">
+                    <!-- Navigation Rail -->
+                    <div style="background:var(--bg-surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;display:flex;flex-direction:column;align-items:center;gap:12px;max-width:80px;">
+                        <div style="width:36px;height:36px;background:var(--brand);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;"><i class="fa-solid fa-bolt"></i></div>
+                        <div style="width:100%;height:1px;background:var(--border);"></div>
+                        <div style="width:36px;height:36px;background:rgba(37,99,235,0.15);color:var(--brand-light);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;"><i class="fa-solid fa-chart-pie"></i></div>
+                        <div style="width:36px;height:36px;color:var(--text-muted);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;"><i class="fa-solid fa-inbox"></i></div>
+                        <div style="width:36px;height:36px;color:var(--text-muted);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;"><i class="fa-solid fa-gear"></i></div>
+                    </div>
+
+                    <!-- Expanded Sidebar -->
+                    <div style="background:var(--bg-surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;flex:1;">
+                        <div style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:0.88rem;color:var(--text-primary);margin-bottom:12px;">
+                            <i class="fa-solid fa-shield-halved" style="color:var(--brand);"></i> Platform Console
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:4px;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:var(--r-sm);background:rgba(37,99,235,0.15);border-left:3px solid var(--brand);color:var(--brand-light);font-size:0.82rem;font-weight:600;">
+                                <span><i class="fa-solid fa-chart-line" style="margin-right:8px;"></i> Ringkasan Analisis</span>
+                                <span style="background:var(--brand);color:#fff;font-size:0.7rem;padding:2px 6px;border-radius:99px;">Live</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:var(--r-sm);color:var(--text-secondary);font-size:0.82rem;cursor:pointer;">
+                                <span><i class="fa-solid fa-boxes-stacked" style="margin-right:8px;"></i> Manajemen Database</span>
+                                <span style="color:var(--text-muted);font-size:0.7rem;">20 Tabel</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:var(--r-sm);color:var(--text-secondary);font-size:0.82rem;cursor:pointer;">
+                                <span><i class="fa-solid fa-server" style="margin-right:8px;"></i> Cluster K8s</span>
+                                <span style="background:rgba(16,185,129,0.15);color:var(--success);font-size:0.7rem;padding:2px 6px;border-radius:99px;">99.9%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <table class="compare-table">
                 <thead>
                     <tr>
@@ -390,6 +642,58 @@
             <p>
                 Bagian penutup halaman dan batas fisik lebar layar:
             </p>
+
+            <!-- LIVE PREVIEW BOX: 4-COLUMN RESPONSIVE FOOTER -->
+            <div class="live-preview-box">
+                <div class="live-preview-header">
+                    <div class="live-preview-title"><i class="fa-solid fa-shoe-prints" style="color:var(--brand);"></i> Contoh UI Nyata: 4-Kolom Responsive Footer Komprehensif</div>
+                    <span class="badge" style="background:rgba(37,99,235,0.15);color:var(--brand-light);"><i class="fa-solid fa-sitemap"></i> Site Map Navigation</span>
+                </div>
+
+                <div style="background:var(--bg-surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:24px;">
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:20px;border-bottom:1px solid var(--border);padding-bottom:20px;">
+                        <div>
+                            <strong style="color:var(--text-primary);font-size:0.85rem;display:block;margin-bottom:8px;"><i class="fa-solid fa-code" style="color:var(--brand);"></i> Fundamental</strong>
+                            <p style="font-size:0.75rem;color:var(--text-secondary);line-height:1.5;margin:0;">Kurikulum rekayasa software dan basis data standar industri dari first principles.</p>
+                        </div>
+                        <div>
+                            <strong style="color:var(--text-primary);font-size:0.82rem;display:block;margin-bottom:8px;">Kurikulum</strong>
+                            <div style="display:flex;flex-direction:column;gap:4px;font-size:0.75rem;color:var(--text-secondary);">
+                                <span>Database &amp; SQL</span>
+                                <span>Frontend Internals</span>
+                                <span>Backend &amp; Protocols</span>
+                                <span>UI/UX Engineering</span>
+                            </div>
+                        </div>
+                        <div>
+                            <strong style="color:var(--text-primary);font-size:0.82rem;display:block;margin-bottom:8px;">Sumber Daya</strong>
+                            <div style="display:flex;flex-direction:column;gap:4px;font-size:0.75rem;color:var(--text-secondary);">
+                                <span>Dokumentasi API</span>
+                                <span>Kamus CLI Perintah</span>
+                                <span>Skema DDL Database</span>
+                                <span>Status Sistem</span>
+                            </div>
+                        </div>
+                        <div>
+                            <strong style="color:var(--text-primary);font-size:0.82rem;display:block;margin-bottom:8px;">Newsletter</strong>
+                            <span style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:6px;">Update materi mingguan:</span>
+                            <div style="display:flex;gap:4px;">
+                                <input type="email" placeholder="email@anda.com" style="background:var(--bg-surface);border:1px solid var(--border);padding:5px 8px;border-radius:4px;font-size:0.75rem;color:var(--text-primary);width:100%;">
+                                <button style="background:var(--brand);color:#fff;border:none;padding:5px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">Kirim</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:0.75rem;color:var(--text-muted);">
+                        <span>© 2026 Velora Platform. Hak Cipta Dilindungi.</span>
+                        <div style="display:flex;gap:12px;">
+                            <span>Privasi</span>
+                            <span>Ketentuan</span>
+                            <span>Keamanan</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <ul>
                 <li><strong>Container Max-Width Constraints:</strong> Layar monitor gaming atau ultrawide mencapai resolusi 2560px hingga 3840px (4K). Jika halaman web melar memenuhi 100% lebar layar, mata pengguna akan lelah membaca dari kiri ke kanan. Gunakan pembatas tengah:
 <pre><code>.container {
