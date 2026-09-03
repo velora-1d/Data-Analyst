@@ -93,28 +93,24 @@
       "id": "bahasa_pemrograman",
       "title": "Paradigma Bahasa & Memori",
       "icon": "fa-solid fa-cubes",
-      "badge": "Diskusi Mendalam",
-      "badgeColor": "var(--warning)",
-      "description": "Kompilasi vs Interpreter, Static vs Dynamic Typing, Stack vs Heap, serta Garbage Collection vs Rust Ownership.",
+      "badge": "Aktif (2 Modul)",
+      "badgeColor": "var(--success)",
+      "description": "Kompilasi AOT vs Interpreter vs V8 JIT, Hidden Classes, Stack vs Heap, Generational GC, dan Rust Ownership & Borrow Checker.",
       "modules": [
-        { "id": "lang_01_paradigms", "title": "1. Paradigma: OOP vs Fungsional vs Prosedural", "url": "tracks/07_bahasa_pemrograman/01_paradigms.html", "status": "planned", "duration": "45m" },
-        { "id": "lang_02_memory_management", "title": "2. Alokasi Memori: Stack vs Heap & Pointer De-reference", "url": "tracks/07_bahasa_pemrograman/02_memory_management.html", "status": "planned", "duration": "50m" },
-        { "id": "lang_03_gc_vs_ownership", "title": "3. Tracing Garbage Collector vs Rust Ownership/Borrowing", "url": "tracks/07_bahasa_pemrograman/03_gc_vs_ownership.html", "status": "planned", "duration": "55m" },
-        { "id": "lang_04_language_matrix", "title": "4. Matriks Komparasi: Go vs Rust vs Python vs TS vs Java", "url": "tracks/07_bahasa_pemrograman/04_language_matrix.html", "status": "planned", "duration": "50m" }
+        { "id": "lang_01_compilation_jit", "title": "Fase 23: Kompilasi, Interpreter & JIT", "url": "tracks/07_runtimes_memory/01_compilation_jit_runtimes.html", "status": "ready", "duration": "50m" },
+        { "id": "lang_02_memory_gc_ownership", "title": "Fase 24: Manajemen Memori & GC vs Rust", "url": "tracks/07_runtimes_memory/02_memory_gc_ownership.html", "status": "ready", "duration": "55m" }
       ]
     },
     {
       "id": "git_workflow",
       "title": "Git & Engineering Workflow",
       "icon": "fa-brands fa-git-alt",
-      "badge": "Roadmap",
-      "badgeColor": "var(--brand)",
-      "description": "Git Internals (DAG, Tree, Blob), Rebase vs Merge, Trunk-Based Development, dan teknik penyelamatan data dengan git reflog.",
+      "badge": "Aktif (2 Modul)",
+      "badgeColor": "var(--success)",
+      "description": "Git Internals (DAG, Tree, Blob), Plumbing Commands, Packfiles Delta Compression, git reflog, dan pemulihan data via git filter-repo.",
       "modules": [
-        { "id": "git_01_dag_internals", "title": "1. Git Internals: Directed Acyclic Graph (DAG) & Objek Hash", "url": "tracks/08_git_workflow/01_dag_internals.html", "status": "planned", "duration": "40m" },
-        { "id": "git_02_rebase_vs_merge", "title": "2. Rebase vs Merge: Linear History vs True Commits", "url": "tracks/08_git_workflow/02_rebase_vs_merge.html", "status": "planned", "duration": "45m" },
-        { "id": "git_03_branching_strategies", "title": "3. Trunk-Based Development vs GitFlow di Tim Industri", "url": "tracks/08_git_workflow/03_branching_strategies.html", "status": "planned", "duration": "40m" },
-        { "id": "git_04_reflog_disaster_recovery", "title": "4. Disaster Recovery: git reflog, bisect & cherry-pick", "url": "tracks/08_git_workflow/04_reflog_disaster_recovery.html", "status": "planned", "duration": "45m" }
+        { "id": "git_01_dag_internals", "title": "Git Internals: Objects DAG & Three-Way Merge", "url": "tracks/04_architecture/02_git_internals.html", "status": "ready", "duration": "50m" },
+        { "id": "git_02_internals_advanced", "title": "Fase 25: Plumbing Commands & Packfiles Lanjut", "url": "tracks/07_runtimes_memory/03_git_internals_advanced.html", "status": "ready", "duration": "55m" }
       ]
     },
     {

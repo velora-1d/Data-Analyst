@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 23: Paradigma Bahasa &amp; Eksekusi: Kompilasi vs Interpreter vs JIT — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Bedah tuntas mesin eksekusi kode: AOT (Ahead-of-Time), Interpreter, JIT (Just-In-Time) V8 Engine (Ignition & TurboFan), Spekulatif Optimasi, dan Deoptimasi Bailout.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 08</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 23: Kompilasi &amp; JIT</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-microchip"></i>
+            V8 TurboFan <span>(JIT Engine)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 23</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Tiga Model Eksekusi</a>
+            <a href="#aot-vs-interpreter" class="nav-link"><i class="fa-solid fa-scale-unbalanced-flip"></i> 2. AOT vs Interpreter Murni</a>
+            <a href="#v8-architecture" class="nav-link"><i class="fa-solid fa-bolt"></i> 3. Mesin V8: Ignition &amp; TurboFan</a>
+            <a href="#deopt-bailout" class="nav-link"><i class="fa-solid fa-triangle-exclamation"></i> 4. Deoptimasi &amp; Monomorphic Code</a>
+            <a href="#bytecode-demo" class="nav-link"><i class="fa-solid fa-terminal"></i> 5. Membaca Bytecode Node.js</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-microchip"></i> Track 08: Runtimes &amp; Memori</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 50 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Compiler Internals)</span>
+            </div>
+            <h1>Fase 23: Paradigma Bahasa &amp; Eksekusi: Kompilasi vs Interpreter vs JIT</h1>
+            <p class="module-lead">
+                Bagaimana teks kode program berubah menjadi instruksi biner CPU: spektrum kompilasi Ahead-of-Time (C/Rust/Go) vs Interpreter baris-per-baris (Python klasik) vs Just-In-Time (JIT) V8 Engine (Ignition bytecode interpreter &amp; TurboFan optimizing compiler), serta pencegahan penalti Deoptimasi.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Tiga Model Eksekusi Bahasa Pemrograman</h2>
+            <p>
+                Komputer pada dasarnya hanyalah mesin penghitung biner (Machine Code 0 dan 1) yang diatur oleh instruksi set prosesor (x86_64 / ARM64). Bahasa pemrograman tingkat tinggi harus dijembatani ke mesin fisik melalui salah satu dari 3 cara:
+            </p>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Model Eksekusi</th>
+                        <th>Contoh Bahasa</th>
+                        <th>Kapan Diterjemahkan?</th>
+                        <th>Kelebihan &amp; Trade-off</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>AOT (Ahead-of-Time)</strong></td>
+                        <td>C, C++, Rust, Go</td>
+                        <td>Sebelum eksekusi (Kompilasi ke binary native OS)</td>
+                        <td><strong>Kecepatan maksimum</strong>, konsumsi RAM kecil, namun proses build lambat dan binary tidak portabel lintas OS.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Interpreter Murni</strong></td>
+                        <td>Bash, Ruby klasik, Python lama</td>
+                        <td>Secara langsung saat program berjalan baris demi baris</td>
+                        <td>Sangat fleksibel, start time cepat, namun <strong>kecepatan eksekusi lambat (10x-50x lebih lambat dari C)</strong>.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>JIT (Just-In-Time)</strong></td>
+                        <td>JavaScript (V8), Java (JVM), C# (.NET CLR)</td>
+                        <td>Kombinasi: Mulai dari Interpreter, lalu fungsi yang sering dipanggil dikompilasi ke Native Machine Code saat runtime!</td>
+                        <td><strong>Keseimbangan emas:</strong> Portabel seperti script, namun mendekati kecepatan C saat program sudah berjalan panas (*warm up*).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="aot-vs-interpreter">
+            <h2><i class="fa-solid fa-scale-unbalanced-flip"></i> 2. Mengapa JavaScript Tidak Bisa Menggunakan AOT Murni?</h2>
+            <p>
+                Bahasa seperti C atau Rust bersifat <strong>Statically Typed</strong>: compiler tahu pasti bahwa variabel <code>x</code> adalah integer 32-bit di alamat memori tertentu.
+            </p>
+            <p>
+                Sebaliknya, JavaScript bersifat <strong>Dynamically Typed</strong>:
+            </p>
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-brands fa-js"></i> Dilema Dinamis JS</span></div>
+                <pre><code>function tambah(a, b) {
+    return a + b; // Apakah ini penjumlahan angka? Atau penggabungan string?
+}
+tambah(5, 10);     // 15 (Number addition CPU opcode ADD)
+tambah("Halo ", "Dunia"); // "Halo Dunia" (String concatenation CPU memory alloc)</code></pre>
+            </div>
+            <p>
+                Karena tipe data bisa berubah-ubah sesuka hati pengguna saat runtime, compiler tidak bisa menghasilkan kode mesin CPU statis di awal tanpa melakukan inspeksi dinamis!
+            </p>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="v8-architecture">
+            <h2><i class="fa-solid fa-bolt"></i> 3. Mesin V8 Modern: Duet Ignition &amp; TurboFan</h2>
+            <p>
+                Google mendesain mesin <strong>V8 (di Chrome dan Node.js)</strong> dengan arsitektur dua tahap yang sangat brilian:
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Tahap 1</div>
+                    <div class="pipeline-step-title">Ignition (Interpreter)</div>
+                    <div class="pipeline-step-desc">Mengubah kode JS menjadi <strong>Bytecode</strong> ringkas dan menjalankannya seketika. Mengumpulkan profil tipe data (*Type Feedback Vectors*).</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Tahap 2</div>
+                    <div class="pipeline-step-title">Profiler (Hot Detection)</div>
+                    <div class="pipeline-step-desc">Mendeteksi fungsi mana yang dipanggil berulang-ulang ribuan kali (*Hot Function*).</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Tahap 3</div>
+                    <div class="pipeline-step-title">TurboFan (JIT Compiler)</div>
+                    <div class="pipeline-step-desc">Menerjemahkan bytecode fungsi panas tersebut menjadi <strong>Machine Code Assembler mentah</strong> yang super kencang!</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="deopt-bailout">
+            <h2><i class="fa-solid fa-triangle-exclamation"></i> 4. Bahaya Deoptimasi (Deopt Bailout) &amp; Polimorfisme</h2>
+            <p>
+                TurboFan melakukan optimasi spekulatif: <em>"Fungsi <code>tambah(a, b)</code> ini sudah dipanggil 10.000 kali selalu dengan angka integer. Saya akan buatkan kode mesin CPU murni khusus integer!"</em>
+            </p>
+
+            <div class="callout-box callout-pitfall">
+                <div class="callout-header"><i class="fa-solid fa-skull-crossbones"></i> Skenario Deoptimasi (Bailout)</div>
+                <div class="callout-body">
+                    Mendadak pada panggilan ke 10.001, developer memanggil: <code>tambah("teks", 5)</code>!
+                    <br><br>
+                    Asumsi spekulatif TurboFan hancur berantakan. V8 terpaksa membuang machine code yang sudah dioptimasi dan mundur kembali ke bytecode Ignition (*Deoptimization Bailout*).
+                    <br><br>
+                    <strong>Aturan Kinerja V8:</strong> Tulis kode yang <strong>Monomorfik (Bentuk Objek dan Tipe Argumen Selalu Konsisten)</strong>! Objek yang bentuk propertinya diubah-ubah secara dinamis (Polimorfik / Megamorfik) akan menghancurkan performa JIT engine hingga 5x lipat.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="bytecode-demo">
+            <h2><i class="fa-solid fa-terminal"></i> 5. Lab Hands-on: Mengintip Bytecode V8 di Node.js</h2>
+            <p>
+                Anda dapat melihat langsung bytecode yang dihasilkan oleh interpreter Ignition menggunakan flag bawaan Node.js:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-terminal"></i> node --print-bytecode -e "function add(a,b){return a+b}; add(1,2)"</span></div>
+                <pre><code>[generated bytecode for function: add (0x0167c1e54911)]
+Parameter count 3
+Register count 0
+Frame size 0
+         00000167C1E549AE @    0 : 0b 04             Ldar a1          ; Load parameter a1 (b)
+         00000167C1E549B0 @    2 : 39 03 00          Add a0, [0]      ; Tambahkan dengan a0 (a)
+         00000167C1E549B3 @    5 : a9                Return           ; Kembalikan hasil akumulator</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-bolt-lightning"></i> War Story: Menghapus Properti dengan `delete obj.prop` Melumpuhkan Hidden Classes V8</div>
+                <div class="callout-body">
+                    Sebuah layanan analitik data real-time menggunakan kata kunci JavaScript: <code>delete objek.sensitif_key</code> untuk membersihkan field sebelum dikirim ke client.
+                    <br><br>
+                    Ketika throughput mencapai 50.000 data per detik, performa server anjlok drastis dan CPU membara 100%.
+                    <br><br>
+                    <strong>Penyebab:</strong> V8 mengoptimalkan objek JS menggunakan <strong>Hidden Classes (Shapes)</strong> di balik layar. Menghapus properti menggunakan <code>delete</code> secara paksa merusak transisi shape objek dan mengubahnya menjadi mode kamus lambat (*Slow Dictionary Mode*), mematikan seluruh optimasi inline cache TurboFan!
+                    <br><br>
+                    <strong>Solusi Baku:</strong> Jangan pernah gunakan <code>delete</code> di dalam hot loop! Cukup set nilainya menjadi <code>undefined</code> atau buat objek baru yang bersih secara eksplisit.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Kompilasi &amp; JIT</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Apa yang dilakukan oleh komponen 'TurboFan' di dalam mesin JavaScript V8?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Parsing DOM adalah tugas browser rendering engine Blink.')">A. Mem-parse file HTML menjadi DOM tree</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! TurboFan adalah optimizing compiler JIT yang menerjemahkan bytecode fungsi yang sering dipanggil (hot function) menjadi kode mesin CPU native berkecepatan tinggi.')">B. Mengompilasi bytecode fungsi yang sering dieksekusi (hot code) menjadi Machine Code CPU asli berkecepatan tinggi</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Garbage collection dijalankan oleh Scavenger dan Mark-Sweep.')">C. Menghapus memori variabel yang tidak terpakai</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Mengapa praktik menghapus properti objek menggunakan 'delete obj.key' sangat tidak disarankan di dalam loop performa tinggi JavaScript?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'delete adalah sintaks resmi JavaScript.')">A. Karena memicu syntax error di Node.js</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Menggunakan delete merusak bentuk struktur tersembunyi (Hidden Class/Shape) V8 dan memaksa V8 beralih ke hash table dictionary lookup yang jauh lebih lambat.')">B. Merusak transisi Hidden Class (Shapes) internal V8 dan memaksa objek beralih ke mode kamus (slow dictionary mode) yang mematikan optimasi JIT</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'delete justru menghapus properti.')">C. Menambah ukuran file memori hingga 10 kali lipat</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="../06_devops/03_cicd_infrastructure.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 22: CI/CD &amp; Infrastruktur
+            </a>
+            <a href="02_memory_gc_ownership.html" class="btn btn-primary">
+                Lanjut ke Fase 24: Manajemen Memori &amp; GC <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

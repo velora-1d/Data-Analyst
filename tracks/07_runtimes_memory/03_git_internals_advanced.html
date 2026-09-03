@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 25: Git Internals &amp; Data Recovery Tingkat Lanjut — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Kuasai mekanika terdalam Git: Perintah Plumbing vs Porcelain, membuat commit manual tanpa git commit, arsitektur Packfiles & Delta Compression, serta penghapusan file raksasa via git filter-repo.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 08</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 25: Git Internals Lanjut</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-brands fa-git-alt"></i>
+            Plumbing Commands <span>(Packfiles &amp; BFG)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 25</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Porcelain vs Plumbing</a>
+            <a href="#manual-commit" class="nav-link"><i class="fa-solid fa-wrench"></i> 2. Membuat Commit Manual (Plumbing)</a>
+            <a href="#packfiles" class="nav-link"><i class="fa-solid fa-file-zipper"></i> 3. Packfiles &amp; Delta Compression</a>
+            <a href="#filter-repo" class="nav-link"><i class="fa-solid fa-trash-can"></i> 4. Membersihkan Blob Raksasa (filter-repo)</a>
+            <a href="#reflog-mastery" class="nav-link"><i class="fa-solid fa-life-ring"></i> 5. Pemulihan Reflog Tingkat Lanjut</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-microchip"></i> Track 08: Runtimes &amp; Memori</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Git Mastery)</span>
+            </div>
+            <h1>Fase 25: Git Internals &amp; Data Recovery Tingkat Lanjut</h1>
+            <p class="module-lead">
+                Puncak penguasaan sistem kontrol versi: membedah perintah tingkat rendah (Plumbing API), merakit objek Commit dan Tree secara manual tanpa perintah <code>git commit</code>, arsitektur kompresi Packfiles, serta bedah pembersihan riwayat commit yang terkontaminasi file raksasa via <code>git filter-repo</code>.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Porcelain Commands vs Plumbing Commands</h2>
+            <p>
+                Git membagi seluruh perintahnya menjadi dua tingkatan:
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-user"></i> Porcelain (Antarmuka Pengguna Ramah)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        Perintah tingkat tinggi yang kita gunakan sehari-hari:<br>
+                        <code>git add</code>, <code>git commit</code>, <code>git checkout</code>, <code>git merge</code>, <code>git log</code>.<br>
+                        Perintah ini membungkus puluhan operasi rumit di baliknya menjadi 1 kata yang mudah dipahami manusia.
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-wrench"></i> Plumbing (Perintah Mesin Tingkat Rendah)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        Panggilan sistem internal yang memanipulasi objek database Git secara langsung:<br>
+                        <code>git hash-object</code>, <code>git cat-file</code>, <code>git write-tree</code>, <code>git commit-tree</code>, <code>git update-ref</code>.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="manual-commit">
+            <h2><i class="fa-solid fa-wrench"></i> 2. Lab Hands-on: Membuat Commit Manual Murni Menggunakan Plumbing</h2>
+            <p>
+                Tahukah Anda bahwa kita dapat membuat commit resmi di Git <strong>tanpa pernah mengetikkan <code>git add</code> atau <code>git commit</code></strong>? Mari kita buktikan:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-terminal"></i> Terminal Eksekusi Plumbing</span></div>
+                <pre><code># 1. Buat Blob dari string mentah dan simpan ke .git/objects/
+$ BLOB_SHA=$(echo "Kode rahasia versi 1" | git hash-object -w --stdin)
+# Output: e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+
+# 2. Daftarkan blob ke staging index sementara:
+$ git update-index --add --cacheinfo 100644 $BLOB_SHA rahasia.txt
+
+# 3. Tulis pohon direktori (Tree Object) dari index:
+$ TREE_SHA=$(git write-tree)
+# Output: 040000... (Tree Hash)
+
+# 4. Buat Commit Object yang menunjuk ke Tree tersebut:
+$ COMMIT_SHA=$(echo "feat: commit manual murni via plumbing" | git commit-tree $TREE_SHA)
+
+# 5. Pasang branch baru ke commit tersebut:
+$ git update-ref refs/heads/cabang-manual $COMMIT_SHA
+
+# SELESAI! Branch dan commit resmi tercipta sempurna di Git DAG!</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="packfiles">
+            <h2><i class="fa-solid fa-file-zipper"></i> 3. Arsitektur Packfiles &amp; Delta Compression</h2>
+            <p>
+                Jika Git menyimpan setiap versi file sebagai blob utuh, mengapa folder <code>.git/</code> tidak membengkak menjadi puluhan gigabyte? Jawabannya adalah <strong>Packfiles</strong>:
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-box-archive"></i> Bagaimana git gc Mengompresi Objek?</div>
+                <div class="callout-body">
+                    Ketika Anda menjalankan <code>git gc</code> (Garbage Collection) atau saat melakukan push/pull:
+                    <br><br>
+                    1. Git mengumpulkan ratusan file objek terpisah (<em>Loose Objects</em>).<br>
+                    2. Git mencari file-file yang memiliki kemiripan nama dan konten.<br>
+                    3. Git menyimpan versi terbaru secara utuh, dan menyimpan versi-versi sebelumnya <strong>hanya sebagai perbedaan biner (Delta Compression)</strong> di dalam satu file berkas <code>.pack</code> raksasa!<br>
+                    4. Berkas indeks <code>.idx</code> dibuat untuk memungkinkan pencarian biner sub-milidetik ke dalam packfile tersebut.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="filter-repo">
+            <h2><i class="fa-solid fa-trash-can"></i> 4. Menghapus File Raksasa dari Sejarah Git (git filter-repo)</h2>
+            <p>
+                Kesalahan fatal yang sering dilakukan developer adalah tidak sengaja melakukan commit file data SQLite atau CSV berukuran 500 MB, lalu di commit berikutnya file tersebut dihapus (<code>git rm</code>).
+            </p>
+
+            <div class="callout-box callout-pitfall">
+                <div class="callout-header"><i class="fa-solid fa-triangle-exclamation"></i> Kenapa git clone Tetap Berat Meskipun File Sudah Dihapus?</div>
+                <div class="callout-body">
+                    Meskipun file sudah dihapus dari branch terbaru, <strong>blob 500 MB tersebut masih tertanam abadi di dalam riwayat commit masa lalu</strong>! Siapa pun yang melakukan <code>git clone</code> tetap dipaksa mengunduh seluruh 500 MB tersebut.
+                    <br><br>
+                    <strong>Solusi Baku: Tulis Ulang DAG Sejarah via git filter-repo</strong><br>
+                    <code>git filter-repo --invert-paths --path database_raksasa.db</code>
+                    <br>
+                    Perintah ini memotong seluruh referensi blob tersebut dari setiap commit di masa lalu dan menghitung ulang seluruh hash commit secara bersih.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="reflog-mastery">
+            <h2><i class="fa-solid fa-life-ring"></i> 5. Pemulihan Reflog Tingkat Lanjut</h2>
+            <p>
+                <code>git reflog</code> bukan hanya untuk mengembalikan commit yang di-reset. Anda dapat menggunakannya untuk melacak:
+            </p>
+            <ul>
+                <li><strong>Rebase yang Berantakan:</strong> Mengembalikan branch ke posisi sebelum rebase: <code>git reset --hard ORIG_HEAD</code> atau via nomor index reflog <code>git reset --hard HEAD@{4}</code>.</li>
+                <li><strong>Branch yang Dihapus Tidak Sengaja:</strong> <code>git branch nama-lama HEAD@{2}</code> seketika menghidupkan kembali branch yang terhapus!</li>
+            </ul>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-hard-drive"></i> War Story: Ukuran Repositori Membengkak Menjadi 18 GB Akibat Video Demo</div>
+                <div class="callout-body">
+                    Sebuah tim frontend menambahkan video demo produk berukuran 200 MB ke dalam repositori. Di setiap sprint mingguan, video tersebut diperbarui dengan versi baru.
+                    <br><br>
+                    Dalam 1 tahun, ukuran repositori Git melonjak dari 150 MB menjadi <strong>18 GB</strong>! Proses CI/CD di GitHub Actions menjadi sangat lambat (memakan waktu 15 menit hanya untuk <code>git checkout</code>).
+                    <br><br>
+                    <strong>Solusi:</strong> Menggunakan <strong>Git LFS (Large File Storage)</strong> untuk file biner besar (video, model AI, database dump). File biner disimpan di server S3 terpisah, dan Git hanya menyimpan pointer teks kecil berukuran 130 byte di dalam tree repository!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Git Internals Lanjut</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Manakah perintah Git di bawah ini yang termasuk dalam kelompok 'Plumbing Commands' tingkat rendah?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'git checkout adalah porcelain command.')">A. git checkout</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! git hash-object adalah perintah plumbing yang menghitung dan menulis hash SHA objek berkas langsung ke database internal Git.')">B. git hash-object</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'git commit adalah porcelain.')">C. git commit</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'git merge adalah porcelain.')">D. git merge</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Mengapa perintah 'git rm' biasa tidak mampu mengecilkan ukuran repositori jika ada file biner 1 GB yang pernah di-commit di masa lalu?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'git rm berfungsi menghapus file dari commit sekarang.')">A. Karena git rm hanya menghapus file di laptop lokal</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Git adalah append-only snapshot system; commit masa lalu masih mempertahankan pointer ke blob 1 GB tersebut sehingga file tetap diunduh saat git clone kecuali sejarahnya ditulis ulang via git filter-repo.')">B. Karena Git mempertahankan riwayat abadi; blob 1 GB tersebut tetap tersimpan di dalam commit snapshot masa lalu dan wajib ditulis ulang menggunakan git filter-repo</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Harddisk tidak memblokir git.')">C. Karena harddisk memblokir operasi penghapusan berkas Git</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="02_memory_gc_ownership.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 24: Manajemen Memori
+            </a>
+            <a href="../../plan.html" class="btn btn-primary">
+                Kembali ke Master Roadmap <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

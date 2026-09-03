@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 24: Manajemen Memori: Stack vs Heap, GC &amp; Rust Ownership — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Kuasai arsitektur memori perangkat lunak: Anatomi Stack vs Heap, Hipotesis Generational Garbage Collection (V8 Scavenger vs Mark-Sweep), dan Revolusi Rust Compile-Time Ownership & Borrow Checker.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 08</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 24: Manajemen Memori</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-brands fa-rust"></i>
+            Zero-Cost Memory <span>(Borrow Checker)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 24</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Anatomi Memori: Stack vs Heap</a>
+            <a href="#pointers-references" class="nav-link"><i class="fa-solid fa-arrow-pointer"></i> 2. Pointers &amp; Referensi</a>
+            <a href="#generational-gc" class="nav-link"><i class="fa-solid fa-recycle"></i> 3. Generational Garbage Collection</a>
+            <a href="#rust-ownership" class="nav-link"><i class="fa-brands fa-rust"></i> 4. Model Kepemilikan (Ownership) Rust</a>
+            <a href="#borrow-checker" class="nav-link"><i class="fa-solid fa-shield-halved"></i> 5. Aturan Borrow Checker &amp; Aliasing</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-microchip"></i> Track 08: Runtimes &amp; Memori</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Memory Architecture)</span>
+            </div>
+            <h1>Fase 24: Manajemen Memori: Stack vs Heap, GC &amp; Rust Ownership</h1>
+            <p class="module-lead">
+                Fondasi alokasi data di tingkat biner: perbedaan kecepatan perangkat keras Stack LIFO vs dinamika Heap, algoritma Generational Garbage Collection (V8 Scavenger nursery copying &amp; Mark-Sweep-Compact), serta paradigma revolusioner Rust Compile-Time Ownership &amp; Borrow Checker tanpa runtime GC pauses.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Anatomi Memori: Stack vs Heap</h2>
+            <p>
+                Ketika program dieksekusi oleh sistem operasi, memori RAM dibagi menjadi dua struktur penyimpanan utama:
+            </p>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Karakteristik</th>
+                        <th>Stack Memory</th>
+                        <th>Heap Memory</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Struktur Data</strong></td>
+                        <td>LIFO (Last-In, First-Out) berurutan</td>
+                        <td>Alokasi Dinamis Bebas (Hierarki Pohon / Blok Terfragmentasi)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kecepatan Alokasi</strong></td>
+                        <td><strong>Super Kilat (1 instruksi CPU Stack Pointer)</strong></td>
+                        <td>Lebih lambat (Mencari blok memori kosong yang pas via OS allocator)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ukuran Variabel</strong></td>
+                        <td>Wajib diketahui ukurannya secara pasti saat compile time</td>
+                        <td>Dinamis dan fleksibel (Array yang ukurannya bisa bertambah)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Siklus Hidup (Lifetime)</strong></td>
+                        <td>Otomatis terhapus begitu fungsi selesai (Return)</td>
+                        <td>Harus dibebaskan manual (C/C++ <code>free</code>), via Garbage Collector (JS/Java/Go), atau via RAII (Rust)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="pointers-references">
+            <h2><i class="fa-solid fa-arrow-pointer"></i> 2. Pointer: Alamat Memori Nyata</h2>
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-microchip"></i> Pointer Hanyalah Nomor Rumah di RAM</div>
+                <div class="callout-body">
+                    Pada prosesor 64-bit, sebuah Pointer hanyalah integer 8-byte (64-bit) yang menyimpan alamat heksadesimal RAM (misalnya <code>0x7ffee4b2a1c0</code>).
+                    <br><br>
+                    • Variabel lokal pointer disimpan di <strong>Stack</strong>.<br>
+                    • Objek data besar yang ditunjuk oleh pointer tersebut berada di <strong>Heap</strong>.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="generational-gc">
+            <h2><i class="fa-solid fa-recycle"></i> 3. Generational Garbage Collection: "Most Objects Die Young"</h2>
+            <p>
+                Bagaimana runtime seperti V8 (JavaScript) atau Go membersihkan memori Heap tanpa memory leak? Mereka memanfaatkan <strong>Generational Hypothesis</strong>: sebagian besar objek hanya berumur beberapa milidetik (misal variabel lokal di dalam callback).
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Generasi Muda</div>
+                    <div class="pipeline-step-title">Nursery (Semi-Space)</div>
+                    <div class="pipeline-step-desc">Objek baru dialokasikan di sini. Dicuci kilat oleh <strong>Scavenger GC</strong> (~1-2ms). Objek hidup disalin ke ruang sebelah; sisanya dibuang.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Promosi</div>
+                    <div class="pipeline-step-title">Intermediate Space</div>
+                    <div class="pipeline-step-desc">Jika objek bertahan melewati 2 kali putaran Scavenger, objek dipromosikan ke Old Generation.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Generasi Tua</div>
+                    <div class="pipeline-step-title">Old Generation</div>
+                    <div class="pipeline-step-desc">Dibersihkan dengan <strong>Major Mark-Sweep-Compact</strong>. Lebih jarang dijalankan karena memicu jeda *Stop-The-World (STW)*.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="rust-ownership">
+            <h2><i class="fa-brands fa-rust"></i> 4. Revolusi Rust: Zero-Cost Abstraction Tanpa Garbage Collector!</h2>
+            <p>
+                Bahasa Rust membuktikan bahwa kita bisa memiliki <strong>keamanan memori 100% tanpa membayar ongkos performa Garbage Collector</strong> melalui 3 Aturan Kepemilikan (Ownership Rules):
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-scroll"></i> 3 Hukum Suci Kepemilikan Rust</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        1. Setiap nilai di memori Rust memiliki satu variabel yang menjadi <strong>Owner</strong>-nya.<br>
+                        2. Hanya boleh ada <strong>SATU Owner pada satu saat</strong>.<br>
+                        3. Ketika variabel Owner keluar dari cakupan (<em>out of scope</em>), memori di-drop secara otomatis oleh kompiler (prinsip RAII)!
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-brands fa-rust"></i> Move Semantics di Rust</div>
+                    <pre><code>let s1 = String::from("halo");
+// Kepemilikan berpindah (MOVE) ke s2:
+let s2 = s1; 
+
+// COMPILE ERROR! s1 sudah hangus!
+// Tidak ada double-free bug!
+println!("{}", s1); </code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="borrow-checker">
+            <h2><i class="fa-solid fa-shield-halved"></i> 5. The Borrow Checker: Aliasing XOR Mutability</h2>
+            <p>
+                Bagaimana jika fungsi lain ingin membaca data tanpa mengambil alih kepemilikan? Anda boleh <strong>Meminjam (Borrowing)</strong> dengan aturan:
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-scale-balanced"></i> Hukum Eksklusivitas Pinjaman Rust</div>
+                <div class="callout-body">
+                    Pada satu titik waktu yang sama, Anda boleh memiliki:
+                    <br>
+                    • <strong>Banyak referensi baca yang tidak bisa mengubah data (<code>&amp;T</code>)</strong>, ATAU<br>
+                    • <strong>TEPAT SATU referensi eksklusif yang bisa mengubah data (<code>&amp;mut T</code>)</strong>.<br><br>
+                    <strong>TETAPI TIDAK PERNAH KEDUANYA SEKALIGUS!</strong> Aturan matematika ini mengeliminasi <em>Data Race</em> dan <em>Dangling Pointers</em> saat kompilasi tanpa membutuhkan runtime lock!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-pause"></i> War Story: Discord Migrasi Layanan Read States dari Go ke Rust Mengatasi Jeda GC</div>
+                <div class="callout-body">
+                    Discord memiliki layanan "Read States" yang mencatat pesan mana yang sudah dibaca oleh ratusan juta pengguna. Layanan ini awalnya dibangun dengan bahasa Go.
+                    <br><br>
+                    <strong>Masalah:</strong> Setiap 2 menit sekali, Garbage Collector Go melakukan siklus pemindaian memori pada cache berisi miliaran objek kecil. Hal ini menimbulkan lonjakan latensi (*Latency Spike*) hingga <strong>800 milidetik</strong> yang membuat suara dan status pesan tersendat!
+                    <br><br>
+                    <strong>Solusi:</strong> Discord menulis ulang layanan tersebut menggunakan <strong>Rust</strong>. Karena Rust mengalokasikan dan membebaskan memori secara deterministik tanpa Garbage Collector, grafik latensi seketika berubah menjadi garis datar stabil di bawah <strong>1 milidetik</strong> tanpa lonjakan sama sekali!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Manajemen Memori</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Menurut kaidah 'Aliasing XOR Mutability' pada Borrow Checker Rust, kondisi manakah yang DILARANG oleh compiler?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Banyak pembaca immutable diizinkan.')">A. Memiliki 5 referensi immutable (&T) secara bersamaan</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Rust melarang keras adanya referensi mutable (&mut T) yang aktif bersamaan dengan referensi pembaca (&T) untuk mencegah bahaya data race.')">B. Memiliki referensi mutable (&mut T) aktif bersamaan dengan referensi immutable (&T) pada variabel yang sama</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Satu mutable reference diizinkan.')">C. Memiliki tepat satu referensi mutable (&mut T)</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Mengapa algoritma Generational Garbage Collection (seperti pada V8 dan JVM) memisahkan memori menjadi Young Generation dan Old Generation?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Generational GC justru dirancang untuk menghemat waktu CPU.')">A. Agar kode dieksekusi lebih lambat</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Hipotesis Generasi menyatakan sebagian besar objek berumur sangat pendek. Dengan mengumpulkan memori di Nursery secara kilat, siklus Major GC yang lambat jarang perlu dijalankan.')">B. Memanfaatkan hipotesis bahwa sebagian besar objek berumur sangat pendek, sehingga memori objek baru dapat dibersihkan sangat cepat tanpa memindai seluruh memori lama</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'GC tidak berhubungan dengan disk.')">C. Menghindari pemakaian harddisk</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="01_compilation_jit_runtimes.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 23: Kompilasi &amp; JIT
+            </a>
+            <a href="03_git_internals_advanced.html" class="btn btn-primary">
+                Lanjut ke Fase 25: Git Internals Tingkat Lanjut <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>
