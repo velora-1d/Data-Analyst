@@ -61,12 +61,12 @@
             <a href="#text"        class="nav-link"><i class="fa-solid fa-font"></i> 5. Tipe TEXT &amp; String</a>
             <a href="#integer"     class="nav-link"><i class="fa-solid fa-hashtag"></i> 6. Tipe INTEGER &amp; Rupiah</a>
             <a href="#real"        class="nav-link"><i class="fa-solid fa-percent"></i> 7. Tipe REAL &amp; Presisi</a>
-            <a href="#datetime"    class="nav-link"><i class="fa-regular fa-calendar"></i> 8. Tipe DATETIME</a>
-            <a href="#null"        class="nav-link"><i class="fa-solid fa-ban"></i> 9. Penanganan Nilai NULL</a>
-            <a href="#cast"        class="nav-link"><i class="fa-solid fa-arrow-right-arrow-left"></i> 10. Type Casting (CAST)</a>
-            <a href="#ddl-dml"     class="nav-link"><i class="fa-solid fa-database"></i> 11. Desain Tabel DDL &amp; DML</a>
-            <a href="#rangkuman"   class="nav-link"><i class="fa-solid fa-layer-group"></i> 12. Rangkuman Best Practice</a>
-            <a href="#quiz"        class="nav-link"><i class="fa-solid fa-circle-question"></i> 13. Kuis Interaktif</a>
+            <a href="#null"        class="nav-link"><i class="fa-solid fa-ban"></i> 9. Tipe Nilai NULL (Missing Data)</a>
+            <a href="#unique"      class="nav-link"><i class="fa-solid fa-fingerprint"></i> 10. Kolom UNIQUE &amp; UUID</a>
+            <a href="#cast"        class="nav-link"><i class="fa-solid fa-arrow-right-arrow-left"></i> 11. Type Casting (CAST)</a>
+            <a href="#ddl-dml"     class="nav-link"><i class="fa-solid fa-database"></i> 12. Desain Tabel DDL &amp; DML</a>
+            <a href="#rangkuman"   class="nav-link"><i class="fa-solid fa-layer-group"></i> 13. Rangkuman Best Practice</a>
+            <a href="#quiz"        class="nav-link"><i class="fa-solid fa-circle-question"></i> 14. Kuis Interaktif</a>
         </nav>
 
         <div class="nav-divider"></div>
@@ -717,42 +717,232 @@
 
         <!-- 9. NULL -->
         <section id="null">
-            <h2><i class="fa-solid fa-ban"></i> 9. Menangani Nilai NULL (Missing Values)</h2>
+            <h2><i class="fa-solid fa-ban"></i> 9. Tipe Nilai NULL (Missing Data &amp; Unknown State)</h2>
             <p>
-                Di database e-commerce, <code>NULL</code> berarti informasi tersebut <strong>tidak ada / tidak berlaku</strong>. Contohnya adalah transaksi pesanan yang tidak menggunakan kupon promo, di mana nilai <code>voucher_id</code> adalah <code>NULL</code>.
+                Di dalam database relasional, <code>NULL</code> bukanlah sebuah nilai biasa. <code>NULL</code> adalah <strong>Storage Class khusus di SQLite</strong> yang menandakan bahwa suatu data <strong>tidak ada, belum diketahui, atau tidak berlaku</strong> (<em>missing value / absence of data</em>).
             </p>
 
             <div class="callout danger">
                 <i class="fa-solid fa-circle-xmark"></i>
                 <div class="callout-body">
-                    <strong>Kesalahan Fatal Pemula</strong>
-                    <p>Jangan pernah menulis <code>WHERE voucher_id = NULL</code> karena di SQL perbandingan dengan nilai NULL selalu bernilai UNKNOWN/False. Gunakan <code>IS NULL</code> atau <code>IS NOT NULL</code>.</p>
+                    <strong>Kesalahan Fatal Pemula: NULL Bukan Nol (0) dan Bukan Teks Kosong ('')</strong>
+                    <p style="margin-top:0.25rem;">
+                        Banyak analis data pemula menyamakan <code>NULL</code> dengan angka <code>0</code> atau string kosong <code>''</code>. Padahal secara logika dan penyimpanan, ketiganya memiliki status yang sangat berbeda di database.
+                    </p>
                 </div>
             </div>
+
+            <table class="compare-table">
+                <thead><tr><th>Nilai</th><th>Arti di Bisnis E-Commerce</th><th>Tipe / Storage Class</th><th>Contoh di Tabel</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><code>NULL</code></td>
+                        <td>Data tidak ada / belum diisi / tidak memakai fasilitas</td>
+                        <td><span class="badge badge-gray">NULL</span></td>
+                        <td>Pesanan tidak memakai kupon promo (<code>voucher_id IS NULL</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><code>0</code></td>
+                        <td>Ada nilainya dan bernilai nol rupiah / nol unit</td>
+                        <td><span class="badge badge-blue">INTEGER</span></td>
+                        <td>Promo bebas ongkos kirim (<code>ongkir = 0</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><code>''</code> (Empty String)</td>
+                        <td>Teks ada namun tanpa karakter sama sekali (panjang 0)</td>
+                        <td><span class="badge badge-green">TEXT</span></td>
+                        <td>Kolom catatan pesanan dikosongkan pembeli</td>
+                    </tr>
+                    <tr>
+                        <td><code>'NULL'</code></td>
+                        <td>Teks biasa dengan 4 huruf N-U-L-L (seringkali bug aplikasi backend!)</td>
+                        <td><span class="badge badge-green">TEXT</span></td>
+                        <td>Salah input teks nama pelanggan yang bertuliskan "NULL"</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin: 1.5rem 0 0.75rem;"><i class="fa-solid fa-scale-balanced" style="color:var(--brand)"></i> Logika Tiga Nilai (Three-Valued Logic / 3VL)</h3>
+            <p>
+                Di SQL standar, evaluasi perbandingan tidak hanya menghasilkan <code>TRUE</code> atau <code>FALSE</code>, tetapi bisa menghasilkan <strong><code>UNKNOWN</code></strong> jika melibatkan nilai NULL.
+            </p>
+            <div class="callout info">
+                <i class="fa-solid fa-info-circle"></i>
+                <div class="callout-body">
+                    <strong>Mengapa <code>WHERE voucher_id = NULL</code> Selalu Gagal?</strong>
+                    <p style="margin-top:0.25rem;">
+                        Ekspresi <code>NULL = NULL</code> tidak bernilai TRUE, melainkan <code>UNKNOWN</code>. Database menganggap "sesuatu yang tidak kita ketahui tidak bisa dipastikan sama dengan sesuatu yang lain yang juga tidak kita ketahui". Karena itu, Anda <strong>wajib menggunakan operator khusus <code>IS NULL</code> dan <code>IS NOT NULL</code></strong>.
+                    </p>
+                </div>
+            </div>
+
+            <h3 style="margin: 1.5rem 0 0.75rem;"><i class="fa-solid fa-toolbox" style="color:var(--brand)"></i> 4 Fungsi Esensial Penanganan Nilai NULL di SQL</h3>
+            <table class="compare-table">
+                <thead><tr><th>Fungsi / Operator</th><th>Cara Kerja</th><th>Contoh Query</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><code>IS NULL</code> / <code>IS NOT NULL</code></td>
+                        <td>Memfilter baris data yang kosong atau yang terisi</td>
+                        <td><code>WHERE voucher_id IS NULL</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>COALESCE(val1, val2, ...)</code></td>
+                        <td>Mengembalikan nilai non-NULL pertama dari daftar argumen</td>
+                        <td><code>COALESCE(voucher_id, 0)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>IFNULL(val, default)</code></td>
+                        <td>Shorthand khas SQLite/MySQL untuk mengganti NULL dengan nilai default</td>
+                        <td><code>IFNULL(potongan_diskon, 0)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>NULLIF(a, b)</code></td>
+                        <td>Mengembalikan NULL jika nilai <code>a = b</code> (mencegah error pembagian dengan nol)</td>
+                        <td><code>total / NULLIF(jumlah_barang, 0)</code></td>
+                    </tr>
+                </tbody>
+            </table>
 
             <div class="code-block">
                 <div class="code-header">
                     <span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span>
                     <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
                 </div>
-                <pre><code><span class="sql-cmt">-- Mengelompokkan transaksi pakai voucher vs tanpa voucher</span>
+                <pre><code><span class="sql-cmt">-- Praktik Penanganan Nilai NULL pada Transaksi E-Commerce</span>
 <span class="sql-kw">SELECT</span> 
     nomor_invoice,
     total_bayar,
-    potongan_diskon,
+    voucher_id,
+    <span class="sql-cmt">-- 1. Mengelompokkan jenis transaksi dengan IS NULL</span>
     <span class="sql-kw">CASE</span> 
         <span class="sql-kw">WHEN</span> voucher_id <span class="sql-kw">IS NULL</span> <span class="sql-kw">THEN</span> <span class="sql-str">'Tanpa Diskon'</span>
         <span class="sql-kw">ELSE</span> <span class="sql-str">'Klaim Voucher'</span>
-    <span class="sql-kw">END</span> <span class="sql-kw">AS</span> jenis_transaksi,
-    <span class="sql-fn">COALESCE</span>(voucher_id, <span class="sql-num">0</span>) <span class="sql-kw">AS</span> voucher_id_imputed
+    <span class="sql-kw">END</span> <span class="sql-kw">AS</span> status_voucher,
+    <span class="sql-cmt">-- 2. Imputasi nilai NULL menjadi angka 0 dengan COALESCE</span>
+    <span class="sql-fn">COALESCE</span>(voucher_id, <span class="sql-num">0</span>) <span class="sql-kw">AS</span> voucher_id_bersih,
+    <span class="sql-cmt">-- 3. Mencegah error pembagian dengan nol menggunakan NULLIF</span>
+    <span class="sql-fn">ROUND</span>(total_bayar <span class="sql-op">/</span> <span class="sql-fn">NULLIF</span>(total_berat_gram, <span class="sql-num">0</span>), <span class="sql-num">2</span>) <span class="sql-kw">AS</span> rupiah_per_gram
 <span class="sql-kw">FROM</span> pesanan
-<span class="sql-kw">LIMIT</span> <span class="sql-num">6</span>;</code></pre>
+<span class="sql-kw">LIMIT</span> <span class="sql-num">5</span>;</code></pre>
+            </div>
+
+            <div class="callout warning">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div class="callout-body">
+                    <strong>Pengaruh NULL pada Fungsi Agregasi COUNT:</strong>
+                    <p style="margin-top:0.25rem;">
+                        - <code>COUNT(*)</code> menghitung seluruh baris transaksi (termasuk yang bernilai NULL).<br>
+                        - <code>COUNT(voucher_id)</code> <strong>hanya menghitung baris yang NON-NULL</strong> (pesanan yang memakai voucher). Baris NULL diabaikan otomatis!
+                    </p>
+                </div>
             </div>
         </section>
 
-        <!-- 10. CAST -->
+        <!-- 10. UNIQUE -->
+        <section id="unique">
+            <h2><i class="fa-solid fa-fingerprint"></i> 10. Kolom UNIQUE &amp; Tipe Identifier Unik (UUID)</h2>
+            <p>
+                Banyak pemula menyebut <strong>"tipe data unique"</strong>. Secara kaidah teknis database SQL, <strong>UNIQUE bukanlah sebuah tipe data fisik</strong>, melainkan sebuah <strong>Constraint (Batasan Integritas Kolom)</strong>. Tipe data fisiknya tetap berupa <code>TEXT</code>, <code>VARCHAR</code>, atau <code>INTEGER</code>, namun mesin database diberikan aturan ketat: <em>"Tidak boleh ada 2 baris data yang memiliki nilai kembar pada kolom ini!"</em>.
+            </p>
+
+            <h3 style="margin: 1.5rem 0 0.75rem;"><i class="fa-solid fa-shield-halved" style="color:var(--brand)"></i> Mengapa Kolom UNIQUE Sangat Kritis di E-Commerce?</h3>
+            <p>
+                Tanpa aturan <code>UNIQUE</code>, integritas database e-commerce akan rusak:
+            </p>
+            <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem; line-height: 1.8;">
+                <li><strong>Tabel Pelanggan (<code>email</code> &amp; <code>no_hp</code>)</strong>: Mencegah satu orang mendaftar berkali-kali untuk menyalahgunakan bonus pendaftaran (*voucher abuse*).</li>
+                <li><strong>Tabel Pesanan (<code>nomor_invoice</code>)</strong>: Mencegah tagihan ganda atau pesanan duplikat dengan nomor yang sama.</li>
+                <li><strong>Tabel Produk (<code>sku</code>)</strong>: Kode Stock Keeping Unit wajib unik agar sistem pergudangan tidak salah mengirim variasi barang.</li>
+                <li><strong>Tabel Kupon (<code>kode_voucher</code>)</strong>: Kode kupon (misal: <code>PAYDAY99</code>) tidak boleh ganda dengan persentase diskon yang bertabrakan.</li>
+            </ul>
+
+            <h3 style="margin: 1.5rem 0 0.75rem;"><i class="fa-solid fa-arrows-split-up-and-left" style="color:var(--brand)"></i> Perbedaan PRIMARY KEY vs UNIQUE Constraint</h3>
+            <table class="compare-table">
+                <thead><tr><th>Karakteristik</th><th>PRIMARY KEY</th><th>UNIQUE Constraint</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Batas Jumlah per Tabel</strong></td>
+                        <td>Hanya <strong>1 kolom</strong> (atau 1 kombinasi composite key)</td>
+                        <td>Bisa <strong>banyak kolom</strong> dalam satu tabel (misal email UNIQUE, no_hp UNIQUE, nomor_ktp UNIQUE)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bolehkah Bernilai NULL?</strong></td>
+                        <td><strong>MUTLAK TIDAK BOLEH</strong> (wajib NOT NULL)</td>
+                        <td><strong>BOLEH</strong> bernilai NULL (kecuali ditambahkan aturan <code>NOT NULL</code>). Di SQL standar, dua baris bernilai NULL tidak dianggap duplikat karena NULL tidak sama dengan NULL.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Peran Utama</strong></td>
+                        <td>Identitas permanen baris untuk referensi Foreign Key</td>
+                        <td>Mencegah duplikasi data bisnis (Integritas Data)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Indeks Otomatis</strong></td>
+                        <td>Otomatis dibuatkan Clustered / Unique Index</td>
+                        <td>Otomatis dibuatkan Unique Index untuk pencarian kilat</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin: 1.5rem 0 0.75rem;"><i class="fa-solid fa-id-card-clip" style="color:var(--brand)"></i> Tipe Identifier Unik: Auto-Increment Integer vs UUID</h3>
+            <p>
+                Saat membuat kolom ID unik untuk sistem modern, ada 2 pendekatan utama di industri teknologi:
+            </p>
+
+            <table class="compare-table">
+                <thead><tr><th>Jenis ID</th><th>Format &amp; Tipe Data</th><th>Kelebihan</th><th>Kekurangan di E-Commerce</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Auto-Increment</strong></td>
+                        <td><code>INTEGER</code> (1, 2, 3, 4, ...)</td>
+                        <td>Sangat hemat memori storage, pengurutan waktu otomatis sesuai nomor urut</td>
+                        <td><strong>Rentan Business Intelligence Leak</strong>: Kompetitor bisa menebak volume order harian Anda (misal belanja pagi invoice #100, belanja sore invoice #500 = ada 400 order/hari!).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>UUID / GUID (v4)</strong></td>
+                        <td><code>TEXT</code> / <code>VARCHAR(36)</code><br>Contoh: <code>c3a8b2d1-4e7f-4a3b-9c12-8d9e0f1a2b3c</code></td>
+                        <td><strong>Aman secara bisnis</strong> (tidak bisa ditebak), sangat ideal untuk arsitektur <em>microservices</em> terdistribusi tanpa risiko bentrok ID saat merger data.</td>
+                        <td>Ukuran index lebih besar (36 bytes vs 4-8 bytes pada integer).</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
+                </div>
+                <pre><code><span class="sql-cmt">-- 1. Penerapan Constraint UNIQUE pada DDL Pembuatan Tabel Baru</span>
+<span class="sql-kw">CREATE TABLE IF NOT EXISTS</span> akun_reseller (
+    reseller_id   <span class="sql-type">INTEGER PRIMARY KEY AUTOINCREMENT</span>,
+    kode_reseller <span class="sql-type">VARCHAR(20) NOT NULL UNIQUE</span>,       <span class="sql-cmt">-- Wajib Unik (Tidak boleh kembar)</span>
+    email         <span class="sql-type">VARCHAR(100) NOT NULL UNIQUE</span>,      <span class="sql-cmt">-- Wajib Unik</span>
+    nomor_rekening<span class="sql-type">VARCHAR(30) UNIQUE</span>,                <span class="sql-cmt">-- Boleh NULL jika belum diisi, tapi jika ada tidak boleh kembar</span>
+    nama_toko     <span class="sql-type">TEXT NOT NULL</span>
+);
+
+<span class="sql-cmt">-- 2. Contoh Query Data Analyst: Audit &amp; Deteksi Data Duplikat di Sistem</span>
+<span class="sql-kw">SELECT</span> 
+    email,
+    <span class="sql-fn">COUNT</span>(<span class="sql-op">*</span>) <span class="sql-kw">AS</span> total_kemunculan
+<span class="sql-kw">FROM</span> pelanggan
+<span class="sql-kw">GROUP BY</span> email
+<span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(<span class="sql-op">*</span>) <span class="sql-op">&gt;</span> <span class="sql-num">1</span>;</code></pre>
+            </div>
+
+            <div class="callout warning">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div class="callout-body">
+                    <strong>Apa yang Terjadi Jika Memasukkan Data Kembar pada Kolom UNIQUE?</strong>
+                    <p style="margin-top:0.25rem;">
+                        Database engine akan langsung menolak transaksi dan melempar error: <code>Runtime error: UNIQUE constraint failed: pelanggan.email</code>. Data yang korup tidak akan pernah berhasil masuk ke dalam database!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. CAST -->
         <section id="cast">
-            <h2><i class="fa-solid fa-arrow-right-arrow-left"></i> 10. Type Casting dengan CAST()</h2>
+            <h2><i class="fa-solid fa-arrow-right-arrow-left"></i> 11. Type Casting dengan CAST()</h2>
             <p>
                 Fungsi <code>CAST(ekspresi AS tipe_tujuan)</code> digunakan untuk mengonversi tipe data secara eksplisit pada saat query berjalan. Sangat dibutuhkan saat menghitung margin laba persentase.
             </p>
@@ -790,9 +980,9 @@
             </div>
         </section>
 
-        <!-- 11. DDL & DML -->
+        <!-- 12. DDL & DML -->
         <section id="ddl-dml">
-            <h2><i class="fa-solid fa-database"></i> 11. DDL & DML: Desain Tabel & Manipulasi Data</h2>
+            <h2><i class="fa-solid fa-database"></i> 12. DDL &amp; DML: Desain Tabel &amp; Manipulasi Data</h2>
             <p>
                 Selain membaca data (query <code>SELECT</code>), pengolahan data SQL melibatkan 2 kelompok perintah utama:
                 <strong>DDL (Data Definition Language)</strong> untuk mendefinisikan struktur skema tabel, dan 
@@ -861,26 +1051,29 @@
             </div>
         </section>
 
-        <!-- 11. Rangkuman -->
+        <!-- 13. Rangkuman -->
         <section id="rangkuman">
-            <h2><i class="fa-solid fa-layer-group"></i> 11. Rangkuman & Best Practices Pengolahan Data</h2>
+            <h2><i class="fa-solid fa-layer-group"></i> 13. Rangkuman &amp; Best Practices Pengolahan Data</h2>
             <table class="compare-table">
                 <thead><tr><th>Skenario Kasus</th><th>Pendekatan Terbaik SQL</th><th>Contoh Kode</th></tr></thead>
                 <tbody>
                     <tr><td>Uang Rupiah</td><td>Gunakan INTEGER bulat untuk mencegah bug koma</td><td><code>total_bayar INTEGER</code></td></tr>
                     <tr><td>Persentase Laba</td><td>Gunakan CAST ke REAL sebelum membagi</td><td><code>CAST(untung AS REAL) / omzet * 100</code></td></tr>
+                    <tr><td>Pencegahan Duplikasi Akun</td><td>Gunakan Constraint UNIQUE pada email/no_hp</td><td><code>email VARCHAR(100) NOT NULL UNIQUE</code></td></tr>
+                    <tr><td>Identifier Unik Global</td><td>Gunakan format UUID v4 (VARCHAR 36)</td><td><code>transaksi_id VARCHAR(36) UNIQUE</code></td></tr>
+                    <tr><td>Pengecekan Nilai Kosong</td><td>Gunakan IS NULL / IS NOT NULL (Bukan = NULL)</td><td><code>WHERE voucher_id IS NOT NULL</code></td></tr>
+                    <tr><td>Imputasi Default Nilai NULL</td><td>Gunakan fungsi COALESCE() / IFNULL()</td><td><code>COALESCE(potongan_diskon, 0)</code></td></tr>
+                    <tr><td>Cegah Pembagian Nol</td><td>Bungkus pembagi dengan NULLIF(kolom, 0)</td><td><code>omzet / NULLIF(total_unit, 0)</code></td></tr>
                     <tr><td>Desain Tabel Baru</td><td>Gunakan DDL <code>CREATE TABLE</code> + Constraints</td><td><code>NOT NULL UNIQUE DEFAULT 0</code></td></tr>
                     <tr><td>Update Status Pesanan</td><td>Gunakan DML <code>UPDATE ... SET ... WHERE</code></td><td><code>UPDATE pesanan SET status='Selesai'</code></td></tr>
-                    <tr><td>Pengecekan Nilai Kosong</td><td>Gunakan IS NULL / IS NOT NULL</td><td><code>WHERE voucher_id IS NOT NULL</code></td></tr>
-                    <tr><td>Imputasi Default Nilai NULL</td><td>Gunakan fungsi COALESCE()</td><td><code>COALESCE(potongan_diskon, 0)</code></td></tr>
                     <tr><td>Analisis Waktu Checkout</td><td>Gunakan STRFTIME ISO-8601</td><td><code>STRFTIME('%Y-%m', tanggal_pesanan)</code></td></tr>
                 </tbody>
             </table>
         </section>
 
-        <!-- 12. Quiz -->
+        <!-- 14. Quiz -->
         <section id="quiz">
-            <h2><i class="fa-solid fa-circle-question"></i> 12. Kuis Interaktif Pemahaman</h2>
+            <h2><i class="fa-solid fa-circle-question"></i> 14. Kuis Interaktif Pemahaman</h2>
             <div class="quiz-section">
                 <div class="quiz-head"><i class="fa-solid fa-trophy"></i><h3>Uji Pemahaman: Tipe Data SQL E-Commerce</h3></div>
 
@@ -913,6 +1106,17 @@
                         <div class="quiz-opt" onclick="answerQuiz(this,false,'DATEPART adalah fungsi T-SQL / SQL Server, bukan SQLite.')"><div class="opt-letter">A</div> <code>DATEPART('month', tanggal_pesanan)</code></div>
                         <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this,true,'Tepat! STRFTIME(\'%Y-%m\', tanggal) adalah fungsi standar ekstraksi waktu di SQLite.')"><div class="opt-letter">B</div> <code>STRFTIME('%Y-%m', tanggal_pesanan)</code></div>
                         <div class="quiz-opt" onclick="answerQuiz(this,false,'EXTRACT adalah fungsi PostgreSQL / MySQL.')"><div class="opt-letter">C</div> <code>EXTRACT(MONTH FROM tanggal_pesanan)</code></div>
+                    </div>
+                    <div class="quiz-fb"><i></i><span></span></div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="quiz-card">
+                    <div class="quiz-q">4. Apa perbedaan fundamental antara constraint UNIQUE dan PRIMARY KEY pada tabel SQL?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this,true,'Tepat! PRIMARY KEY hanya boleh 1 per tabel dan wajib NOT NULL, sedangkan constraint UNIQUE boleh diterapkan ke banyak kolom dan boleh menampung nilai NULL.')"><div class="opt-letter">A</div> PRIMARY KEY hanya 1 per tabel &amp; tidak boleh NULL, sedangkan UNIQUE bisa di banyak kolom &amp; boleh NULL</div>
+                        <div class="quiz-opt" onclick="answerQuiz(this,false,'UNIQUE mengizinkan nilai NULL pada SQL standar.')"><div class="opt-letter">B</div> UNIQUE sama sekali tidak mengizinkan nilai NULL seperti PRIMARY KEY</div>
+                        <div class="quiz-opt" onclick="answerQuiz(this,false,'Keduanya otomatis membuat indeks pencarian yang cepat.')"><div class="opt-letter">C</div> PRIMARY KEY membuat indeks pencarian, sedangkan UNIQUE tidak membuat indeks</div>
                     </div>
                     <div class="quiz-fb"><i></i><span></span></div>
                 </div>

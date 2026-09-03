@@ -46,17 +46,34 @@ SELECT
 FROM pesanan 
 LIMIT 5;
 
--- 6. Penanganan NULL & COALESCE
+-- 6. Penanganan Nilai NULL (IS NULL, COALESCE, IFNULL, NULLIF)
 SELECT 
     nomor_invoice, 
-    COALESCE(voucher_id, 0) AS voucher_id_aman, 
-    potongan_diskon, 
-    total_bayar
+    total_bayar,
+    voucher_id,
+    -- Klasifikasi dengan IS NULL
+    CASE 
+        WHEN voucher_id IS NULL THEN 'Tanpa Voucher'
+        ELSE 'Pakai Voucher'
+    END AS status_diskon,
+    -- Imputasi nilai NULL dengan COALESCE dan IFNULL
+    COALESCE(voucher_id, 0) AS voucher_id_coalesce, 
+    IFNULL(voucher_id, 0)   AS voucher_id_ifnull,
+    -- Cegah error pembagian nol dengan NULLIF
+    ROUND(total_bayar / NULLIF(total_berat_gram, 0), 2) AS rupiah_per_gram
 FROM pesanan 
 LIMIT 5;
 
+-- 7. Audit & Validasi Kolom UNIQUE (Mendeteksi Data Duplikat)
+SELECT 
+    email,
+    COUNT(*) AS total_kemunculan
+FROM pelanggan
+GROUP BY email
+HAVING COUNT(*) > 1;
+
 -- ============================================================
--- 7. DDL (Data Definition Language) — Desain Skema Tabel
+-- 8. DDL (Data Definition Language) — Desain Skema Tabel
 -- ============================================================
 -- Membuat tabel promo baru dengan Constraints
 CREATE TABLE IF NOT EXISTS kategori_promo (
