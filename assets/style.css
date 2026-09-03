@@ -2662,5 +2662,38 @@ blockquote strong {
     color: var(--brand);
 }
 
+/* Sidebar Track Human Intro Card (Fase 1 Refactor) */
+.sidebar-track-intro {
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--brand);
+    border-radius: var(--r-sm);
+    padding: 8px 10px;
+    margin: 6px 6px 8px 12px;
+}
 
+.track-analogy-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--brand-light);
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+[data-theme="light"] .track-analogy-pill {
+    color: var(--brand);
+}
 
+.track-analogy-pill i {
+    font-size: 0.72rem;
+    color: #F59E0B;
+}
+
+.track-human-desc {
+    font-size: 0.74rem;
+    line-height: 1.45;
+    color: var(--text-secondary);
+    margin: 0;
+}

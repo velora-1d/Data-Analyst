@@ -329,6 +329,28 @@
         [data-theme="dark"] .pill-active { color: #34D399; }
         .pill-planned { background: var(--bg-surface-2); color: var(--text-muted); border: 1px solid var(--border); }
 
+        .track-analogy-banner {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--brand-subtle);
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            color: var(--brand-light);
+            font-size: 0.76rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 100px;
+            margin-bottom: 12px;
+        }
+        [data-theme="light"] .track-analogy-banner {
+            color: var(--brand);
+            background: #EFF6FF;
+            border-color: #BFDBFE;
+        }
+        .track-analogy-banner i {
+            color: #F59E0B;
+        }
+
         .track-title {
             font-size: 1.22rem;
             font-weight: 800;
@@ -547,9 +569,10 @@
                     <div class="track-icon-wrapper"><i class="fa-solid fa-database"></i></div>
                     <span class="track-status-pill pill-active">Aktif (10 Modul)</span>
                 </div>
+                <div class="track-analogy-banner"><i class="fa-solid fa-lightbulb"></i> Ibarat Lemari Brankas &amp; Arsip Toko</div>
                 <div class="track-title">01. Database Relasional, SQL &amp; Storage Engine</div>
                 <div class="track-desc">
-                    Fondasi basis data relasional (7 Modul SQL interaktif: 5.600+ transaksi riil) ditambah bedah Storage Engine 4KB Slotted Pages, Indexing B+Tree, dan ACID Concurrency.
+                    Tempat menyimpan jutaan catatan transaksi bisnis secara permanen dan terorganisir. Berbeda dari Excel biasa yang macet jika dibuka banyak orang, database menjamin catatan uang dan data toko tetap aman tanpa risiko rusak.
                 </div>
                 <div class="track-topics-list">
                     <span class="track-topic-chip">Tipe Data &amp; Query</span>
@@ -572,9 +595,10 @@
                     <div class="track-icon-wrapper"><i class="fa-solid fa-display"></i></div>
                     <span class="track-status-pill pill-active">Aktif (3 Modul)</span>
                 </div>
+                <div class="track-analogy-banner"><i class="fa-solid fa-lightbulb"></i> Ibarat Etalase Toko &amp; Buku Menu Restoran</div>
                 <div class="track-title">02. Frontend Engineering &amp; Browser Internals</div>
                 <div class="track-desc">
-                    Critical Rendering Path (DOM/CSSOM/Reflow/Paint/Composite), eliminasi Layout Thrashing, Event Loop 16.6ms (60 FPS), CSS Grid tokens, dan Virtual DOM vs Signals.
+                    Semua bagian aplikasi yang dilihat, dibaca, dan disentuh oleh pengguna di layar komputer atau HP. Menyelami bagaimana browser melukis warna, tombol, animasi, dan teks hingga aplikasi terasa hidup dan responsif.
                 </div>
                 <div class="track-topics-list">
                     <span class="track-topic-chip">Pixel Pipeline</span>
@@ -595,9 +619,10 @@
                     <div class="track-icon-wrapper"><i class="fa-solid fa-server"></i></div>
                     <span class="track-status-pill pill-active">Aktif (3 Modul)</span>
                 </div>
+                <div class="track-analogy-banner"><i class="fa-solid fa-lightbulb"></i> Ibarat Dapur &amp; Koki Rahasia Restoran</div>
                 <div class="track-title">03. Backend Engineering &amp; Protokol Jaringan</div>
                 <div class="track-desc">
-                    Evolusi HTTP/1.1 s/d HTTP/3 QUIC (UDP 0-RTT), Server-Sent Events vs WebSockets, REST Richardson Maturity, GraphQL DataLoader N+1, dan gRPC Protobuf binary.
+                    Mesin logika di belakang layar yang tidak terlihat pengunjung. Bertugas memasak pesanan, memverifikasi keaslian uang pembayaran kasir, dan menjaga brankas rahasia agar data sensitif tidak bisa dicuri orang.
                 </div>
                 <div class="track-topics-list">
                     <span class="track-topic-chip">HTTP/3 QUIC</span>
@@ -618,9 +643,10 @@
                     <div class="track-icon-wrapper"><i class="fa-solid fa-sitemap"></i></div>
                     <span class="track-status-pill pill-active">Aktif (4 Modul)</span>
                 </div>
+                <div class="track-analogy-banner"><i class="fa-solid fa-lightbulb"></i> Ibarat Cetak Biru Gedung Bertingkat</div>
                 <div class="track-title">04. Arsitektur Sistem &amp; Software Design</div>
                 <div class="track-desc">
-                    Analisis trade-off Monorepo vs Polyrepo (Turborepo/Nx), Modular Monolith in-memory boundaries, Clean/Hexagonal Architecture, dan Domain-Driven Design (DDD).
+                    Perencanaan pondasi tata ruang agar bangunan software tidak roboh saat diserbu jutaan pengunjung, serta membagi sekat ruangan agar ratusan programmer bisa bekerja serempak tanpa saling bertabrakan.
                 </div>
                 <div class="track-topics-list">
                     <span class="track-topic-chip">Modular Monolith</span>
@@ -641,9 +667,10 @@
                     <div class="track-icon-wrapper"><i class="fa-brands fa-linux"></i></div>
                     <span class="track-status-pill pill-active">Aktif (3 Modul)</span>
                 </div>
+                <div class="track-analogy-banner"><i class="fa-solid fa-lightbulb"></i> Ibarat Kantor Pos Surat &amp; Jalan Tol Digital</div>
                 <div class="track-title">05. Linux, Server &amp; Jaringan Komputer</div>
                 <div class="track-desc">
-                    Model 7-lapis OSI vs TCP/IP, TCP 3-way handshake &amp; SYN cookies, subnetting CIDR (/24, /16), NAT, DNS hierarchy, dan Nginx reverse proxy epoll architecture.
+                    Aturan pengiriman paket surat data yang memungkinkan laptop Anda menyapa server di belahan benua lain dalam kedipan mata, serta bagaimana sistem operasi membagi giliran kerja prosesor agar komputer tidak macet.
                 </div>
                 <div class="track-topics-list">
                     <span class="track-topic-chip">TCP 3-Way Handshake</span>
@@ -664,9 +691,10 @@
                     <div class="track-icon-wrapper"><i class="fa-brands fa-docker"></i></div>
                     <span class="track-status-pill pill-active">Aktif (3 Modul)</span>
                 </div>
+                <div class="track-analogy-banner"><i class="fa-solid fa-lightbulb"></i> Ibarat Ban Berjalan Pabrik &amp; Peti Kemas Laut</div>
                 <div class="track-title">06. DevOps, Docker &amp; CI/CD Pipeline</div>
                 <div class="track-desc">
-                    Linux Namespaces (PID/NET/MNT) &amp; cgroups v2, OverlayFS layered storage, OCI runtimes, Docker multi-stage builds (1GB -> 20MB), dan zero-downtime deployment.
+                    Mengemas program ke dalam peti kemas (Docker) agar bisa dijalankan di komputer mana saja tanpa alasan 'di laptop saya lancar kok', serta membuat ban berjalan perakitan otomatis yang menguji software tanpa campur tangan manusia.
                 </div>
                 <div class="track-topics-list">
                     <span class="track-topic-chip">Linux Namespaces</span>
@@ -687,9 +715,10 @@
                     <div class="track-icon-wrapper"><i class="fa-solid fa-microchip"></i></div>
                     <span class="track-status-pill pill-active">Aktif (2 Modul)</span>
                 </div>
+                <div class="track-analogy-banner"><i class="fa-solid fa-lightbulb"></i> Ibarat Penerjemah Bahasa &amp; Meja Kerja Memori</div>
                 <div class="track-title">07. Bahasa, Kompilasi &amp; Model Memori</div>
                 <div class="track-desc">
-                    Native vs Bytecode vs JIT engines (V8 TurboFan), alokasi Stack vs Heap, Tracing GC vs Rust Ownership &amp; Borrow Checker, dan deteksi memory leak.
+                    Bagaimana tulisan ketikan programmer diterjemahkan menjadi bahasa sinyal listrik mesin (0 dan 1), serta bagaimana komputer mengelola dan membersihkan meja kerja RAM agar laptop tidak cepat lemot.
                 </div>
                 <div class="track-topics-list">
                     <span class="track-topic-chip">JIT Engines</span>
@@ -711,9 +740,10 @@
                     <div class="track-icon-wrapper"><i class="fa-brands fa-git-alt"></i></div>
                     <span class="track-status-pill pill-active">Aktif (3 Modul)</span>
                 </div>
+                <div class="track-analogy-banner"><i class="fa-solid fa-lightbulb"></i> Ibarat Mesin Waktu &amp; Buku Sejarah Penyelamat</div>
                 <div class="track-title">08. Git &amp; GitHub + Kamus Perintah CLI</div>
                 <div class="track-desc">
-                    Git Internals (DAG, Tree, Blob, Commit objects), Plumbing Commands, Packfiles Delta Compression, git reflog, serta Kamus Lengkap Perintah Developer CLI.
+                    Mencatat setiap jengkal perubahan dokumen secara otomatis, sehingga Anda bisa memutar balik waktu ke masa lalu jika terjadi kesalahan fatal pada program tanpa panik kehilangan data penting.
                 </div>
                 <div class="track-topics-list">
                     <span class="track-topic-chip">Git Plumbing DAG</span>
@@ -734,9 +764,10 @@
                     <div class="track-icon-wrapper"><i class="fa-solid fa-vial-circle-check"></i></div>
                     <span class="track-status-pill pill-active">Aktif (3 Modul)</span>
                 </div>
+                <div class="track-analogy-banner"><i class="fa-solid fa-lightbulb"></i> Ibarat Uji Mutu Laboratorium &amp; CCTV Pabrik</div>
                 <div class="track-title">09. Testing, Observability &amp; Reliability (SRE)</div>
                 <div class="track-desc">
-                    Piramida testing (Unit, Integration, Playwright E2E), Pact Contract Testing, 3 pilar observability OpenTelemetry (W3C <code>traceparent</code>), dan Circuit Breaker pattern.
+                    Menguji baut dan roda sebelum mobil dijual ke jalan raya, serta memasang sensor detak jantung dan sekring pengaman otomatis agar server tidak meledak saat terjadi korsleting sistem.
                 </div>
                 <div class="track-topics-list">
                     <span class="track-topic-chip">Playwright E2E</span>
@@ -757,9 +788,10 @@
                     <div class="track-icon-wrapper"><i class="fa-solid fa-cloud-bolt"></i></div>
                     <span class="track-status-pill pill-active">Aktif (2 Modul)</span>
                 </div>
+                <div class="track-analogy-banner"><i class="fa-solid fa-lightbulb"></i> Ibarat Meja Etalase Makanan Cepat Saji</div>
                 <div class="track-title">10. Distributed Caching &amp; Capstone 100K QPS</div>
                 <div class="track-desc">
-                    Pola Caching Redis internals, mitigasi Cache Stampede via Algoritma Probabilistik XFetch, Consistent Hashing sharding, dan Capstone System Design 100K QPS.
+                    Menaruh makanan yang paling laris dipesan tepat di atas meja depan kasir, sehingga pelayan tidak perlu bolak-balik berjalan jauh ke gudang belakang setiap kali ada pelanggan yang memesan.
                 </div>
                 <div class="track-topics-list">
                     <span class="track-topic-chip">Redis RESP</span>
@@ -780,9 +812,10 @@
                     <div class="track-icon-wrapper"><i class="fa-solid fa-mobile-screen-button"></i></div>
                     <span class="track-status-pill pill-active">Aktif (2 Modul)</span>
                 </div>
+                <div class="track-analogy-banner"><i class="fa-solid fa-lightbulb"></i> Ibarat Komputer Super di Dalam Saku Celana</div>
                 <div class="track-title">11. Mobile Engineering &amp; Cross-Platform</div>
                 <div class="track-desc">
-                    Arsitektur mobile modern: React Native JSI &amp; Fabric C++, Flutter Impeller vs Skia engine, Kotlin Multiplatform, Offline-First SQLite, dan Push APNs/FCM.
+                    Merancang aplikasi smartphone yang hemat baterai, lancar disentuh jari, dan tetap bisa dipakai berbelanja meskipun pengguna sedang terjebak di dalam lift tanpa koneksi internet.
                 </div>
                 <div class="track-topics-list">
                     <span class="track-topic-chip">JSI &amp; Fabric C++</span>
@@ -795,6 +828,8 @@
                 <span class="track-phase-count">Modul 36 - 37</span>
                 <a href="tracks/10_mobile_architecture/01_mobile_runtimes_bridges.html" class="track-action-btn">Mulai Belajar <i class="fa-solid fa-arrow-right"></i></a>
             </div>
+        </div>
+
         <!-- Track 12 -->
         <div class="track-card" data-category="uiux">
             <div>
@@ -802,9 +837,10 @@
                     <div class="track-icon-wrapper"><i class="fa-solid fa-bezier-curve"></i></div>
                     <span class="track-status-pill pill-active">Aktif (3 Modul)</span>
                 </div>
+                <div class="track-analogy-banner"><i class="fa-solid fa-lightbulb"></i> Ibarat Desain Interior Rumah &amp; Jalur Kursi Roda</div>
                 <div class="track-title">12. UI/UX Design Engineering &amp; Human Interface</div>
                 <div class="track-desc">
-                    Layout Engine (CSS Grid 2D vs Flexbox 1D, Header, Hero Section, Announcement Banner, Sidebar, Footer), Ensiklopedia Ratusan Komponen UI (Buttons, Forms, Toast, Modal, Skeleton), dan Arsitektur UX WCAG 2.1 AA.
+                    Menciptakan ruang aplikasi yang nyaman dipandang, tidak membuat pengguna tersesat, serta ramah bagi siapa pun termasuk penyandang tunanetra dan tunadaksa melalui standar aksesibilitas internasional.
                 </div>
                 <div class="track-topics-list">
                     <span class="track-topic-chip">Grid vs Flexbox</span>

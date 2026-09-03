@@ -470,6 +470,17 @@ async function initDynamicMultiTrackSidebar() {
         const content = document.createElement('div');
         content.className = 'track-accordion-content';
 
+        // Kartu Pengantar Definisi Humanis (Fase 1 Refactor)
+        if (track.realWorldAnalogy || track.humanDefinition) {
+            const introBox = document.createElement('div');
+            introBox.className = 'sidebar-track-intro';
+            introBox.innerHTML = `
+                ${track.realWorldAnalogy ? `<div class="track-analogy-pill"><i class="fa-solid fa-lightbulb"></i> ${track.realWorldAnalogy}</div>` : ''}
+                ${track.humanDefinition ? `<p class="track-human-desc">${track.humanDefinition}</p>` : ''}
+            `;
+            content.appendChild(introBox);
+        }
+
         if (track.modules && track.modules.length > 0) {
             track.modules.forEach((mod) => {
                 const link = document.createElement('a');

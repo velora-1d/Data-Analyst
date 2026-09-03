@@ -9,6 +9,8 @@
       "icon": "fa-solid fa-database",
       "badge": "Aktif (10 Modul)",
       "badgeColor": "var(--success)",
+      "realWorldAnalogy": "Ibarat Lemari Brankas & Arsip Toko",
+      "humanDefinition": "Tempat menyimpan jutaan catatan transaksi secara permanen dan aman. Beda dengan Excel, database tidak akan rusak walau dibuka ribuan kasir bersamaan.",
       "description": "Fondasi basis data relasional, SQL tingkat lanjut, metrik bisnis e-commerce, hingga struktur internal B-Tree & WAL.",
       "modules": [
         { "id": "01_tipe_data", "title": "Tipe Data SQL", "url": "modul/01_tipe_data.html", "status": "ready", "duration": "45m" },
@@ -29,6 +31,8 @@
       "icon": "fa-solid fa-display",
       "badge": "Aktif (3 Modul)",
       "badgeColor": "var(--success)",
+      "realWorldAnalogy": "Ibarat Etalase Toko & Buku Menu Restoran",
+      "humanDefinition": "Semua bagian aplikasi yang dilihat dan disentuh manusia di layar—mulai dari warna tombol, animasi halus, hingga susunan teks yang nyaman dibaca.",
       "description": "Browser rendering pipeline, DOM & CSSOM, JS Event Loop, arsitektur CSS modern, dan paradigma framework (React/Vue/Svelte).",
       "modules": [
         { "id": "fe_01_rendering_pipeline", "title": "Rendering & Event Loop", "url": "tracks/02_frontend/01_rendering_pipeline.html", "status": "ready", "duration": "55m" },
@@ -42,6 +46,8 @@
       "icon": "fa-solid fa-server",
       "badge": "Aktif (3 Modul)",
       "badgeColor": "var(--success)",
+      "realWorldAnalogy": "Ibarat Dapur & Koki Rahasia Restoran",
+      "humanDefinition": "Mesin logika di belakang layar yang tidak terlihat pengunjung. Bertugas memasak pesanan, memverifikasi uang pembayaran kasir, dan menjaga brankas rahasia.",
       "description": "Protokol HTTP/1.1 s/d HTTP/3 QUIC, desain API standar industri (REST, GraphQL, gRPC), autentikasi Session/JWT/OAuth 2.0 PKCE, dan OWASP API Security.",
       "modules": [
         { "id": "be_01_http_protocols", "title": "HTTP/3 & Real-Time", "url": "tracks/03_backend/01_http_protocols.html", "status": "ready", "duration": "50m" },
@@ -55,6 +61,8 @@
       "icon": "fa-solid fa-sitemap",
       "badge": "Aktif (4 Modul)",
       "badgeColor": "var(--success)",
+      "realWorldAnalogy": "Ibarat Cetak Biru Gedung Bertingkat",
+      "humanDefinition": "Rancangan pondasi tata letak agar bangunan software tidak roboh saat diserbu jutaan pengunjung, serta memastikan ribuan programmer bisa bekerja kompak tanpa tabrakan.",
       "description": "Monorepo vs Polyrepo, Modular Monolith vs Microservices, Clean & Hexagonal Architecture, serta Domain-Driven Design (DDD) & Outbox Pattern.",
       "modules": [
         { "id": "arch_01_monorepo_polyrepo", "title": "Monorepo vs Polyrepo", "url": "tracks/04_architecture/01_monorepo_polyrepo.html", "status": "ready", "duration": "50m" },
@@ -69,6 +77,8 @@
       "icon": "fa-solid fa-network-wired",
       "badge": "Aktif (3 Modul)",
       "badgeColor": "var(--success)",
+      "realWorldAnalogy": "Ibarat Kantor Pos Surat & Jalan Tol Digital",
+      "humanDefinition": "Aturan pengiriman paket data yang memungkinkan HP Anda mengirimkan pesan WhatsApp ke server di Amerika Serikat hanya dalam kedipan mata.",
       "description": "Model OSI vs TCP/IP, Alamat IP & Subnetting CIDR, TCP Handshake, Linux Berkeley Sockets, epoll I/O multiplexing, dan Nginx Reverse Proxy.",
       "modules": [
         { "id": "net_01_networking_sockets", "title": "Jaringan & Socket", "url": "tracks/05_linux_networking/01_networking_sockets.html", "status": "ready", "duration": "55m" },
@@ -82,6 +92,8 @@
       "icon": "fa-brands fa-docker",
       "badge": "Aktif (3 Modul)",
       "badgeColor": "var(--success)",
+      "realWorldAnalogy": "Ibarat Ban Berjalan Pabrik & Peti Kemas Kapal Laut",
+      "humanDefinition": "Mengemas program beserta perabotannya ke dalam peti kemas (Docker) agar bisa dijalankan di komputer mana saja tanpa alasan 'di laptop saya bisa kok'.",
       "description": "Docker internals (Namespaces, cgroups v2, Overlay2 COW), Kubernetes Pods & Services, Zero-Downtime Deployment, dan GitHub Actions IaC.",
       "modules": [
         { "id": "ops_01_docker_internals", "title": "Docker & cgroups", "url": "tracks/06_devops/01_docker_internals.html", "status": "ready", "duration": "55m" },
@@ -95,6 +107,8 @@
       "icon": "fa-solid fa-cubes",
       "badge": "Aktif (2 Modul)",
       "badgeColor": "var(--success)",
+      "realWorldAnalogy": "Ibarat Penerjemah Bahasa & Meja Kerja Memori",
+      "humanDefinition": "Bagaimana baris kode buatan manusia diterjemahkan menjadi bahasa mesin (0 dan 1), serta bagaimana komputer membersihkan meja kerja RAM agar tidak lemot.",
       "description": "Kompilasi AOT vs Interpreter vs V8 JIT, Hidden Classes, Stack vs Heap, Generational GC, dan Rust Ownership & Borrow Checker.",
       "modules": [
         { "id": "lang_01_compilation_jit", "title": "Kompilasi & JIT", "url": "tracks/07_runtimes_memory/01_compilation_jit_runtimes.html", "status": "ready", "duration": "50m" },
@@ -107,6 +121,8 @@
       "icon": "fa-brands fa-git-alt",
       "badge": "Aktif (3 Modul)",
       "badgeColor": "var(--success)",
+      "realWorldAnalogy": "Ibarat Mesin Waktu & Buku Sejarah Penyelamat",
+      "humanDefinition": "Mencatat setiap jengkal perubahan dokumen secara otomatis, sehingga Anda bisa memutar balik waktu ke masa lalu jika terjadi kesalahan fatal pada program.",
       "description": "Git & GitHub Internals (DAG, Tree, Blob), Plumbing Commands, Packfiles Delta Compression, git reflog, serta Kamus Perintah Developer CLI.",
       "modules": [
         { "id": "git_01_dag_internals", "title": "Git Objects & DAG", "url": "tracks/04_architecture/02_git_internals.html", "status": "ready", "duration": "50m" },
@@ -120,6 +136,8 @@
       "icon": "fa-solid fa-vial-circle-check",
       "badge": "Aktif (3 Modul)",
       "badgeColor": "var(--success)",
+      "realWorldAnalogy": "Ibarat Uji Mutu Laboratorium & CCTV Pabrik",
+      "humanDefinition": "Menguji baut dan roda sebelum mobil dijual ke jalan raya, serta memasang sensor detak jantung untuk mengawasi kesehatan server 24 jam nonstop.",
       "description": "Piramida testing (Unit, Integration, E2E Playwright), TDD, Pact contract testing, 3 pilar observability OpenTelemetry, dan SRE resilience.",
       "modules": [
         { "id": "test_01_testing_pyramid", "title": "Piramida Testing", "url": "tracks/08_testing_observability/01_testing_pyramid_contract.html", "status": "ready", "duration": "55m" },
@@ -133,6 +151,8 @@
       "icon": "fa-solid fa-cloud-bolt",
       "badge": "Aktif (2 Modul)",
       "badgeColor": "var(--success)",
+      "realWorldAnalogy": "Ibarat Meja Etalase Makanan Cepat Saji",
+      "humanDefinition": "Menaruh data yang sering dipesan pembeli tepat di meja kasir paling depan, sehingga pelayan tidak perlu lari ke gudang belakang setiap ada yang bertanya.",
       "description": "Pola caching terdistribusi, Redis internals, mitigasi Cache Stampede via Algoritma XFetch, dan System Design Capstone 100K QPS.",
       "modules": [
         { "id": "cache_01_redis_xfetch", "title": "Caching & XFetch", "url": "tracks/09_caching_scale/01_distributed_caching_xfetch.html", "status": "ready", "duration": "55m" },
@@ -145,6 +165,8 @@
       "icon": "fa-solid fa-mobile-screen-button",
       "badge": "Aktif (2 Modul)",
       "badgeColor": "var(--success)",
+      "realWorldAnalogy": "Ibarat Komputer Super di Dalam Saku Celana",
+      "humanDefinition": "Merancang aplikasi smartphone yang hemat baterai, lancar disentuh jari, dan tetap bisa dipakai belanja meskipun pengguna sedang terjebak di dalam lift tanpa internet.",
       "description": "Arsitektur mobile modern: React Native JSI/Fabric, Flutter Impeller engine, Kotlin Multiplatform (KMP), Offline-First SQLite, dan Push Notifications APNs/FCM.",
       "modules": [
         { "id": "mob_01_runtimes_bridges", "title": "JSI, Fabric & Impeller", "url": "tracks/10_mobile_architecture/01_mobile_runtimes_bridges.html", "status": "ready", "duration": "55m" },
@@ -157,6 +179,8 @@
       "icon": "fa-solid fa-bezier-curve",
       "badge": "Aktif (3 Modul)",
       "badgeColor": "var(--success)",
+      "realWorldAnalogy": "Ibarat Desain Interior Rumah & Jalur Kursi Roda",
+      "humanDefinition": "Menciptakan ruang aplikasi yang nyaman dipandang, tidak membuat pengguna tersesat, serta ramah bagi siapa pun termasuk penyandang tunanetra dan tunadaksa.",
       "description": "Layout Engine & Ensiklopedia 108 Komponen UI, Ensiklopedia 100 Pola & Arsitektur Tata Letak, dan Arsitektur UX Aksesibilitas WCAG 2.1 AA.",
       "modules": [
         { "id": "uiux_01_layout_wireframe", "title": "Layout & 108 Komponen UI", "url": "tracks/11_ui_ux_design/01_ui_anatomy_tokens.html", "status": "ready", "duration": "50m" },
