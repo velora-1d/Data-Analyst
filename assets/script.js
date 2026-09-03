@@ -217,43 +217,77 @@ function initSupabaseERDCanvas() {
 
         outHandles.forEach(outDot => {
             const handleId = outDot.getAttribute('data-handle');
-            const inDot = canvas.querySelector(`.s-handle-in[data-handle-target="${handleId}"]`);
-            if (!inDot) return;
+            const inDots = canvas.querySelectorAll(`.s-handle-in[data-handle-target="${handleId}"]`);
+            if (!inDots.length) return;
 
             const r1 = outDot.getBoundingClientRect();
-            const r2 = inDot.getBoundingClientRect();
-
-            // Calculate relative coordinates inside SVG canvas
             const x1 = r1.left + r1.width / 2 - canvasRect.left;
             const y1 = r1.top + r1.height / 2 - canvasRect.top;
-            const x2 = r2.left + r2.width / 2 - canvasRect.left;
-            const y2 = r2.top + r2.height / 2 - canvasRect.top;
 
-            // Bezier curve control points
-            const dx = Math.abs(x2 - x1) * 0.45;
-            const cx1 = x1 + Math.max(dx, 40);
-            const cy1 = y1;
-            const cx2 = x2 - Math.max(dx, 40);
-            const cy2 = y2;
+            inDots.forEach(inDot => {
+                const r2 = inDot.getBoundingClientRect();
+                const x2 = r2.left + r2.width / 2 - canvasRect.left;
+                const y2 = r2.top + r2.height / 2 - canvasRect.top;
 
-            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            path.setAttribute('d', `M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}`);
-            path.setAttribute('class', 's-svg-path');
-            path.setAttribute('data-relation', handleId);
+                // Smart Bezier curve control points
+                let pathD;
+                if (x2 >= x1) {
+                    const dx = Math.abs(x2 - x1) * 0.5;
+                    const cx1 = x1 + Math.max(dx, 40);
+                    const cy1 = y1;
+                    const cx2 = x2 - Math.max(dx, 40);
+                    const cy2 = y2;
+                    pathD = `M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}`;
+                } else {
+                    const vertDelta = y2 >= y1 ? 50 : -50;
+                    pathD = `M ${x1} ${y1} C ${x1 + 60} ${y1 + vertDelta}, ${x2 - 60} ${y2 - vertDelta}, ${x2} ${y2}`;
+                }
 
-            svg.appendChild(path);
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', pathD);
+                path.setAttribute('class', 's-svg-path');
+                path.setAttribute('data-relation', handleId);
+                svg.appendChild(path);
 
-            // Hover interactions
-            const sourceRow = outDot.closest('.s-node-row');
-            const targetRow = inDot.closest('.s-node-row');
+                // Hover interactions
+                const sourceRow = outDot.closest('.s-node-row');
+                const targetRow = inDot.closest('.s-node-row');
+                const sourceNode = outDot.closest('.s-node');
+                const targetNode = inDot.closest('.s-node');
 
-            [sourceRow, targetRow].forEach(row => {
-                if (!row) return;
-                row.addEventListener('mouseenter', () => {
+                function activate() {
+                    svg.classList.add('has-active');
                     path.classList.add('active');
-                });
-                row.addEventListener('mouseleave', () => {
+                }
+                function deactivate() {
+                    svg.classList.remove('has-active');
                     path.classList.remove('active');
+                }
+
+                [sourceRow, targetRow].forEach(row => {
+                    if (!row) return;
+                    row.addEventListener('mouseenter', activate);
+                    row.addEventListener('mouseleave', deactivate);
+                });
+
+                [sourceNode, targetNode].forEach(node => {
+                    if (!node || node.dataset.hasConnHover) return;
+                    node.dataset.hasConnHover = "true";
+                    node.addEventListener('mouseenter', () => {
+                        svg.classList.add('has-active');
+                        const handles = Array.from(node.querySelectorAll('[data-handle]')).map(h => h.getAttribute('data-handle'));
+                        const targets = Array.from(node.querySelectorAll('[data-handle-target]')).map(h => h.getAttribute('data-handle-target'));
+                        svg.querySelectorAll('.s-svg-path').forEach(p => {
+                            const rel = p.getAttribute('data-relation');
+                            if (handles.includes(rel) || targets.includes(rel)) {
+                                p.classList.add('active');
+                            }
+                        });
+                    });
+                    node.addEventListener('mouseleave', () => {
+                        svg.classList.remove('has-active');
+                        svg.querySelectorAll('.s-svg-path.active').forEach(p => p.classList.remove('active'));
+                    });
                 });
             });
         });

@@ -1422,15 +1422,23 @@ code:not([class*="language"]):not(.code-block code) {
 
 .supabase-domains-container {
     display: grid;
-    grid-template-columns: repeat(3, minmax(290px, 1fr));
-    gap: 2.5rem;
+    grid-template-columns: repeat(4, minmax(260px, 1fr));
+    gap: 2rem;
     position: relative;
     z-index: 2;
+    min-width: 1140px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
+    .supabase-domains-container {
+        grid-template-columns: repeat(2, minmax(280px, 1fr));
+        min-width: auto;
+    }
+}
+@media (max-width: 768px) {
     .supabase-domains-container {
         grid-template-columns: 1fr;
+        min-width: auto;
     }
 }
 
@@ -1658,10 +1666,10 @@ code:not([class*="language"]):not(.code-block code) {
 }
 
 .s-node.lookup {
-    border-top: 3px solid #A855F7;
+    border-top: 3px solid #0284C7;
 }
 .s-node.lookup .s-node-header {
-    background: linear-gradient(90deg, rgba(168, 85, 247, 0.15), transparent);
+    background: linear-gradient(90deg, rgba(2, 132, 199, 0.18), transparent);
 }
 
 .s-node-body {
@@ -1755,17 +1763,24 @@ code:not([class*="language"]):not(.code-block code) {
 }
 
 .s-svg-path {
-    stroke: #475569;
-    stroke-width: 2px;
+    stroke: rgba(56, 189, 248, 0.32);
+    stroke-width: 1.8px;
     fill: none;
-    stroke-dasharray: 6 4;
-    transition: all 0.3s ease;
+    transition: stroke 0.2s ease, stroke-width 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
+}
+.s-svg-overlay.has-active .s-svg-path {
+    opacity: 0.12;
+}
+.s-svg-overlay.has-active .s-svg-path.active {
+    opacity: 1;
+    stroke: #38BDF8;
+    stroke-width: 3.5px;
+    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 1));
 }
 .s-svg-path.active {
     stroke: #38BDF8;
     stroke-width: 3px;
-    stroke-dasharray: none;
-    filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.8));
+    filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.9));
 }
 
 .erd-grid {
@@ -1810,10 +1825,10 @@ code:not([class*="language"]):not(.code-block code) {
 }
 
 .erd-card.lookup {
-    border-top: 3px solid #8B5CF6;
+    border-top: 3px solid #0284C7;
 }
 .erd-card.lookup .erd-card-header {
-    background: rgba(139, 92, 246, 0.12);
+    background: rgba(2, 132, 199, 0.12);
 }
 
 .mermaid-box {
