@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 12: Autentikasi Modern, OAuth 2.0 PKCE &amp; Keamanan API — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Kuasai arsitektur keamanan backend modern: Stateful Session Redis vs Stateless JWT Token Rotation, Protokol OAuth 2.0 PKCE (RFC 9700), dan Pertahanan Mutlak OWASP Top 10 API Security (BOLA/IDOR).">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 04</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 12: Autentikasi &amp; Keamanan API</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-shield-halved"></i>
+            OAuth 2.0 PKCE <span>(RFC 9700)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 12</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Autentikasi vs Otorisasi</a>
+            <a href="#session-vs-jwt" class="nav-link"><i class="fa-solid fa-key"></i> 2. Stateful Session vs JWT Stateless</a>
+            <a href="#token-rotation" class="nav-link"><i class="fa-solid fa-arrows-rotate"></i> 3. Refresh Token Rotation &amp; Revocation</a>
+            <a href="#oauth-pkce" class="nav-link"><i class="fa-solid fa-shield-halved"></i> 4. OAuth 2.0 PKCE (RFC 9700)</a>
+            <a href="#owasp-api-top10" class="nav-link"><i class="fa-solid fa-bug"></i> 5. Pertahanan OWASP API: BOLA / IDOR</a>
+            <a href="#rate-limiting" class="nav-link"><i class="fa-solid fa-gauge-high"></i> 6. Algoritma Rate Limiting</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 7. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-server"></i> Track 04: Backend Engineering</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Cybersecurity)</span>
+            </div>
+            <h1>Fase 12: Autentikasi Modern, OAuth 2.0 PKCE &amp; Keamanan API</h1>
+            <p class="module-lead">
+                Benteng pertahanan sistem backend: komparasi arsitektur Stateful Session (Redis) vs Stateless JWT, mekanisme rotasi token aman (Refresh Token Rotation), implementasi standar keamanan OAuth 2.0 Authorization Code with PKCE (RFC 9700), dan penutupan celah fatal OWASP Top 10 API Security (BOLA / IDOR).
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Fondasi: Autentikasi vs Otorisasi</h2>
+            <p>
+                Banyak bug fatal berakar dari kerancuan antara dua konsep dasar ini:
+            </p>
+            <ul>
+                <li><strong>Authentication (AuthN - Siapa Anda?):</strong> Memverifikasi identitas pengguna (Username/Password, Biometrik, Multi-Factor Authentication TOTP).</li>
+                <li><strong>Authorization (AuthZ - Apa Hak Anda?):</strong> Memeriksa apakah identitas yang sudah terverifikasi tersebut memiliki izin untuk membaca atau menghapus resource tertentu (Role-Based Access Control - RBAC / Attribute-Based Access Control - ABAC).</li>
+            </ul>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="session-vs-jwt">
+            <h2><i class="fa-solid fa-key"></i> 2. Stateful Session (Redis) vs Stateless JWT</h2>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-database"></i> Stateful Session (Redis Clustered)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Server membuat Session ID acak 128-bit dan menyimpannya di Redis.<br>
+                        • Dikirim ke browser via Cookie <code>HttpOnly; Secure; SameSite=Strict</code>.<br>
+                        • <strong>Kelebihan Luar Biasa:</strong> <em>Instant Revocation!</em> Jika akun dicuri atau admin menekan tombol "Logout All Devices", server cukup menghapus key di Redis dalam waktu 1 milidetik!
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-file-signature"></i> Stateless JWT (JSON Web Tokens)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Berisi 3 bagian: <code>Header.Payload.Signature</code> yang ditandatangani secara kriptografis (HMAC SHA-256 / RSA-256).<br>
+                        • Server tidak perlu menyimpan state di database (Verifikasi tanda tangan matematika lokal O(1)).<br>
+                        • <strong>Kelemahan Fatal:</strong> <em>Tidak Bisa Dibatalkan Sebelum Expired!</em> Jika token dicuri penyerang, token tersebut tetap sah dipakai hingga masa berlakunya habis.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="token-rotation">
+            <h2><i class="fa-solid fa-arrows-rotate"></i> 3. Refresh Token Rotation &amp; Automatic Token Family Revocation</h2>
+            <p>
+                Bagaimana standar industri (RFC 9700) menyelesaikan kelemahan stateless JWT?
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-shield"></i> Pola Refresh Token Rotation (RTR)</div>
+                <div class="callout-body">
+                    1. <strong>Access Token (Umur Singkat: 15 Menit):</strong> Disimpan di memory JavaScript untuk otorisasi API request.<br>
+                    2. <strong>Refresh Token (Umur Panjang: 7 Hari):</strong> Disimpan di cookie <code>HttpOnly</code> terproteksi.<br>
+                    3. <strong>Setiap kali Access Token diperpanjang, REFRESH TOKEN LAMA OTOMATIS HANGUS dan server menerbitkan Refresh Token baru!</strong><br><br>
+                    <strong>Automatic Breach Detection:</strong> Jika hacker mencuri Refresh Token dan mencoba menukarkannya, atau korban yang sah mencoba menukarkan Refresh Token lama yang sudah basi, server mendeteksi <em>Token Reuse Anomaly</em> dan <strong>seketika membatalkan SELURUH sesi keluarga token (Token Family Revocation)</strong>!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="oauth-pkce">
+            <h2><i class="fa-solid fa-shield-halved"></i> 4. Standar Emas OAuth 2.0: Authorization Code with PKCE (RFC 9700)</h2>
+            <p>
+                Dahulu aplikasi Single-Page App (SPA) dan mobile menggunakan <em>Implicit Grant</em>. Pola ini <strong>resmi dilarang (deprecated)</strong> karena access token terekspos di URL hash fragment browser.
+            </p>
+            <p>
+                Standar wajib saat ini untuk seluruh aplikasi adalah <strong>PKCE (Proof Key for Code Exchange - diucapkan "Pixy")</strong>:
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Langkah 1</div>
+                    <div class="pipeline-step-title">Generate Verifier</div>
+                    <div class="pipeline-step-desc">Client membuat string acak kriptografis: <code>code_verifier</code>.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Langkah 2</div>
+                    <div class="pipeline-step-title">SHA-256 Challenge</div>
+                    <div class="pipeline-step-desc">Client membuat hash: <code>code_challenge = BASE64URL(SHA256(verifier))</code>.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Langkah 3</div>
+                    <div class="pipeline-step-title">Auth Request</div>
+                    <div class="pipeline-step-desc">Kirim <code>code_challenge</code> ke Auth Server untuk mendapatkan Auth Code.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Langkah 4</div>
+                    <div class="pipeline-step-title">Token Exchange</div>
+                    <div class="pipeline-step-desc">Client menukar Auth Code + <code>code_verifier</code> asli. Server memvalidasi hash cocok sebelum memberikan Token!</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="owasp-api-top10">
+            <h2><i class="fa-solid fa-bug"></i> 5. Pertahanan OWASP API #1: BOLA (Broken Object Level Authorization) / IDOR</h2>
+            <p>
+                Kerentanan keamanan API paling mematikan dan paling sering dieksploitasi di dunia adalah <strong>BOLA (Broken Object Level Authorization)</strong>, atau dikenal juga sebagai <strong>IDOR (Insecure Direct Object References)</strong>.
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-bad">
+                    <div class="code-pane-header"><i class="fa-solid fa-xmark"></i> Kode Rentan Celah BOLA / IDOR</div>
+                    <pre><code>// Hacker cukup mengganti angka ID pesanan di URL untuk mengintip faktur pelanggan lain!
+app.get('/api/pesanan/:id', async (req, res) => {
+    const pesanan = await db.query(
+        'SELECT * FROM pesanan WHERE pesanan_id = ?', 
+        [req.params.id]
+    );
+    res.json(pesanan);
+});</code></pre>
+                </div>
+
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-check"></i> Kode Aman: Verifikasi Kepemilikan (AuthZ Guard)</div>
+                    <pre><code>// Validasi apakah pesanan tersebut benar-benar milik user yang sedang terotentikasi!
+app.get('/api/pesanan/:id', authMiddleware, async (req, res) => {
+    const pesanan = await db.query(
+        'SELECT * FROM pesanan WHERE pesanan_id = ? AND pelanggan_id = ?', 
+        [req.params.id, req.user.pelanggan_id]
+    );
+    if (!pesanan) return res.status(404).json({ error: 'Tidak ditemukan' });
+    res.json(pesanan);
+});</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="rate-limiting">
+            <h2><i class="fa-solid fa-gauge-high"></i> 6. Algoritma Pembatas Laju Akses (Rate Limiting)</h2>
+            <p>
+                Untuk mencegah brute force password dan serangan penolakan layanan (DDoS), API wajib dilindungi oleh middleware <strong>Rate Limiting</strong>:
+            </p>
+            <ul>
+                <li><strong>Fixed Window Counter:</strong> Membagi waktu menjadi jendela 1 menit. Rentan terhadap lonjakan trafik di batas menit (Edge Burst).</li>
+                <li><strong>Sliding Window Log / Counter:</strong> Menghitung rata-rata request bergerak dengan presisi tinggi di memori Redis.</li>
+                <li><strong>Token Bucket / Leaky Bucket:</strong> Mengizinkan burst trafik sesaat hingga kapasitas bucket penuh, lalu mengalirkan request keluar dengan kecepatan konstan. Sangat cocok untuk API e-commerce!</li>
+            </ul>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 7. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-skull-crossbones"></i> War Story: Celah BOLA Membocorkan Rekam Medis 10 Juta Pasien</div>
+                <div class="callout-body">
+                    Sebuah aplikasi laboratorium klinik ternama meluncurkan fitur cetak hasil lab PDF secara online.
+                    <br><br>
+                    Endpoint yang dibuat adalah: <code>GET /api/lab-reports/download?report_id=84021</code>.
+                    <br>
+                    Pengembang mengandalkan autentikasi JWT yang valid, namun di dalam controller backend mereka <strong>lupa memverifikasi apakah <code>report_id=84021</code> benar milik user yang sedang login</strong>!
+                    <br><br>
+                    Seorang peneliti keamanan mengganti angka <code>report_id</code> secara sekuensial (84020, 84019, ...) menggunakan skrip cURL sederhana dan berhasil mengunduh ribuan hasil rekam medis sensitif pasien lain secara bebas.
+                    <br><br>
+                    <strong>Pelajaran Berharga:</strong> Autentikasi (JWT valid) TIDAK BERARTI otorisasi aman! Selalu terapkan klausa <code>WHERE id = :id AND user_id = :current_user</code> di level query database atau gunakan UUID v4 acak yang tidak dapat ditebak.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman: Autentikasi &amp; Keamanan API</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Apa tujuan utama dari mekanisme PKCE (Proof Key for Code Exchange) dalam alur OAuth 2.0?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'PKCE tidak dimaksudkan untuk mengompresi ukuran token.')">A. Mengurangi ukuran payload access token JWT</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! PKCE mengikat permintaan otorisasi awal dengan kode rahasia code_verifier, sehingga penyerang yang mencegat Authorization Code tidak bisa menukarkannya tanpa mengetahui verifier asli.')">B. Mencegah intersepsi Authorization Code oleh aplikasi jahat di perangkat pengguna dengan mewajibkan verifikasi rahasia kriptografis (code_verifier)</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'PKCE bekerja di client dan server.')">C. Menghilangkan kebutuhan koneksi internet saat login</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Manakah skenario di bawah ini yang merupakan contoh klasik dari celah keamanan BOLA (Broken Object Level Authorization)?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Ini adalah SQL Injection, bukan BOLA.')">A. Penyerang menyisipkan karakter ' OR 1=1 -- ke dalam form login</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! BOLA terjadi ketika user yang terotentikasi sah dapat mengakses objek data milik user lain hanya dengan memodifikasi parameter ID di URL request.')">B. Pengguna A yang sudah login berhasil mengunduh data faktur milik Pengguna B hanya dengan mengubah parameter ID pada URL /api/faktur/102 menjadi /api/faktur/101</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Ini adalah serangan DDoS.')">C. Penyerang mengirimkan 1 juta request per detik hingga server crash</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="02_api_design.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 11: Desain Arsitektur API
+            </a>
+            <a href="../../plan.html" class="btn btn-primary">
+                Lanjut ke Master Roadmap <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

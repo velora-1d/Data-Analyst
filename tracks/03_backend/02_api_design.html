@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 11: Desain Arsitektur API: REST vs GraphQL vs gRPC — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Panduan komparatif arsitektur API industri: REST (Richardson Maturity Model), GraphQL (Schema AST & DataLoader N+1 problem), dan gRPC Protocol Buffers binary streaming.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 04</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 11: Desain Arsitektur API</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-code-compare"></i>
+            API Styles <span>(REST/GQL/gRPC)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 11</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Tiga Mazhab Arsitektur API</a>
+            <a href="#rest-richardson" class="nav-link"><i class="fa-solid fa-cubes"></i> 2. REST &amp; Richardson Maturity</a>
+            <a href="#graphql-internals" class="nav-link"><i class="fa-solid fa-circle-nodes"></i> 3. GraphQL &amp; DataLoader N+1</a>
+            <a href="#grpc-protobuf" class="nav-link"><i class="fa-solid fa-bolt"></i> 4. gRPC &amp; Protocol Buffers</a>
+            <a href="#matrix-comparison" class="nav-link"><i class="fa-solid fa-scale-unbalanced-flip"></i> 5. Matriks Keputusan Arsitektur</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-server"></i> Track 04: Backend Engineering</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (API Architecture)</span>
+            </div>
+            <h1>Fase 11: Desain Arsitektur API: REST vs GraphQL vs gRPC</h1>
+            <p class="module-lead">
+                Membedah tiga gaya arsitektur antarmuka program aplikasi (API) paling dominan di industri perangkat lunak global: kematangan RESTful Richardson Model, fleksibilitas schema-driven GraphQL dengan mitigasi kueri N+1 DataLoader, serta efisiensi biner gRPC Protocol Buffers untuk inter-service microservices.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Tidak Ada "Satu API Untuk Semua Masalah"</h2>
+            <p>
+                Di industri perangkat lunak modern, memilih gaya API bukan soal tren atau selera pribadi, melainkan soal <strong>konteks arsitektur dan trade-off rekayasa</strong>:
+            </p>
+            <ul>
+                <li><strong>Public &amp; Mobile Web APIs:</strong> Mengutamakan standarisasi HTTP, kemudahan integrasi pihak ketiga, dan kemampuan caching CDN (Edge Caching). &rarr; <strong>REST</strong>.</li>
+                <li><strong>Complex Client-Driven UIs:</strong> Mengutamakan fleksibilitas kueri, penghematan round-trip jaringan di aplikasi mobile, dan eliminasi over-fetching. &rarr; <strong>GraphQL</strong>.</li>
+                <li><strong>Internal Microservices Back-to-Back:</strong> Mengutamakan throughput tinggi, latensi sub-milidetik, serialisasi biner super ringkas, dan kontrak tipe data yang ketat. &rarr; <strong>gRPC</strong>.</li>
+            </ul>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="rest-richardson">
+            <h2><i class="fa-solid fa-cubes"></i> 2. Standar Kematangan REST: Richardson Maturity Model</h2>
+            <p>
+                Banyak developer mengaku membuat "REST API", padahal kenyataannya mereka hanya membuat RPC (Remote Procedure Call) di atas HTTP dengan metode POST acak. Leonard Richardson merumuskan 4 tingkatan kematangan REST sejati:
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Level 0</div>
+                    <div class="pipeline-step-title">The Swamp of POX</div>
+                    <div class="pipeline-step-desc">1 endpoint URL (misal <code>/api</code>), seluruh aksi dikirim via POST dengan format custom XML/JSON.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Level 1</div>
+                    <div class="pipeline-step-title">Resources (URI)</div>
+                    <div class="pipeline-step-desc">Entitas dipetakan ke URI unik tersendiri: <code>/pesanan/101</code>, <code>/pelanggan/45</code>.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Level 2</div>
+                    <div class="pipeline-step-title">HTTP Verbs &amp; Status</div>
+                    <div class="pipeline-step-desc">Menggunakan kata kerja semantik: GET (Read), POST (Create), PUT (Replace), DELETE, serta status 200, 201, 404.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Level 3</div>
+                    <div class="pipeline-step-title">HATEOAS</div>
+                    <div class="pipeline-step-desc">Respons menyertakan hypermedia links (rel) yang memandu client ke aksi berikutnya yang diizinkan.</div>
+                </div>
+            </div>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-repeat"></i> Kaidah Idempotensi HTTP (Idempotency)</div>
+                <div class="callout-body">
+                    Metode HTTP disebut <strong>Idempoten</strong> jika mengeksekusi request tersebut 1 kali atau 100 kali berturut-turut menghasilkan state akhir data di server yang persis sama:
+                    <ul>
+                        <li><strong>Idempoten:</strong> <code>GET</code>, <code>PUT</code> (menimpa data pada ID yang sama), <code>DELETE</code> (menghapus ID yang sama), <code>HEAD</code>.</li>
+                        <li><strong>NON-Idempoten:</strong> <code>POST</code> (mengekseskusi POST 5 kali akan membuat 5 transaksi pesanan baru dan mendebet uang 5 kali!).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="graphql-internals">
+            <h2><i class="fa-solid fa-circle-nodes"></i> 3. GraphQL Internals &amp; Bencana N+1 Query</h2>
+            <p>
+                GraphQL (dikembangkan oleh Meta pada 2015) menyelesaikan dua masalah klasik REST:
+                <br>
+                1. <strong>Over-fetching:</strong> REST mengembalikan 50 field yang tidak dibutuhkan layar HP.<br>
+                2. <strong>Under-fetching:</strong> Client harus menembak 3 endpoint berbeda (User &rarr; Pesanan &rarr; Rincian) hanya untuk merender 1 layar.
+            </p>
+
+            <div class="callout-box callout-pitfall">
+                <div class="callout-header"><i class="fa-solid fa-skull-crossbones"></i> The Infamous N+1 Problem pada Resolver GraphQL</div>
+                <div class="callout-body">
+                    Jika client meminta daftar 100 pesanan beserta nama pelanggan pemiliknya:
+                    <br>
+                    <code>query { orders { id customer { name } } }</code>
+                    <br><br>
+                    Jika resolver tidak dirancang dengan hati-hati:
+                    <ol style="margin-left: 20px; margin-top: 6px;">
+                        <li>Query 1: Database mengeksekusi <code>SELECT * FROM pesanan LIMIT 100</code> (1 query).</li>
+                        <li>Query 2 s/d 101: Resolver <code>customer</code> dipanggil 100 kali secara terisolasi: <code>SELECT * FROM pelanggan WHERE id = ?</code> (N query!).</li>
+                    </ol>
+                    Total ada <strong>101 query ke database</strong> hanya untuk 1 request pengguna!
+                    <br><br>
+                    <strong>Solusi Baku: DataLoader (Batching &amp; Per-Request Caching)</strong><br>
+                    DataLoader mengumpulkan seluruh 100 ID pelanggan di satu putaran Event Loop, lalu menembak 1 query efisien: <code>SELECT * FROM pelanggan WHERE id IN (1, 2, 3, ... 100)</code>.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="grpc-protobuf">
+            <h2><i class="fa-solid fa-bolt"></i> 4. gRPC &amp; Protocol Buffers: Komunikasi Biner Berkecepatan Tinggi</h2>
+            <p>
+                Ketika microservice saling bertukar data jutaan kali per detik, serialisasi dan parsing JSON berbasis teks menjadi beban CPU yang sangat besar. Google menciptakan <strong>gRPC</strong> dengan <strong>Protocol Buffers (Protobuf)</strong>:
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-bad">
+                    <div class="code-pane-header"><i class="fa-solid fa-file-code"></i> JSON Payload (Boros Teks: ~120 Bytes)</div>
+                    <pre><code>{
+  "order_id": 10452,
+  "customer_id": 89,
+  "total_amount": 250000.50,
+  "status": "PAID"
+}</code></pre>
+                </div>
+
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-file-zipper"></i> Protobuf Binary Payload (Hemat: ~22 Bytes!)</div>
+                    <pre><code>// Skema .proto:
+message Order {
+  int64 order_id = 1;
+  int32 customer_id = 2;
+  double total_amount = 3;
+  string status = 4;
+}
+// Di-encode menjadi binary varints (6x lebih padat)</code></pre>
+                </div>
+            </div>
+
+            <p>
+                <strong>4 Pola Komunikasi gRPC:</strong><br>
+                1. <em>Unary RPC:</em> 1 Request &rarr; 1 Response (mirip REST biasa).<br>
+                2. <em>Server Streaming RPC:</em> 1 Request &rarr; Aliran data berkelanjutan dari server.<br>
+                3. <em>Client Streaming RPC:</em> Aliran data dari client (misal upload chunk video) &rarr; 1 Response.<br>
+                4. <em>Bidirectional Streaming RPC:</em> Client dan server saling mengirim stream paralel tanpa henti.
+            </p>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="matrix-comparison">
+            <h2><i class="fa-solid fa-scale-unbalanced-flip"></i> 5. Matriks Komparasi &amp; Panduan Keputusan Arsitektur</h2>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Fitur Rekayasa</th>
+                        <th>REST API</th>
+                        <th>GraphQL</th>
+                        <th>gRPC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Format Serialisasi</strong></td>
+                        <td>JSON (Teks)</td>
+                        <td>JSON (Teks)</td>
+                        <td><strong>Protocol Buffers (Biner)</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transport Layer</strong></td>
+                        <td>HTTP/1.1 atau HTTP/2</td>
+                        <td>Biasanya HTTP/1.1 (POST)</td>
+                        <td><strong>Wajib HTTP/2 atau HTTP/3</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Type Safety</strong></td>
+                        <td>Lemah (Perlu OpenAPI / Swagger terpisah)</td>
+                        <td><strong>Sangat Kuat (Schema SDL)</strong></td>
+                        <td><strong>Sangat Kuat (.proto Code Gen)</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>CDN Cacheability</strong></td>
+                        <td><strong>Sempurna (Native HTTP Cache Headers)</strong></td>
+                        <td>Buruk (Semua via POST ke 1 URL)</td>
+                        <td>Tidak Dirancang untuk Public CDN</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kecepatan &amp; Latensi</strong></td>
+                        <td>Standar</td>
+                        <td>Lebih lambat (Parsing AST kueri di server)</td>
+                        <td><strong>Paling Kilat (Sub-milidetik)</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-bomb"></i> War Story: DoS Akibat Query Nesting GraphQL Tanpa Batas</div>
+                <div class="callout-body">
+                    Sebuah startup fintech membuka endpoint GraphQL publik mereka tanpa pembatasan kedalaman kueri (<em>Query Depth Limiting</em>).
+                    <br><br>
+                    Seorang penyerang mengirimkan kueri bersarang rekursif:
+                    <br>
+                    <code>query { user { friends { friends { friends { friends { friends { id } } } } } } }</code>
+                    <br><br>
+                    Server GraphQL mencoba mengeksekusi kueri pohon dengan jutaan relasi basis data, menghabiskan 100% CPU dan RAM server dalam hitungan detik.
+                    <br><br>
+                    <strong>Mitigasi Wajib:</strong> Terapkan <strong>Max Depth Limiting</strong> (maksimal 4 level) dan <strong>Query Cost Analysis</strong> (menolak kueri yang menghitung lebih dari 1000 titik kompleksitas).
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Arsitektur API Modern</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Manakah metode HTTP di bawah ini yang TIDAK bersifat idempoten menurut standar spesifikasi HTTP?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'GET bersifat idempoten dan safe.')">A. GET</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'PUT bersifat idempoten karena menimpa data pada target yang sama.')">B. PUT</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! POST bersifat non-idempoten; memanggil POST berulang kali akan menciptakan record baru berulang kali.')">C. POST</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'DELETE bersifat idempoten karena menghapus resource yang sudah terhapus menghasilkan state akhir yang sama.')">D. DELETE</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Mengapa gRPC jauh lebih efisien daripada REST JSON untuk komunikasi antar microservice backend?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'gRPC menggunakan binary Protobuf, bukan teks JSON.')">A. Karena gRPC menggunakan file JSON yang dikompresi ZIP</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Kombinasi Protocol Buffers biner dan transport HTTP/2 multiplexing memotong ukuran payload dan waktu CPU parsing hingga lebih dari 60%.')">B. Karena menggunakan serialisasi biner Protocol Buffers yang sangat padat dan berjalan di atas multiplexing HTTP/2 dengan kontrak strongly-typed</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'gRPC dapat digunakan dengan bahasa pemrograman apa pun.')">C. Karena gRPC hanya bisa ditulis dalam bahasa C++</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="01_http_protocols.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 10: Protokol Komunikasi
+            </a>
+            <a href="03_auth_security.html" class="btn btn-primary">
+                Lanjut ke Fase 12: Autentikasi Modern <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

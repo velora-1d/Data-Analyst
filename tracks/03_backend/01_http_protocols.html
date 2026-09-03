@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 10: Protokol Komunikasi: Anatomi HTTP &amp; Real-Time Web — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Bedah tuntas protokol jaringan web: Evolusi HTTP/1.1 (HoL Blocking) -> HTTP/2 (Multiplexing) -> HTTP/3 QUIC (UDP 0-RTT), serta komparasi teknologi Real-Time: Polling vs SSE vs WebSocket.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 04</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 10: Protokol HTTP &amp; Real-Time</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-network-wired"></i>
+            HTTP/3 QUIC <span>(RFC 9000)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 10</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Lapisan Protokol Web</a>
+            <a href="#http-evolution" class="nav-link"><i class="fa-solid fa-arrows-split-up-and-off"></i> 2. Evolusi HTTP/1.1 s/d HTTP/3</a>
+            <a href="#hol-blocking" class="nav-link"><i class="fa-solid fa-triangle-exclamation"></i> 3. Masalah Head-of-Line Blocking</a>
+            <a href="#quic-deepdive" class="nav-link"><i class="fa-solid fa-bolt"></i> 4. Bedah QUIC: UDP, TLS 1.3 &amp; 0-RTT</a>
+            <a href="#realtime-matrix" class="nav-link"><i class="fa-solid fa-tower-broadcast"></i> 5. Komparasi Polling vs SSE vs WebSocket</a>
+            <a href="#sse-hands-on" class="nav-link"><i class="fa-solid fa-flask"></i> 6. Lab: Real-Time SSE Ticker</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 7. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-server"></i> Track 04: Backend Engineering</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 50 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Network Protocols)</span>
+            </div>
+            <h1>Fase 10: Protokol Komunikasi: Anatomi HTTP/TCP &amp; Real-Time Web</h1>
+            <p class="module-lead">
+                Membedah fondasi transmisi data internet: anatomi paket HTTP/1.1 plain text, multiplexing binary frame HTTP/2, revolusi HTTP/3 berbasis QUIC (UDP 0-RTT handshake), serta pemilihan protokol real-time yang presisi antara Polling, Server-Sent Events (SSE), dan WebSockets.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Lapisan Transport &amp; Aplikasi Jaringan Web</h2>
+            <p>
+                Setiap byte data yang Anda kirimkan dari backend ke browser diatur oleh tumpukan protokol internet. Selama lebih dari 25 tahun, web bertumpu pada <strong>TCP (Transmission Control Protocol)</strong> untuk menjamin keandalan pengiriman data tanpa paket hilang. Namun seiring meningkatnya tuntutan kecepatan dan latensi mobile, arsitektur lama menghadapi dinding batas fisik.
+            </p>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="http-evolution">
+            <h2><i class="fa-solid fa-arrows-split-up-and-off"></i> 2. Evolusi Protokol: HTTP/1.1 &rarr; HTTP/2 &rarr; HTTP/3</h2>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Fitur Utama</th>
+                        <th>HTTP/1.1 (1997)</th>
+                        <th>HTTP/2 (2015)</th>
+                        <th>HTTP/3 (2022 - RFC 9000)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Format Data</strong></td>
+                        <td>Teks Mentah (ASCII plain-text)</td>
+                        <td>Binary Framing Layer</td>
+                        <td>Binary Framing Layer</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transport Layer</strong></td>
+                        <td>TCP</td>
+                        <td>TCP</td>
+                        <td><strong>QUIC di atas UDP</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Koneksi &amp; Multiplexing</strong></td>
+                        <td>1 request per koneksi TCP (Persistent keep-alive, pipa berurutan)</td>
+                        <td><strong>Multiplexing Penuh:</strong> Ratusan request paralel dalam 1 TCP socket</td>
+                        <td><strong>Independent Streams:</strong> Ratusan stream paralel independen tanpa saling kunci</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Head-of-Line Blocking</strong></td>
+                        <td>Parah di level HTTP</td>
+                        <td>Hilang di level HTTP, tapi <strong>masih ada di level TCP</strong></td>
+                        <td><strong>TERELIMINASI TOTAL!</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Handshake Latency</strong></td>
+                        <td>TCP 3-Way (1-RTT) + TLS (1-2 RTT) = <strong>2-3 RTT</strong></td>
+                        <td>TCP + TLS 1.3 = <strong>1-2 RTT</strong></td>
+                        <td>Kombinasi QUIC + TLS 1.3 = <strong>0-RTT / 1-RTT</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="hol-blocking">
+            <h2><i class="fa-solid fa-triangle-exclamation"></i> 3. Masalah Head-of-Line (HoL) Blocking</h2>
+            <p>
+                Untuk memahami mengapa HTTP/3 diciptakan, kita harus memahami apa itu <strong>Head-of-Line (HoL) Blocking</strong>:
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-truck-ramp-box"></i> Analogi Antrean Truk di Terowongan Sempit</div>
+                <div class="callout-body">
+                    <strong>Pada HTTP/1.1:</strong> Bayangkan terowongan satu lajur. Truk pertama (gambar hero 2MB) berjalan sangat lambat. Truk kedua (file CSS kecil 5KB) terperangkap di belakang truk pertama dan tidak bisa mendahului. Seluruh halaman terblokir menunggu request pertama selesai.
+                    <br><br>
+                    <strong>Pada HTTP/2:</strong> HTTP/2 memecah muatan truk menjadi paket-paket kecil (frames) bernomor ID, sehingga file CSS bisa diselipkan di sela-sela paket gambar (Multiplexing). <em>Namun ada masalah baru:</em> Karena di bawahnya tetap menggunakan TCP, jika <strong>satu paket saja hilang di jaringan (packet loss 1%)</strong>, kernel OS akan menghentikan SELURUH multiplexing stream sampai paket yang hilang tersebut dikirim ulang! Inilah <strong>TCP-level HoL Blocking</strong>.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="quic-deepdive">
+            <h2><i class="fa-solid fa-bolt"></i> 4. Bedah QUIC: UDP, Enkripsi TLS 1.3 &amp; 0-RTT Connection</h2>
+            <p>
+                Google dan IETF memecahkan masalah TCP-level HoL blocking dengan merancang protokol baru: <strong>QUIC</strong> di atas <strong>UDP (User Datagram Protocol)</strong>.
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-signal"></i> 1. Stream Independence</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        Pada QUIC, setiap stream HTTP/3 berdiri sendiri. Jika paket data untuk Request A hilang di jalan, <strong>Request B, C, dan D tetap terus berjalan normal ke browser</strong> tanpa tertahan sama sekali!
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-mobile-screen"></i> 2. Connection Migration</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        Koneksi TCP diidentifikasi oleh 4 tuple: <code>(IP Sumber, Port Sumber, IP Tujuan, Port Tujuan)</code>. Jika user keluar rumah dan HP beralih dari Wi-Fi ke 4G/5G, IP berubah dan koneksi TCP putus!<br>
+                        <strong>QUIC menggunakan Connection ID 64-bit acak:</strong> User dapat berpindah jaringan seketika tanpa memutuskan stream video atau download yang sedang berjalan!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="realtime-matrix">
+            <h2><i class="fa-solid fa-tower-broadcast"></i> 5. Komparasi Teknologi Real-Time Web: Polling vs SSE vs WebSocket</h2>
+            
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Short / Long Polling</th>
+                        <th>Server-Sent Events (SSE)</th>
+                        <th>WebSockets</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Arah Komunikasi</strong></td>
+                        <td>Client &rarr; Server (Request berulang)</td>
+                        <td><strong>Server &rarr; Client (Satu Arah)</strong></td>
+                        <td><strong>Bidirectional (Dua Arah Penuh)</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Protokol Dasar</strong></td>
+                        <td>HTTP standar</td>
+                        <td>HTTP standar (<code>text/event-stream</code>)</td>
+                        <td>TCP Socket khusus (Upgrade handshake)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Overhead Header</strong></td>
+                        <td>Sangat boros (Kirim cookies/headers per request)</td>
+                        <td>Sangat hemat (1 koneksi HTTP tetap terbuka)</td>
+                        <td>Super hemat (Hanya 2 byte framing per pesan)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reconnection Otomatis</strong></td>
+                        <td>Manual via kode JS</td>
+                        <td><strong>Bawaan Browser (Native EventSource)</strong></td>
+                        <td>Harus dibuat manual dengan retry logic</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kasus Penggunaan Terbaik</strong></td>
+                        <td>Dashboard statis dengan refresh setiap 10 menit</td>
+                        <td>Live Score, Ticker Harga Saham, Notifikasi Pesanan, AI Token Streaming (ChatGPT)</td>
+                        <td>Game Multiplayer, Aplikasi Chatting WA/Discord, Whiteboard Kolaborasi Interaktif</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="sse-hands-on">
+            <h2><i class="fa-solid fa-flask"></i> 6. Lab Hands-on: Membuat Real-Time Server-Sent Events (SSE) Server</h2>
+            <p>
+                Mari kita buat endpoint SSE sederhana menggunakan Node.js runtime untuk memahami betapa ringannya protokol streaming satu arah ini dibandingkan WebSocket:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label"><i class="fa-brands fa-node-js"></i> server-sse.js (Node.js Native HTTP)</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
+                </div>
+                <pre><code>const http = require('http');
+
+http.createServer((req, res) => {
+    if (req.url === '/events') {
+        // 1. Wajib set Content-Type ke text/event-stream
+        res.writeHead(200, {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive',
+            'Access-Control-Allow-Origin': '*'
+        });
+
+        // 2. Kirim stream event data berkala ke client:
+        const timer = setInterval(() => {
+            const data = JSON.stringify({ waktu: new Date().toISOString(), harga_btc: 95000 + Math.random() * 500 });
+            res.write(`data: ${data}\n\n`); // Wajib diakhiri dua karakter newline
+        }, 1000);
+
+        req.on('close', () => clearInterval(timer));
+    }
+}).listen(3000, () => console.log('SSE Server berjalan di http://localhost:3000/events'));</code></pre>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-brands fa-js"></i> Client Browser (1 Baris Kode Native!)</span></div>
+                <pre><code>// Tanpa library tambahan! Browser otomatis me-reconnect jika koneksi terputus!
+const evtSource = new EventSource('http://localhost:3000/events');
+
+evtSource.onmessage = (e) => {
+    const payload = JSON.parse(e.data);
+    console.log('Update Data Masuk:', payload.harga_btc);
+};</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 7. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-satellite-dish"></i> War Story: Salah Pilih WebSocket untuk Notifikasi 5 Juta Pengguna</div>
+                <div class="callout-body">
+                    Sebuah aplikasi berita online menggunakan WebSocket server untuk mengirimkan "Breaking News" kepada 5 juta pengguna ponsel.
+                    <br><br>
+                    <strong>Bencana yang Terjadi:</strong> Menahan 5 juta koneksi TCP socket terbuka aktif secara bersamaan memakan memori RAM server luar biasa besar dan mengharuskan pemeliharaan server stateful yang sangat rumit di belakang Load Balancer. Ketika jaringan mobile seluler pengguna fluktuatif di daerah terpencil, terjadi badai rekoneksi (*Thundering Herd*) yang merobohkan kluster server WebSocket.
+                    <br><br>
+                    <strong>Solusi:</strong> Menggantinya dengan <strong>Server-Sent Events (SSE) yang di-cache di Edge CDN (Cloudflare / CloudFront)</strong> atau Web Push Notifications. Server backend hanya mempublikasikan event satu kali, dan CDN yang mendistribusikannya ke jutaan pembaca secara stateless tanpa membebani server backend!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman: Protokol HTTP &amp; Real-Time Web</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Mengapa HTTP/3 menggunakan protokol QUIC di atas UDP alih-alih mempertahankan TCP seperti HTTP/2?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'UDP justru secara default unencrypted, namun QUIC mewajibkan TLS 1.3.')">A. Karena UDP tidak memerlukan enkripsi keamanan sama sekali</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Pada HTTP/2, jika satu paket TCP hilang, seluruh multiplexed streams akan terhenti (TCP Head-of-Line Blocking). QUIC menyelesaikan ini dengan membuat setiap stream berdiri sendiri secara independen.')">B. Mengeliminasi TCP Head-of-Line Blocking sehingga paket yang hilang di satu stream tidak menghambat stream paralel lainnya</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'HTTP/3 bekerja di seluruh tipe jaringan internet.')">C. Karena TCP tidak bisa berjalan di jaringan kabel fiber optik</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Untuk fitur streaming respon token teks dari LLM AI (seperti ChatGPT), teknologi mana yang paling ideal dan hemat sumber daya?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Short polling terlalu lambat dan memakan overhead request ratusan kali.')">A. Short Polling setiap 100 milidetik</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Respons AI adalah aliran data searah (Server ke Client) berbasis teks melalui HTTP standar, didukung reconnection otomatis tanpa overhead stateful TCP socket WebSocket.')">B. Server-Sent Events (SSE) karena aliran data bersifat satu arah (Server ke Client) di atas HTTP standar dengan dukungan reconnection otomatis</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'WebSocket terlalu kompleks untuk data streaming searah sederhana.')">C. WebSockets dengan protokol binary gRPC</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="../02_frontend/03_framework_paradigms.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 09: Paradigma Framework
+            </a>
+            <a href="02_api_design.html" class="btn btn-primary">
+                Lanjut ke Fase 11: Desain Arsitektur API <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

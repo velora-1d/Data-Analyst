@@ -40,15 +40,13 @@
       "id": "backend",
       "title": "Backend Engineering",
       "icon": "fa-solid fa-server",
-      "badge": "Roadmap",
-      "badgeColor": "var(--brand)",
-      "description": "Protokol HTTP/1.1 s/d HTTP/3, desain API standar industri (REST, GraphQL, gRPC), autentikasi Session/JWT/OAuth2, dan Caching.",
+      "badge": "Aktif (3 Modul)",
+      "badgeColor": "var(--success)",
+      "description": "Protokol HTTP/1.1 s/d HTTP/3 QUIC, desain API standar industri (REST, GraphQL, gRPC), autentikasi Session/JWT/OAuth 2.0 PKCE, dan OWASP API Security.",
       "modules": [
-        { "id": "be_01_http_protocols", "title": "1. Anatomi Paket HTTP & Evolusi Protokol (HTTP/1, 2, 3)", "url": "tracks/03_backend/01_http_protocols.html", "status": "planned", "duration": "45m" },
-        { "id": "be_02_api_design", "title": "2. Desain Arsitektur API: REST vs GraphQL vs gRPC", "url": "tracks/03_backend/02_api_design.html", "status": "planned", "duration": "55m" },
-        { "id": "be_03_auth_security", "title": "3. Autentikasi: Stateful Session vs JWT vs OAuth 2.0 PKCE", "url": "tracks/03_backend/03_auth_security.html", "status": "planned", "duration": "50m" },
-        { "id": "be_04_caching_redis", "title": "4. Strategi Caching, Invalidation & Redis Cache-Aside", "url": "tracks/03_backend/04_caching_redis.html", "status": "planned", "duration": "40m" },
-        { "id": "be_05_message_queues", "title": "5. Message Brokers & Asynchronous Jobs (RabbitMQ/Kafka)", "url": "tracks/03_backend/05_message_queues.html", "status": "planned", "duration": "50m" }
+        { "id": "be_01_http_protocols", "title": "Fase 10: Protokol HTTP/3 & Real-Time", "url": "tracks/03_backend/01_http_protocols.html", "status": "ready", "duration": "50m" },
+        { "id": "be_02_api_design", "title": "Fase 11: Desain API (REST, GraphQL, gRPC)", "url": "tracks/03_backend/02_api_design.html", "status": "ready", "duration": "55m" },
+        { "id": "be_03_auth_security", "title": "Fase 12: Autentikasi & Keamanan API", "url": "tracks/03_backend/03_auth_security.html", "status": "ready", "duration": "55m" }
       ]
     },
     {
