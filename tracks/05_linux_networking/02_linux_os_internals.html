@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 18: Linux OS Internals: Proses, VFS &amp; epoll — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Bedah tuntas kernel Linux: Proses vs Thread, Virtual File System (VFS) Everything is a File, File Descriptors (0, 1, 2), I/O Multiplexing epoll vs io_uring, dan kalkulasi izin chmod oktal.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 06</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 18: Linux OS Internals</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-brands fa-linux"></i>
+            Kernel Internals <span>(epoll &amp; VFS)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 18</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Proses vs Thread di Kernel</a>
+            <a href="#vfs-concept" class="nav-link"><i class="fa-solid fa-folder-tree"></i> 2. Everything is a File &amp; VFS</a>
+            <a href="#file-descriptors" class="nav-link"><i class="fa-solid fa-hashtag"></i> 3. File Descriptors (0, 1, 2)</a>
+            <a href="#epoll-evolution" class="nav-link"><i class="fa-solid fa-bolt"></i> 4. Solusi C10K: select vs epoll vs io_uring</a>
+            <a href="#chmod-math" class="nav-link"><i class="fa-solid fa-key"></i> 5. Matematika Izin Akses chmod Oktal</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-network-wired"></i> Track 06: Linux &amp; Jaringan</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Kernel Internals)</span>
+            </div>
+            <h1>Fase 18: Linux OS Internals: Proses, File Descriptors &amp; epoll</h1>
+            <p class="module-lead">
+                Membongkar rahasia di balik efisiensi sistem operasi Linux: perbedaan struktur memori Proses vs Thread, filosofi UNIX "Everything is a File", arsitektur I/O Multiplexing epoll yang menaklukkan C10K Problem, perbandingan mutakhir dengan io_uring, serta kalkulasi izin berkas oktal.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Proses vs Thread di Ruang Memori Linux</h2>
+            <p>
+                Bagaimana kernel Linux mengelola program yang berjalan?
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-cube"></i> Proses (Process)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Memiliki <strong>ruang memori virtual (Virtual Address Space) yang terisolasi 100%</strong>: segmen Text (kode), Data, BSS, Heap, dan Stack.<br>
+                        • Jika satu proses crash (Segmentation Fault), proses lain di OS tetap hidup aman.<br>
+                        • Biaya pembuatan (fork) dan pergantian konteks (*Context Switching*) relatif mahal.
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-lines-leaning"></i> Thread (Lightweight Process)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Berjalan di dalam satu proses yang sama.<br>
+                        • <strong>Berbagi ruang Heap dan Data bersama</strong>, namun masing-masing thread memiliki Stack dan Register CPU sendiri.<br>
+                        • Sangat cepat berpindah konteks, namun rentan bahaya <em>Race Condition</em> jika variabel memori diubah serentak tanpa mutex lock!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="vfs-concept">
+            <h2><i class="fa-solid fa-folder-tree"></i> 2. Filosofi UNIX: "Everything is a File" &amp; VFS</h2>
+            <p>
+                Di Linux, hampir semua hal diwakili sebagai sebuah file: berkas teks biasa di SSD, port jaringan TCP socket, keyboard, mouse, bahkan pipa komunikasi data (*Pipes*).
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-layer-group"></i> Peran Virtual File System (VFS)</div>
+                <div class="callout-body">
+                    VFS adalah lapisan abstraksi kernel yang menyediakan antarmuka standar: <code>open()</code>, <code>read()</code>, <code>write()</code>, <code>close()</code>.
+                    <br><br>
+                    Program aplikasi Anda tidak perlu peduli apakah berkas disimpan di format filesystem <code>ext4</code>, <code>XFS</code>, <code>NFS</code> jaringan, atau membaca byte dari socket jaringan TCP. VFS menerjemahkan seluruh syscall tersebut secara transparan!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="file-descriptors">
+            <h2><i class="fa-solid fa-hashtag"></i> 3. File Descriptors (FD) dan Nilai Standar (0, 1, 2)</h2>
+            <p>
+                Setiap kali proses membuka berkas atau koneksi socket, kernel memberikan sebuah <strong>integer bilangan bulat positif</strong> yang disebut <strong>File Descriptor</strong>:
+            </p>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>FD Integer</th>
+                        <th>Nama Standar POSIX</th>
+                        <th>Tujuan Aliran Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>0</code></td>
+                        <td><strong>stdin</strong> (Standard Input)</td>
+                        <td>Input teks dari keyboard atau pipa (pipe)</td>
+                    </tr>
+                    <tr>
+                        <td><code>1</code></td>
+                        <td><strong>stdout</strong> (Standard Output)</td>
+                        <td>Output teks normal ke terminal monitor</td>
+                    </tr>
+                    <tr>
+                        <td><code>2</code></td>
+                        <td><strong>stderr</strong> (Standard Error)</td>
+                        <td>Output pesan kesalahan darurat ke monitor</td>
+                    </tr>
+                    <tr>
+                        <td><code>3, 4, 5...</code></td>
+                        <td><strong>Custom File / Sockets</strong></td>
+                        <td>File di disk atau socket koneksi pengguna Nginx/Node.js</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="epoll-evolution">
+            <h2><i class="fa-solid fa-bolt"></i> 4. Solusi Masalah C10K: select vs epoll vs io_uring</h2>
+            <p>
+                Pada tahun 1999, server web lumpuh ketika harus menangani 10.000 koneksi bersamaan (<strong>The C10K Problem</strong>). Bagaimana kernel Linux berevolusi menaklukkannya?
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Generasi 1</div>
+                    <div class="pipeline-step-title">select() / poll()</div>
+                    <div class="pipeline-step-desc">Kompleksitas <strong>O(N)</strong>. Kernel memindai seluruh 10.000 array socket satu per satu di setiap loop. Sangat lambat dan memakan 100% CPU!</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Generasi 2</div>
+                    <div class="pipeline-step-title">epoll() (Linux 2.6+)</div>
+                    <div class="pipeline-step-desc">Kompleksitas <strong>O(1)</strong>! Menggunakan Red-Black Tree di kernel dan hanya mengembalikan daftar socket yang benar-benar siap (Ready List). Fondasi Nginx dan Node.js!</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Generasi 3</div>
+                    <div class="pipeline-step-title">io_uring (Linux 5.1+)</div>
+                    <div class="pipeline-step-desc"><strong>Zero-Syscall Asynchronous I/O!</strong> Menggunakan shared ring-buffer SQ/CQ antara user space dan kernel. Standar performa baru sistem modern!</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="chmod-math">
+            <h2><i class="fa-solid fa-key"></i> 5. Matematika Izin Berkas Linux (chmod Oktal)</h2>
+            <p>
+                Izin berkas Linux dihitung berdasarkan bobot biner tiga jenis izin:
+                <br>
+                <code>Read (r) = 4</code> &bull; <code>Write (w) = 2</code> &bull; <code>Execute (x) = 1</code>
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-lock"></i> chmod 755 (Standar Web Executable)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • <strong>Owner: 7</strong> (4 + 2 + 1 = rwx &rarr; Baca, Tulis, Eksekusi)<br>
+                        • <strong>Group: 5</strong> (4 + 0 + 1 = r-x &rarr; Baca, Eksekusi)<br>
+                        • <strong>Others: 5</strong> (4 + 0 + 1 = r-x &rarr; Baca, Eksekusi)
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-key"></i> chmod 600 (Kunci Rahasia SSH / .env)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • <strong>Owner: 6</strong> (4 + 2 + 0 = rw- &rarr; Baca, Tulis)<br>
+                        • <strong>Group: 0</strong> (--- &rarr; Dilarang Akses)<br>
+                        • <strong>Others: 0</strong> (--- &rarr; Dilarang Akses)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-skull-crossbones"></i> War Story: Server Crash Jam 12 Malam dengan Error "Too many open files"</div>
+                <div class="callout-body">
+                    Sebuah server backend Node.js menerima lonjakan trafik flash sale 20.000 pengguna secara serempak. Mendadak aplikasi crash total dan log terminal memuntahkan ribuan error: <strong>Error: EMFILE: too many open files</strong>.
+                    <br><br>
+                    <strong>Penyebab:</strong> Di Linux, setiap koneksi socket TCP yang masuk dianggap sebagai 1 File Descriptor. Secara default, Linux membatasi batas maksimum file descriptor per proses sebesar <strong>1024 (ulimit -n 1024)</strong>! Begitu ada 1.025 pengguna yang tersambung, kernel menolak membuat socket baru!
+                    <br><br>
+                    <strong>Solusi Produksi:</strong> Tingkatkan batas limit file descriptor di <code>/etc/security/limits.conf</code> atau systemd service:
+                    <br>
+                    <code>LimitNOFILE=65535</code>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Linux OS Internals</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Mengapa mekanisme I/O Multiplexing 'epoll' jauh lebih efisien daripada 'select' dalam menangani puluhan ribu koneksi socket serentak?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'epoll tidak memerlukan restart server.')">A. Karena epoll merestart proses secara berkala</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! select() mengharuskan kernel memindai seluruh array 10.000 socket secara O(N), sedangkan epoll() hanya mengembalikan daftar socket yang benar-benar memiliki event data secara O(1).')">B. epoll bekerja secara O(1) di mana kernel mencatat event readiness di dalam Red-Black Tree dan hanya mengembalikan daftar socket yang aktif tanpa memindai seluruh antrean</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'epoll adalah fitur native kernel Linux.')">C. Karena epoll ditulis dalam bahasa JavaScript</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Nilai oktal berapakah yang harus diberikan pada berkas kunci privat SSH (~/.ssh/id_rsa) agar kunci tersebut hanya dapat dibaca dan ditulis oleh pemiliknya saja?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, '777 membuka izin penuh untuk seluruh dunia dan SSH client akan menolaknya!')">A. chmod 777</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, '755 mengizinkan orang lain membaca kunci rahasia.')">B. chmod 755</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! 600 berarti Owner mendapat rw- (4+2=6), sedangkan Group dan Others bernilai 0 (tanpa akses sama sekali).')">C. chmod 600</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, '644 mengizinkan orang lain membaca file.')">D. chmod 644</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="01_networking_sockets.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 17: Jaringan &amp; Socket
+            </a>
+            <a href="03_web_servers_reverse_proxy.html" class="btn btn-primary">
+                Lanjut ke Fase 19: Server Web &amp; Reverse Proxy <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

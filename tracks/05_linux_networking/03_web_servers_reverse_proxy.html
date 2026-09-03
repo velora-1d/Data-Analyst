@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 19: Server Web, Reverse Proxy &amp; Load Balancer — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Arsitektur infrastruktur server web modern: Mekanika Master-Worker Nginx, Komparasi Load Balancing Layer 4 vs Layer 7, Algoritma Distribusi Beban, dan Terminasi SSL/TLS.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 06</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 19: Reverse Proxy &amp; Load Balancer</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-server"></i>
+            Nginx Master-Worker <span>(Layer 4 / 7)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 19</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Forward vs Reverse Proxy</a>
+            <a href="#nginx-architecture" class="nav-link"><i class="fa-solid fa-microchip"></i> 2. Arsitektur Master-Worker Nginx</a>
+            <a href="#layer4-vs-layer7" class="nav-link"><i class="fa-solid fa-layer-group"></i> 3. Load Balancing: Layer 4 vs Layer 7</a>
+            <a href="#lb-algorithms" class="nav-link"><i class="fa-solid fa-shuffle"></i> 4. Algoritma Distribusi Trafik</a>
+            <a href="#ssl-termination" class="nav-link"><i class="fa-solid fa-shield-halved"></i> 5. Terminasi SSL/TLS &amp; Keepalive</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-network-wired"></i> Track 06: Linux &amp; Jaringan</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Infrastructure Engineering)</span>
+            </div>
+            <h1>Fase 19: Server Web, Reverse Proxy &amp; Load Balancer</h1>
+            <p class="module-lead">
+                Arsitektur gerbang depan lalu lintas internet: perbedaan mendasar Forward vs Reverse Proxy, mikro-arsitektur Master-Worker Nginx berbasis Event Loop, komparasi perutean beban Layer 4 TCP vs Layer 7 HTTP, terminasi sertifikat SSL/TLS, serta konfigurasi upstream keepalive berkecepatan tinggi.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Forward Proxy vs Reverse Proxy</h2>
+            <p>
+                Banyak insinyur pemula sering tertukar antara dua fungsi proxy ini:
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-user-secret"></i> Forward Proxy (Melindungi Klien)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Berada di depan sekelompok klien/pengguna.<br>
+                        • Bertindak atas nama <em>Klien</em> untuk menyembunyikan alamat IP asli pengguna dari website luar yang dikunjungi (contoh: VPN korporat, Tor).<br>
+                        • Server web tujuan mengira koneksi datang dari IP Forward Proxy.
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-shield-halved"></i> Reverse Proxy (Melindungi Server)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Berada di depan sekelompok server backend aplikasi.<br>
+                        • Bertindak atas nama <em>Server</em>: menyembunyikan IP privat server aplikasi, membagi beban trafik (Load Balancing), melakukan terminasi SSL, dan caching data statis (contoh: Nginx, Cloudflare, HAProxy).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="nginx-architecture">
+            <h2><i class="fa-solid fa-microchip"></i> 2. Arsitektur Master-Worker Nginx: Mengapa Sangat Ringan?</h2>
+            <p>
+                Berbeda dengan server Apache lama yang membuat thread/proses baru untuk setiap 1 request pengguna (membuat server kehabisan RAM saat ada ribuan pengunjung), Nginx dirancang menggunakan <strong>arsitektur event-driven asinkron</strong>:
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Proses 1</div>
+                    <div class="pipeline-step-title">Master Process</div>
+                    <div class="pipeline-step-desc">Berjalan dengan hak istimewa <code>root</code>. Membaca konfigurasi berkas, mengikat port 80/443, dan memantau kesehatan proses worker.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Proses 2, 3, 4..</div>
+                    <div class="pipeline-step-title">Worker Processes</div>
+                    <div class="pipeline-step-desc">Berjalan tanpa hak istimewa (user <code>nginx</code>), biasanya 1 worker per 1 core CPU fisik.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Mesin Event</div>
+                    <div class="pipeline-step-title">epoll Event Loop</div>
+                    <div class="pipeline-step-desc">Tiap worker menjalankan non-blocking event loop yang sanggup menangani <strong>10.000+ socket koneksi serentak</strong> pada 1 thread CPU!</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="layer4-vs-layer7">
+            <h2><i class="fa-solid fa-layer-group"></i> 3. Load Balancing: Layer 4 (Transport) vs Layer 7 (Application)</h2>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Layer 4 Load Balancer (L4)</th>
+                        <th>Layer 7 Load Balancer (L7)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Dasar Keputusan Routing</strong></td>
+                        <td>Alamat IP dan Nomor Port TCP/UDP saja</td>
+                        <td>Header HTTP, Cookie, URI Path, Body JSON</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Inspeksi Paket</strong></td>
+                        <td>Tidak membaca isi pesan (Hanya merutekan paket biner mentah)</td>
+                        <td>Membaca isi pesan HTTP penuh (Terminasi TLS, inspeksi payload)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kecepatan &amp; Throughput</strong></td>
+                        <td><strong>Super Kilat (Jutaan paket per detik)</strong></td>
+                        <td>Lebih lambat karena ada CPU overhead parsing HTTP/TLS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fleksibilitas Routing</strong></td>
+                        <td>Kaku (Semua trafik port 443 ke upstream yang sama)</td>
+                        <td><strong>Sangat Cerdas:</strong> Rute <code>/api</code> ke Node.js, rute <code>/gambar</code> ke S3, rute <code>/video</code> ke CDN</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="lb-algorithms">
+            <h2><i class="fa-solid fa-shuffle"></i> 4. Algoritma Distribusi Trafik</h2>
+            <ul>
+                <li><strong>Round Robin:</strong> Membagikan request secara bergantian berurutan ke server 1, 2, 3, 1, 2, 3. Asumsi: seluruh server memiliki spesifikasi perangkat keras yang identik.</li>
+                <li><strong>Least Connections:</strong> Mengarahkan request berikutnya ke server yang saat itu memiliki jumlah koneksi aktif paling sedikit. Sangat ideal untuk request yang durasi pengerjaannya bervariasi (misal upload file).</li>
+                <li><strong>IP Hash:</strong> Menghitung hash dari IP klien untuk menentukan server target. Menjamin pengguna yang sama selalu tersambung ke server yang sama (<em>Sticky Session</em>).</li>
+            </ul>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="ssl-termination">
+            <h2><i class="fa-solid fa-shield-halved"></i> 5. Terminasi SSL/TLS &amp; Upstream Keepalive</h2>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> Konfigurasi Nginx Berperforma Tinggi</span></div>
+                <pre><code>upstream backend_cluster {
+    server 10.0.1.10:3000;
+    server 10.0.1.11:3000;
+    # Wajib aktifkan connection pooling upstream!
+    keepalive 64;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name api.velora.id;
+
+    # Terminasi SSL dilakukan di Nginx (Bebaskan CPU Node.js dari enkripsi!)
+    ssl_certificate /etc/ssl/certs/velora.crt;
+    ssl_certificate_key /etc/ssl/private/velora.key;
+
+    location / {
+        proxy_pass http://backend_cluster;
+        
+        # Wajib set HTTP/1.1 dan kosongkan header Connection agar keepalive berfungsi!
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-fire"></i> War Story: Node.js Hang Akibat Menangani SSL Handshake Mandiri</div>
+                <div class="callout-body">
+                    Sebuah startup fintech mengarahkan trafik HTTPS publik langsung ke aplikasi Node.js mereka tanpa reverse proxy di depannya.
+                    <br><br>
+                    Ketika kampanye iklan viral diluncurkan, server menerima 5.000 handshake TLS serentak per detik.
+                    <br><br>
+                    <strong>Dampak:</strong> Operasi matematika kriptografi asymmetric handshake (RSA/ECDSA) memakan 100% CPU main thread Node.js, membekukan event loop dan menyebabkan response time API melonjak dari 40ms menjadi 12 detik!
+                    <br><br>
+                    <strong>Solusi:</strong> Memasang <strong>Nginx sebagai SSL Termination Reverse Proxy</strong> di depan Node.js. Nginx mengeksekusi handshake TLS menggunakan multi-worker C library yang sangat teroptimasi hardware, dan meneruskan trafik HTTP plain-text murni ke Node.js di jaringan lokal privat, menurunkan utilisasi CPU backend hingga 75%!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Server Web &amp; Reverse Proxy</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Apa perbedaan arsitektural mendasar antara Load Balancer Layer 4 (L4) dan Layer 7 (L7)?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'L4 justru lebih cepat dari L7.')">A. L4 jauh lebih lambat daripada L7</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! L4 hanya melihat IP dan port TCP/UDP tanpa membedah isi pesan, sedangkan L7 membaca seluruh header HTTP/HTTPS dan URL path untuk keputusan routing yang cerdas.')">B. L4 merutekan paket murni berdasarkan informasi IP dan port TCP/UDP, sedangkan L7 memeriksa isi aplikasi HTTP seperti URL path, headers, dan cookies</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'L7 mendukung protokol modern.')">C. L7 hanya dapat digunakan untuk protokol email</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Dalam konfigurasi reverse proxy Nginx upstream, mengapa kita harus menyetel 'proxy_http_version 1.1' dan mengosongkan header 'Connection'?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Setting ini justru mengaktifkan keepalive, bukan menutupnya.')">A. Agar server langsung memutuskan koneksi seketika</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Secara default Nginx menggunakan HTTP/1.0 dengan Connection: close ke upstream. Konfigurasi ini mengaktifkan upstream keepalive connection pooling, mencegah kehabisan port TCP dan menaikkan throughput.')">B. Mengaktifkan penggunaan kembali koneksi TCP (Connection Pooling / Keepalive) ke server backend aplikasi sehingga tidak perlu membuka-tutup socket per request</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Ini bukan untuk enkripsi.')">C. Menghapus enkripsi SSL secara permanen</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="02_linux_os_internals.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 18: Linux OS Internals
+            </a>
+            <a href="../../plan.html" class="btn btn-primary">
+                Lanjut ke Master Roadmap <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

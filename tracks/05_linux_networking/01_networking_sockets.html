@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 17: Jaringan Komputer: Dari Lapisan Fisik Menuju Socket — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Bedah tuntas protokol jaringan internet: Model OSI 7 Lapisan vs TCP/IP, Subnetting CIDR, Resolusi Hierarki DNS, Mekanika TCP 3-Way Handshake & 4-Way Teardown, dan Linux Berkeley Sockets API.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 06</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 17: Jaringan &amp; Socket</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-network-wired"></i>
+            Berkeley Sockets <span>(TCP 3-Way)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 17</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Model OSI vs TCP/IP</a>
+            <a href="#ip-cidr" class="nav-link"><i class="fa-solid fa-calculator"></i> 2. Subnetting IP &amp; Notasi CIDR</a>
+            <a href="#dns-resolution" class="nav-link"><i class="fa-solid fa-globe"></i> 3. Perjalanan Kueri Rekursif DNS</a>
+            <a href="#tcp-handshake" class="nav-link"><i class="fa-solid fa-handshake"></i> 4. TCP 3-Way Handshake &amp; FIN</a>
+            <a href="#berkeley-sockets" class="nav-link"><i class="fa-solid fa-terminal"></i> 5. Linux Berkeley Sockets API</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-network-wired"></i> Track 06: Linux &amp; Jaringan</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Systems Networking)</span>
+            </div>
+            <h1>Fase 17: Jaringan Komputer: Dari Lapisan Fisik Menuju Socket</h1>
+            <p class="module-lead">
+                Membedah bagaimana data berpindah melintasi kabel fiber optik dan router dunia: dekonstruksi 7 Lapisan OSI vs 4 Lapisan TCP/IP, matematika alokasi subnet CIDR, pohon rekursif DNS, status mesin TCP (SYN, ACK, TIME_WAIT), serta pemrograman socket tingkat rendah C/Linux.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Model Referensi: OSI 7 Lapisan vs TCP/IP</h2>
+            <p>
+                Setiap kali browser Anda mengirimkan satu request HTTP, data tersebut dibungkus (enkapsulasi) lapis demi lapis ke dalam header jaringan sebelum menjadi sinyal elektromagnetik di kabel:
+            </p>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Lapisan OSI (7 Layer)</th>
+                        <th>Setara TCP/IP</th>
+                        <th>Unit Data</th>
+                        <th>Protokol &amp; Perangkat Keras</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>7. Application<br>6. Presentation<br>5. Session</td>
+                        <td><strong>Application</strong></td>
+                        <td>Data / Messages</td>
+                        <td>HTTP/3, DNS, SSH, TLS, JSON</td>
+                    </tr>
+                    <tr>
+                        <td>4. Transport</td>
+                        <td><strong>Transport</strong></td>
+                        <td><strong>Segment (TCP) / Datagram (UDP)</strong></td>
+                        <td>TCP (Port 80/443), UDP (Port 53)</td>
+                    </tr>
+                    <tr>
+                        <td>3. Network</td>
+                        <td><strong>Internet</strong></td>
+                        <td><strong>Packet</strong></td>
+                        <td>IPv4, IPv6, ICMP (Ping), Router</td>
+                    </tr>
+                    <tr>
+                        <td>2. Data Link<br>1. Physical</td>
+                        <td><strong>Network Interface</strong></td>
+                        <td><strong>Frame / Bits</strong></td>
+                        <td>Ethernet (MAC Address), Wi-Fi, Kabel Fiber Optik</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="ip-cidr">
+            <h2><i class="fa-solid fa-calculator"></i> 2. Alamat IP &amp; Matematika Subnetting Notasi CIDR</h2>
+            <p>
+                Alamat IPv4 terdiri dari 32 bit biner (4 oktet). Notasi <strong>CIDR (Classless Inter-Domain Routing)</strong> menentukan berapa banyak bit yang dialokasikan untuk ID Jaringan (Network) dan berapa bit yang tersisa untuk ID Host (Server):
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-calculator"></i> Menghitung Kapasitas Subnet 192.168.1.0/24</div>
+                <div class="callout-body">
+                    • <code>/24</code> berarti 24 bit pertama adalah Network ID prefix.<br>
+                    • Sisa bit untuk Host: <code>32 - 24 = 8 bit</code>.<br>
+                    • Total IP di subnet: <code>2^8 = 256 alamat IP</code>.<br>
+                    • <strong>IP yang Dapat Dipakai Host:</strong> <code>256 - 2 = 254 IP</code> (Alamat <code>.0</code> dicadangkan untuk Network Address, dan alamat <code>.255</code> dicadangkan untuk Broadcast Address).
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="dns-resolution">
+            <h2><i class="fa-solid fa-globe"></i> 3. Perjalanan Kueri Rekursif DNS: Dari Domain ke IP</h2>
+            <p>
+                Ketika Anda mengetikkan <code>google.com</code> di peramban, komputer Anda tidak tahu ke server mana harus tersambung sebelum melakukan resolusi hierarkis DNS:
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Langkah 1</div>
+                    <div class="pipeline-step-title">Browser / OS Cache</div>
+                    <div class="pipeline-step-desc">Memeriksa memori lokal atau berkas <code>/etc/hosts</code>.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Langkah 2</div>
+                    <div class="pipeline-step-title">DNS Resolver (ISP)</div>
+                    <div class="pipeline-step-desc">Kueri dikirim ke server resolver rekursif (misal Cloudflare <code>1.1.1.1</code>).</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Langkah 3</div>
+                    <div class="pipeline-step-title">Root Server (.)</div>
+                    <div class="pipeline-step-desc">Mengarahkan ke server TLD yang bertanggung jawab untuk domain <code>.com</code>.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Langkah 4</div>
+                    <div class="pipeline-step-title">Authoritative NS</div>
+                    <div class="pipeline-step-desc">Server nameserver pemilik domain mengembalikan IP target (A / AAAA Record) dengan TTL.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="tcp-handshake">
+            <h2><i class="fa-solid fa-handshake"></i> 4. Anatomi TCP 3-Way Handshake &amp; 4-Way Teardown</h2>
+            <p>
+                Sebelum 1 byte pun data HTTP dapat dikirim, client dan server wajib menyepakati nomor urut sequence number (ISN):
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-plug"></i> TCP 3-Way Handshake (Membuka Sesi)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        1. <strong>Client &rarr; Server: [SYN]</strong> (Seq=100) — "Halo, saya ingin membuka koneksi."<br>
+                        2. <strong>Server &rarr; Client: [SYN, ACK]</strong> (Seq=300, Ack=101) — "Diterima! Saya juga siap."<br>
+                        3. <strong>Client &rarr; Server: [ACK]</strong> (Seq=101, Ack=301) — "Konfirmasi! Koneksi ESTABLISHED."
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-power-off"></i> TCP 4-Way Teardown (Menutup Sesi)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        1. <strong>Client &rarr; Server: [FIN]</strong> — "Saya selesai mengirim data."<br>
+                        2. <strong>Server &rarr; Client: [ACK]</strong> — "FIN diterima."<br>
+                        3. <strong>Server &rarr; Client: [FIN]</strong> — "Saya juga sudah selesai."<br>
+                        4. <strong>Client &rarr; Server: [ACK]</strong> — Client masuk ke status <strong>TIME_WAIT (biasanya 60 detik)</strong> untuk memastikan ACK sampai.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="berkeley-sockets">
+            <h2><i class="fa-solid fa-terminal"></i> 5. Linux Berkeley Sockets API: Siklus Hidup Socket Server</h2>
+            <p>
+                Di tingkat kernel sistem operasi, seluruh server web (Nginx, Express, Apache) berkomunikasi melalui urutan 5 panggilan sistem (syscall) Berkeley Sockets:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-c"></i> Siklus Panggilan Syscall Socket di Linux</span></div>
+                <pre><code>// 1. Buat socket endpoint di kernel
+int server_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+// 2. Ikat (bind) socket ke alamat IP dan nomor Port lokal
+bind(server_fd, (struct sockaddr*)&server_addr, sizeof(server_addr));
+
+// 3. Masuk ke mode pasif menunggu koneksi masuk (listen queue backlog)
+listen(server_fd, 128);
+
+while (1) {
+    // 4. Menerima koneksi baru yang sudah selesai 3-Way Handshake
+    // Mengembalikan File Descriptor (client_fd) BARU khusus untuk klien ini!
+    int client_fd = accept(server_fd, (struct sockaddr*)&client_addr, &addr_len);
+    
+    // 5. Baca dan Tulis data
+    read(client_fd, buffer, 1024);
+    write(client_fd, "HTTP/1.1 200 OK\r\n\r\nHello World", 30);
+    close(client_fd);
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-skull-crossbones"></i> War Story: Kehabisan Port Ephemeral Akibat Banjir Socket TIME_WAIT</div>
+                <div class="callout-body">
+                    Sebuah layanan backend microservice menembak API pembayaran eksternal jutaan kali per jam. Namun di setiap request, developer membuka koneksi TCP baru dan langsung menutupnya (<code>Connection: close</code>).
+                    <br><br>
+                    Setelah berjalan 3 jam, server tiba-tiba crash dengan pesan error: <strong>"Cannot assign requested address" (EADDRNOTAVAIL)</strong>!
+                    <br><br>
+                    <strong>Penyebab:</strong> Setiap socket yang ditutup oleh client masuk ke status <strong>TIME_WAIT selama 60 detik</strong> untuk mencegah paket tersasar merusak koneksi baru. Karena ada 60.000 request per menit, seluruh 65.535 port keluar (ephemeral ports) habis terkunci di status TIME_WAIT!
+                    <br><br>
+                    <strong>Solusi:</strong> Aktifkan <strong>HTTP Connection Pooling / Keep-Alive (Upstream Keepalive)</strong> sehingga ratusan request menggunakan kembali koneksi TCP yang sudah terbuka tanpa membuka-tutup socket berulang kali!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Jaringan &amp; Socket</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Pada subnetting IPv4 dengan notasi CIDR 10.0.0.0/28, berapa jumlah alamat IP yang dapat dialokasikan untuk perangkat komputer host?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, '16 adalah total IP termasuk Network dan Broadcast.')">A. 16 IP</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Sisa bit host adalah 32 - 28 = 4 bit (2^4 = 16 IP). Dikurangi 2 (alamat Network dan Broadcast), kapasitas bersih host adalah 14 IP.')">B. 14 IP</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, '28 bit adalah network prefix.')">C. 28 IP</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Salah hitung bit host.')">D. 30 IP</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Mengapa koneksi TCP memasuki status TIME_WAIT setelah mengirimkan paket konfirmasi penutupan terakhir (ACK)?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'TIME_WAIT tidak dimaksudkan untuk menghemat RAM.')">A. Untuk menghemat pemakaian memori RAM server</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! TIME_WAIT (2MSL) memastikan jika ACK terakhir hilang, server dapat mengirimkan ulang FIN dan paket tersasar di jaringan lama tidak menginterferensi koneksi baru pada port yang sama.')">B. Memastikan ACK terakhir sampai ke lawan bicara dan mencegah paket data lama yang tersasar di internet menginterferensi koneksi socket baru berikutnya</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'DNS tidak berhubungan dengan TCP TIME_WAIT.')">C. Menunggu pembaruan cache server DNS</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="../04_architecture/04_ddd_event_driven.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 16: Domain-Driven Design
+            </a>
+            <a href="02_linux_os_internals.html" class="btn btn-primary">
+                Lanjut ke Fase 18: Linux OS Internals <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

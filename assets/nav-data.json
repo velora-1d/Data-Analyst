@@ -67,15 +67,13 @@
       "id": "jaringan_server",
       "title": "Jaringan Komputer & Server",
       "icon": "fa-solid fa-network-wired",
-      "badge": "Roadmap",
-      "badgeColor": "var(--brand)",
-      "description": "Model OSI vs TCP/IP, Alamat IP & Subnetting CIDR, Resolusi DNS, Nginx Reverse Proxy, Load Balancer, dan Linux Server.",
+      "badge": "Aktif (3 Modul)",
+      "badgeColor": "var(--success)",
+      "description": "Model OSI vs TCP/IP, Alamat IP & Subnetting CIDR, TCP Handshake, Linux Berkeley Sockets, epoll I/O multiplexing, dan Nginx Reverse Proxy.",
       "modules": [
-        { "id": "net_01_osi_tcp", "title": "1. Model OSI 7 Lapisan & TCP/IP 3-Way Handshake", "url": "tracks/05_jaringan_server/01_osi_tcp.html", "status": "planned", "duration": "45m" },
-        { "id": "net_02_ip_subnetting", "title": "2. IPv4 vs IPv6, Subnetting CIDR, IP Publik & Privat NAT", "url": "tracks/05_jaringan_server/02_ip_subnetting.html", "status": "planned", "duration": "50m" },
-        { "id": "net_03_dns_tls", "title": "3. Anatomi DNS Resolution & SSL/TLS Handshake Security", "url": "tracks/05_jaringan_server/03_dns_tls.html", "status": "planned", "duration": "45m" },
-        { "id": "net_04_nginx_proxy", "title": "4. Nginx Reverse Proxy, Load Balancer & Rate Limiting", "url": "tracks/05_jaringan_server/04_nginx_proxy.html", "status": "planned", "duration": "50m" },
-        { "id": "net_05_linux_server", "title": "5. Linux Server Essentials: Process, Permissions & Systemd", "url": "tracks/05_jaringan_server/05_linux_server.html", "status": "planned", "duration": "45m" }
+        { "id": "net_01_networking_sockets", "title": "Fase 17: Jaringan Komputer & Socket", "url": "tracks/05_linux_networking/01_networking_sockets.html", "status": "ready", "duration": "55m" },
+        { "id": "net_02_linux_os_internals", "title": "Fase 18: Linux OS Internals & epoll", "url": "tracks/05_linux_networking/02_linux_os_internals.html", "status": "ready", "duration": "55m" },
+        { "id": "net_03_web_servers_reverse_proxy", "title": "Fase 19: Server Web & Reverse Proxy", "url": "tracks/05_linux_networking/03_web_servers_reverse_proxy.html", "status": "ready", "duration": "55m" }
       ]
     },
     {
