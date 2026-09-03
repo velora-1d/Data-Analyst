@@ -176,6 +176,54 @@
                 <span class="tag"><i class="fa-solid fa-clock"></i> 50 Menit Baca &amp; Praktik</span>
                 <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Deep Dive)</span>
             </div>
+
+        <!-- Fondasi Konsep Manusiawi (Fase Otomasi Multi-Agent) -->
+        <div class="concept-foundation-box">
+            <div class="concept-box-header">
+                <div class="concept-box-title">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <span>Fondasi Konsep: Storage Engine & B-Tree Internals</span>
+                </div>
+                <div class="concept-analogy-badge">
+                    <i class="fa-solid fa-hard-drive"></i> Ibarat Buku Lemari Arsip Berhalaman Rapi
+                </div>
+            </div>
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-card-label what">
+                        <i class="fa-solid fa-cube"></i> Apa Ini Sebenarnya?
+                    </div>
+                    <p class="concept-card-text">
+                        Storage engine adalah juru tulis fisik database yang bertugas mengukir data dari memori RAM ke lempengan harddisk atau SSD dalam bentuk lembaran blok halaman (pages).
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label why">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Masalah Nyata Apa yang Diselesaikan?
+                    </div>
+                    <p class="concept-card-text">
+                        Jika data ditulis sembarangan tanpa struktur, komputer harus memutar seluruh piringan disk berulang kali yang membuat server database menjadi sangat lambat dan cepat rusak.
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label analogy">
+                        <i class="fa-solid fa-lightbulb"></i> Analogi Kehidupan Sehari-Hari
+                    </div>
+                    <p class="concept-card-text">
+                        Ibarat buku ensiklopedia tebal dengan pembatas bab: alih-alih melempar kertas acak ke lantai, juru arsip menaruh tiap lembar secara alfabetis sehingga bisa dibuka tepat dalam 3 kali balik halaman (B-Tree).
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label when">
+                        <i class="fa-solid fa-bullseye"></i> Kapan Kita Memakainya?
+                    </div>
+                    <p class="concept-card-text">
+                        Dibutuhkan saat data toko Anda bertambah dari ribuan menjadi jutaan transaksi, dan Anda ingin memastikan waktu simpan data tetap instan di bawah 5 milidetik.
+                    </p>
+                </div>
+            </div>
+        </div>
+
             <h1>Modul 04: Database Storage Engine &amp; Struktur B-Tree</h1>
             <p class="module-lead">
                 Membedah bagaimana basis data relasional menyimpan miliaran record di atas piringan magnetik atau NVMe SSD: dari arsitektur 4KB Slotted Page, eliminasi fragmentasi, traversal pencarian B+Tree, hingga Write-Ahead Logging (WAL) dan pemulihan crash ARIES.

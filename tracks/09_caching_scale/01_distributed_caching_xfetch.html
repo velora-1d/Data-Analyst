@@ -75,6 +75,54 @@
                 <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
                 <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Distributed Caching)</span>
             </div>
+
+        <!-- Fondasi Konsep Manusiawi (Fase Otomasi Multi-Agent) -->
+        <div class="concept-foundation-box">
+            <div class="concept-box-header">
+                <div class="concept-box-title">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <span>Fondasi Konsep: Caching Terdistribusi & Redis Internals</span>
+                </div>
+                <div class="concept-analogy-badge">
+                    <i class="fa-solid fa-memory"></i> Ibarat Meja Kasir Cepat untuk Barang Terlaris
+                </div>
+            </div>
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-card-label what">
+                        <i class="fa-solid fa-cube"></i> Apa Ini Sebenarnya?
+                    </div>
+                    <p class="concept-card-text">
+                        Teknik menyimpan jawaban data yang paling sering dicari di dalam memori super kilat (RAM Redis), sehingga server tidak perlu membuka lemari database utama.
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label why">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Masalah Nyata Apa yang Diselesaikan?
+                    </div>
+                    <p class="concept-card-text">
+                        Membuka database utama membutuhkan 20 milidetik. Mengambil dari cache memori hanya butuh 0.5 milidetik (40 kali lebih kilat!).
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label analogy">
+                        <i class="fa-solid fa-lightbulb"></i> Analogi Kehidupan Sehari-Hari
+                    </div>
+                    <p class="concept-card-text">
+                        Ibarat kasir minimarket menaruh rokok dan permen terlaris tepat di meja kasir: kasir tidak perlu berjalan kaki bolak-balik ke gudang belakang setiap kali ada pembeli.
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label when">
+                        <i class="fa-solid fa-bullseye"></i> Kapan Kita Memakainya?
+                    </div>
+                    <p class="concept-card-text">
+                        Dipasang untuk halaman beranda promo flash sale, daftar produk terpopuler, sesi login pengguna aktif, dan penghitung penonton siaran langsung.
+                    </p>
+                </div>
+            </div>
+        </div>
+
             <h1>Modul 29: Distributed Caching, Redis &amp; Algoritma XFetch</h1>
             <p class="module-lead">
                 Menghancurkan bottleneck database relational: arsitektur topologi caching (Cache-Aside vs Write-Through), mikro-struktur data Redis (SDS, SkipList, Single-Thread Event Loop), mitigasi fenomena mematikan Thundering Herd (Cache Stampede), serta implementasi algoritma probabilistik optimal <strong>XFetch</strong>.

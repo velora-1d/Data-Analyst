@@ -75,6 +75,54 @@
                 <span class="tag"><i class="fa-solid fa-clock"></i> 50 Menit Baca &amp; Praktik</span>
                 <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Compiler Internals)</span>
             </div>
+
+        <!-- Fondasi Konsep Manusiawi (Fase Otomasi Multi-Agent) -->
+        <div class="concept-foundation-box">
+            <div class="concept-box-header">
+                <div class="concept-box-title">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <span>Fondasi Konsep: Mesin Kompilasi V8 & JIT Runtimes</span>
+                </div>
+                <div class="concept-analogy-badge">
+                    <i class="fa-solid fa-bolt"></i> Ibarat Penerjemah Kilat yang Menghafal Kalimat Favorit
+                </div>
+            </div>
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-card-label what">
+                        <i class="fa-solid fa-cube"></i> Apa Ini Sebenarnya?
+                    </div>
+                    <p class="concept-card-text">
+                        Mesin penerjemah canggih (seperti Google V8) yang mengubah teks JavaScript menjadi bahasa mesin biner 0 dan 1 yang dipahami langsung oleh keping chip prosesor.
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label why">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Masalah Nyata Apa yang Diselesaikan?
+                    </div>
+                    <p class="concept-card-text">
+                        JavaScript adalah bahasa teks yang lambat jika dibaca kata demi kata. Mesin JIT membuatnya berlari secepat kilat mendekati bahasa C++.
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label analogy">
+                        <i class="fa-solid fa-lightbulb"></i> Analogi Kehidupan Sehari-Hari
+                    </div>
+                    <p class="concept-card-text">
+                        Ibarat penerjemah bahasa asing: jika ada kalimat yang diulang 100 kali, penerjemah tidak membuka kamus lagi melainkan langsung menghafal dan mengucapkannya secepat kilat (Hotspot JIT).
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label when">
+                        <i class="fa-solid fa-bullseye"></i> Kapan Kita Memakainya?
+                    </div>
+                    <p class="concept-card-text">
+                        Dipahami saat menganalisis performa NodeJS, optimasi kode V8 di Google Chrome, dan mencegah fungsi JavaScript mengalami deoptimasi.
+                    </p>
+                </div>
+            </div>
+        </div>
+
             <h1>Modul 23: Paradigma Bahasa &amp; Eksekusi: Kompilasi vs Interpreter vs JIT</h1>
             <p class="module-lead">
                 Bagaimana teks kode program berubah menjadi instruksi biner CPU: spektrum kompilasi Ahead-of-Time (C/Rust/Go) vs Interpreter baris-per-baris (Python klasik) vs Just-In-Time (JIT) V8 Engine (Ignition bytecode interpreter &amp; TurboFan optimizing compiler), serta pencegahan penalti Deoptimasi.

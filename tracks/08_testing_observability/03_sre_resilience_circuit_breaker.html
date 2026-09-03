@@ -75,6 +75,54 @@
                 <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
                 <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Reliability Engineering)</span>
             </div>
+
+        <!-- Fondasi Konsep Manusiawi (Fase Otomasi Multi-Agent) -->
+        <div class="concept-foundation-box">
+            <div class="concept-box-header">
+                <div class="concept-box-title">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <span>Fondasi Konsep: Resiliensi Sistem & Circuit Breaker</span>
+                </div>
+                <div class="concept-analogy-badge">
+                    <i class="fa-solid fa-bolt-lightning"></i> Ibarat Sekring Listrik Otomatis di Rumah
+                </div>
+            </div>
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-card-label what">
+                        <i class="fa-solid fa-cube"></i> Apa Ini Sebenarnya?
+                    </div>
+                    <p class="concept-card-text">
+                        Pola pertahanan diri arsitektur software agar saat salah satu layanan mitra mogok, seluruh aplikasi Anda tidak ikut roboh terseret ke bawah.
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label why">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Masalah Nyata Apa yang Diselesaikan?
+                    </div>
+                    <p class="concept-card-text">
+                        Jika gateway pembayaran bank sedang eror selama 1 jam, jangan biarkan seluruh website toko online Anda ikut hang dan tidak bisa dibuka pengunjung lain!
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label analogy">
+                        <i class="fa-solid fa-lightbulb"></i> Analogi Kehidupan Sehari-Hari
+                    </div>
+                    <p class="concept-card-text">
+                        Ibarat sekring listrik di meteran rumah: saat terjadi korsleting di dapur, saklar sekring otomatis 'JEPRET' putus sendiri agar kabel di seluruh rumah tidak terbakar.
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label when">
+                        <i class="fa-solid fa-bullseye"></i> Kapan Kita Memakainya?
+                    </div>
+                    <p class="concept-card-text">
+                        Wajib dipasang saat memanggil layanan pihak ketiga (Payment Gateway, API Kurir, Notifikasi SMS) yang bisa mogok sewaktu-waktu di luar kendali Anda.
+                    </p>
+                </div>
+            </div>
+        </div>
+
             <h1>Modul 28: Site Reliability Engineering (SRE) &amp; Resiliency Patterns</h1>
             <p class="module-lead">
                 Filosofi ketahanan sistem terdistribusi skala internet: manajemen risiko berbasis Error Budget Google SRE, arsitektur pencegah kegagalan beruntun dengan Finite State Machine Circuit Breaker (Closed, Open, Half-Open), eliminasi badai retry via Exponential Backoff with Full Jitter, serta partisi isolasi Bulkhead.

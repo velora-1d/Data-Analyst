@@ -123,6 +123,54 @@
                 <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
                 <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Deep Dive)</span>
             </div>
+
+        <!-- Fondasi Konsep Manusiawi (Fase Otomasi Multi-Agent) -->
+        <div class="concept-foundation-box">
+            <div class="concept-box-header">
+                <div class="concept-box-title">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <span>Fondasi Konsep: Indexing & Strategi EXPLAIN</span>
+                </div>
+                <div class="concept-analogy-badge">
+                    <i class="fa-solid fa-magnifying-glass"></i> Ibarat Daftar Indeks di Halaman Belakang Buku
+                </div>
+            </div>
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-card-label what">
+                        <i class="fa-solid fa-cube"></i> Apa Ini Sebenarnya?
+                    </div>
+                    <p class="concept-card-text">
+                        Index adalah buku saku mini yang berisi pintasan cepat menuju lokasi fisik data di dalam database tanpa harus membaca seisi tabel.
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label why">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Masalah Nyata Apa yang Diselesaikan?
+                    </div>
+                    <p class="concept-card-text">
+                        Mencari 1 nama pelanggan di antara 10 juta baris tanpa index (Full Table Scan) membutuhkan waktu 30 detik. Dengan index yang tepat, pencarian selesai dalam 0.001 detik!
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label analogy">
+                        <i class="fa-solid fa-lightbulb"></i> Analogi Kehidupan Sehari-Hari
+                    </div>
+                    <p class="concept-card-text">
+                        Ibarat mencari istilah 'Metabolisme' di buku biologi 1.000 halaman: Anda langsung membuka halaman indeks di belakang buku untuk menemukan nomor halamannya, bukan membaca dari halaman 1.
+                    </p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-card-label when">
+                        <i class="fa-solid fa-bullseye"></i> Kapan Kita Memakainya?
+                    </div>
+                    <p class="concept-card-text">
+                        Wajib dipasang pada kolom yang sering dicari atau difilter, seperti Nomor KTP, Email, Nomor Resi, atau Status Pesanan.
+                    </p>
+                </div>
+            </div>
+        </div>
+
             <h1>Modul 05: Indexing Strategy, B-Tree Traversal &amp; EXPLAIN QUERY PLAN</h1>
             <p class="module-lead">
                 Transformasi query yang lambat menjadi secepat kilat: membedah cara kerja internal B-Tree Index Sekunder, aturan absolut Leftmost Prefix pada Compound Index, eliminasi disk seek tabel via Covering Index, dan rekayasa query SARGable anti-full scan.
