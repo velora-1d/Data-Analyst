@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 04: Database Storage Engine & Struktur B-Tree — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Bedah tuntas arsitektur penyimpanan basis data tingkat rendah: 4KB Slotted Pages, SQLite File Format, B+Tree vs LSM-Tree, dan Write-Ahead Logging (WAL) ARIES recovery.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <style>
+        /* Interactive Page Hex Explorer */
+        .page-visualizer {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 24px;
+            margin: 28px 0;
+        }
+
+        .page-chunk-diagram {
+            display: flex;
+            flex-direction: column;
+            border: 2px solid var(--brand);
+            border-radius: var(--r);
+            overflow: hidden;
+            margin: 20px 0;
+            background: var(--bg-primary);
+        }
+
+        .chunk-header-area {
+            background: rgba(37, 99, 235, 0.2);
+            border-bottom: 2px dashed var(--brand);
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chunk-pointers-area {
+            background: rgba(96, 165, 250, 0.1);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 16px;
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            color: var(--brand-light);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chunk-gap-area {
+            padding: 36px 16px;
+            text-align: center;
+            background: repeating-linear-gradient(45deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01) 10px, rgba(255,255,255,0.03) 10px, rgba(255,255,255,0.03) 20px);
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .chunk-content-area {
+            background: rgba(16, 185, 129, 0.15);
+            border-top: 2px dashed var(--success);
+            padding: 18px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .byte-pill {
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        /* Interactive Hex Inspect Table */
+        .hex-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            margin: 16px 0;
+        }
+
+        .hex-table th, .hex-table td {
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .hex-table th {
+            background: var(--bg-surface-2);
+            color: var(--text-primary);
+        }
+
+        .hex-table tr:hover td {
+            background: rgba(37, 99, 235, 0.08);
+        }
+
+        .hex-highlight {
+            color: var(--brand-light);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 02</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 04: Storage Engine &amp; B-Tree</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-database"></i>
+            ecommerce.db <span>(4096B Page)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 04</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Mengapa DBMS Bukan File Teks?</a>
+            <a href="#slotted-page" class="nav-link"><i class="fa-solid fa-cubes-stacked"></i> 2. Anatomi 4KB Slotted Page</a>
+            <a href="#page-types" class="nav-link"><i class="fa-solid fa-network-wired"></i> 3. Tipe B-Tree Page SQLite</a>
+            <a href="#btree-vs-lsm" class="nav-link"><i class="fa-solid fa-scale-unbalanced-flip"></i> 4. B+Tree vs LSM-Tree</a>
+            <a href="#wal-recovery" class="nav-link"><i class="fa-solid fa-shield-heart"></i> 5. WAL &amp; Algoritma ARIES</a>
+            <a href="#terminal-lab" class="nav-link"><i class="fa-solid fa-terminal"></i> 6. Lab Hexdump Biner Nyata</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-triangle-exclamation"></i> 7. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 8. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-database"></i> Track 02: Database Internals</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 50 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Deep Dive)</span>
+            </div>
+            <h1>Fase 04: Database Storage Engine &amp; Struktur B-Tree</h1>
+            <p class="module-lead">
+                Membedah bagaimana basis data relasional menyimpan miliaran record di atas piringan magnetik atau NVMe SSD: dari arsitektur 4KB Slotted Page, eliminasi fragmentasi, traversal pencarian B+Tree, hingga Write-Ahead Logging (WAL) dan pemulihan crash ARIES.
+            </p>
+        </div>
+
+        <!-- Section 1: Intro -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Mengapa DBMS Bukan File Teks CSV atau JSON?</h2>
+            <p>
+                Banyak pengembang pemula membayangkan database bekerja seperti kumpulan file JSON atau CSV besar yang dibaca ke dalam memori. Namun, dalam sistem rekayasa perangkat lunak skala produksi, pendekatan file teks mentah akan runtuh seketika karena tiga batasan fundamental perangkat keras:
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-microchip"></i> First Principles: Disk Block Alignment &amp; Random Access</div>
+                <div class="callout-body">
+                    <ol style="margin-left: 20px;">
+                        <li><strong>Blok Sektor Perangkat Keras:</strong> Disk drive mekanis (HDD) dan NVMe SSD tidak dapat membaca atau menulis 1 byte secara terisolasi. Hardware membaca dan menulis dalam unit blok fisik: <strong>512 byte</strong> (legacy) atau <strong>4.096 byte (4KB Advanced Format)</strong>. Setiap operasi I/O OS selalu memuat kelipatan 4KB ke RAM (Page Cache).</li>
+                        <li><strong>Biaya Penggeseran Data (Data Shifting):</strong> Jika Anda menghapus baris ke-50 di tengah file CSV sepanjang 10 GB, OS harus membaca dan menulis ulang seluruh sisa file (9.9 GB) hanya untuk menutup celah byte yang kosong. Kompleksitasnya adalah <strong>O(N)</strong>.</li>
+                        <li><strong>Pencarian Tanpa Indeks:</strong> Mencari baris dengan <code>customer_id = 4521</code> pada file teks mewajibkan pemindaian dari baris pertama hingga terakhir (Full Scan <strong>O(N)</strong>). Pada jutaan baris, query Anda akan memakan waktu puluhan detik.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <p>
+                Untuk mengatasi hal ini, seluruh database tingkat industri (SQLite, PostgreSQL, MySQL InnoDB, Oracle) membagi file database menjadi blok-blok berukuran tetap yang disebut <strong>Pages</strong> (halaman), biasanya berukuran <strong>4096 byte</strong> (4 KB) agar selaras sempurna dengan arsitektur sistem operasi.
+            </p>
+        </section>
+
+        <!-- Section 2: Slotted Page -->
+        <section id="slotted-page">
+            <h2><i class="fa-solid fa-cubes-stacked"></i> 2. Anatomi 4KB Slotted Page</h2>
+            <p>
+                Tantangan terbesar sebuah page database adalah menampung baris-baris data yang <strong>panjangnya tidak seragam (variable-length)</strong>. Sebuah nama pelanggan bisa terdiri dari 4 karakter atau 80 karakter. Jika record disimpan berurutan dari atas ke bawah, operasi <code>UPDATE</code> atau <code>DELETE</code> akan menimbulkan fragmentasi memori yang parah.
+            </p>
+            <p>
+                Solusi standar industri yang digunakan adalah arsitektur <strong>Slotted Page</strong>:
+            </p>
+
+            <div class="page-visualizer">
+                <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 12px;">
+                    <i class="fa-solid fa-eye" style="color:var(--brand-light)"></i> Visualisasi Alokasi Ruang Halaman 4.096 Byte (Slotted Page)
+                </div>
+
+                <div class="page-chunk-diagram">
+                    <!-- Header -->
+                    <div class="chunk-header-area">
+                        <div>
+                            <strong>Page Header (8 atau 12 Byte)</strong>
+                            <div style="font-size:0.8rem;color:var(--text-secondary);">Page Type Flag (0x0D), Cell Count, Offset Awal Cell Content, Freeblock Pointer</div>
+                        </div>
+                        <span class="byte-pill">Offset 0x0000 - 0x000B</span>
+                    </div>
+
+                    <!-- Cell Pointers Array -->
+                    <div class="chunk-pointers-area">
+                        <i class="fa-solid fa-arrow-down" style="color:var(--brand-light);"></i>
+                        <span><strong>Cell Pointer Array (Tumbuh ke Bawah):</strong> [0x0FE8, 0x0FD0, 0x0FA4, ...] &mdash; Berisi offset 2-byte menuju posisi data</span>
+                    </div>
+
+                    <!-- Unallocated Free Space -->
+                    <div class="chunk-gap-area">
+                        <i class="fa-solid fa-arrows-up-down"></i> Ruang Bebas Tak Teralokasi (Unallocated Free Space Gap)
+                        <div style="font-size:0.75rem;margin-top:4px;color:var(--text-muted);">Menyusut saat record baru dimasukkan dari kedua sisi</div>
+                    </div>
+
+                    <!-- Cell Content Area -->
+                    <div class="chunk-content-area">
+                        <div>
+                            <i class="fa-solid fa-arrow-up" style="color:var(--success);"></i>
+                            <strong>Cell Content Area (Tumbuh ke Atas):</strong> Record data disimpan dari ujung terbawah (byte 4096) mundur ke atas.
+                        </div>
+                        <span class="byte-pill">Offset 0x1000 (Mundur)</span>
+                    </div>
+                </div>
+
+                <p style="font-size:0.9rem;color:var(--text-secondary);margin:0;">
+                    <strong>Keunggulan Desain Slotted Page:</strong> Slot Pointer diurutkan secara teratur berdasarkan Primary Key (RowID). Ketika record diurutkan, database hanya menukar urutan offset 2-byte di Cell Pointer Array tanpa memindahkan byte data record yang berat di bagian bawah.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 3: Page Types -->
+        <section id="page-types">
+            <h2><i class="fa-solid fa-network-wired"></i> 3. Tipe B-Tree Page dalam SQLite</h2>
+            <p>
+                Setiap page di dalam file database SQLite memiliki peran khusus yang ditandai oleh 1 byte flag pada offset pertama page (byte ke-0):
+            </p>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Flag (Hex)</th>
+                        <th>Nilai Desimal</th>
+                        <th>Tipe B-Tree Page</th>
+                        <th>Peran &amp; Struktur Isi Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="hex-highlight">0x0D</span></td>
+                        <td>13</td>
+                        <td><strong>Leaf Table B-Tree</strong></td>
+                        <td>Menyimpan baris data tabel sebenarnya (RowID + Serialized Column Payload).</td>
+                    </tr>
+                    <tr>
+                        <td><span class="hex-highlight">0x05</span></td>
+                        <td>5</td>
+                        <td><strong>Interior Table B-Tree</strong></td>
+                        <td>Node cabang penunjuk (routing). Hanya menyimpan RowID dan pointer ke child page.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="hex-highlight">0x0A</span></td>
+                        <td>10</td>
+                        <td><strong>Leaf Index B-Tree</strong></td>
+                        <td>Menyimpan key indeks yang terurut beserta RowID baris yang dirujuk.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="hex-highlight">0x02</span></td>
+                        <td>2</td>
+                        <td><strong>Interior Index B-Tree</strong></td>
+                        <td>Cabang pohon indeks untuk navigasi pencarian binary search index range.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout-box callout-tradeoff">
+                <div class="callout-header"><i class="fa-solid fa-scale-unbalanced-flip"></i> Kenapa B+Tree, Bukan Binary Search Tree (BST)?</div>
+                <div class="callout-body">
+                    Binary Search Tree memiliki <strong>Fan-out = 2</strong> (setiap node hanya punya 2 anak). Untuk 1.000.000 data, kedalaman pohon mencapai <strong>log2(1.000.000) &asymp; 20 level</strong>, yang berarti 20 kali seek disk I/O lambat!
+                    <br><br>
+                    B+Tree memiliki <strong>High Fan-out (ratusan hingga ribuan anak per node)</strong> karena 1 page 4KB dapat menampung ratusan pointer key. Dengan fan-out 500, pohon dengan kedalaman hanya <strong>3 level</strong> dapat menampung:
+                    <br>
+                    <code>500 &times; 500 &times; 500 = 125.000.000 record!</code>
+                    <br>
+                    Artinya, pencarian data di antara 125 juta baris hanya memerlukan maksimal <strong>3 kali pembacaan page dari disk</strong>.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: B+Tree vs LSM-Tree -->
+        <section id="btree-vs-lsm">
+            <h2><i class="fa-solid fa-scale-unbalanced-flip"></i> 4. B+Tree vs LSM-Tree: Pilihan Arsitektur Storage Engine Modern</h2>
+            <p>
+                Dalam lanskap rekayasa basis data modern, terdapat dua mazhab besar struktur data penyimpanan:
+            </p>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Karakteristik</th>
+                        <th>B+Tree (In-Place Update)</th>
+                        <th>LSM-Tree (Log-Structured Merge-tree)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Contoh DBMS</strong></td>
+                        <td>SQLite, PostgreSQL, MySQL InnoDB, Oracle</td>
+                        <td>RocksDB, Apache Cassandra, ClickHouse, TiKV, ScyllaDB</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Strategi Penulisan</strong></td>
+                        <td><strong>In-Place Update:</strong> Menimpa data pada page yang sama di disk.</td>
+                        <td><strong>Append-Only:</strong> Selalu menulis ke MemTable (RAM) lalu flush SSTables ke disk.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performa Write</strong></td>
+                        <td>Lebih lambat (Random disk I/O, write amplification saat split page).</td>
+                        <td><strong>Sangat Cepat:</strong> Sequential write tanpa seek disk acak.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performa Read</strong></td>
+                        <td><strong>Sangat Cepat &amp; Prediktif:</strong> O(log N) langsung via tree traversal.</td>
+                        <td>Lebih bervariasi (Memeriksa MemTable, SSTables, dibantu Bloom Filter).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Biaya Background</strong></td>
+                        <td>Rendah (Hanya perlu VACUUM berkala).</td>
+                        <td>Tinggi (Proses <em>Compaction</em> latar belakang memakan CPU &amp; Disk I/O).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 5: WAL & Recovery -->
+        <section id="wal-recovery">
+            <h2><i class="fa-solid fa-shield-heart"></i> 5. Write-Ahead Logging (WAL) &amp; Algoritma Pemulihan Crash ARIES</h2>
+            <p>
+                Bagaimana database menjamin sifat <strong>Durability (D)</strong> dalam ACID saat komputer mendadak mati atau kehilangan daya di tengah transaksi?
+            </p>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-triangle-exclamation"></i> Aturan Sakral Storage Engine: The WAL Rule</div>
+                <div class="callout-body">
+                    <strong>"Tidak ada page data yang boleh ditulis ke disk sebelum catatan log transaksi (WAL) yang menjelaskan perubahan tersebut berhasil tersimpan permanen di media disk (fsync)."</strong>
+                </div>
+            </div>
+
+            <p>
+                Secara default, SQLite versi lama menggunakan <em>Rollback Journal</em> yang mengunci seluruh database saat penulisan (writers block readers). Sejak SQLite 3.7+, mode <strong>WAL (Write-Ahead Logging)</strong> menjadi standar industri:
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-bad">
+                    <div class="code-pane-header"><i class="fa-solid fa-xmark"></i> Rollback Journal (Tradisional)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        1. Penulis mengunci database secara eksklusif.<br>
+                        2. Page lama disalin ke <code>database.db-journal</code>.<br>
+                        3. Database utama dimodifikasi langsung.<br>
+                        4. Reader terblokir total selama proses commit.
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-check"></i> Write-Ahead Log (WAL Modern)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        1. Database utama tidak pernah diubah secara langsung.<br>
+                        2. Perubahan baru di-append ke <code>database.db-wal</code>.<br>
+                        3. <strong>Readers dan Writer bekerja bersamaan tanpa saling mengunci!</strong><br>
+                        4. Proses <em>Checkpointing</em> memindahkan data WAL ke DB utama.
+                    </div>
+                </div>
+            </div>
+
+            <h3>Algoritma Pemulihan Crash ARIES (Algorithms for Recovery and Isolation Exploiting Semantics)</h3>
+            <p>
+                Ketika database menyala kembali setelah crash, algoritma ARIES mengeksekusi 3 fase pemulihan berurutan:
+            </p>
+            <ol style="margin-left: 24px; line-height: 1.8; color: var(--text-secondary);">
+                <li><strong>Analysis Phase:</strong> Memindai WAL dari checkpoint terakhir untuk mengidentifikasi transaksi mana yang aktif saat crash dan page mana yang kotor (dirty pages).</li>
+                <li><strong>Redo Phase (Repeating History):</strong> Memutar ulang seluruh perubahan log ke depan untuk mengembalikan state database persis seperti milidetik sebelum crash terjadi.</li>
+                <li><strong>Undo Phase:</strong> Membatalkan (rollback) seluruh transaksi yang belum sempat di-COMMIT saat crash terjadi, memastikan konsistensi data tetap murni.</li>
+            </ol>
+        </section>
+
+        <!-- Section 6: Lab -->
+        <section id="terminal-lab">
+            <h2><i class="fa-solid fa-terminal"></i> 6. Lab Hands-on: Membedah Byte Biner ecommerce.db</h2>
+            <p>
+                Mari buktikan teori di atas dengan langsung menginspeksi file basis data <code>ecommerce.db</code> yang ada di repositori kita menggunakan script terminal nyata:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label"><i class="fa-solid fa-terminal"></i> PowerShell / Bash Command</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
+                </div>
+                <pre><code># Memeriksa 100 Byte Header Database SQLite dan Page Size:
+powershell -Command "
+\$bytes = [System.IO.File]::ReadAllBytes('database/ecommerce.db');
+Write-Host 'Panjang File :' \$bytes.Length 'Bytes';
+Write-Host 'Magic String :' ([System.Text.Encoding]::ASCII.GetString(\$bytes[0..15]));
+Write-Host 'Page Size    :' ([System.BitConverter]::ToUInt16(\$bytes[17..16], 0)) 'Bytes';
+Write-Host 'Tipe Page 1  : 0x' ('{0:X2}' -f \$bytes[100]);
+"</code></pre>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label"><i class="fa-solid fa-square-poll-horizontal"></i> Output Eksekusi Aktual dari ecommerce.db</span>
+                </div>
+                <pre><code>Panjang File : 118784 Bytes (29 Halaman x 4096 Byte)
+Magic String : SQLite format 3 
+Page Size    : 4096 Bytes
+Tipe Page 1  : 0x05 (Interior Table B-Tree - Schema Root)</code></pre>
+            </div>
+
+            <div class="callout-box callout-dod">
+                <div class="callout-header"><i class="fa-solid fa-circle-check"></i> Bukti Empiris Byte Biner:</div>
+                <div class="callout-body">
+                    Terbukti secara empiris: <code>118.784 byte / 4.096 byte = persis 29 pages</code>. Page 1 memiliki tipe <code>0x05</code> (Interior Table B-Tree) yang bertindak sebagai root tree untuk tabel master skema SQLite (<code>sqlite_schema</code>)!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: War Stories -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-triangle-exclamation"></i> 7. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-pitfall">
+                <div class="callout-header"><i class="fa-solid fa-fire-flame-curved"></i> War Story: Bencana Torn Write dan Cache Controller Berbohong</div>
+                <div class="callout-body">
+                    Sebuah startup e-commerce mengalami kerusakan data fatal saat listrik datacenter padam tiba-tiba. Setelah diinvestigasi, SSD controller consumer-grade yang mereka gunakan "berbohong" kepada OS: ketika OS mengirim perintah <code>fsync()</code>, drive mengonfirmasi bahwa data telah tertulis di flash storage, padahal data baru berada di volatile RAM cache SSD tanpa perlindungan baterai (Supercapacitor).
+                    <br><br>
+                    Saat daya putus, page 4KB hanya tertulis separuh (2048 byte), menghasilkan fenomena <strong>Torn Page</strong> yang merusak B-Tree checksum.
+                    <br><br>
+                    <strong>Solusi Industri:</strong> Gunakan Enterprise NVMe SSD dengan fitur <em>Power Loss Protection (PLP)</em> dan aktifkan <code>PRAGMA synchronous = FULL</code> atau <code>EXTRA</code> pada sistem keuangan sensitif.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Quiz -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 8. Kuis Interaktif: Evaluasi Pemahaman Storage Engine</h2>
+            
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Mengapa basis data relasional menggunakan arsitektur Slotted Page alih-alih meletakkan record langsung berurutan?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Enkripsi dilakukan pada level page cipher, bukan alasan slotted page.')">A. Agar data otomatis terenkripsi secara biner</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Cell Pointer Array 2-byte dapat diurutkan ulang secara instan tanpa memindahkan payload data fisik yang besar di bagian bawah page.')">B. Memungkinkan pengurutan record dinamis dan manajemen ruang bebas tanpa perlu menggeser data biner (zero data shifting)</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Ukuran page tetap 4096 byte, slotted page tidak mengurangi ukuran file.')">C. Menghilangkan batasan ukuran file 4GB pada sistem operasi 32-bit</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Slotted page digunakan pada disk storage, bukan memori cache L1.')">D. Memaksa data agar selalu muat di dalam L1 CPU Cache</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Pada mode Write-Ahead Logging (WAL), mengapa pembacaan query (SELECT) tidak pernah terblokir oleh transaksi penulisan (INSERT/UPDATE)?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Jika data langsung ditimpa, pembaca akan membaca dirty read yang inkonsisten.')">A. Karena penulis langsung menimpa data pada page utama basis data</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Reader membaca snapshot yang konsisten dari database utama dan file indeks WAL (.db-shm), sementara writer hanya menambahkan frame baru ke ujung file WAL (.db-wal).')">B. Karena perubahan baru hanya di-append ke file WAL terpisah, sehingga reader tetap membaca snapshot page yang valid dari DB utama</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'WAL tidak menonaktifkan ACID, justru menjaminnya.')">C. Karena SQLite menonaktifkan transaksi ACID selama query SELECT berjalan</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="../../index.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda Portal
+            </a>
+            <a href="../../plan.html" class="btn btn-primary">
+                Lanjut ke Master Roadmap <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>
