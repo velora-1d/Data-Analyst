@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 27: Tiga Pilar Observability &amp; OpenTelemetry — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Kuasai telemetri terdistribusi modern: Tiga Pilar Observability (Structured Logs, Metrik RED/USE Prometheus, Traces OpenTelemetry), Spesifikasi Header W3C traceparent, dan Tail-based Sampling.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 09</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 27: Observability</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-chart-line"></i>
+            OpenTelemetry <span>(W3C traceparent)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 27</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Tiga Pilar Observability</a>
+            <a href="#red-use-metrics" class="nav-link"><i class="fa-solid fa-chart-simple"></i> 2. Metrik RED vs USE</a>
+            <a href="#opentelemetry-tracing" class="nav-link"><i class="fa-solid fa-diagram-project"></i> 3. Distributed Tracing &amp; Spans</a>
+            <a href="#w3c-traceparent" class="nav-link"><i class="fa-solid fa-passport"></i> 4. Bedah Header W3C traceparent</a>
+            <a href="#sampling" class="nav-link"><i class="fa-solid fa-filter"></i> 5. Head vs Tail-Based Sampling</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-vial-circle-check"></i> Track 09: Testing &amp; SRE</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Distributed Observability)</span>
+            </div>
+            <h1>Fase 27: Tiga Pilar Observability &amp; OpenTelemetry</h1>
+            <p class="module-lead">
+                Melihat tembus pandang ke dalam labirin sistem terdistribusi: dekonstruksi Tiga Pilar (Structured Logs, Metrik RED/USE Prometheus, dan Distributed Traces OpenTelemetry), transmisi konteks lintas microservice dengan standar W3C Trace Context (<code>traceparent</code>), serta optimalisasi Tail-based Sampling.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Tiga Pilar Observability: Bukan Sekadar "Pasang Log"</h2>
+            <p>
+                Ketika aplikasi mengalami error di produksi, insinyur membutuhkan 3 sumber informasi yang saling berkorelasi:
+            </p>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Pilar</th>
+                        <th>Format Data</th>
+                        <th>Teknologi Standar</th>
+                        <th>Pertanyaan yang Dijawab</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. Metrics</strong></td>
+                        <td>Angka agregat time-series numerik (Counter, Gauge, Histogram)</td>
+                        <td>Prometheus, Grafana, Mimir</td>
+                        <td><strong>"Apakah ada masalah sekarang?"</strong> (Contoh: Error rate naik 5% atau CPU 95%).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. Traces</strong></td>
+                        <td>Rentang waktu bersarang (*Spans*) dari request awal hingga selesai</td>
+                        <td>OpenTelemetry, Jaeger, Grafana Tempo</td>
+                        <td><strong>"Di microservice mana dan query apa waktu terbuang?"</strong> (Menemukan bottleneck latensi).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. Logs</strong></td>
+                        <td>Pesan teks terstruktur JSON dengan timestamp dan konteks</td>
+                        <td>Grafana Loki, OpenSearch</td>
+                        <td><strong>"Apa pesan error dan stack trace penyebab spesifiknya?"</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="red-use-metrics">
+            <h2><i class="fa-solid fa-chart-simple"></i> 2. Metrik Standar Industri: RED vs USE</h2>
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-globe"></i> Metrik RED (Untuk Layanan API / Web)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • <strong>R (Rate):</strong> Jumlah request per detik (Requests/sec).<br>
+                        • <strong>E (Errors):</strong> Jumlah kegagalan HTTP 5xx per detik.<br>
+                        • <strong>D (Duration):</strong> Latensi durasi request (P50, P95, P99).
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-server"></i> Metrik USE (Untuk Hardware &amp; OS)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • <strong>U (Utilization):</strong> Persentase waktu perangkat sibuk (CPU 80%).<br>
+                        • <strong>S (Saturation):</strong> Antrean pekerjaan yang tertunda (Load Average).<br>
+                        • <strong>E (Errors):</strong> Kesalahan perangkat keras (Network packet drops).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="opentelemetry-tracing">
+            <h2><i class="fa-solid fa-diagram-project"></i> 3. Distributed Tracing: Anatomi Trace &amp; Spans</h2>
+            <p>
+                Ketika 1 klik checkout dari pengguna memicu 10 panggilan RPC lintas service (Frontend &rarr; Gateway &rarr; Order Service &rarr; Payment &rarr; Inventory &rarr; PostgreSQL), OpenTelemetry mengikat seluruhnya ke dalam satu <strong>Trace ID</strong> yang sama.
+                <br><br>
+                Setiap operasi individu disebut sebagai <strong>Span</strong> (memiliki nama, start time, end time, dan tag atribut seperti <code>http.status_code=200</code> atau <code>db.statement="SELECT..."</code>).
+            </p>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="w3c-traceparent">
+            <h2><i class="fa-solid fa-passport"></i> 4. Bedah Header Standar W3C `traceparent` (RFC)</h2>
+            <p>
+                Bagaimana Trace ID bisa berpindah lintas bahasa (Node.js &rarr; Go &rarr; Java)? Melalui HTTP header standar global <strong>W3C Trace Context</strong>:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-envelope"></i> Format HTTP Header</span></div>
+                <pre><code>traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01
+              │                 │                                │         │
+              │                 │                                │         └─ 4. Flags (01 = Recorded/Sampled)
+              │                 │                                └─ 3. Parent Span ID (8-byte hex)
+              │                 └─ 2. Global Trace ID (16-byte hex)
+              └─ 1. W3C Version (00)</code></pre>
+            </div>
+            <p>
+                Setiap kali sebuah service memanggil service lain, ia menyematkan header <code>traceparent</code> ini, sehingga mesin visualisasi seperti Jaeger dapat merajut seluruh span menjadi satu diagram waterfall yang runtut!
+            </p>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="sampling">
+            <h2><i class="fa-solid fa-filter"></i> 5. Strategi Sampling: Menghemat Biaya Cloud Telemetri</h2>
+            <ul>
+                <li><strong>Head-Based Sampling:</strong> Keputusan merekam diambil di pintu masuk awal (misal secara acak merekam 1% dari total trafik). Cepat dan hemat CPU, namun berisiko melewatkan 99% error yang langka!</li>
+                <li><strong>Tail-Based Sampling:</strong> Seluruh span disimpan di buffer memori OpenTelemetry Collector hingga request selesai. Jika request mengalami error HTTP 500 atau latensi &gt; 1 detik &rarr; <strong>Direkam 100%</strong>! Jika request sukses normal &rarr; dibuang untuk menghemat ruang penyimpanan.</li>
+            </ul>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-magnifying-glass"></i> War Story: Latensi Misterius 4 Detik Terpecahkan dalam 2 Menit dengan Distributed Trace</div>
+                <div class="callout-body">
+                    Sebuah layanan e-commerce mengalami lonjakan latensi halaman keranjang belanja menjadi 4 detik setiap kali pengguna memiliki lebih dari 15 barang.
+                    <br><br>
+                    Tim engineering menghabiskan waktu berhari-hari membaca log teks berantakan tanpa hasil karena semua status mengembalikan HTTP 200 OK.
+                    <br><br>
+                    <strong>Solusi:</strong> Begitu <strong>OpenTelemetry Distributed Tracing</strong> diaktifkan, grafik waterfall Jaeger langsung memperlihatkan kenyataan visual yang mencolok:
+                    <br>
+                    Sebuah span fungsi <code>checkDiscount()</code> melakukan 15 kali pemanggilan query SQL serial secara berulang-ulang di dalam loop (N+1 query problem)! Developer memperbaiki kode menjadi 1 query SQL <code>WHERE item_id IN (...)</code> dalam 10 menit, memangkas latensi dari 4.000ms menjadi 35ms!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Observability</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Menurut spesifikasi W3C Trace Context, apakah fungsi dari nilai global 'Trace ID' yang ada di dalam header 'traceparent'?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Trace ID bukan token autentikasi.')">A. Menyimpan password enkripsi JWT pengguna</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Trace ID adalah identitas unik yang menyatukan seluruh span operasi lintas microservice untuk satu alur request yang sama.')">B. Mengidentifikasi seluruh rangkaian perjalanan request secara global saat melintasi berbagai microservice yang berbeda</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Trace ID tidak mengatur bandwidth.')">C. Membatasi ukuran bandwidth data gambar</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Dalam metodologi pemantauan metrik aplikasi web RED, apa kepanjangan dari singkatan R-E-D?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'USE memantau resources, RED memantau layanan web.')">A. Read, Execute, Delete</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! RED mengukur Rate (jumlah request/detik), Errors (kegagalan request/detik), dan Duration (latensi durasi penyelesaian request).')">B. Rate, Errors, Duration</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Bukan CPU/RAM.')">C. RAM, Ethernet, Disk</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="01_testing_pyramid_contract.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 26: Testing &amp; Contract
+            </a>
+            <a href="03_sre_resilience_circuit_breaker.html" class="btn btn-primary">
+                Lanjut ke Fase 28: SRE &amp; Circuit Breaker <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

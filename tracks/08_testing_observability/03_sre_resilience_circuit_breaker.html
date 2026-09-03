@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 28: SRE, Chaos Engineering &amp; Resiliency Patterns — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Kuasai keandalan sistem berskala besar: Prinsip SRE (SLI, SLO, Error Budget), Finite State Machine Circuit Breaker (Closed, Open, Half-Open), Algoritma Exponential Backoff dengan Full Jitter, dan Bulkhead Pattern.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 09</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 28: SRE &amp; Resiliency</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-heart-crack"></i>
+            Circuit Breaker <span>(Exponential Jitter)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 28</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Prinsip SRE &amp; Error Budget</a>
+            <a href="#sli-slo-sla" class="nav-link"><i class="fa-solid fa-calculator"></i> 2. Matematika SLI, SLO &amp; SLA</a>
+            <a href="#circuit-breaker" class="nav-link"><i class="fa-solid fa-bolt"></i> 3. Mesin State Circuit Breaker</a>
+            <a href="#backoff-jitter" class="nav-link"><i class="fa-solid fa-hourglass-half"></i> 4. Exponential Backoff &amp; Jitter</a>
+            <a href="#bulkhead" class="nav-link"><i class="fa-solid fa-ship"></i> 5. Bulkhead Resource Isolation</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-vial-circle-check"></i> Track 09: Testing &amp; SRE</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Reliability Engineering)</span>
+            </div>
+            <h1>Fase 28: Site Reliability Engineering (SRE) &amp; Resiliency Patterns</h1>
+            <p class="module-lead">
+                Filosofi ketahanan sistem terdistribusi skala internet: manajemen risiko berbasis Error Budget Google SRE, arsitektur pencegah kegagalan beruntun dengan Finite State Machine Circuit Breaker (Closed, Open, Half-Open), eliminasi badai retry via Exponential Backoff with Full Jitter, serta partisi isolasi Bulkhead.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Paradigma SRE: Kegagalan Adalah Keniscayaan</h2>
+            <p>
+                Di arsitektur cloud terdistribusi dengan ribuan mesin, server harddisk pasti rusak, kabel serat optik bawah laut pasti terputus, dan network partition pasti terjadi.
+                <br><br>
+                SRE (Site Reliability Engineering) yang dipelopori Google mengajarkan bahwa <strong>ketersediaan 100% adalah target yang salah</strong>: mengejar 100% menghabiskan biaya miliaran rupiah dan mematikan kecepatan rilis produk.
+            </p>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="sli-slo-sla">
+            <h2><i class="fa-solid fa-calculator"></i> 2. Hirarki SLI, SLO, SLA &amp; Error Budget</h2>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Terminologi</th>
+                        <th>Definisi Baku</th>
+                        <th>Contoh Nyata</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SLI (Indicator)</strong></td>
+                        <td>Ukuran empiris kuantitatif kualitas layanan secara real-time</td>
+                        <td>Persentase request sukses HTTP 200 dalam 30 hari terakhir.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SLO (Objective)</strong></td>
+                        <td>Target internal yang disepakati oleh tim engineering dan produk</td>
+                        <td><strong>99.9% request sukses dengan latensi &lt; 200ms</strong>.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SLA (Agreement)</strong></td>
+                        <td>Janji kontrak hukum kepada konsumen dengan penalti denda uang</td>
+                        <td>Jika uptime di bawah 99.5%, konsumen berhak refund 20% biaya langganan.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Error Budget</strong></td>
+                        <td>Batas toleransi kegagalan yang diizinkan (<code>100% - SLO</code>)</td>
+                        <td>Pada SLO 99.9% per bulan, sistem diizinkan mengalami <strong>maksimal 43,8 menit downtime</strong>! Jika jatah ini habis, seluruh rilis fitur baru DIBEKUKAN sampai stabilitas pulih!</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="circuit-breaker">
+            <h2><i class="fa-solid fa-bolt"></i> 3. Circuit Breaker Pattern (Finite State Machine)</h2>
+            <p>
+                Seperti sekering listrik di rumah yang memutus arus saat korsleting agar kabel tidak terbakar, <strong>Circuit Breaker</strong> melindungi service hilir yang sedang sekarat:
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Normal</div>
+                    <div class="pipeline-step-title">CLOSED State</div>
+                    <div class="pipeline-step-desc">Semua request dialirkan normal ke service downstream. Kegagalan dihitung secara statistik.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Sekering Putus</div>
+                    <div class="pipeline-step-title">OPEN State</div>
+                    <div class="pipeline-step-desc">Jika error &gt; 50%, circuit TRIP! Semua request <strong>LANGSUNG DITOLAK seketika (Fail-Fast)</strong> tanpa menyentuh server hilir.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Uji Coba</div>
+                    <div class="pipeline-step-title">HALF-OPEN State</div>
+                    <div class="pipeline-step-desc">Setelah masa jeda (misal 30 detik), 1-2 request percobaan diizinkan lewat. Jika sukses &rarr; CLOSED; jika gagal &rarr; OPEN kembali.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="backoff-jitter">
+            <h2><i class="fa-solid fa-hourglass-half"></i> 4. Bahaya Retry Storm &amp; Solusi: Exponential Backoff with Full Jitter</h2>
+            <p>
+                Jika 10.000 klien gagal menghubungi server, dan semuanya melakukan retry bersamaan setiap 1 detik, server yang baru mulai pulih akan langsung <strong>tumbang seketika dihantam gelombang badai retry (Thundering Herd)</strong>!
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-calculator"></i> Algoritma Full Jitter (AWS Architecture Whitepaper)</span></div>
+                <pre><code>function calculateBackoffWithJitter(attempt, baseDelay = 100, maxDelay = 10000) {
+    // 1. Hitung durasi eksponensial: 100ms, 200ms, 400ms, 800ms...
+    const exponentialCap = Math.min(maxDelay, baseDelay * Math.pow(2, attempt));
+    
+    // 2. Terapkan Full Jitter acak acak antara 0 hingga exponentialCap!
+    // Ini menyebarkan waktu retry jutaan klien secara merata di sepanjang sumbu waktu!
+    return Math.floor(Math.random() * exponentialCap);
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="bulkhead">
+            <h2><i class="fa-solid fa-ship"></i> 5. Bulkhead Pattern: Mencegah Kapal Tenggelam</h2>
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-shield"></i> Partisi Ruang Kedap Air (Bulkhead)</div>
+                <div class="callout-body">
+                    Pada kapal laut, lambung kapal dibagi menjadi sekat-sekat kedap air independen (Bulkhead) agar jika satu sekat bocor, seluruh kapal tidak ikut tenggelam.
+                    <br><br>
+                    <strong>Penerapan di Software:</strong><br>
+                    Pisahkan Thread Pool / Connection Pool database! Jangan gunakan 1 pool bersama untuk API Pembayaran dan API Pencarian Katalog. Jika layanan pembayaran mitra pihak ketiga mendadak hang dan memakan 50 thread koneksi, pengguna masih tetap bisa mencari barang di katalog karena thread pencarian memiliki partisi mandiri!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-burst"></i> War Story: Retry Loop Agresif Menghancurkan Kluster Database Utama</div>
+                <div class="callout-body">
+                    Sebuah bank digital mengalami gangguan jaringan sesaat selama 3 detik pada switch core data center.
+                    <br><br>
+                    Sebanyak 50 microservice yang kehilangan koneksi secara bersamaan mengeksekusi logika retry: <code>while(error) { retry(); }</code> tanpa backoff dan tanpa batas timeout!
+                    <br><br>
+                    <strong>Akibat:</strong> Ketika koneksi switch kembali online, kluster database PostgreSQL utama dihujani <strong>250.000 koneksi serentak per detik</strong>. CPU database seketika terkunci di 100% dan seluruh sistem perbankan lumpuh total selama 4 jam!
+                    <br><br>
+                    <strong>Pencegahan:</strong> Setiap panggilan keluar <strong>WAJIB memiliki Circuit Breaker</strong>, timeout maksimal 3 detik, dan algoritma Exponential Backoff dengan Full Jitter!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: SRE &amp; Resiliency</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Saat kondisi Circuit Breaker berada pada status 'OPEN', apa yang terjadi ketika klien mengirimkan request baru?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Status OPEN justru memutus aliran.')">A. Request tetap dikirimkan ke downstream server seperti biasa</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Pada status OPEN, request seketika ditolak (fail-fast) atau diarahkan ke fallback cache tanpa membebani server hilir yang sedang bermasalah.')">B. Request langsung ditolak seketika (Fail-Fast) atau dialihkan ke respons cadangan (Fallback) tanpa menyentuh server hilir</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Tidak mereboot komputer.')">C. Menghapus memori RAM laptop klien</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Mengapa penambahan faktor 'Full Jitter' (variasi acak) sangat penting saat menerapkan Exponential Backoff retry?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Jitter bukan untuk enkripsi.')">A. Untuk mengenkripsi paket jaringan agar aman</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Jitter mengacak waktu retry jutaan klien sehingga request tidak menghantam server secara serempak di detik yang sama (mencegah badai thundering herd).')">B. Mencegah jutaan klien melakukan retry secara serempak di detik yang sama, menyebarkan beban trafik pemulihan secara merata di sepanjang waktu</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Jitter menambah jeda acak.')">C. Mempercepat proses compile kode</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="02_observability_opentelemetry.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 27: Observability
+            </a>
+            <a href="../../plan.html" class="btn btn-primary">
+                Lanjut ke Master Roadmap <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

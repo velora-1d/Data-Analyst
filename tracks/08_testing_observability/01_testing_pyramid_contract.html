@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 26: Piramida Testing, TDD &amp; Contract Testing — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Kuasai strategi pengujian software profesional: Piramida Testing vs Ice Cream Cone anti-pattern, Siklus TDD Red-Green-Refactor, End-to-End dengan Playwright, dan Consumer-Driven Contract Testing menggunakan Pact.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 09</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 26: Testing &amp; Contract</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-vial-virus"></i>
+            Pact Contract <span>(TDD Cycle)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 26</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Piramida Testing Modern</a>
+            <a href="#ice-cream-cone" class="nav-link"><i class="fa-solid fa-ice-cream"></i> 2. Anti-Pattern Ice Cream Cone</a>
+            <a href="#tdd-cycle" class="nav-link"><i class="fa-solid fa-arrows-spin"></i> 3. Siklus Red-Green-Refactor TDD</a>
+            <a href="#contract-testing" class="nav-link"><i class="fa-solid fa-file-contract"></i> 4. Consumer-Driven Contract (Pact)</a>
+            <a href="#playwright-e2e" class="nav-link"><i class="fa-solid fa-robot"></i> 5. Headless E2E dengan Playwright</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-vial-circle-check"></i> Track 09: Testing &amp; SRE</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Quality Engineering)</span>
+            </div>
+            <h1>Fase 26: Piramida Testing, TDD &amp; Contract Testing</h1>
+            <p class="module-lead">
+                Membangun rasa percaya diri tanpa batas saat melakukan rilis kode: dekonstruksi proporsi Piramida Testing (Unit vs Integrasi vs E2E), disiplin Test-Driven Development (TDD), pengujian kontrak API terdistribusi antar microservices dengan Pact, dan automasi browser headless via Playwright.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Proporsi Ideal Piramida Testing (Mike Cohn Model)</h2>
+            <p>
+                Sistem pengujian software modern tidak menguji segalanya lewat browser pengguna. Kita membagi pengujian menjadi lapisan berjenjang:
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Puncak (10%)</div>
+                    <div class="pipeline-step-title">End-to-End (E2E) Tests</div>
+                    <div class="pipeline-step-desc">Menguji alur kritis pengguna dari browser riil via Playwright (misal: checkout bayar). Lambat (hitungan menit) &amp; mahal biaya komputasi.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Tengah (20%)</div>
+                    <div class="pipeline-step-title">Integration &amp; Contract Tests</div>
+                    <div class="pipeline-step-desc">Menguji interaksi antar komponen nyata (Repository SQL riil di Testcontainers, Contract API Pact). Selesai dalam hitungan detik.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Fondasi (70%)</div>
+                    <div class="pipeline-step-title">Unit Tests</div>
+                    <div class="pipeline-step-desc">Menguji logika bisnis murni fungsi/metode secara terisolasi dengan mock. <strong>Super kilat (ribuan test dalam 200 milidetik)!</strong></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="ice-cream-cone">
+            <h2><i class="fa-solid fa-ice-cream"></i> 2. Bahaya Anti-Pattern "Ice Cream Cone"</h2>
+            <p>
+                Banyak tim engineering terjebak membuat piramida terbalik (*Inverted Testing Pyramid*):
+            </p>
+
+            <div class="callout-box callout-pitfall">
+                <div class="callout-header"><i class="fa-solid fa-triangle-exclamation"></i> Kerugian Ice Cream Cone Testing</div>
+                <div class="callout-body">
+                    Ketika sebuah tim memiliki <strong>500 test E2E UI dan hanya 20 unit test</strong>:
+                    <br><br>
+                    1. <strong>Pipeline CI Lambat:</strong> Menjalankan build memakan waktu 45 menit, melumpuhkan produktivitas developer.<br>
+                    2. <strong>Flaky Tests:</strong> Uji browser sering gagal mendadak akibat animasi CSS atau gangguan jaringan sesaat (*false positive*).<br>
+                    3. <strong>Sulit Root Cause:</strong> Saat test E2E gagal, developer tidak tahu apakah bug ada di frontend, gateway, database, atau token auth!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="tdd-cycle">
+            <h2><i class="fa-solid fa-arrows-spin"></i> 3. Disiplin Test-Driven Development (TDD)</h2>
+            <p>
+                TDD bukan tentang menguji kode; TDD adalah <strong>alat perancangan arsitektur perangkat lunak</strong> melalui siklus tiga langkah:
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-bad">
+                    <div class="code-pane-header"><i class="fa-solid fa-circle-xmark"></i> 1. FASE MERAH (RED)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        Tulis 1 test unit kecil untuk perilaku yang diinginkan. Jalankan test &rarr; <strong>Test WAJIB GAGAL</strong> (karena implementasi kodenya belum ada sama sekali).
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-circle-check"></i> 2. FASE HIJAU (GREEN)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        Tulis kode implementasi paling minimal dan sederhana hanya agar test tersebut lulus menjadi hijau. Jangan over-engineering!
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-wand-magic-sparkles"></i> 3. REFACTOR</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        Bersihkan struktur kode, hilangkan duplikasi, optimalkan efisiensi tanpa mengubah perilaku. Seluruh unit test tetap hijau!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="contract-testing">
+            <h2><i class="fa-solid fa-file-contract"></i> 4. Consumer-Driven Contract Testing (Pact) di Microservices</h2>
+            <p>
+                Di arsitektur microservices, tim Frontend (Consumer) sering kali rusak ketika tim Backend (Provider) mendadak mengubah nama kolom JSON API tanpa pemberitahuan.
+                <br><br>
+                <strong>Bagaimana Pact Bekerja?</strong>
+            </p>
+            <ul>
+                <li>Consumer (Frontend) menulis spesifikasi harapan payload ke dalam berkas kontrak JSON Pact.</li>
+                <li>Kontrak diunggah ke <em>Pact Broker</em>.</li>
+                <li>Di pipeline CI backend, provider memverifikasi kodenya terhadap kontrak tersebut sebelum diizinkan merge. Jika backend melanggar kontrak, <strong>CI backend seketika gagal diblokir</strong>!</li>
+            </ul>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="playwright-e2e">
+            <h2><i class="fa-solid fa-robot"></i> 5. End-to-End Modern dengan Playwright</h2>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-brands fa-js"></i> tests/checkout.spec.ts (Playwright)</span></div>
+                <pre><code>import { test, expect } from '@playwright/test';
+
+test('Alur transaksi checkout keranjang belanja berhasil', async ({ page }) => {
+  await page.goto('https://shop.velora.id/cart');
+  
+  // Auto-waiting locator bawaan Playwright mengeliminasi flaky tests!
+  await page.getByRole('button', { name: 'Checkout Sekarang' }).click();
+  
+  await page.getByPlaceholder('Alamat Pengiriman').fill('Jl. Sudirman No 45, Jakarta');
+  await page.getByRole('button', { name: 'Konfirmasi Bayar' }).click();
+  
+  await expect(page.getByText('Pesanan Berhasil Dibuat!')).toBeVisible();
+});</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-bug"></i> War Story: Perubahan Field API 'user_id' Menjadi 'userId' Melumpuhkan Aplikasi Mobile</div>
+                <div class="callout-body">
+                    Tim backend sebuah aplikasi transportasi online merapikan kode mereka ke gaya camelCase, mengganti respons JSON <code>user_id</code> menjadi <code>userId</code>.
+                    <br><br>
+                    Semua unit test backend lulus 100%. Namun begitu dirilis ke staging/produksi, <strong>jutaan aplikasi mobile iOS &amp; Android crash total</strong> saat login karena parser JSON mobile mengharapkan <code>user_id</code> snake_case!
+                    <br><br>
+                    <strong>Solusi:</strong> Menerapkan <strong>Pact Contract Testing</strong> di CI/CD. Perubahan nama field pada schema API seketika terdeteksi melanggar kontrak Consumer Mobile dan langsung membatalkan deployment sebelum sempat menyentuh server staging!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Piramida Testing &amp; TDD</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Mengapa anti-pattern 'Ice Cream Cone Testing' (proporsi E2E jauh lebih banyak daripada Unit Test) sangat dihindari dalam software engineering modern?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'E2E tetap penting namun proporsinya yang harus seimbang.')">A. Karena E2E test dilarang oleh standar industri</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Test E2E sangat lambat dijalankan, rentan gagal akibat masalah non-kode (flaky), dan sulit melacak akar penyebab pasti saat terjadi kegagalan.')">B. E2E test sangat lambat dieksekusi, membutuhkan biaya komputasi tinggi, dan sering menimbulkan kegagalan semu (flaky tests) yang sulit dilacak akar masalahnya</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Unit test justru yang tercepat.')">C. Karena unit test membutuhkan waktu berjam-jam untuk dijalankan</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Apa fungsi utama dari Consumer-Driven Contract Testing menggunakan kakas seperti Pact dalam arsitektur microservices?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Pact bukan untuk membuat UI.')">A. Merancang antarmuka frontend secara otomatis</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Pact memverifikasi bahwa perubahan kode di backend provider tidak akan memutus kompatibilitas payload JSON yang diharapkan oleh klien/frontend consumer.')">B. Memastikan bahwa perubahan skema API pada service backend tidak merusak ekspektasi payload data yang dibutuhkan oleh aplikasi consumer (frontend/client)</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Pact bukan alat load testing.')">C. Menghitung kapasitas beban server CPU</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="../07_runtimes_memory/03_git_internals_advanced.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 25: Git Internals Lanjut
+            </a>
+            <a href="02_observability_opentelemetry.html" class="btn btn-primary">
+                Lanjut ke Fase 27: Tiga Pilar Observability <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

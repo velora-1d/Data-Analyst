@@ -117,13 +117,13 @@
       "id": "testing_observability",
       "title": "Testing & Observability",
       "icon": "fa-solid fa-vial-circle-check",
-      "badge": "Roadmap",
-      "badgeColor": "var(--brand)",
+      "badge": "Aktif (3 Modul)",
+      "badgeColor": "var(--success)",
       "description": "Piramida testing (Unit, Integration, E2E Playwright), TDD, Pact contract testing, 3 pilar observability OpenTelemetry, dan SRE resilience.",
       "modules": [
-        { "id": "test_01_testing_pyramid", "title": "1. Piramida Testing: Unit, Integration, E2E & TDD Cycle", "url": "tracks/09_testing_observability/01_testing_pyramid.html", "status": "planned", "duration": "45m" },
-        { "id": "test_02_opentelemetry", "title": "2. Tiga Pilar Observability: Logs, Metrics & W3C Tracing", "url": "tracks/09_testing_observability/02_opentelemetry.html", "status": "planned", "duration": "50m" },
-        { "id": "test_03_sre_resilience", "title": "3. SRE, SLI/SLO/Error Budget & Circuit Breaker Pattern", "url": "tracks/09_testing_observability/03_sre_resilience.html", "status": "planned", "duration": "50m" }
+        { "id": "test_01_testing_pyramid", "title": "Fase 26: Piramida Testing & Contract", "url": "tracks/08_testing_observability/01_testing_pyramid_contract.html", "status": "ready", "duration": "55m" },
+        { "id": "test_02_opentelemetry", "title": "Fase 27: Tiga Pilar Observability & OTel", "url": "tracks/08_testing_observability/02_observability_opentelemetry.html", "status": "ready", "duration": "55m" },
+        { "id": "test_03_sre_resilience", "title": "Fase 28: SRE & Circuit Breaker", "url": "tracks/08_testing_observability/03_sre_resilience_circuit_breaker.html", "status": "ready", "duration": "55m" }
       ]
     },
     {
