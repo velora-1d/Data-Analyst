@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Implementation Plan — Fundamental Coding (Velora)</title>
-    <meta name="description" content="Dashboard interaktif Master Implementation Plan Fundamental Coding: Kurikulum 8 Track dan 25 Fase Rekayasa Perangkat Lunak.">
+    <title>Master Implementation Plan (10 Macro-Phases) — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Dashboard interaktif Master Implementation Plan Fundamental Coding: 10 Macro-Milestones Rekayasa Perangkat Lunak Skala Industri.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
     <style>
         /* Dedicated styles for Roadmap & Plan Dashboard */
         .plan-container {
-            max-width: 1400px;
+            max-width: 1300px;
             margin: 0 auto;
             padding: 24px 20px 80px;
         }
@@ -103,7 +103,7 @@
 
         .plan-progress-bar-fill {
             height: 100%;
-            width: 12%;
+            width: 0%;
             background: linear-gradient(90deg, #2563EB, #60A5FA);
             border-radius: 999px;
             transition: width 0.4s ease;
@@ -185,48 +185,12 @@
             font-weight: 600;
         }
 
-        /* Tracks Container */
-        .track-group {
-            margin-bottom: 40px;
-        }
-
-        .track-group-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 18px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .track-group-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .track-group-title i {
-            color: var(--brand-light);
-        }
-
-        .track-group-count {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            background: var(--bg-surface);
-            padding: 4px 10px;
-            border-radius: 999px;
-            border: 1px solid var(--border);
-        }
-
         /* Phase Card */
         .phase-card {
             background: var(--bg-surface);
             border: 1px solid var(--border);
             border-radius: var(--r-lg);
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
             overflow: hidden;
         }
@@ -237,11 +201,11 @@
         }
 
         .phase-card.completed {
-            border-left: 4px solid var(--success);
+            border-left: 5px solid var(--success);
         }
 
         .phase-header {
-            padding: 20px 24px;
+            padding: 22px 26px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -262,7 +226,7 @@
             border: none;
             cursor: pointer;
             color: var(--text-muted);
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -272,7 +236,7 @@
 
         .phase-checkbox-btn:hover {
             color: var(--brand-light);
-            transform: scale(1.1);
+            transform: scale(1.15);
         }
 
         .phase-checkbox-btn.checked {
@@ -281,17 +245,29 @@
 
         .phase-number {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: var(--brand-light);
             background: var(--brand-subtle);
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            white-space: nowrap;
+        }
+
+        .phase-domain-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
             padding: 3px 8px;
             border-radius: 4px;
-            border: 1px solid rgba(37, 99, 235, 0.3);
+            background: var(--bg-surface-2);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            text-transform: uppercase;
         }
 
         .phase-title-text {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: var(--text-primary);
         }
@@ -299,13 +275,13 @@
         .phase-header-right {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
 
         .phase-status-tag {
             font-size: 0.75rem;
             font-weight: 700;
-            padding: 3px 10px;
+            padding: 4px 12px;
             border-radius: 9999px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -327,9 +303,9 @@
         /* Phase Content Body */
         .phase-body {
             display: none;
-            padding: 0 24px 24px;
+            padding: 0 26px 26px;
             border-top: 1px solid var(--border);
-            background: rgba(11, 19, 43, 0.4);
+            background: rgba(11, 19, 43, 0.45);
         }
 
         .phase-card.open .phase-body {
@@ -337,7 +313,7 @@
         }
 
         .phase-section {
-            margin-top: 18px;
+            margin-top: 20px;
         }
 
         .phase-section-title {
@@ -355,7 +331,7 @@
         .phase-section-text {
             color: var(--text-secondary);
             font-size: 0.95rem;
-            line-height: 1.6;
+            line-height: 1.65;
         }
 
         .phase-section-text ul {
@@ -370,10 +346,10 @@
         .phase-callout {
             background: var(--bg-surface-2);
             border-left: 4px solid var(--brand);
-            padding: 12px 16px;
+            padding: 12px 18px;
             border-radius: 0 var(--r) var(--r) 0;
-            margin-top: 12px;
-            font-size: 0.9rem;
+            margin-top: 14px;
+            font-size: 0.92rem;
             color: var(--text-secondary);
         }
 
@@ -391,7 +367,7 @@
             background: rgba(16, 185, 129, 0.08);
         }
 
-        /* Action bar in footer */
+        /* Actions Footer */
         .plan-actions-footer {
             margin-top: 40px;
             display: flex;
@@ -403,7 +379,7 @@
         @media (max-width: 768px) {
             .plan-title { font-size: 1.6rem; }
             .plan-header-card { padding: 24px 18px; }
-            .phase-header { padding: 16px; flex-direction: column; align-items: flex-start; }
+            .phase-header { padding: 18px; flex-direction: column; align-items: flex-start; }
             .phase-header-right { width: 100%; justify-content: space-between; margin-top: 8px; }
             .plan-controls { flex-direction: column; align-items: stretch; }
         }
@@ -419,10 +395,10 @@
             Fundamental Coding
         </a>
         <span style="color: var(--border-light); margin: 0 8px;">/</span>
-        <span style="font-weight: 600; color: var(--brand-light);">Interactive Plan</span>
+        <span style="font-weight: 600; color: var(--brand-light);">10 Macro-Phases Plan</span>
     </div>
     <div class="header-right">
-        <a href="PLAN.md" class="btn btn-secondary btn-sm" title="Lihat dokumen Markdown mentah">
+        <a href="PLAN.md" class="btn btn-secondary btn-sm" title="Buka berkas PLAN.md">
             <i class="fa-brands fa-markdown"></i> PLAN.md
         </a>
         <a href="index.html" class="btn btn-secondary btn-sm" title="Kembali ke Beranda">
@@ -438,20 +414,20 @@
     <!-- Header Card -->
     <div class="plan-header-card">
         <div class="plan-badges">
-            <span class="plan-badge plan-badge-blue"><i class="fa-solid fa-lock"></i> ARSITEKTUR FINAL DIKUNCI</span>
+            <span class="plan-badge plan-badge-blue"><i class="fa-solid fa-layer-group"></i> 10 MACRO-MILESTONES TERFOKUS</span>
             <span class="plan-badge plan-badge-surface"><i class="fa-brands fa-html5"></i> PURE SEMANTIC HTML5 + BLUE CSS3</span>
-            <span class="plan-badge plan-badge-green"><i class="fa-solid fa-graduation-cap"></i> 8 TRACK | 25 FASE LENGKAP</span>
+            <span class="plan-badge plan-badge-green"><i class="fa-solid fa-award"></i> TANGIBLE INDUSTRY DELIVERABLES</span>
         </div>
-        <h1 class="plan-title">Master Implementation Plan &amp; Curriculum Roadmap</h1>
+        <h1 class="plan-title">Master Implementation Plan (10 Macro-Phases)</h1>
         <p class="plan-subtitle">
-            Peta jalan komprehensif kurikulum rekayasa perangkat lunak berskala industri. Membedah teknologi dari <em>first principles</em> (Database Internals, Browser Pixel Pipeline, Protokol Jaringan, Linux Namespaces/cgroups, hingga Git DAG) menggunakan platform statis murni tanpa overhead framework.
+            Struktur roadmap yang dikonsolidasi menjadi 10 Fase Terfokus. Setiap fase membawa target keluaran konkret yang membedah sistem dari prinsip pertama (*first principles*) hingga implementasi industri nyata tanpa beban abstraksi framework yang rumit.
         </p>
 
         <!-- Progress Tracker -->
         <div class="plan-progress-wrapper">
             <div class="plan-progress-meta">
-                <span><i class="fa-solid fa-chart-line" style="color:var(--brand-light)"></i> Progres Penyelesaian Kurikulum</span>
-                <span id="progressText" style="color:var(--brand-light);">0% (0/25 Fase Selesai)</span>
+                <span><i class="fa-solid fa-chart-line" style="color:var(--brand-light)"></i> Progres Penyelesaian 10 Macro-Phases</span>
+                <span id="progressText" style="color:var(--brand-light);">0% (0/10 Fase Selesai)</span>
             </div>
             <div class="plan-progress-bar-bg">
                 <div class="plan-progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
@@ -459,790 +435,320 @@
         </div>
     </div>
 
-    <!-- Controls: Search & Track Filter Tabs -->
+    <!-- Controls: Search & Domain Filter Tabs -->
     <div class="plan-controls">
         <div class="plan-search-box">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="phaseSearchInput" placeholder="Cari fase, topik (misal: B-Tree, cgroups, HTTP/3, Reflow, DAG)...">
+            <input type="text" id="phaseSearchInput" placeholder="Cari topik (misal: B+Tree, cgroups, Reflow, Protobuf, Outbox, DAG)...">
         </div>
         <div class="plan-filter-tabs">
-            <button class="plan-tab-btn active" data-track="all">Semua Track</button>
-            <button class="plan-tab-btn" data-track="track-1">Fondasi</button>
-            <button class="plan-tab-btn" data-track="track-2">Database</button>
-            <button class="plan-tab-btn" data-track="track-3">Frontend</button>
-            <button class="plan-tab-btn" data-track="track-4">Backend</button>
-            <button class="plan-tab-btn" data-track="track-5">Arsitektur</button>
-            <button class="plan-tab-btn" data-track="track-6">Server &amp; IP</button>
-            <button class="plan-tab-btn" data-track="track-7">Docker &amp; CI/CD</button>
-            <button class="plan-tab-btn" data-track="track-8">Runtimes &amp; Git</button>
+            <button class="plan-tab-btn active" data-domain="all">Semua Domain</button>
+            <button class="plan-tab-btn" data-domain="fondasi">Fondasi</button>
+            <button class="plan-tab-btn" data-domain="database">Database</button>
+            <button class="plan-tab-btn" data-domain="frontend">Frontend</button>
+            <button class="plan-tab-btn" data-domain="backend">Backend</button>
+            <button class="plan-tab-btn" data-domain="arsitektur">Arsitektur</button>
+            <button class="plan-tab-btn" data-domain="devops">DevOps &amp; Git</button>
         </div>
     </div>
 
-    <!-- Phase Cards Section Container -->
+    <!-- 10 Macro-Phases List -->
     <div id="phasesContainer">
 
-        <!-- TRACK 1 -->
-        <div class="track-group" data-track-id="track-1">
-            <div class="track-group-header">
-                <div class="track-group-title">
-                    <i class="fa-solid fa-compass-drafting"></i>
-                    <span>Bagian I: Fondasi Platform &amp; Navigasi Multi-Track</span>
+        <!-- FASE 01 -->
+        <div class="phase-card" data-phase-id="fase-01" data-domain="fondasi">
+            <div class="phase-header">
+                <div class="phase-header-left">
+                    <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                    <span class="phase-number">FASE 01</span>
+                    <span class="phase-domain-badge">Fondasi</span>
+                    <span class="phase-title-text">Platform Foundation, Dynamic Navigation &amp; Instant Search</span>
                 </div>
-                <span class="track-group-count">Fase 1 - 3</span>
-            </div>
-
-            <!-- Fase 1 -->
-            <div class="phase-card" data-phase-id="fase-1">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 01</span>
-                        <span class="phase-title-text">Redesain Beranda Portal Kurikulum (index.html)</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-active">Sedang Berjalan</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
-                </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Sasaran &amp; First Principles</div>
-                        <div class="phase-section-text">
-                            Transformasi <code>index.html</code> menjadi kurikulum multi-track interaktif. Menerapkan Cognitive Load Reduction (Hick's Law), filter pencarian instan berbasis in-memory JavaScript, dan kartu track modular.
-                        </div>
-                    </div>
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-flask"></i> Lab &amp; Praktik Nyata</div>
-                        <div class="phase-section-text">
-                            Merombak hero section, grid 8 track, search bar filter instan, dan indikator penyelesaian modul tanpa memicu layout shift (CLS = 0).
-                        </div>
-                    </div>
-                    <div class="phase-callout pitfall">
-                        <strong>⚠️ Common Pitfall:</strong> Melakukan hardcoding link modul satu per satu di file HTML yang mempersulit pemeliharaan jangka panjang.
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Siswa dapat menjelajahi 8 track dengan filter pencarian real-time dan navigasi instan.
-                    </div>
+                <div class="phase-header-right">
+                    <span class="phase-status-tag status-active">Sedang Berjalan</span>
+                    <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
                 </div>
             </div>
-
-            <!-- Fase 2 -->
-            <div class="phase-card" data-phase-id="fase-2">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 02</span>
-                        <span class="phase-title-text">Navigasi Sidebar Dinamis Berbasis nav-data.json &amp; SPA Router</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-active">Sedang Berjalan</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
+            <div class="phase-body">
+                <div class="phase-section">
+                    <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Sasaran &amp; First Principles</div>
+                    <div class="phase-section-text">
+                        Mengintegrasikan portal kurikulum terpadu <code>index.html</code> dengan sistem Single Source of Truth (SSOT) via <code>nav-data.json</code>. Render accordion sidebar dinamis berbasis <code>DocumentFragment</code> untuk efisiensi DOM (1 kali reflow) dan pencarian lokal in-memory fuzzy search.
                     </div>
                 </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Sasaran &amp; First Principles</div>
-                        <div class="phase-section-text">
-                            Membangun sistem Single Source of Truth (SSOT) untuk seluruh daftar modul menggunakan <code>assets/nav-data.json</code>. Render accordion sidebar dinamis via <code>DocumentFragment</code> untuk efisiensi DOM tanpa reflow berulang.
-                        </div>
-                    </div>
-                    <div class="phase-callout pitfall">
-                        <strong>⚠️ Common Pitfall:</strong> Melakukan append DOM di dalam loop yang memicu reflow thrashing pada peramban web.
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Sidebar ter-render otomatis di seluruh modul dengan status bab aktif yang menyala biru.
+                <div class="phase-section">
+                    <div class="phase-section-title"><i class="fa-solid fa-flask"></i> Deliverable &amp; Lab Praktik</div>
+                    <div class="phase-section-text">
+                        Portal beranda multi-track interaktif, sidebar modular yang membaca struktur materi secara otomatis, dan standarisasi visual callout (kegagalan produksi, trade-off, dan anti-pattern).
                     </div>
                 </div>
-            </div>
-
-            <!-- Fase 3 -->
-            <div class="phase-card" data-phase-id="fase-3">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 03</span>
-                        <span class="phase-title-text">Standarisasi Component Library &amp; Callout Boxes</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
+                <div class="phase-callout pitfall">
+                    <strong>⚠️ Common Pitfall:</strong> Melakukan manipulasi DOM satu per satu di dalam perulangan yang memicu reflow thrashing.
                 </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Sasaran &amp; First Principles</div>
-                        <div class="phase-section-text">
-                            Menyediakan elemen visual modular industri nyata: Callout Kegagalan Produksi (<em>War Stories</em>), Analisis Trade-Off Arsitektur, Kotak Anti-Pattern, dan Diagram Interaktif berbasis SVG murni.
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Seluruh modul memiliki tampilan seragam untuk studi kasus kegagalan produksi dan komparasi arsitektur.
-                    </div>
+                <div class="phase-callout dod">
+                    <strong>✅ Definition of Done:</strong> Siswa dapat menavigasi kurikulum dari beranda dan menu sidebar aktif menyala otomatis dengan waktu muat 0ms.
                 </div>
             </div>
         </div>
 
-        <!-- TRACK 2 -->
-        <div class="track-group" data-track-id="track-2">
-            <div class="track-group-header">
-                <div class="track-group-title">
-                    <i class="fa-solid fa-database"></i>
-                    <span>Bagian II: Track Database &amp; SQL Internals</span>
+        <!-- FASE 02 -->
+        <div class="phase-card" data-phase-id="fase-02" data-domain="database">
+            <div class="phase-header">
+                <div class="phase-header-left">
+                    <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                    <span class="phase-number">FASE 02</span>
+                    <span class="phase-domain-badge">Database</span>
+                    <span class="phase-title-text">Database Storage Engine, B+Tree &amp; Indexing Optimization</span>
                 </div>
-                <span class="track-group-count">Fase 4 - 6</span>
-            </div>
-
-            <!-- Fase 4 -->
-            <div class="phase-card" data-phase-id="fase-4">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 04</span>
-                        <span class="phase-title-text">Database Storage Engine &amp; Struktur B-Tree (Deep Dive)</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
-                </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> First Principles (Riset: Alex Petrov)</div>
-                        <div class="phase-section-text">
-                            <ul>
-                                <li><strong>On-Disk Page Layout:</strong> Anatomi Slotted Page 4KB (Header, Cell Pointers, Free Space Gap, Payload Data).</li>
-                                <li><strong>B-Tree vs B+Tree:</strong> Fanout tinggi untuk meminimalkan disk I/O. Node daun terhubung dalam doubly linked list untuk range scan kilat.</li>
-                                <li><strong>LSM-Tree (Log-Structured Merge-Tree):</strong> MemTable di RAM, Write-Ahead Log (WAL) sequential append, SSTables berjenjang, dan Bloom Filters.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Siswa mampu menggambar anatomi Slotted Page dan menjelaskan trade-off kapan memakai B+Tree (OLTP read-heavy) vs LSM-Tree (Log write-heavy).
-                    </div>
+                <div class="phase-header-right">
+                    <span class="phase-status-tag status-planned">Berikutnya</span>
+                    <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
                 </div>
             </div>
-
-            <!-- Fase 5 -->
-            <div class="phase-card" data-phase-id="fase-5">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 05</span>
-                        <span class="phase-title-text">Strategi Indexing &amp; Anatomi Execution Plan</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
+            <div class="phase-body">
+                <div class="phase-section">
+                    <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> First Principles (Riset: Alex Petrov)</div>
+                    <div class="phase-section-text">
+                        <ul>
+                            <li><strong>Slotted Page Layout (4KB):</strong> Header 100-byte, cell pointer array, free space gap, dan row payload.</li>
+                            <li><strong>B+Tree vs LSM-Tree:</strong> Leaf nodes B+Tree tersambung doubly linked list untuk range scan kilat; LSM-Tree (MemTable, WAL append, SSTables, Bloom Filter) untuk write-heavy.</li>
+                            <li><strong>Composite Indexing:</strong> Aturan emas <em>Leftmost Prefix Rule</em> dan Covering Index (Index Only Scan).</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Konsep Utama &amp; Lab</div>
-                        <div class="phase-section-text">
-                            Aturan Emas <em>Leftmost Prefix Rule</em> pada Composite Index. Perbedaan Table Scan, Index Scan, dan Covering Index (Index Only Scan). Analisis mendalam output <code>EXPLAIN QUERY PLAN</code>.
-                        </div>
-                    </div>
-                    <div class="phase-callout pitfall">
-                        <strong>⚠️ Common Pitfall:</strong> Menggunakan fungsi pembungkus pada kolom filter (<code>WHERE YEAR(tgl) = 2024</code>) yang mematikan fungsi B-Tree indeks.
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Transformasi query SCAN TABLE pada 5.600+ baris transaksi menjadi SEARCH TABLE USING COVERING INDEX.
+                <div class="phase-section">
+                    <div class="phase-section-title"><i class="fa-solid fa-flask"></i> Deliverable &amp; Lab Praktik</div>
+                    <div class="phase-section-text">
+                        Inspeksi biner file <code>ecommerce.db</code> dan optimalisasi query lambat pada 5.600+ baris data transaksi dari <code>SCAN TABLE</code> menjadi <code>SEARCH TABLE USING COVERING INDEX</code> via <code>EXPLAIN QUERY PLAN</code>.
                     </div>
                 </div>
-            </div>
-
-            <!-- Fase 6 -->
-            <div class="phase-card" data-phase-id="fase-6">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 06</span>
-                        <span class="phase-title-text">Transaksi, Level Isolasi &amp; Transaksi Terdistribusi</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
+                <div class="phase-callout pitfall">
+                    <strong>⚠️ Common Pitfall:</strong> Menggunakan fungsi pembungkus (<code>WHERE YEAR(tgl) = 2024</code>) yang menonaktifkan B-Tree index.
                 </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Konsep Utama</div>
-                        <div class="phase-section-text">
-                            4 Anomali ANSI (Dirty Read, Non-Repeatable Read, Phantom Read, Serialization Anomaly). 4 Level Isolasi ANSI SQL. Two-Phase Locking (2PL), MVCC (Multi-Version Concurrency Control), dan perbandingan Two-Phase Commit (2PC) vs Saga Pattern terdistribusi.
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Simulasi penanganan race condition flash sale e-commerce menggunakan locking pesimistik dan optimistik.
-                    </div>
+                <div class="phase-callout dod">
+                    <strong>✅ Definition of Done:</strong> Siswa mampu mengeliminasi Full Table Scan dan mendokumentasikan penurunan latensi query secara empiris.
                 </div>
             </div>
         </div>
 
-        <!-- TRACK 3 -->
-        <div class="track-group" data-track-id="track-3">
-            <div class="track-group-header">
-                <div class="track-group-title">
-                    <i class="fa-solid fa-display"></i>
-                    <span>Bagian III: Track Frontend Engineering &amp; Browser Internals</span>
+        <!-- FASE 03 -->
+        <div class="phase-card" data-phase-id="fase-03" data-domain="database">
+            <div class="phase-header">
+                <div class="phase-header-left">
+                    <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                    <span class="phase-number">FASE 03</span>
+                    <span class="phase-domain-badge">Database</span>
+                    <span class="phase-title-text">Transaksi Database, Konkurensi &amp; Transaksi Terdistribusi</span>
                 </div>
-                <span class="track-group-count">Fase 7 - 9</span>
-            </div>
-
-            <!-- Fase 7 -->
-            <div class="phase-card" data-phase-id="fase-7">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 07</span>
-                        <span class="phase-title-text">Browser Rendering Pipeline &amp; The Event Loop</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
-                </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Critical Rendering Path (CRP) &amp; Event Loop</div>
-                        <div class="phase-section-text">
-                            DOM -> CSSOM -> Render Tree -> Layout (Reflow) -> Paint (Raster) -> Composite (GPU layers). Budget 60 FPS (16.6ms). Mekanisme Event Loop: Call Stack, Macrotask, Microtask (Promises), dan <code>requestAnimationFrame</code>.
-                        </div>
-                    </div>
-                    <div class="phase-callout pitfall">
-                        <strong>⚠️ Common Pitfall:</strong> Forced Synchronous Layout / Layout Thrashing karena pembacaan dan penulisan geometri DOM berulang di dalam loop.
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Menghilangkan layout thrashing dan membuat animasi 60 FPS murni via GPU composite layer (<code>transform</code> &amp; <code>opacity</code>).
-                    </div>
+                <div class="phase-header-right">
+                    <span class="phase-status-tag status-planned">Terencana</span>
+                    <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
                 </div>
             </div>
-
-            <!-- Fase 8 -->
-            <div class="phase-card" data-phase-id="fase-8">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 08</span>
-                        <span class="phase-title-text">Modern CSS Architecture &amp; Responsive Design Systems</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
+            <div class="phase-body">
+                <div class="phase-section">
+                    <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Konkurensi ACID &amp; Saga</div>
+                    <div class="phase-section-text">
+                        4 Anomali ANSI SQL (Dirty, Non-Repeatable, Phantom, Serialization). 4 Level Isolasi. Two-Phase Locking (2PL), MVCC (Multi-Version Concurrency Control), dan Optimistic Concurrency Control (OCC). Transaksi Terdistribusi: Keterbatasan 2PC vs solusi modern <strong>Saga Pattern</strong> (Choreography vs Orchestration) dengan compensating transactions.
                     </div>
                 </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Algoritma Layout &amp; Tokens</div>
-                        <div class="phase-section-text">
-                            Matematika 1D Flexbox vs 2D CSS Grid. CSS Custom Properties untuk instant zero-flicker Dark Mode. Komparasi arsitektur: BEM vs Utility-First vs Runtime CSS-in-JS.
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Responsive grid auto-fit minmax tanpa media query dan score CLS = 0 (Cumulative Layout Shift).
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fase 9 -->
-            <div class="phase-card" data-phase-id="fase-9">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 09</span>
-                        <span class="phase-title-text">Paradigma Frontend Framework &amp; State Management</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
-                </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Reaktivitas &amp; Rendering</div>
-                        <div class="phase-section-text">
-                            Virtual DOM Diffing (React) vs Compile-Time Reactivity (Svelte) vs Fine-Grained Signals (Solid/Vue). Komparasi model CSR, SSR, SSG, ISR, dan Islands Architecture.
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Membangun mini reactive store berbasis JavaScript <code>Proxy</code> dan memahami pemisahan client state vs server cache state.
-                    </div>
+                <div class="phase-callout dod">
+                    <strong>✅ Definition of Done:</strong> Simulasi penanganan race condition Flash Sale Checkout (stok = 1) dengan lock pesimistik yang bebas dari deadlock.
                 </div>
             </div>
         </div>
 
-        <!-- TRACK 4 -->
-        <div class="track-group" data-track-id="track-4">
-            <div class="track-group-header">
-                <div class="track-group-title">
-                    <i class="fa-solid fa-server"></i>
-                    <span>Bagian IV: Track Backend Engineering &amp; Protokol Jaringan</span>
+        <!-- FASE 04 -->
+        <div class="phase-card" data-phase-id="fase-04" data-domain="frontend">
+            <div class="phase-header">
+                <div class="phase-header-left">
+                    <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                    <span class="phase-number">FASE 04</span>
+                    <span class="phase-domain-badge">Frontend</span>
+                    <span class="phase-title-text">Browser Rendering Pipeline, Event Loop &amp; Web Performance (60 FPS)</span>
                 </div>
-                <span class="track-group-count">Fase 10 - 12</span>
-            </div>
-
-            <!-- Fase 10 -->
-            <div class="phase-card" data-phase-id="fase-10">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 10</span>
-                        <span class="phase-title-text">Protokol Komunikasi: Anatomi HTTP/TCP &amp; Real-Time Web</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
-                </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Evolusi Protokol</div>
-                        <div class="phase-section-text">
-                            HTTP/1.1 (Head-of-Line Blocking) -> HTTP/2 (Binary Framing, Multiplexing, HPACK) -> HTTP/3 (QUIC over UDP, 0-RTT handshake). Komparasi Short/Long Polling vs SSE (Server-Sent Events) vs Full-duplex WebSockets.
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Pembuatan server real-time SSE stream ticker harga pesanan dan analisis binary frames di Wireshark.
-                    </div>
+                <div class="phase-header-right">
+                    <span class="phase-status-tag status-planned">Terencana</span>
+                    <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
                 </div>
             </div>
-
-            <!-- Fase 11 -->
-            <div class="phase-card" data-phase-id="fase-11">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 11</span>
-                        <span class="phase-title-text">Arsitektur API: REST vs GraphQL vs gRPC</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
+            <div class="phase-body">
+                <div class="phase-section">
+                    <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Critical Rendering Path (CRP) &amp; Event Loop</div>
+                    <div class="phase-section-text">
+                        DOM -> CSSOM -> Render Tree -> Layout (Reflow) -> Paint -> Composite. Budget frame 16.6ms (60 FPS). Perbedaan properti pemicu Reflow (mahal) vs Paint vs GPU Composite (mulus: <code>transform</code>, <code>opacity</code>). Event Loop: Call Stack, Macrotasks, Microtasks (Promises), dan <code>requestAnimationFrame</code>.
                     </div>
                 </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Kontrak API</div>
-                        <div class="phase-section-text">
-                            Richardson Maturity Model. Cursor-based pagination vs Offset. GraphQL Schema AST &amp; DataLoader solving N+1 problem. gRPC Protocol Buffers binary serialization untuk low-latency microservices IPC.
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Kompilasi file Protobuf dan benchmark efisiensi ukuran payload binary vs JSON (efisiensi 5x-10x).
-                    </div>
+                <div class="phase-callout pitfall">
+                    <strong>⚠️ Common Pitfall:</strong> Forced Synchronous Layout / Layout Thrashing karena baca-tulis style DOM berulang di dalam perulangan.
                 </div>
-            </div>
-
-            <!-- Fase 12 -->
-            <div class="phase-card" data-phase-id="fase-12">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 12</span>
-                        <span class="phase-title-text">Autentikasi, Otorisasi &amp; Pertahanan Keamanan API (OWASP)</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
-                </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Keamanan API</div>
-                        <div class="phase-section-text">
-                            Stateful Session Redis vs Stateless JWT dengan Refresh Token Rotation. OAuth 2.0 PKCE untuk SPA/Mobile. Mitigasi OWASP Top 10 API (BOLA/IDOR, Rate Limiting Token Bucket, CORS &amp; SameSite cookies).
-                        </div>
-                    </div>
-                    <div class="phase-callout pitfall">
-                        <strong>⚠️ Common Pitfall:</strong> Menyimpan JWT di localStorage yang rentan terhadap pencurian credential via XSS.
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Implementasi otorisasi tingkat baris (Row-Level Security) dan rate limiter Redis.
-                    </div>
+                <div class="phase-callout dod">
+                    <strong>✅ Definition of Done:</strong> Profiling menggunakan Chrome DevTools, menghilangkan jank, dan menghasilkan animasi interaktif 60 FPS zero-reflow.
                 </div>
             </div>
         </div>
 
-        <!-- TRACK 5 -->
-        <div class="track-group" data-track-id="track-5">
-            <div class="track-group-header">
-                <div class="track-group-title">
-                    <i class="fa-solid fa-sitemap"></i>
-                    <span>Bagian V: Track Arsitektur Sistem &amp; Repositori</span>
+        <!-- FASE 05 -->
+        <div class="phase-card" data-phase-id="fase-05" data-domain="frontend">
+            <div class="phase-header">
+                <div class="phase-header-left">
+                    <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                    <span class="phase-number">FASE 05</span>
+                    <span class="phase-domain-badge">Frontend</span>
+                    <span class="phase-title-text">Modern CSS Architecture, Responsive Grid &amp; Design Tokens</span>
                 </div>
-                <span class="track-group-count">Fase 13 - 16</span>
-            </div>
-
-            <!-- Fase 13 -->
-            <div class="phase-card" data-phase-id="fase-13">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 13</span>
-                        <span class="phase-title-text">Diskusi Mendalam: Monorepo vs Polyrepo (Multi-Repo)</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
-                </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Trade-off Repositori Enterprise</div>
-                        <div class="phase-section-text">
-                            Atomic refactoring multi-package vs version drift polyrepo. Tooling Monorepo modern (Turborepo, Nx, Bazel) dengan graph caching terdistribusi. Studi kasus Google/Meta scale.
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Rekomendasi formal pemilihan arsitektur repositori untuk skala startup vs skala enterprise.
-                    </div>
+                <div class="phase-header-right">
+                    <span class="phase-status-tag status-planned">Terencana</span>
+                    <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
                 </div>
             </div>
-
-            <!-- Fase 14 -->
-            <div class="phase-card" data-phase-id="fase-14">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 14</span>
-                        <span class="phase-title-text">Monolith vs Modular Monolith vs Microservices</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
+            <div class="phase-body">
+                <div class="phase-section">
+                    <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Layout Algorithms &amp; Tokens</div>
+                    <div class="phase-section-text">
+                        Algoritma 1D Flexbox vs 2D CSS Grid. CSS Custom Properties untuk sistem token warna cascading. Implementasi Dark Mode instan tanpa flicker via atribut <code>data-theme</code>. Komparasi arsitektur industri: BEM vs Utility-first (Tailwind) vs CSS-in-JS.
                     </div>
                 </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Paradigma Dekomposisi</div>
-                        <div class="phase-section-text">
-                            Ilusi microservices (partial failure, distributed tracing, latency). Keunggulan Modular Monolith (in-memory strict boundaries). Pola migrasi Strangler Fig Pattern.
-                        </div>
-                    </div>
-                    <div class="phase-callout pitfall">
-                        <strong>⚠️ Common Pitfall:</strong> Membuat Distributed Monolith (semua kerumitan microservices tanpa keuntungannya).
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Desain arsitektur Modular Monolith E-Commerce dengan pemisahan modul Catalog, Order, dan Payment.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fase 15 -->
-            <div class="phase-card" data-phase-id="fase-15">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 15</span>
-                        <span class="phase-title-text">Clean Architecture, Hexagonal &amp; Onion Architecture</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
-                </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Inversion of Control</div>
-                        <div class="phase-section-text">
-                            Prinsip Dependency Inversion. 4 Lapisan: Entities -> Use Cases -> Interface Adapters -> Frameworks &amp; Drivers. Hexagonal Ports and Adapters (Driving vs Driven).
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Unit testing use case bisnis 100% terisolasi tanpa menyalakan koneksi database nyata via Repository Mock.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fase 16 -->
-            <div class="phase-card" data-phase-id="fase-16">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 16</span>
-                        <span class="phase-title-text">Domain-Driven Design (DDD) &amp; Event-Driven Architecture</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
-                </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Strategic &amp; Tactical DDD</div>
-                        <div class="phase-section-text">
-                            Bounded Context, Ubiquitous Language, Context Mapping. Entities, Value Objects, Aggregates &amp; Root. Event Sourcing, CQRS, dan Transactional Outbox Pattern untuk konsistensi data eventual.
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Implementasi Transactional Outbox Pattern untuk mutasi status pesanan dan publish event atomik.
-                    </div>
+                <div class="phase-callout dod">
+                    <strong>✅ Definition of Done:</strong> Responsive grid auto-fit minmax tanpa media query, zero CLS (Cumulative Layout Shift = 0), dan palet warna biru modern.
                 </div>
             </div>
         </div>
 
-        <!-- TRACK 6 -->
-        <div class="track-group" data-track-id="track-6">
-            <div class="track-group-header">
-                <div class="track-group-title">
-                    <i class="fa-solid fa-network-wired"></i>
-                    <span>Bagian VI: Track Linux, Server &amp; Jaringan</span>
+        <!-- FASE 06 -->
+        <div class="phase-card" data-phase-id="fase-06" data-domain="frontend">
+            <div class="phase-header">
+                <div class="phase-header-left">
+                    <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                    <span class="phase-number">FASE 06</span>
+                    <span class="phase-domain-badge">Frontend</span>
+                    <span class="phase-title-text">Paradigma Framework Frontend &amp; Arsitektur State Management</span>
                 </div>
-                <span class="track-group-count">Fase 17 - 19</span>
-            </div>
-
-            <!-- Fase 17 -->
-            <div class="phase-card" data-phase-id="fase-17">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 17</span>
-                        <span class="phase-title-text">Dasar Jaringan Komputer, Model OSI &amp; TCP/IP</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
-                </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Lapisan Transport &amp; Soket</div>
-                        <div class="phase-section-text">
-                            7 Lapisan OSI vs 4 Lapisan TCP/IP. Mekanika TCP 3-Way Handshake (SYN, SYN-ACK, ACK) dan TCP Teardown. Sliding Window Flow Control, TCP Slow Start, dan proteksi SYN Cookies.
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Menggunakan CLI <code>ss -tulpn</code> dan inspeksi paket via <code>tcpdump</code> di server Linux.
-                    </div>
+                <div class="phase-header-right">
+                    <span class="phase-status-tag status-planned">Terencana</span>
+                    <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
                 </div>
             </div>
-
-            <!-- Fase 18 -->
-            <div class="phase-card" data-phase-id="fase-18">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 18</span>
-                        <span class="phase-title-text">IP Addressing, CIDR, Subnetting &amp; Routing</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
+            <div class="phase-body">
+                <div class="phase-section">
+                    <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Reaktivitas &amp; Rendering</div>
+                    <div class="phase-section-text">
+                        Virtual DOM Diffing (React) vs Compile-Time Reactivity (Svelte) vs Fine-Grained Signals (Solid/Vue). Model rendering CSR, SSR, SSG, ISR, dan Islands Architecture. Arsitektur pemisahan UI State lokal vs Server Cache State (TanStack Query stale-while-revalidate pattern).
                     </div>
                 </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Matematika Subnetting</div>
-                        <div class="phase-section-text">
-                            Notasi CIDR (/24, /16, /28), netmask, dan host bit. IP Publik vs Privat (RFC 1918: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16). Mekanisme SNAT (Masquerading) dan DNAT (Port Forwarding).
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Kalkulasi subnetting arsitektur 3-Tier VPC (Subnet Publik, Private App, Private Isolated DB).
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fase 19 -->
-            <div class="phase-card" data-phase-id="fase-19">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 19</span>
-                        <span class="phase-title-text">DNS Resolution, Web Server Nginx &amp; Reverse Proxy</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
-                </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Resolusi DNS &amp; Nginx</div>
-                        <div class="phase-section-text">
-                            Hierarki DNS (Root, TLD, Authoritative, Records A/AAAA/CNAME/MX). Arsitektur Nginx Event-Driven epoll. Konfigurasi Reverse Proxy, Load Balancer algorithms (Round Robin, Least Conn, IP Hash), dan SSL/TLS Termination.
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Konfigurasi Nginx production-ready dengan security headers HSTS dan performa SSL Labs A+.
-                    </div>
+                <div class="phase-callout dod">
+                    <strong>✅ Definition of Done:</strong> Membangun mini reactive store berbasis JavaScript <code>Proxy</code> murni dan menjelaskan trade-off kapan sistem membutuhkan framework.
                 </div>
             </div>
         </div>
 
-        <!-- TRACK 7 -->
-        <div class="track-group" data-track-id="track-7">
-            <div class="track-group-header">
-                <div class="track-group-title">
-                    <i class="fa-brands fa-docker"></i>
-                    <span>Bagian VII: Track DevOps, Docker &amp; CI/CD</span>
+        <!-- FASE 07 -->
+        <div class="phase-card" data-phase-id="fase-07" data-domain="backend">
+            <div class="phase-header">
+                <div class="phase-header-left">
+                    <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                    <span class="phase-number">FASE 07</span>
+                    <span class="phase-domain-badge">Backend</span>
+                    <span class="phase-title-text">Protokol Jaringan, Evolusi HTTP/3 &amp; Arsitektur API</span>
                 </div>
-                <span class="track-group-count">Fase 20 - 22</span>
-            </div>
-
-            <!-- Fase 20 -->
-            <div class="phase-card" data-phase-id="fase-20">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 20</span>
-                        <span class="phase-title-text">Kontainerisasi Tingkat Rendah &amp; Docker Architecture</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
-                </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Linux Kernel Primitives (Riset OCI)</div>
-                        <div class="phase-section-text">
-                            Containers are not VMs. Linux Namespaces (PID, NET, MNT, IPC, UTS, USER) membatasi apa yang bisa <em>dilihat</em> proses. Control Groups (cgroups v2) membatasi apa yang bisa <em>digunakan</em> proses. Layered OverlayFS. OCI runtimes (runc, containerd, dockerd).
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Penulisan Multi-Stage Dockerfile yang memangkas ukuran image dari 1.2 GB menjadi 25 MB.
-                    </div>
+                <div class="phase-header-right">
+                    <span class="phase-status-tag status-planned">Terencana</span>
+                    <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
                 </div>
             </div>
-
-            <!-- Fase 21 -->
-            <div class="phase-card" data-phase-id="fase-21">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 21</span>
-                        <span class="phase-title-text">Jaringan, Volume &amp; Multi-Container dengan Docker Compose</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
+            <div class="phase-body">
+                <div class="phase-section">
+                    <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Protokol Transport &amp; Kontrak API</div>
+                    <div class="phase-section-text">
+                        Evolusi HTTP/1.1 (HOL blocking) -> HTTP/2 (Multiplexing, HPACK) -> HTTP/3 QUIC (UDP 0-RTT, seamless migration). Real-time web (Server-Sent Events vs WebSockets). REST Richardson Maturity Model vs GraphQL (Schema AST, DataLoader solving N+1) vs gRPC Protocol Buffers streaming.
                     </div>
                 </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Multi-Service Orchestration</div>
-                        <div class="phase-section-text">
-                            Named Volumes vs Bind Mounts. Docker Network Drivers (Bridge, Host, Overlay). Service discovery via Docker DNS. Multi-service fullstack compose dengan healthchecks.
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Menjalankan seluruh stack web, api, db, dan redis dengan satu perintah <code>docker compose up -d</code> dengan data persisten.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fase 22 -->
-            <div class="phase-card" data-phase-id="fase-22">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 22</span>
-                        <span class="phase-title-text">Otomasi CI/CD &amp; Deployment Pipeline Zero-Downtime</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
-                </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Pipeline CI/CD</div>
-                        <div class="phase-section-text">
-                            Tahapan CI: Lint, Typecheck, Unit &amp; Integration Test, Security Scans. Strategi CD: Recreate vs Rolling Update vs Blue-Green vs Canary Releases. GitHub Actions workflow production.
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Setiap merge PR ke branch <code>main</code> otomatis menjalankan automated test dan auto-deploy tanpa intervensi manual.
-                    </div>
+                <div class="phase-callout dod">
+                    <strong>✅ Definition of Done:</strong> Pembuatan SSE ticker stream real-time dan kompilasi Protocol Buffers dengan pengujian efisiensi payload binary 5x-10x lebih hemat dari JSON.
                 </div>
             </div>
         </div>
 
-        <!-- TRACK 8 -->
-        <div class="track-group" data-track-id="track-8">
-            <div class="track-group-header">
-                <div class="track-group-title">
-                    <i class="fa-solid fa-code-branch"></i>
-                    <span>Bagian VIII: Track Runtimes, Memori &amp; Git Internals</span>
+        <!-- FASE 08 -->
+        <div class="phase-card" data-phase-id="fase-08" data-domain="backend">
+            <div class="phase-header">
+                <div class="phase-header-left">
+                    <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                    <span class="phase-number">FASE 08</span>
+                    <span class="phase-domain-badge">Backend</span>
+                    <span class="phase-title-text">Autentikasi Modern, Otorisasi &amp; Pertahanan Keamanan API (OWASP)</span>
                 </div>
-                <span class="track-group-count">Fase 23 - 25</span>
-            </div>
-
-            <!-- Fase 23 -->
-            <div class="phase-card" data-phase-id="fase-23">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 23</span>
-                        <span class="phase-title-text">Paradigma Bahasa &amp; Analisis Runtime Execution</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
-                    </div>
-                </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Type Systems &amp; Execution Models</div>
-                        <div class="phase-section-text">
-                            Static vs Dynamic, Strong vs Weak typing. 3 Model: Direct Native Machine Code (C, Go, Rust), Bytecode VM (JVM, CLR), dan JIT Interpreted (V8, Python). Matriks seleksi bahasa industri.
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Benchmark komparasi konsumsi memori dan CPU untuk kalkulasi algoritma pada Go vs Node.js vs Python.
-                    </div>
+                <div class="phase-header-right">
+                    <span class="phase-status-tag status-planned">Terencana</span>
+                    <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
                 </div>
             </div>
-
-            <!-- Fase 24 -->
-            <div class="phase-card" data-phase-id="fase-24">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 24</span>
-                        <span class="phase-title-text">Manajemen Memori &amp; Garbage Collection Internals</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
+            <div class="phase-body">
+                <div class="phase-section">
+                    <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Keamanan API Skala Industri</div>
+                    <div class="phase-section-text">
+                        Stateful Session (Redis) vs Stateless JWT dengan Refresh Token Rotation. OAuth 2.0 PKCE untuk SPA/Mobile. Mitigasi OWASP Top 10 API Security: BOLA/IDOR (Row-Level Authorization), Rate Limiting (Token Bucket &amp; Sliding Window), dan konfigurasi CORS &amp; SameSite Cookies.
                     </div>
                 </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Stack vs Heap &amp; GC</div>
-                        <div class="phase-section-text">
-                            Stack LIFO allocation vs Heap dynamic allocator. Escape Analysis compiler. Manual memory (malloc/free), Tracing Generational Garbage Collection (Mark-Sweep, Young/Old Gen, STW pauses), dan Rust Ownership &amp; Borrow Checker (zero-cost abstraction tanpa GC).
-                        </div>
-                    </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Mendiagnosis memory leak menggunakan Chrome DevTools Heap Snapshot dan melacak retaining path objek.
-                    </div>
+                <div class="phase-callout pitfall">
+                    <strong>⚠️ Common Pitfall:</strong> Menyimpan JWT di localStorage browser yang sangat rentan dicuri via XSS.
+                </div>
+                <div class="phase-callout dod">
+                    <strong>✅ Definition of Done:</strong> Middleware autentikasi aman berbasis HTTP-only cookies, token rotation, dan proteksi brute-force Redis.
                 </div>
             </div>
+        </div>
 
-            <!-- Fase 25 -->
-            <div class="phase-card" data-phase-id="fase-25">
-                <div class="phase-header">
-                    <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
-                        <span class="phase-number">FASE 25</span>
-                        <span class="phase-title-text">Git Internals &amp; Engineering Collaboration Workflow</span>
-                    </div>
-                    <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
-                        <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
+        <!-- FASE 09 -->
+        <div class="phase-card" data-phase-id="fase-09" data-domain="arsitektur">
+            <div class="phase-header">
+                <div class="phase-header-left">
+                    <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                    <span class="phase-number">FASE 09</span>
+                    <span class="phase-domain-badge">Arsitektur</span>
+                    <span class="phase-title-text">Arsitektur Sistem Skala Besar (Monorepo, Modular Monolith, Clean Arch &amp; DDD)</span>
+                </div>
+                <div class="phase-header-right">
+                    <span class="phase-status-tag status-planned">Terencana</span>
+                    <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
+                </div>
+            </div>
+            <div class="phase-body">
+                <div class="phase-section">
+                    <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Pola Arsitektur Sistem</div>
+                    <div class="phase-section-text">
+                        Monorepo vs Polyrepo (Turborepo, Nx, Bazel). Monolith vs Modular Monolith (in-memory strict boundaries) vs Microservices (Strangler Fig pattern). Clean Architecture &amp; Hexagonal (Dependency Inversion, Ports &amp; Adapters). Domain-Driven Design (Bounded Context, Aggregates, Transactional Outbox Pattern).
                     </div>
                 </div>
-                <div class="phase-body">
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Directed Acyclic Graph (DAG) &amp; Objek Git</div>
-                        <div class="phase-section-text">
-                            Content-addressable filesystem. 4 Tipe Objek Git: Blob (content), Tree (directory), Commit (snapshot pointer), Tag. Plumbing commands (<code>hash-object</code>, <code>cat-file</code>, <code>commit-tree</code>). Trunk-Based Development with Feature Flags vs GitFlow. Recovery via <code>git reflog</code> dan binary debug via <code>git bisect</code>.
-                        </div>
+                <div class="phase-callout dod">
+                    <strong>✅ Definition of Done:</strong> Unit testing use case bisnis 100% terisolasi tanpa database nyata via Mock Repository, dan implementasi Transactional Outbox.
+                </div>
+            </div>
+        </div>
+
+        <!-- FASE 10 -->
+        <div class="phase-card" data-phase-id="fase-10" data-domain="devops">
+            <div class="phase-header">
+                <div class="phase-header-left">
+                    <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                    <span class="phase-number">FASE 10</span>
+                    <span class="phase-domain-badge">DevOps &amp; Git</span>
+                    <span class="phase-title-text">Linux Kernel Primitives, Kontainerisasi Docker, CI/CD &amp; Git Internals</span>
+                </div>
+                <div class="phase-header-right">
+                    <span class="phase-status-tag status-planned">Terencana</span>
+                    <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
+                </div>
+            </div>
+            <div class="phase-body">
+                <div class="phase-section">
+                    <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Kernel, Kontainer &amp; Git DAG</div>
+                    <div class="phase-section-text">
+                        Linux Namespaces (PID, NET, MNT) &amp; cgroups v2 resource throttle. OverlayFS layered storage. Docker multi-stage builds (1GB -> 20MB). Docker Compose multi-service. CI/CD pipeline zero-downtime deployment (Rolling/Blue-Green). Git Content-Addressable Storage (Blob, Tree, Commit, Tag), Directed Acyclic Graph (DAG), dan perintah plumbing vs porcelain.
                     </div>
-                    <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Membuat commit Git dari nol tanpa perintah porcelain <code>git add</code> atau <code>git commit</code> murni via perintah plumbing.
-                    </div>
+                </div>
+                <div class="phase-callout dod">
+                    <strong>✅ Definition of Done:</strong> Multi-service stack via <code>docker-compose.yml</code> dengan healthchecks, pipeline GitHub Actions otomatis, dan pembuatan commit Git murni via perintah plumbing.
                 </div>
             </div>
         </div>
@@ -1258,7 +764,7 @@
 
 <script>
     // Roadmap Interactive State Management (LocalStorage)
-    const STORAGE_KEY = 'fundamental_plan_progress';
+    const STORAGE_KEY = 'fundamental_plan_10_phases';
     let progressState = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
 
     // DOM Elements
@@ -1267,7 +773,6 @@
     const progressBarFill = document.getElementById('progressBarFill');
     const searchInput = document.getElementById('phaseSearchInput');
     const tabBtns = document.querySelectorAll('.plan-tab-btn');
-    const trackGroups = document.querySelectorAll('.track-group');
 
     // Toggle Phase Card Expand/Collapse
     phaseCards.forEach(card => {
@@ -1284,7 +789,6 @@
 
         // Header click toggles open
         header.addEventListener('click', (e) => {
-            // Prevent toggle if clicking checkbox directly
             if (e.target.closest('.phase-checkbox-btn')) return;
             card.classList.toggle('open');
         });
@@ -1318,18 +822,18 @@
     }
     updateProgressBar();
 
-    // Track Filter Tabs
+    // Domain Filter Tabs
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             tabBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            const targetTrack = btn.getAttribute('data-track');
-            trackGroups.forEach(group => {
-                if (targetTrack === 'all' || group.getAttribute('data-track-id') === targetTrack) {
-                    group.style.display = 'block';
+            const targetDomain = btn.getAttribute('data-domain');
+            phaseCards.forEach(card => {
+                if (targetDomain === 'all' || card.getAttribute('data-domain') === targetDomain) {
+                    card.style.display = 'block';
                 } else {
-                    group.style.display = 'none';
+                    card.style.display = 'none';
                 }
             });
         });
@@ -1345,16 +849,6 @@
             card.style.display = matches ? 'block' : 'none';
             if (query.length > 2 && matches) {
                 card.classList.add('open');
-            }
-        });
-
-        // Hide empty track groups
-        trackGroups.forEach(group => {
-            const visibleCards = group.querySelectorAll('.phase-card[style*="display: block"], .phase-card:not([style*="display: none"])');
-            if (query && visibleCards.length === 0) {
-                group.style.display = 'none';
-            } else {
-                group.style.display = 'block';
             }
         });
     });
