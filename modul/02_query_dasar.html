@@ -46,7 +46,7 @@
         <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Bab Materi Modul 02</div>
         <nav class="sidebar-nav">
             <a href="#intro"    class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Anatomi &amp; Urutan Query</a>
-            <a href="#select"   class="nav-link"><i class="fa-solid fa-table"></i> 2. SELECT &amp; Kolom Kalkulasi</a>
+            <a href="#select"   class="nav-link"><i class="fa-solid fa-table"></i> 2. SELECT, Kata Kunci AS &amp; Kalkulasi</a>
             <a href="#where"    class="nav-link"><i class="fa-solid fa-filter"></i> 3. WHERE &amp; Perbandingan</a>
             <a href="#logika"   class="nav-link"><i class="fa-solid fa-code-branch"></i> 4. Logika AND, OR, NOT</a>
             <a href="#orderby"  class="nav-link"><i class="fa-solid fa-arrow-up-wide-short"></i> 5. ORDER BY, LIMIT &amp; OFFSET</a>
@@ -102,32 +102,76 @@
 
         <!-- 2. SELECT -->
         <section id="select">
-            <h2><i class="fa-solid fa-table"></i> 2. SELECT, Alias, & Kolom Kalkulasi</h2>
+            <h2><i class="fa-solid fa-table"></i> 2. SELECT, Kata Kunci AS (Aliasing), &amp; Kolom Kalkulasi</h2>
             <p>
-                Hindari kebiasaan menggunakan <code>SELECT *</code> pada production database karena membebani memori. Pilihlah kolom yang spesifik dan gunakan <code>AS</code> untuk memberi nama alias yang mudah dipahami stakeholder bisnis.
+                Hindari kebiasaan menggunakan <code>SELECT *</code> pada production database karena membebani memori server dan bandwidth jaringan. Pilihlah kolom spesifik yang dibutuhkan, dan gunakan kata kunci <strong><code>AS</code> (Aliasing)</strong> untuk memberi nama samaran yang jelas dan ramah bagi stakeholder bisnis.
             </p>
 
             <div class="explain-box purpose">
-                <div class="explain-title"><i class="fa-solid fa-lightbulb"></i> Buat Apa SELECT &amp; Kolom Kalkulasi Digunakan?</div>
+                <div class="explain-title"><i class="fa-solid fa-lightbulb"></i> Apa Itu Kata Kunci AS &amp; Mengapa Wajib Dipahami?</div>
                 <div class="explain-desc">
-                    <ul>
-                        <li><strong><code>SELECT kolom</code></strong>: Mengambil spesifik informasi dari database tanpa menarik data yang tidak diperlukan (menghemat <em>bandwidth</em> network &amp; memori server).</li>
-                        <li><strong><code>AS alias_nama</code></strong>: Mengubah header nama kolom agar siap dikonsumsi langsung oleh laporan Excel / dashboard Power BI tanpa perlu di-<em>rename</em> manual.</li>
-                        <li><strong><code>berat_gram / 1000.0</code></strong>: Melakukan transformasi matematika otomatis langsung di level database sebelum sampai ke aplikasi.</li>
-                    </ul>
+                    <p>
+                        Kata kunci <code>AS</code> digunakan untuk membuat <strong>Alias (Nama Samaran Sementara)</strong> pada sebuah kolom atau tabel selama query berlangsung. Nama asli di tabel database <strong>sama sekali tidak berubah</strong>.
+                    </p>
                 </div>
             </div>
 
+            <h3 style="margin: 1.5rem 0 0.75rem;"><i class="fa-solid fa-layer-group" style="color:var(--brand)"></i> 3 Skenario Utama Penggunaan AS</h3>
+            <table class="compare-table">
+                <thead><tr><th>Skenario Penggunaan</th><th>Mengapa Dibutuhkan?</th><th>Contoh Penulisan</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. Merapikan Header Kolom Laporan</strong></td>
+                        <td>Mengubah nama kolom database teknis/singkat menjadi istilah bisnis yang langsung siap ditampilkan di dashboard BI / Excel.</td>
+                        <td><code>SELECT tgl_psn AS tanggal_transaksi</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. Menamai Kolom Hasil Kalkulasi</strong></td>
+                        <td>Ekspresi matematika seperti perkalian/pengurangan tidak punya nama kolom bawaan. Tanpa <code>AS</code>, header laporan akan jelek (misal bertuliskan <code>harga * 0.1</code>).</td>
+                        <td><code>SELECT harga * 0.11 AS ppn_rupiah</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. Table Alias (Mempersingkat Tabel)</strong></td>
+                        <td>Mempersingkat penulisan nama tabel panjang saat melakukan JOIN relasi antar-tabel serta mencegah ambiguitas nama kolom.</td>
+                        <td><code>FROM riwayat_transaksi_pelanggan AS rtp</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin: 1.5rem 0 0.75rem;"><i class="fa-solid fa-font" style="color:var(--brand)"></i> Aturan Penulisan Nama Alias di SQL</h3>
+            <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem; line-height: 1.8;">
+                <li><strong>Satu Kata (Direkomendasikan)</strong>: Ditulis langsung tanpa spasi, menggunakan format <code>snake_case</code>. Contoh: <code>AS total_omzet</code>.</li>
+                <li><strong>Mengandung Spasi / Karakter Khusus</strong>: Wajib dibungkus dengan tanda <strong>petik ganda (<code>"</code>)</strong> atau kurung siku <code>[ ]</code>. Contoh: <code>AS "Total Omzet (Rp)"</code> atau <code>AS [Laba Kotor]</code>. Jangan gunakan tanda petik tunggal (<code>'</code>) karena petik tunggal adalah standar untuk nilai teks/string literal!</li>
+                <li><strong>Apakah kata <code>AS</code> opsional?</strong> Ya, di sebagian besar SQL, menulis <code>SELECT nama_produk nama</code> diperbolehkan. Namun <strong>SANGAT DIREKOMENDASIKAN selalu menulis <code>AS</code> secara eksplisit</strong>. Jika Anda lupa tanda koma <code>,</code> antara dua kolom (misal: <code>SELECT nama harga FROM produk</code>), SQL akan mengira kolom <code>harga</code> adalah alias dari <code>nama</code>!</li>
+            </ul>
+
             <div class="code-block">
-                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
-                <pre><code><span class="sql-cmt">-- Mengambil katalog produk dengan kolom kalkulasi dan alias</span>
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query: Penerapan Lengkap Kata Kunci AS</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <pre><code><span class="sql-cmt">-- Mengambil katalog produk dengan kolom kalkulasi dan alias AS</span>
 <span class="sql-kw">SELECT</span> 
     produk_id,
+    <span class="sql-cmt">-- 1. Merapikan nama kolom teknis</span>
     nama_produk              <span class="sql-kw">AS</span> nama_barang,
     berat_gram,
-    berat_gram <span class="sql-op">/</span> <span class="sql-num">1000.0</span>       <span class="sql-kw">AS</span> berat_kg
-<span class="sql-kw">FROM</span> produk
+    <span class="sql-cmt">-- 2. Menamai hasil kalkulasi pembagian desimal</span>
+    berat_gram <span class="sql-op">/</span> <span class="sql-num">1000.0</span>       <span class="sql-kw">AS</span> berat_kg,
+    <span class="sql-cmt">-- 3. Alias dengan spasi rapi untuk konsumsi eksekutif</span>
+    berat_gram <span class="sql-op">/</span> <span class="sql-num">1000.0</span>       <span class="sql-kw">AS</span> <span class="sql-str">"Berat Paket (Kg)"</span>
+<span class="sql-kw">FROM</span> produk <span class="sql-kw">AS</span> p             <span class="sql-cmt">-- 4. Table Alias (disingkat menjadi 'p')</span>
 <span class="sql-kw">LIMIT</span> <span class="sql-num">5</span>;</code></pre>
+            </div>
+
+            <div class="callout danger">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div class="callout-body">
+                    <strong>Jebakan Fatal: Bisakah Alias Kolom Dipakai di Klausa WHERE?</strong>
+                    <p style="margin-top:0.25rem;">
+                        <strong>TIDAK BISA!</strong> Di dalam arsitektur database SQL, klausa <code>WHERE</code> dieksekusi <strong>sebelum</strong> klausa <code>SELECT</code>. Saat <code>WHERE</code> menyaring baris, nama alias tersebut belum dibuat oleh engine database.<br>
+                        - ❌ <strong>Salah:</strong> <code>WHERE berat_kg &gt; 2.0</code> (Error: <em>no such column: berat_kg</em>)<br>
+                        - ✔️ <strong>Benar:</strong> <code>WHERE (berat_gram / 1000.0) &gt; 2.0</code><br>
+                        <em>Catatan:</em> Kolom alias <strong>BISA</strong> digunakan di klausa <code>ORDER BY</code> karena <code>ORDER BY</code> dieksekusi setelah <code>SELECT</code>!
+                    </p>
+                </div>
             </div>
         </section>
 
@@ -335,6 +379,16 @@
                         <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this,true,'Tepat! Simbol persen (%) mewakili 0 atau lebih karakter apa pun.')"><div class="opt-letter">A</div> Simbol Persen ( % )</div>
                         <div class="quiz-opt" onclick="answerQuiz(this,false,'Underscore (_) hanya cocok dengan tepat 1 karakter.')"><div class="opt-letter">B</div> Simbol Underscore ( _ )</div>
                         <div class="quiz-opt" onclick="answerQuiz(this,false,'Tanda tanya bukan wildcard standar SQL LIKE.')"><div class="opt-letter">C</div> Tanda Tanya ( ? )</div>
+                    </div>
+                    <div class="quiz-fb"><i></i><span></span></div>
+                </div>
+
+                <div class="quiz-card">
+                    <div class="quiz-q">3. Mengapa penulisan <code>WHERE berat_kg &gt; 2.0</code> menghasilkan error padahal <code>berat_kg</code> sudah didefinisikan sebagai alias di <code>SELECT</code>?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this,true,'Tepat! Urutan eksekusi SQL mengeksekusi WHERE sebelum SELECT, sehingga nama alias belum dikenali pada tahap filter WHERE.')"><div class="opt-letter">A</div> Karena klausa WHERE dieksekusi oleh database sebelum klausa SELECT</div>
+                        <div class="quiz-opt" onclick="answerQuiz(this,false,'Nama alias bebas menggunakan huruf dan garis bawah.')"><div class="opt-letter">B</div> Karena nama alias tidak boleh menggunakan karakter garis bawah (underscore)</div>
+                        <div class="quiz-opt" onclick="answerQuiz(this,false,'WHERE mendukung penuh perbandingan angka desimal.')"><div class="opt-letter">C</div> Karena tipe angka desimal tidak bisa dibandingkan di WHERE</div>
                     </div>
                     <div class="quiz-fb"><i></i><span></span></div>
                 </div>

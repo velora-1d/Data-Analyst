@@ -978,6 +978,18 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="callout info">
+                <i class="fa-solid fa-circle-info"></i>
+                <div class="callout-body">
+                    <strong>Catatan Penting: Dua Peran Kata Kunci <code>AS</code> di SQL</strong>
+                    <p style="margin-top:0.25rem;">
+                        Perhatikan bahwa pada query di atas, kata kunci <code>AS</code> muncul dua kali dengan fungsi berbeda:<br>
+                        1. <strong>Tipe Data Target pada CAST:</strong> <code>CAST(... AS REAL)</code> memberitahu database engine untuk mengonversi nilai menjadi tipe desimal REAL.<br>
+                        2. <strong>Alias (Nama Samaran) Kolom:</strong> <code>... AS profit_margin_percent</code> memberi nama baru pada header kolom hasil hitungan agar rapi dan mudah dibaca oleh tim bisnis.
+                    </p>
+                </div>
+            </div>
         </section>
 
         <!-- 12. DDL & DML -->
