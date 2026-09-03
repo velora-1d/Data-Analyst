@@ -2734,3 +2734,115 @@ blockquote strong {
     color: var(--text-secondary);
     margin: 0;
 }
+
+/* --- 12c. Universal Concept Foundation Box (Fase 3 Blueprint) --- */
+.concept-foundation-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    padding: 1.75rem 2rem;
+    margin: 2rem 0 3rem;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.concept-foundation-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--brand), #60A5FA, var(--brand-dark));
+}
+
+.concept-box-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.concept-box-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.concept-box-title i {
+    color: var(--brand);
+    font-size: 1.25rem;
+}
+
+.concept-analogy-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    background: var(--brand-subtle);
+    border: 1px solid rgba(96, 165, 250, 0.3);
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--brand-light);
+}
+[data-theme="light"] .concept-analogy-badge {
+    color: var(--brand);
+    background: #EFF6FF;
+    border-color: #BFDBFE;
+}
+.concept-analogy-badge i {
+    color: #F59E0B;
+}
+
+.concept-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+}
+
+.concept-card {
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.concept-card-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.concept-card-label.what    { color: #38BDF8; }
+.concept-card-label.why     { color: #F59E0B; }
+.concept-card-label.analogy { color: #10B981; }
+.concept-card-label.when    { color: #60A5FA; }
+
+[data-theme="light"] .concept-card-label.what    { color: #0284C7; }
+[data-theme="light"] .concept-card-label.why     { color: #D97706; }
+[data-theme="light"] .concept-card-label.analogy { color: #059669; }
+[data-theme="light"] .concept-card-label.when    { color: #2563EB; }
+
+.concept-card-text {
+    font-size: 0.90625rem;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
