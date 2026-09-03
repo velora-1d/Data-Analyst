@@ -70,35 +70,54 @@
             <i class="fa-solid fa-chevron-right"></i>
             <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 12</a>
             <i class="fa-solid fa-chevron-right"></i>
-            <span style="color:var(--brand-light);font-weight:600;">Modul 39: 100 Pola &amp; Arsitektur Tata Letak</span>
+            <span>Modul 39: 100 Pola &amp; Arsitektur Tata Letak</span>
         </nav>
     </div>
-    <div class="header-actions">
-        <a href="01_ui_anatomy_tokens.html" class="btn btn-secondary btn-sm" title="Modul Sebelumnya"><i class="fa-solid fa-arrow-left"></i> Modul 38</a>
-        <a href="03_a11y_design_systems.html" class="btn btn-secondary btn-sm" title="Modul Selanjutnya">Modul 40 <i class="fa-solid fa-arrow-right"></i></a>
+    <div class="header-right">
+        <span class="db-badge">
+            <i class="fa-solid fa-table-cells-large"></i>
+            Layout Patterns <span>(100 Arsitektur)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
     </div>
 </header>
 
 <div class="layout">
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar" id="sidebarNav">
-        <div class="sidebar-header">
-            <span class="sidebar-title">Track 12: UI/UX Design</span>
-        </div>
-        <div class="sidebar-menu">
-            <a href="01_ui_anatomy_tokens.html" class="menu-item"><i class="fa-solid fa-cubes"></i> Modul 38: Layout Engine &amp; 108 Komponen UI</a>
-            <a href="02_ux_heuristics_journey.html" class="menu-item active"><i class="fa-solid fa-table-cells-large"></i> Modul 39: Ensiklopedia 100 Pola Tata Letak</a>
-            <a href="03_a11y_design_systems.html" class="menu-item"><i class="fa-solid fa-universal-access"></i> Modul 40: Arsitektur UX &amp; Aksesibilitas WCAG</a>
-        </div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> 10 Kategori Pola Layout</div>
+        <nav class="sidebar-nav">
+            <a href="#cat-saas" class="nav-link active"><i class="fa-solid fa-server"></i> 1. SaaS &amp; Enterprise</a>
+            <a href="#cat-landing" class="nav-link"><i class="fa-solid fa-bullhorn"></i> 2. Landing &amp; Konversi</a>
+            <a href="#cat-commerce" class="nav-link"><i class="fa-solid fa-bag-shopping"></i> 3. E-Commerce &amp; Katalog</a>
+            <a href="#cat-editorial" class="nav-link"><i class="fa-solid fa-newspaper"></i> 4. Editorial &amp; Publikasi</a>
+            <a href="#cat-mobile" class="nav-link"><i class="fa-solid fa-mobile-screen"></i> 5. Mobile-First Shells</a>
+            <a href="#cat-social" class="nav-link"><i class="fa-solid fa-users"></i> 6. Social Media &amp; Komunitas</a>
+            <a href="#cat-fintech" class="nav-link"><i class="fa-solid fa-wallet"></i> 7. Fintech &amp; Perbankan</a>
+            <a href="#cat-admin" class="nav-link"><i class="fa-solid fa-sliders"></i> 8. Admin &amp; Konfigurasi</a>
+            <a href="#cat-analytics" class="nav-link"><i class="fa-solid fa-chart-pie"></i> 9. Analytics &amp; Control HUD</a>
+            <a href="#cat-spatial" class="nav-link"><i class="fa-solid fa-wand-magic-sparkles"></i> 10. Spatial &amp; Eksperimental</a>
+        </nav>
     </aside>
 
-    <!-- Main Content -->
-    <main class="content-area">
-        <div class="mod-header">
-            <div class="mod-badge"><i class="fa-solid fa-table-cells-large"></i> Modul 39: Rekayasa Arsitektur Antarmuka</div>
-            <h1 class="mod-title">Ensiklopedia 100 Pola &amp; Arsitektur Tata Letak (*Layout Architecture Patterns*)</h1>
-            <p class="mod-subtitle">
-                Eksplorasi mendalam 100 pola arsitektur tata letak antarmuka digital dari 10 domain industri utama: SaaS Dashboard, Landing Page, E-Commerce, Editorial Media, Mobile Shells, Fintech, hingga Spatial Canvas lengkap dengan panduan zonasi dan kotak wireframe visual nyata.
+    <!-- Main Content Area -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-bezier-curve"></i> Track 12: UI/UX Design Engineering</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Menengah (Layout Architecture)</span>
+            </div>
+            <h1>Modul 39: Ensiklopedia 100 Pola &amp; Arsitektur Tata Letak (*Layout Architecture Patterns*)</h1>
+            <p class="module-lead">
+                Eksplorasi komprehensif 100 pola arsitektur tata letak antarmuka digital dari 10 domain industri utama: SaaS Dashboard, Landing Page, E-Commerce, Editorial Media, Mobile Shells, Fintech, hingga Spatial Canvas lengkap dengan panduan zonasi dan kotak wireframe visual nyata.
             </p>
         </div>
 
