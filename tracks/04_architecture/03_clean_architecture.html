@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 15: Clean Architecture, Hexagonal &amp; Onion Architecture — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Kuasai arsitektur kode enterprise: Prinsip Dependency Inversion, 4 Lapisan Clean Architecture Uncle Bob, Ports and Adapters Hexagonal, dan Unit Testing murni tanpa database.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 05</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 15: Clean Architecture</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-shield-halved"></i>
+            Clean Architecture <span>(Inward Rule)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 15</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Prinsip Dependency Inversion</a>
+            <a href="#four-layers" class="nav-link"><i class="fa-solid fa-layer-group"></i> 2. 4 Lapisan Clean Architecture</a>
+            <a href="#hexagonal-ports" class="nav-link"><i class="fa-solid fa-plug"></i> 3. Hexagonal: Ports &amp; Adapters</a>
+            <a href="#driving-driven" class="nav-link"><i class="fa-solid fa-arrows-left-right"></i> 4. Driving vs Driven Ports</a>
+            <a href="#mock-testing" class="nav-link"><i class="fa-solid fa-vial"></i> 5. Unit Testing Sub-Milidetik</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-sitemap"></i> Track 05: Arsitektur Sistem</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Enterprise Architect)</span>
+            </div>
+            <h1>Fase 15: Clean Architecture, Hexagonal &amp; Onion Architecture</h1>
+            <p class="module-lead">
+                Membangun perangkat lunak yang kebal terhadap perubahan teknologi: prinsip pembalikan ketergantungan (Dependency Inversion), 4 lapisan konsentris Clean Architecture, arsitektur Hexagonal (Driving &amp; Driven Ports), serta pengujian unit use case bisnis tanpa database.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. The Dependency Rule: Arah Panah Ketergantungan</h2>
+            <p>
+                Dalam arsitektur tradisional berlapis tiga (Controller &rarr; Service &rarr; Database DAO), logika bisnis sering kali terikat kuat pada skema tabel SQL.
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-arrow-turn-down"></i> Hukum Utama Clean Architecture</div>
+                <div class="callout-body">
+                    <em>"Source code dependencies must point only inward, toward higher-level policies."</em>
+                    <br><br>
+                    Artinya:
+                    1. Lapisan dalam (Domain &amp; Use Case) <strong>SAMA SEKALI TIDAK BOLEH MENGENAL</strong> lapisan luar (Express, Postgres, AWS, Redis).<br>
+                    2. Perubahan pada framework web (misal Express ke Fastify) atau driver database (Postgres ke MongoDB) <strong>TIDAK AKAN MENGUBAH 1 KARAKTER PUN DI DALAM ATURAN BISNIS ANDA</strong>!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="four-layers">
+            <h2><i class="fa-solid fa-layer-group"></i> 2. Empat Lapisan Konsentris Clean Architecture</h2>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Lingkaran 1 (Terdalam)</div>
+                    <div class="pipeline-step-title">Domain Entities</div>
+                    <div class="pipeline-step-desc">Model bisnis inti &amp; Value Objects murni tanpa import pustaka pihak ketiga mana pun.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Lingkaran 2</div>
+                    <div class="pipeline-step-title">Use Cases</div>
+                    <div class="pipeline-step-desc">Orkestrasi alur data bisnis spesifik (misal: <code>TransferSaldoUseCase</code>, <code>BatalkanPesanan</code>).</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Lingkaran 3</div>
+                    <div class="pipeline-step-title">Interface Adapters</div>
+                    <div class="pipeline-step-desc">Penerjemah data: Controller HTTP REST, Presenter JSON, Repository SQL implementation.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Lingkaran 4 (Terluar)</div>
+                    <div class="pipeline-step-title">Frameworks &amp; Drivers</div>
+                    <div class="pipeline-step-desc">Detail teknis periferal: Database engine, Web server, Queue worker, UI template.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="hexagonal-ports">
+            <h2><i class="fa-solid fa-plug"></i> 3. Hexagonal Architecture: Ports and Adapters</h2>
+            <p>
+                Alistair Cockburn memvisualisasikan aplikasi sebagai segi enam (Hexagon) yang berkomunikasi dengan dunia luar melalui <strong>Ports (Colokan/Interface)</strong> dan <strong>Adapters (Konverter Steker)</strong>:
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-plug-circle-bolt"></i> Port (Interface di Level Domain)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        Kontrak abstrak yang mendefinisikan <em>apa yang dibutuhkan</em> oleh aplikasi:<br>
+                        <code>interface PembayaranGateway { bayar(jumlah: number): Promise&lt;boolean&gt;; }</code>
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-microchip"></i> Adapter (Implementasi Spesifik)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        Modul konkret yang menghubungkan port dengan teknologi vendor luar:<br>
+                        <code>class MidtransPaymentAdapter implements PembayaranGateway { ... }</code><br>
+                        <code>class StripePaymentAdapter implements PembayaranGateway { ... }</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="driving-driven">
+            <h2><i class="fa-solid fa-arrows-left-right"></i> 4. Driving (Primary) vs Driven (Secondary) Ports</h2>
+            <ul>
+                <li><strong>Driving Ports (Inbound):</strong> Port yang <em>menggerakkan</em> aplikasi dari luar. Contoh: Controller HTTP menerima request pengguna dan memanggil Use Case.</li>
+                <li><strong>Driven Ports (Outbound):</strong> Port yang <em>digerakkan</em> oleh aplikasi ke luar. Contoh: Use Case memanggil Port Repository database atau Port pengirim SMS.</li>
+            </ul>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="mock-testing">
+            <h2><i class="fa-solid fa-vial"></i> 5. Unit Testing Sub-Milidetik Tanpa Database</h2>
+            <p>
+                Karena Use Case hanya bergantung pada interface abstrak (Port), Anda dapat menguji seluruh skenario bisnis dalam waktu <strong>2 milidetik</strong> menggunakan InMemory Repository Mock:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-brands fa-js"></i> Unit Test Use Case (Nol Jaringan, Nol Database!)</span></div>
+                <pre><code>// test/BuatPesanan.test.ts
+class InMemoryPesananRepo implements PesananRepository {
+    public data: Pesanan[] = [];
+    async simpan(p: Pesanan) { this.data.push(p); }
+}
+
+test('Harus menolak pesanan jika total melebihi limit kredit', async () => {
+    const mockRepo = new InMemoryPesananRepo();
+    const useCase = new BuatPesananUseCase(mockRepo);
+
+    // Jalankan tanpa koneksi Postgres nyata!
+    await expect(useCase.execute({ id: 'P01', total: 99999999 }))
+        .rejects.toThrow('Limit kredit terlampaui');
+});</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-credit-card"></i> War Story: Pergantian Payment Gateway 1 Malam Berkat Hexagonal Ports</div>
+                <div class="callout-body">
+                    Sebuah startup travel mengalami insiden ketika penyedia Payment Gateway utama mereka mendadak mengalami gangguan sistem server fatal selama 24 jam penuh di musim liburan lebaran.
+                    <br><br>
+                    Berkat arsitektur <em>Hexagonal Ports &amp; Adapters</em>, tim backend tidak perlu menyentuh satu baris pun kode logika pesanan atau perhitungan diskon kupon.
+                    <br><br>
+                    Mereka hanya menulis 1 file class adapter baru: <code>BackupGatewayAdapter.ts</code> yang mengimplementasikan interface <code>PaymentPort</code> yang sama, dan mengubah 1 baris di Dependency Injection container. Dalam waktu <strong>2 jam</strong>, transaksi pembayaran kembali normal menggunakan gateway cadangan!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Clean Architecture</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Pada arsitektur Hexagonal (Ports and Adapters), di manakah interface port untuk operasi penyimpanan data (Repository) harus didefinisikan?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Database driver berada di lapisan terluar.')">A. Di dalam folder database driver PostgreSQL</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Interface port didefinisikan di dalam lapisan Domain/Application inti, sedangkan implementasi SQL-nya berada di lapisan luar (Adapter).')">B. Di dalam lapisan Domain/Aplikasi inti (Core), sedangkan implementasi konkritnya berada di lapisan luar (Infrastructure/Adapter)</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Web controller adalah driving adapter.')">C. Di dalam file controller Express.js</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Apa keuntungan utama menjalankan unit testing use case bisnis dengan memanfaatkan Dependency Inversion?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Testing tetap wajib dijalankan di CI.')">A. Menghilangkan kewajiban menjalankan CI/CD pipeline</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Karena logika bisnis hanya bergantung pada interface port, kita dapat menyuntikkan Mock in-memory yang berjalan dalam hitungan milidetik tanpa memerlukan server database nyata.')">B. Pengujian dapat berjalan instan (sub-milidetik) secara 100% deterministik menggunakan Mock In-Memory tanpa perlu menyalakan instance database sungguhan</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Coverage test justru meningkat.')">C. Menghindari pembuatan file unit test</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="02_monolith_microservices.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 14: Monolith vs Microservices
+            </a>
+            <a href="04_ddd_event_driven.html" class="btn btn-primary">
+                Lanjut ke Fase 16: Domain-Driven Design <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

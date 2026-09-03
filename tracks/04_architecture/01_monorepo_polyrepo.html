@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 13: Monorepo vs Polyrepo (Multi-Repo) — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Analisis komparatif mendalam Monorepo vs Polyrepo: Graph Caching terdistribusi (Turborepo/Nx/Bazel), pencegahan version drift, atomic refactoring, dan studi kasus Google & Meta scale.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 05</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 13: Monorepo vs Polyrepo</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            Enterprise Repo <span>(Full Turbo)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 13</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Skala Kode Enterprise</a>
+            <a href="#tradeoffs" class="nav-link"><i class="fa-solid fa-scale-unbalanced-flip"></i> 2. Matriks Trade-off Mendalam</a>
+            <a href="#version-drift" class="nav-link"><i class="fa-solid fa-triangle-exclamation"></i> 3. Bahaya Version Drift di Polyrepo</a>
+            <a href="#graph-caching" class="nav-link"><i class="fa-solid fa-bolt"></i> 4. Task Graph &amp; Remote Caching</a>
+            <a href="#decision-framework" class="nav-link"><i class="fa-solid fa-compass"></i> 5. Panduan Pengambilan Keputusan</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-sitemap"></i> Track 05: Arsitektur Sistem</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 50 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Staff Engineer)</span>
+            </div>
+            <h1>Fase 13: Monorepo vs Polyrepo (Multi-Repo Strategy)</h1>
+            <p class="module-lead">
+                Membedah strategi pengorganisasian repositori kode perangkat lunak: trade-off Polyrepo vs Monorepo, mitigasi Version Drift, mekanika Directed Acyclic Graph (DAG) Task Caching pada Turborepo dan Nx, serta studi kasus arsitektur skala Google dan Meta.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Skala Kode: Evolusi dari Startup Menuju Enterprise</h2>
+            <p>
+                Ketika sebuah perusahaan tumbuh, jumlah layanan bertambah dari 1 aplikasi monolit menjadi puluhan library bersama, aplikasi web, mobile, dan microservice. Pertanyaan mendasar yang menentukan produktivitas tim rekayasa adalah: <strong>Apakah seluruh kode tersebut harus disimpan di satu repositori (Monorepo) atau dipecah ke ratusan repositori terpisah (Polyrepo)?</strong>
+            </p>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="tradeoffs">
+            <h2><i class="fa-solid fa-scale-unbalanced-flip"></i> 2. Matriks Trade-off Komparatif</h2>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Dimensi Arsitektur</th>
+                        <th>Polyrepo (Multi-Repo)</th>
+                        <th>Monorepo Modern</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Refactoring Lintas Layanan</strong></td>
+                        <td>Sangat lambat. Memerlukan puluhan Pull Request terpisah, rilis versi semver ke private registry, dan koordinasi deployment antar tim.</td>
+                        <td><strong>Atomic Refactoring:</strong> Ubah DTO bersama dan seluruh consumer (web, mobile, backend) di 1 Pull Request tunggal tanpa breaking changes!</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Visibilitas &amp; Discoverability</strong></td>
+                        <td>Kode tersebar di ratusan repo. Sulit mencari siapa yang menggunakan fungsi tertentu.</td>
+                        <td><strong>Pencarian Instan:</strong> Seluruh basis kode perusahaan berada di satu tempat yang mudah di-grep dan diaudit.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Waktu Eksekusi CI/CD</strong></td>
+                        <td>Cepat di awal proyek, namun lambat secara agregat karena duplikasi pipeline.</td>
+                        <td><strong>Terakselerasi dengan Task Graph Caching:</strong> Hanya paket yang berubah yang di-build dan diuji ulang.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kontrol Akses &amp; Ownership</strong></td>
+                        <td>Mudah diatur via permission git level repositori.</td>
+                        <td>Memerlukan konfigurasi <code>CODEOWNERS</code> dan granular pull request approval gates.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="version-drift">
+            <h2><i class="fa-solid fa-triangle-exclamation"></i> 3. Bahaya Version Drift &amp; Dependency Hell di Polyrepo</h2>
+            <p>
+                Di arsitektur Polyrepo, tim membuat paket bersama seperti <code>@perusahaan/design-system</code> versi <code>1.0.0</code>.
+            </p>
+
+            <div class="callout-box callout-pitfall">
+                <div class="callout-header"><i class="fa-solid fa-skull-crossbones"></i> Skenario Dependency Drift</div>
+                <div class="callout-body">
+                    • Tim Checkout meng-upgrade design system ke versi <code>1.4.0</code>.<br>
+                    • Tim Keranjang masih menggunakan versi <code>1.1.0</code>.<br>
+                    • Tim Autentikasi masih terjebak di versi <code>0.8.0</code>.<br><br>
+                    Hasilnya adalah <strong>pengalaman pengguna yang tidak konsisten (Visual Inconsistency)</strong> dan munculnya bug keamanan kritis yang lupa diperbarui oleh tim-tim tertentu. Di Monorepo, hanya ada <strong>SATU versi kanonikal tunggal (*Single Source of Truth*)</strong> untuk seluruh komponen bersama.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="graph-caching">
+            <h2><i class="fa-solid fa-bolt"></i> 4. Task Graph &amp; Remote Caching (Turborepo / Nx)</h2>
+            <p>
+                Bagaimana Monorepo sebesar Google (Piper) atau ribuan paket di Turborepo dapat mengeksekusi build dalam hitungan detik?
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-diagram-project"></i> Mekanisme Directed Acyclic Graph (DAG)</div>
+                <div class="callout-body">
+                    1. Tooling membangun graf dependensi antar paket.<br>
+                    2. Tooling menghitung hash SHA-256 dari seluruh file input di dalam paket.<br>
+                    3. Jika hash cocok dengan cache di server cloud remote: <strong>Tooling langsung mengunduh hasil compile dist/ dan me-replay log terminal dalam waktu 200 milidetik (FULL TURBO CACHE HIT)!</strong><br>
+                    4. Hanya paket yang filenya benar-benar diubah oleh developer yang akan dikompilasi ulang oleh CPU.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="decision-framework">
+            <h2><i class="fa-solid fa-compass"></i> 5. Kerangka Keputusan: Kapan Harus Memilih Monorepo?</h2>
+            <ul>
+                <li><strong>Gunakan Monorepo Jika:</strong> Anda memiliki aplikasi web + backend + mobile yang saling berbagi tipe data (TypeScript DTO / Protobuf), tim bekerja secara kolaboratif, dan menginginkan kecepatan rilis fitur atomik.</li>
+                <li><strong>Gunakan Polyrepo Jika:</strong> Layanan dibangun oleh tim pihak ketiga independen dengan siklus rilis yang sama sekali tidak berhubungan, atau ada regulasi hukum ketat yang melarang pengembang aplikasi A melihat kode aplikasi B.</li>
+            </ul>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-truck-fast"></i> War Story: Uber Migrasi 4.000 Polyrepo Menjadi Monorepo</div>
+                <div class="callout-body">
+                    Pada masa awal ekspansi cepat, Uber memiliki lebih dari 4.000 repositori microservice Git terpisah.
+                    <br><br>
+                    Ketika tim keamanan menemukan kerentanan kritis pada library logging HTTP bersama, mereka harus membuka <strong>4.000 Pull Request terpisah</strong> dan menunggu ratusan tim menyetujui serta me-deploy-nya satu per satu. Proses perbaikan memakan waktu berbulan-bulan!
+                    <br><br>
+                    Uber kemudian memigrasikan basis kode Go mereka ke satu Monorepo raksasa terpadu. Ketika perbaikan keamanan dibutuhkan, mereka cukup mengubah 1 library bersama, menjalankan automated regression test di seluruh consumer, dan mem-push perbaikan secara serentak di hari yang sama!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Monorepo vs Polyrepo</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Apa yang dimaksud dengan 'Atomic Refactoring' yang menjadi keunggulan utama arsitektur Monorepo?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Monorepo tidak mengharuskan penulisan ulang total.')">A. Menulis ulang seluruh basis kode dari awal setiap sprint</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Di Monorepo, Anda dapat mengubah nama fungsi atau skema DTO di library inti dan sekaligus memperbarui seluruh aplikasi konsumennya di satu commit/PR yang sama tanpa merusak dependensi.')">B. Kemampuan mengubah skema data bersama dan seluruh aplikasi yang mengonsumsinya di dalam satu Pull Request/commit tunggal tanpa risiko breaking change</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Ukuran repo di Monorepo justru lebih besar.')">C. Menghapus git history agar repositori berukuran kecil</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Bagaimana fitur Remote Caching pada Turborepo atau Nx mencegah build berulang di server CI?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Remote caching tidak mengabaikan tes yang gagal.')">A. Mengabaikan pengetesan unit test jika developer terburu-buru</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Dengan membandingkan hash kriptografis dari input file sumber, tooling dapat mendeteksi apakah pekerjaan yang sama sudah pernah di-build dan langsung mengunduh hasilnya dari cache.')">B. Menghitung hash SHA dari file sumber dan konfigurasi; jika hash pernah dikompilasi sebelumnya, hasil build langsung diunduh dari cloud storage tanpa menjalankan compiler</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Server CI tetap menjalankan pipeline.')">C. Mematikan mesin CI agar menghemat tagihan cloud</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="../03_backend/03_auth_security.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 12: Keamanan API
+            </a>
+            <a href="02_monolith_microservices.html" class="btn btn-primary">
+                Lanjut ke Fase 14: Monolith vs Microservices <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

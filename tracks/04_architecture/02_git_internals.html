@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 14: Git Internals: Di Balik Perintah — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Membongkar cara kerja internal Git: Content-Addressable Storage, 4 Tipe Objek (Blob, Tree, Commit, Tag), Directed Acyclic Graph (DAG), Three-Way Merge vs Rebase, dan Pemulihan Bencana git reflog.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 05</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 14: Git Internals</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-brands fa-git-alt"></i>
+            Git Object Model <span>(Content-Addressable)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 14</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Model Mental: Content-Addressable</a>
+            <a href="#four-objects" class="nav-link"><i class="fa-solid fa-cubes"></i> 2. Empat Tipe Objek Git</a>
+            <a href="#empirical-demo" class="nav-link"><i class="fa-solid fa-terminal"></i> 3. Bedah Objek Nyata (cat-file)</a>
+            <a href="#git-dag" class="nav-link"><i class="fa-solid fa-diagram-project"></i> 4. Directed Acyclic Graph (DAG)</a>
+            <a href="#merge-vs-rebase" class="nav-link"><i class="fa-solid fa-code-merge"></i> 5. Three-Way Merge vs Rebase</a>
+            <a href="#reflog-rescue" class="nav-link"><i class="fa-solid fa-life-ring"></i> 6. Penyelamatan Data: git reflog</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-sitemap"></i> Track 05: Arsitektur Sistem</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Engine Internals)</span>
+            </div>
+            <h1>Fase 14: Git Internals: Di Balik Perintah (Object Model &amp; DAG)</h1>
+            <p class="module-lead">
+                Membongkar apa yang sesungguhnya terjadi di dalam folder <code>.git/</code>: sistem file berbasis konten (Content-Addressable Key-Value Store), dekonstruksi 4 tipe objek (Blob, Tree, Commit, Tag), mekanika percabangan Three-Way Merge vs Rebase, dan penyelamatan commit hilang melalui <code>git reflog</code>.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Model Mental: Git Bukan Sistem Penyimpan Delta/Diff!</h2>
+            <p>
+                Mitos terbesar seputar Git adalah anggapan bahwa Git menyimpan berkas sebagai "perubahan baris per baris (diff delta)" seperti SVN jadul.
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-database"></i> Definisi Sejati Git Menurut Linus Torvalds</div>
+                <div class="callout-body">
+                    <strong>Git pada dasarnya adalah Content-Addressable Key-Value Store sederhana</strong>, yang dilapisi antarmuka Version Control System di atasnya.
+                    <br><br>
+                    Setiap file disimpan utuh sebagai snapshot yang dikompresi menggunakan algoritma <strong>zlib</strong>. Kunci (Key) untuk mengakses file tersebut adalah <strong>hash SHA-1 (40 karakter heksadesimal)</strong> dari konten berkas tersebut.
+                    <br><br>
+                    Jika dua file di folder berbeda memiliki isi yang 100% identik, Git hanya menyimpannya <strong>SATU KALI SAJA</strong> di disk.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="four-objects">
+            <h2><i class="fa-solid fa-cubes"></i> 2. Empat Tipe Objek Inti di Dalam .git/objects/</h2>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Objek 1</div>
+                    <div class="pipeline-step-title">Blob (Binary Large Object)</div>
+                    <div class="pipeline-step-desc">Hanya menyimpan byte data mentah berkas. Tidak menyimpan nama file atau hak akses file!</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Objek 2</div>
+                    <div class="pipeline-step-title">Tree Object</div>
+                    <div class="pipeline-step-desc">Mewakili struktur direktori folder: memetakan nama file, izin Linux (100644), dan hash pointer ke blob.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Objek 3</div>
+                    <div class="pipeline-step-title">Commit Object</div>
+                    <div class="pipeline-step-desc">Menunjuk ke satu root Tree, parent commit SHA, nama author, timestamp, dan commit message.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Objek 4</div>
+                    <div class="pipeline-step-title">Annotated Tag</div>
+                    <div class="pipeline-step-desc">Pointer permanen ke commit tertentu dengan pesan rilis dan tanda tangan digital GPG.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="empirical-demo">
+            <h2><i class="fa-solid fa-terminal"></i> 3. Bedah Objek Nyata: Inspeksi Langsung Repositori Ini</h2>
+            <p>
+                Mari kita intip langsung struktur objek commit terakhir di proyek Fundamental ini menggunakan perintah pipa <code>git cat-file</code>:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-terminal"></i> Eksekusi: git cat-file -p HEAD</span></div>
+                <pre><code>tree 7587812f9ce8dd04fdd3efdc2adefc1d57b45cac
+parent 8bf3b9d4ab046a7f7bd88115a3e3a83a189eca7c
+author Mahin Utsman Nawawi, S.H <mahinutsmannawawi20@gmail.com> 1788423969 +0700
+committer Mahin Utsman Nawawi, S.H <mahinutsmannawawi20@gmail.com> 1788423969 +0700
+
+feat(track-04): implement complete Backend Engineering track (Fases 10-12: HTTP/3 QUIC, API Design REST/GQL/gRPC, Modern Auth OAuth PKCE)</code></pre>
+            </div>
+
+            <p>
+                Dan jika kita membongkar objek <code>tree 7587812f...</code> di atas:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-terminal"></i> Eksekusi: git cat-file -p 7587812f9ce...</span></div>
+                <pre><code>040000 tree 1ff099af7a7dc4619e5e999fb82809ee9809e890    .github
+100644 blob 385d053d6c48de7f0d14f1610c8fe937b4a33252    PLAN.md
+100644 blob b5974e485501deca67e7068a27d94318896257f5    README.md
+040000 tree 29578a123fd27f1997818cde64d1b2cccd631608    assets
+040000 tree 78aeee9c54db658a3a6908d7d96d3a302053c638    database
+100644 blob 42d9476729405f7065f536ba112c0453744217ea    index.html
+040000 tree f739e6042d249d847c0ea1892db14e5b532bf362    tracks</code></pre>
+            </div>
+            <p>
+                Lihat betapa elegannya Git: file teks biasa adalah <code>blob</code>, sedangkan subfolder adalah pointer rekursif ke <code>tree</code> lain!
+            </p>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="git-dag">
+            <h2><i class="fa-solid fa-diagram-project"></i> 4. Apa Sebenarnya Sebuah "Branch" di Git?</h2>
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-code-branch"></i> Branch Hanyalah File Teks 41-Byte!</div>
+                <div class="callout-body">
+                    Banyak pengembang mengira membuat branch baru adalah operasi mahal yang menduplikasi seluruh kode proyek.
+                    <br><br>
+                    <strong>Kenyataan di Balik Layar:</strong> Di Git, sebuah branch hanyalah file teks kecil berukuran 41 byte di dalam <code>.git/refs/heads/nama-branch</code>, yang berisi satu baris string hash commit 40 karakter!
+                    <br><br>
+                    Membuat branch baru (<code>git branch fitur-baru</code>) hanya membutuhkan waktu <strong>kurang dari 1 milidetik</strong> karena Git hanya menulis 40 karakter teks ke disk!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="merge-vs-rebase">
+            <h2><i class="fa-solid fa-code-merge"></i> 5. Three-Way Merge vs Rebase: Kapan Harus Digunakan?</h2>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Fitur Rekayasa</th>
+                        <th>Three-Way Merge (git merge)</th>
+                        <th>Rebase (git rebase)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Mekanisme</strong></td>
+                        <td>Mencari Lowest Common Ancestor (LCA), lalu membuat 1 commit baru khusus (*Merge Commit*) dengan 2 parent.</td>
+                        <td>Memutar ulang (replay) commit cabang Anda satu per satu di atas ujung cabang target. <strong>Menciptakan SHA hash baru!</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bentuk Riwayat</strong></td>
+                        <td>Non-linear (Terlihat cabang mencuat dan menyatu kembali). Menjaga konteks waktu asli.</td>
+                        <td><strong>Linear sempurna</strong> (Satu garis lurus bersih seperti jalan tol).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Integritas History</strong></td>
+                        <td>100% aman dan tidak pernah mengubah commit yang sudah ada.</td>
+                        <td><strong>Menulis ulang sejarah (Rewrites History)!</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aturan Emas (Golden Rule)</strong></td>
+                        <td>Aman digunakan di cabang mana pun.</td>
+                        <td><strong>DILARANG KERAS</strong> melakukan rebase pada cabang publik bersama (seperti <code>main</code>)!</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="reflog-rescue">
+            <h2><i class="fa-solid fa-life-ring"></i> 6. Penyelamatan Bencana: Mengembalikan Commit Hilang via git reflog</h2>
+            <p>
+                Pernahkah Anda panik karena tidak sengaja menjalankan perintah <code>git reset --hard HEAD~3</code> atau menghapus branch penting sebelum di-merge?
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-terminal"></i> Cara Menyelamatkan Kode yang Hilang</span></div>
+                <pre><code># 1. Buka buku harian pergerakan pointer HEAD lokal Anda:
+git reflog
+
+# Output akan menampilkan seluruh jejak HEAD, termasuk commit yang terhapus:
+# 74bd7ed HEAD@{0}: reset: moving to HEAD~3
+# 3e48e8b HEAD@{1}: commit: feat: kode penting yang hilang!
+
+# 2. Kembalikan branch atau buat branch baru dari hash yang hilang tersebut:
+git checkout -b branch-selamat 3e48e8b</code></pre>
+            </div>
+            <p>
+                <strong>Fakta Git:</strong> Objek yang "hilang" sebenarnya tidak langsung dihapus dari harddisk. Objek tersebut tetap berada di folder <code>.git/objects/</code> sebagai <em>Dangling Commit</em> selama 30 hingga 90 hari sebelum dibersihkan oleh <code>git gc</code>!
+            </p>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Git Internals &amp; DAG</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Di dalam sistem penyimpanan internal Git, di manakah nama file dan izin akses berkas (file mode) disimpan?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Blob murni hanya menyimpan byte konten berkas tanpa metadata.')">A. Di dalam objek Blob</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Objek Tree berfungsi sebagai folder yang memetakan nama file, izin chmod, dan hash SHA dari blob atau sub-tree terkait.')">B. Di dalam objek Tree</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Commit hanya menunjuk ke root tree.')">C. Di dalam file .gitignore</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Jika seorang rekan tim tidak sengaja menjalankan 'git reset --hard' dan kehilangan 5 commit penting yang belum di-push, perintah apa yang dapat menyelamatkan pekerjaannya?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'git status tidak menampilkan history commit yang terlepas.')">A. git status --force</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! git reflog mencatat setiap perpindahan ujung referensi HEAD di mesin lokal, memungkinkan kita menemukan hash dangling commit dan memulihkannya.')">B. git reflog untuk mencari hash dangling commit, lalu git checkout -b ke hash tersebut</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'git clone akan mendownload versi remote tanpa commit lokal yang hilang.')">C. Menghapus folder repo dan melakukan git clone ulang</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="01_monorepo_boundaries.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 13: Monorepo &amp; Boundaries
+            </a>
+            <a href="03_distributed_systems.html" class="btn btn-primary">
+                Lanjut ke Fase 15: Sistem Terdistribusi <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

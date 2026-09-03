@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 13: Monorepo vs Polyrepo &amp; Module Boundaries — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Arsitektur manajemen repositori dan batasan modul: Monorepo vs Polyrepo, Task Graph Caching (Turborepo/Nx), Clean Architecture, serta Hexagonal Architecture (Ports & Adapters).">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 05</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 13: Monorepo &amp; Boundaries</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-sitemap"></i>
+            Hexagonal <span>(Ports &amp; Adapters)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 13</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Dilema Struktur Repositori</a>
+            <a href="#monorepo-vs-polyrepo" class="nav-link"><i class="fa-solid fa-scale-unbalanced-flip"></i> 2. Monorepo vs Polyrepo</a>
+            <a href="#turborepo-caching" class="nav-link"><i class="fa-solid fa-bolt"></i> 3. Task Graph &amp; Remote Caching</a>
+            <a href="#clean-architecture" class="nav-link"><i class="fa-solid fa-layer-group"></i> 4. Clean &amp; Hexagonal Architecture</a>
+            <a href="#ports-adapters" class="nav-link"><i class="fa-solid fa-plug"></i> 5. Bedah Kode: Ports &amp; Adapters</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-sitemap"></i> Track 05: Arsitektur Sistem</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 50 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Staff Architect)</span>
+            </div>
+            <h1>Fase 13: Monorepo vs Polyrepo &amp; Module Boundaries</h1>
+            <p class="module-lead">
+                Membangun fondasi rekayasa perangkat lunak skala enterprise: strategi pemilihan Monorepo vs Polyrepo, akselerasi CI/CD berbasis Task Pipeline Caching (Turborepo/Nx), serta penegakan batasan modul domain melalui Hexagonal Architecture (Ports and Adapters).
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Dilema Struktur Repositori &amp; Spaghetti Dependencies</h2>
+            <p>
+                Ketika tim rekayasa berkembang dari 3 insinyur menjadi 50 insinyur dengan belasan microservice, tantangan terbesar bukan lagi menulis baris kode baru, melainkan <strong>mengelola batas dependensi (Module Boundaries) dan alur CI/CD</strong>.
+            </p>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="monorepo-vs-polyrepo">
+            <h2><i class="fa-solid fa-scale-unbalanced-flip"></i> 2. Monorepo vs Polyrepo: Analisis Trade-off</h2>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Dimensi Evaluasi</th>
+                        <th>Polyrepo (Multi-Repo Terpisah)</th>
+                        <th>Monorepo (Satu Repositori Bersama)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Atomic Refactoring</strong></td>
+                        <td>Sangat sulit. Mengubah skema DTO butuh PR di 5 repo berbeda dengan koordinasi versi rumit.</td>
+                        <td><strong>Sangat Mudah.</strong> Mengubah kontrak API dan seluruh client frontend di 1 PR atomik tunggal!</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Code Sharing</strong></td>
+                        <td>Harus mempublikasikan package ke Private npm/NuGet registry per perubahan kecil.</td>
+                        <td>Langsung import modul via workspace: <code>import { User } from '@repo/types'</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CI/CD Build Time</strong></td>
+                        <td>Cepat di awal (hanya build 1 repo kecil).</td>
+                        <td>Bisa sangat lambat jika naif, namun <strong>super kilat jika menggunakan Smart Build Caching</strong>.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Akses Kontrol &amp; Skala</strong></td>
+                        <td>Isolasi permission ketat per repositori.</td>
+                        <td>Membutuhkan tooling canggih (CODEOWNERS, Turborepo, Nx, Bazel). Digunakan Google, Meta, Uber.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="turborepo-caching">
+            <h2><i class="fa-solid fa-bolt"></i> 3. Task Graph &amp; Remote Caching: "Never Build the Same Code Twice"</h2>
+            <p>
+                Kunci keberhasilan Monorepo modern (seperti Turborepo dan Nx) adalah <strong>Content-Aware Hash Caching</strong>:
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-fingerprint"></i> Bagaimana Turborepo Menghitung Cache Hash?</div>
+                <div class="callout-body">
+                    Sebelum menjalankan build paket <code>apps/web</code>, Turborepo menghitung hash dari:
+                    <br>
+                    <code>Hash = SHA256(Isi File Sumber + package.json + Dependensi Lokal + Variabel Env)</code>
+                    <br><br>
+                    Jika hash tersebut sudah pernah di-build sebelumnya (oleh rekan tim Anda atau di CI server):
+                    <br>
+                    <strong>Turborepo me-replay artefak dist/ dan log terminal dalam waktu 150 milidetik (FULL TURBO)!</strong> CI pipeline yang tadinya memakan waktu 25 menit terpangkas menjadi 45 detik.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="clean-architecture">
+            <h2><i class="fa-solid fa-layer-group"></i> 4. Clean Architecture &amp; The Dependency Rule</h2>
+            <p>
+                Uncle Bob (Robert C. Martin) merumuskan aturan fundamental:
+                <br>
+                <em>"Source code dependencies must point only inward, toward higher-level policies."</em>
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Lingkaran 1 (Inti)</div>
+                    <div class="pipeline-step-title">Domain Entities</div>
+                    <div class="pipeline-step-desc">Objek bisnis murni. Nol dependensi ke database, framework, atau web HTTP!</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Lingkaran 2</div>
+                    <div class="pipeline-step-title">Use Cases</div>
+                    <div class="pipeline-step-desc">Alur proses bisnis aplikasi (misal: <code>BayarPesananUseCase</code>).</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Lingkaran 3</div>
+                    <div class="pipeline-step-title">Interface Adapters</div>
+                    <div class="pipeline-step-desc">Controller REST, Serializer JSON, Presenter UI, Repository Impl.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Lingkaran 4 (Luar)</div>
+                    <div class="pipeline-step-title">Frameworks &amp; Drivers</div>
+                    <div class="pipeline-step-desc">Express, Postgres, Redis, AWS S3. Komponen ini dapat diganti kapan saja tanpa menyentuh Domain!</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="ports-adapters">
+            <h2><i class="fa-solid fa-plug"></i> 5. Bedah Kode: Hexagonal Architecture (Ports and Adapters)</h2>
+            <p>
+                Bagaimana mengimplementasikan <strong>Dependency Inversion Principle (DIP)</strong> di TypeScript/Node.js?
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-brands fa-js"></i> 1. Inward Port (Interface di Level Domain)</span></div>
+                <pre><code>// domain/ports/PesananRepository.ts
+// Domain TIDAK TAHU apakah data disimpan di Postgres, SQLite, atau Array Memori!
+export interface PesananRepository {
+    simpan(pesanan: Pesanan): Promise<void>;
+    cariBerdasarkanId(id: string): Promise<Pesanan | null>;
+}</code></pre>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-brands fa-js"></i> 2. Use Case (Hanya Bergantung pada Interface Port)</span></div>
+                <pre><code>// application/use-cases/BuatPesanan.ts
+export class BuatPesananUseCase {
+    constructor(private readonly repo: PesananRepository) {}
+
+    async execute(data: BuatPesananDTO): Promise<void> {
+        const pesanan = new Pesanan(data.id, data.total);
+        pesanan.validasiBatasKredit(); // Logika bisnis murni!
+        await this.repo.simpan(pesanan);
+    }
+}</code></pre>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-brands fa-js"></i> 3. Outward Adapter (Implementasi di Level Luar)</span></div>
+                <pre><code>// infrastructure/adapters/PostgresPesananRepository.ts
+export class PostgresPesananRepository implements PesananRepository {
+    constructor(private readonly pgPool: any) {}
+
+    async simpan(pesanan: Pesanan): Promise<void> {
+        await this.pgPool.query('INSERT INTO pesanan (id, total) VALUES ($1, $2)', [pesanan.id, pesanan.total]);
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-spider"></i> War Story: ORM Leak Merusak Seluruh Arsitektur Microservice</div>
+                <div class="callout-body">
+                    Sebuah tim backend meneruskan objek entitas ORM Prisma/TypeORM langsung dari database hingga ke controller API dan view template.
+                    <br><br>
+                    Ketika perusahaan memutuskan untuk bermigrasi dari PostgreSQL ke DynamoDB untuk mendukung trafik jutaan pengguna, mereka menyadari bahwa <strong>seluruh logika bisnis di 40 controller terikat erat dengan dekorator dan metode spesifik SQL ORM tersebut</strong>!
+                    <br><br>
+                    Tim terpaksa melakukan penulisan ulang (rewrite) total selama 4 bulan penuh. Jika sejak awal mereka menerapkan batas <em>Ports and Adapters</em>, migrasi driver database hanyalah urusan menulis 1 kelas Adapter baru tanpa mengubah 1 baris pun kode bisnis Use Case!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Arsitektur Monorepo &amp; Batasan Modul</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Menurut kaidah Clean Architecture (The Dependency Rule), ke arah manakah dependensi kode harus selalu mengarah?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Domain tidak boleh bergantung ke database.')">A. Dari Domain Inti mengarah keluar menuju Database dan Framework</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Dependensi harus selalu mengarah ke dalam (Inward). Modul luar seperti database atau UI bergantung pada interface domain, sedangkan domain murni tidak boleh mengenal framework luar sama sekali.')">B. Dari layer luar (Database, Framework, UI) mengarah ke dalam menuju aturan Domain Bisnis murni</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Dependensi siklus melanggar prinsip desain terstruktur.')">C. Dependensi boleh melingkar dua arah secara bebas</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Bagaimana build system Monorepo cerdas (seperti Turborepo) dapat memangkas waktu eksekusi CI dari puluhan menit menjadi hitungan detik?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Turborepo tidak menghapus kode tes.')">A. Dengan menghapus seluruh pengujian unit test secara otomatis</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Turborepo menghitung hash kriptografis dari file sumber dan dependensi; jika tidak ada perubahan, Turborepo langsung mengambil output dist dari remote cache.')">B. Menggunakan Content-Aware Hash Caching untuk merekam hash file sumber; jika paket belum berubah, ia me-replay artefak build dari remote cache secara instan</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Build tetap dijalankan sesuai arsitektur mesin target.')">C. Memaksa seluruh kode dikonversi menjadi bahasa Assembly</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="../03_backend/03_auth_security.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 12: Keamanan API
+            </a>
+            <a href="02_git_internals.html" class="btn btn-primary">
+                Lanjut ke Fase 14: Git Internals <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

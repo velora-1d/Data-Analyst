@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 14: Monolith vs Modular Monolith vs Microservices — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Bedah arsitektur dekomposisi sistem: Mengapa Modular Monolith mengalahkan Microservices naif, bahaya Distributed Monolith, pola migrasi Strangler Fig, dan studi kasus Amazon Prime Video.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 05</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 14: Modular Monolith</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-cubes"></i>
+            System Architecture <span>(Strangler Fig)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 14</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Ilusi Hype Microservices</a>
+            <a href="#modular-monolith" class="nav-link"><i class="fa-solid fa-cubes-stacked"></i> 2. Kekuatan Modular Monolith</a>
+            <a href="#distributed-monolith" class="nav-link"><i class="fa-solid fa-triangle-exclamation"></i> 3. Bahaya Distributed Monolith</a>
+            <a href="#strangler-fig" class="nav-link"><i class="fa-solid fa-tree"></i> 4. Pola Migrasi Strangler Fig</a>
+            <a href="#case-study-prime" class="nav-link"><i class="fa-solid fa-film"></i> 5. Studi Kasus Amazon Prime Video</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 6. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-sitemap"></i> Track 05: Arsitektur Sistem</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 55 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Principal Architect)</span>
+            </div>
+            <h1>Fase 14: Monolith vs Modular Monolith vs Microservices</h1>
+            <p class="module-lead">
+                Membongkar mitos dan realitas dekomposisi sistem perangkat lunak: komparasi biaya operasional Monolith tradisional vs Modular Monolith skala Shopify/GitHub vs Microservices, pencegahan jebakan Distributed Monolith, serta strategi migrasi tanpa henti (*Zero-Downtime*) menggunakan Strangler Fig Pattern.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Ilusi Hype Microservices</h2>
+            <p>
+                Selama satu dekade terakhir, industri teknologi dibanjiri tren yang memaksakan adopsi microservice sejak hari pertama peluncuran produk startup. Padahal, microservice bukanlah arsitektur tanpa ongkos; microservice menukar kesederhanaan kode lokal dengan <strong>kompleksitas jaringan terdistribusi yang sangat mahal</strong>.
+            </p>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Tipe Arsitektur</th>
+                        <th>Batas Modul</th>
+                        <th>Komunikasi Antar Modul</th>
+                        <th>Kompleksitas Operasional</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Classic Monolith</strong></td>
+                        <td>Lemah (Mudah terjadi spaghetti)</td>
+                        <td>Panggilan Fungsi Memori (Sub-mikrodetik)</td>
+                        <td><strong>Sangat Rendah</strong> (1 codebase, 1 database, 1 server)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Modular Monolith</strong></td>
+                        <td><strong>Sangat Ketat</strong> (Isolasi paket in-memory)</td>
+                        <td>Panggilan Fungsi Memori (Sub-mikrodetik)</td>
+                        <td><strong>Rendah</strong> (Skala tim besar tanpa overhead jaringan)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Microservices</strong></td>
+                        <td>Sangat Ketat (Fisik jaringan)</td>
+                        <td>Jaringan HTTP/gRPC (Latensi milidetik, rawan putus)</td>
+                        <td><strong>Sangat Tinggi</strong> (Butuh Kubernetes, Istio, Jaeger, Kafka)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="modular-monolith">
+            <h2><i class="fa-solid fa-cubes-stacked"></i> 2. Mengapa Perusahaan Raksasa Memilih Modular Monolith?</h2>
+            <p>
+                Platform raksasa seperti <strong>Shopify</strong> (memproses transaksi miliaran dolar per hari) dan <strong>GitHub</strong> tetap setia menggunakan arsitektur <strong>Modular Monolith</strong>.
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-cube"></i> Anatomi Modular Monolith</div>
+                <div class="callout-body">
+                    • Seluruh aplikasi berjalan di satu proses prosesor (single runtime instance).<br>
+                    • Kode dipecah menjadi modul domain independen: <code>/modules/catalog</code>, <code>/modules/orders</code>, <code>/modules/payments</code>.<br>
+                    • <strong>Aturan Batasan Suci:</strong> Modul <code>Orders</code> DILARANG mengimpor langsung tabel database privat milik <code>Payments</code>. Modul hanya boleh berinteraksi melalui <strong>Public Interface Service API</strong> yang terekspos di tingkat memori!<br>
+                    • Jika suatu hari modul <code>Payments</code> memerlukan scaling 100x lipat, modul tersebut dapat diangkat keluar menjadi microservice terpisah dalam hitungan jam karena batas antarmukanya sudah rapi sejak awal.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="distributed-monolith">
+            <h2><i class="fa-solid fa-triangle-exclamation"></i> 3. Bahaya Fatal: The Distributed Monolith</h2>
+            <p>
+                Bencana arsitektur paling umum yang menimpa startup yang terburu-buru mengadopsi microservice adalah <strong>Distributed Monolith</strong>:
+            </p>
+
+            <div class="callout-box callout-pitfall">
+                <div class="callout-header"><i class="fa-solid fa-skull-crossbones"></i> Ciri-ciri Distributed Monolith (The Worst of Both Worlds)</div>
+                <div class="callout-body">
+                    1. <strong>Shared Database:</strong> Microservice A, B, dan C membaca dan menulis ke satu database PostgreSQL bersama yang sama.<br>
+                    2. <strong>Lockstep Deployment:</strong> Untuk merilis fitur baru di Service A, Anda terpaksa harus men-deploy Service B dan C di jam yang persis sama.<br>
+                    3. <strong>Cascading Failure:</strong> Jika Service C mengalami latensi tinggi, Service A dan B ikut kehabisan pool koneksi dan seluruh sistem mati serentak.<br><br>
+                    Anda menanggung seluruh kerumitan jaringan, biaya server, dan latensi microservice, namun kehilangan fleksibilitas deployment independen!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="strangler-fig">
+            <h2><i class="fa-solid fa-tree"></i> 4. Pola Migrasi Aman: The Strangler Fig Pattern</h2>
+            <p>
+                Jangan pernah melakukan <em>Big Bang Rewrite</em> (menulis ulang aplikasi raksasa dari nol). Martin Fowler memperkenalkan pola <strong>Strangler Fig</strong> yang meniru pohon beringin yang perlahan membungkus pohon inangnya:
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Langkah 1</div>
+                    <div class="pipeline-step-title">Pasang API Gateway</div>
+                    <div class="pipeline-step-desc">Arahkan seluruh trafik 100% ke Monolith lama melalui reverse proxy (Nginx / Kong).</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Langkah 2</div>
+                    <div class="pipeline-step-title">Bangun 1 Fitur Baru</div>
+                    <div class="pipeline-step-desc">Bangun modul baru (misal Layanan Rekomendasi) sebagai service terpisah di samping Monolith.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Langkah 3</div>
+                    <div class="pipeline-step-title">Alihkan Rute URL</div>
+                    <div class="pipeline-step-desc">Konfigurasi Gateway untuk mengarahkan <code>/api/rekomendasi</code> ke service baru.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Langkah 4</div>
+                    <div class="pipeline-step-title">Matikan Modul Lama</div>
+                    <div class="pipeline-step-desc">Secara bertahap pindahkan modul lain hingga Monolith lama mengecil dan akhirnya dapat dipensiunkan dengan aman!</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="case-study-prime">
+            <h2><i class="fa-solid fa-film"></i> 5. Studi Kasus Industri: Amazon Prime Video Kembali ke Monolith</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-trophy"></i> War Story: Memangkas Biaya Cloud 90% dengan Menyatukan Microservice</div>
+                <div class="callout-body">
+                    Tim audio/video monitoring di Amazon Prime Video awalnya merancang sistem mereka menggunakan ratusan microservice Serverless (AWS Step Functions dan AWS Lambda) untuk menganalisis frame video secara terdistribusi.
+                    <br><br>
+                    <strong>Masalah:</strong> Melemparkan data video berukuran gigabyte antar microservice Lambda melalui AWS S3 dan Step Functions menimbulkan lonjakan biaya data transfer dan menabrak batas concurrency limit AWS.
+                    <br><br>
+                    <strong>Keputusan Berani:</strong> Tim Prime Video mendesain ulang arsitektur tersebut menjadi <strong>satu aplikasi Modular Monolith tunggal</strong> yang dijalankan pada cluster Amazon EC2/ECS. Seluruh frame video dioper antar komponen melalui memori RAM lokal tanpa menyentuh jaringan cloud.<br><br>
+                    <strong>Hasil Empiris:</strong> Arsitektur monolitik baru tersebut <strong>memangkas biaya infrastruktur cloud mereka sebesar 90%</strong> dan meningkatkan stabilitas sistem hingga 10 kali lipat!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 6. Kuis Uji Pemahaman: Monolith vs Microservices</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Apa perbedaan arsitektural utama antara 'Classic Monolith' dan 'Modular Monolith'?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Modular Monolith tetap berjalan di satu runtime tunggal.')">A. Modular Monolith dijalankan di 50 server berbeda</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Modular Monolith berjalan dalam satu proses aplikasi tunggal namun menerapkan batas modul domain yang sangat ketat di tingkat kode dan skema data.')">B. Modular Monolith tetap berjalan di satu proses aplikasi tunggal, namun memiliki batasan modul domain in-memory yang ketat dan independen</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Modular Monolith mendukung semua bahasa pemrograman.')">C. Modular Monolith hanya bisa ditulis menggunakan bahasa Ruby</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Dalam pola migrasi Strangler Fig Pattern, bagaimana cara memindahkan fungsionalitas sistem monolitik lama ke microservices secara aman?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Big-bang rewrite adalah kebalikan dari Strangler Fig.')">A. Mematikan seluruh sistem selama 1 bulan untuk menulis ulang dari nol</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Strangler Fig mencegat trafik di tingkat API Gateway dan secara bertahap mengalihkan endpoint demi endpoint ke layanan baru hingga sistem lama perlahan tergantikan.')">B. Mencegat trafik di API Gateway dan secara bertahap mengalihkan rute fitur baru ke layanan independen hingga monolit lama mengecil</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Database lama tidak langsung dihapus.')">C. Menghapus database monolit lama di hari pertama</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="01_monorepo_polyrepo.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 13: Monorepo vs Polyrepo
+            </a>
+            <a href="03_clean_architecture.html" class="btn btn-primary">
+                Lanjut ke Fase 15: Clean Architecture <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

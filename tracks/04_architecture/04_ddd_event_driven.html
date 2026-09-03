@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 16: Domain-Driven Design (DDD) &amp; Event-Driven Architecture — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Menguasai Domain-Driven Design: Strategic DDD (Bounded Context & Ubiquitous Language), Tactical DDD (Entities, Value Objects, Aggregates), serta Transactional Outbox Pattern untuk Event-Driven Architecture.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 05</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 16: Domain-Driven Design</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-diagram-project"></i>
+            Strategic DDD <span>(Transactional Outbox)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 16</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Filosofi Eric Evans</a>
+            <a href="#strategic-ddd" class="nav-link"><i class="fa-solid fa-map"></i> 2. Strategic DDD: Bounded Context</a>
+            <a href="#tactical-ddd" class="nav-link"><i class="fa-solid fa-cubes"></i> 3. Tactical DDD: Entities &amp; Aggregates</a>
+            <a href="#dual-write-problem" class="nav-link"><i class="fa-solid fa-triangle-exclamation"></i> 4. Bahaya The Dual-Write Problem</a>
+            <a href="#transactional-outbox" class="nav-link"><i class="fa-solid fa-envelope-open-text"></i> 5. Transactional Outbox Pattern</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-sitemap"></i> Track 05: Arsitektur Sistem</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 60 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Enterprise Architect)</span>
+            </div>
+            <h1>Fase 16: Domain-Driven Design (DDD) &amp; Event-Driven Architecture</h1>
+            <p class="module-lead">
+                Menyelaraskan kompleksitas model bisnis dengan kode perangkat lunak: Strategic DDD (Ubiquitous Language, Bounded Contexts), Tactical DDD (Entities, Value Objects, Aggregate Roots), serta eliminasi bahaya The Dual-Write Problem melalui Transactional Outbox Pattern.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Filosofi Domain-Driven Design (Eric Evans)</h2>
+            <p>
+                Banyak sistem software gagal bukan karena bug sintaks teknis, melainkan karena <strong>kesalahpahaman antara insinyur perangkat lunak dengan pakar domain bisnis (Business Stakeholders)</strong>.
+                <br>
+                DDD mengajarkan bahwa perangkat lunak harus memodelkan realitas bisnis secara akurat dan menggunakan <strong>Ubiquitous Language</strong>: bahasa terpadu yang dipahami sama persis oleh Product Manager, Insinyur, dan Database Administrator.
+            </p>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="strategic-ddd">
+            <h2><i class="fa-solid fa-map"></i> 2. Strategic DDD: Ubiquitous Language &amp; Bounded Contexts</h2>
+            <p>
+                Salah satu kesalahan terbesar perancang sistem adalah memaksakan satu model data global universal (misalnya tabel <code>User</code> dengan 80 kolom).
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-compass"></i> Makna Bounded Context</div>
+                <div class="callout-body">
+                    Kata yang sama memiliki makna dan kebutuhan atribut yang sama sekali berbeda di konteks yang berbeda:
+                    <ul>
+                        <li><strong>Konteks Autentikasi:</strong> <code>User</code> peduli pada email, password_hash, dan 2FA salt.</li>
+                        <li><strong>Konteks Pengiriman (Logistics):</strong> <code>Customer</code> peduli pada koordinat GPS alamat rumah dan nomor WhatsApp kurir.</li>
+                        <li><strong>Konteks Akuntansi (Billing):</strong> <code>Client</code> peduli pada NPWP, nomor rekening bank, dan batas kredit faktur.</li>
+                    </ul>
+                    Di DDD, ketiganya adalah <strong>model terpisah di dalam Bounded Context masing-masing</strong>!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="tactical-ddd">
+            <h2><i class="fa-solid fa-cubes"></i> 3. Tactical DDD: Entity, Value Object &amp; Aggregate Root</h2>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Konsep 1</div>
+                    <div class="pipeline-step-title">Entity</div>
+                    <div class="pipeline-step-desc">Memiliki ID unik permanen sepanjang waktu. Contoh: <code>Pesanan #104</code> (statusnya bisa berubah, tapi ID-nya tetap sama).</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Konsep 2</div>
+                    <div class="pipeline-step-title">Value Object</div>
+                    <div class="pipeline-step-desc">Immutable tanpa ID. Kesamaan dinilai dari nilai atributnya. Contoh: <code>Uang { nilai: 50000, mataUang: 'IDR' }</code>.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">Konsep 3</div>
+                    <div class="pipeline-step-title">Aggregate Root</div>
+                    <div class="pipeline-step-desc">Pintu gerbang konsistensi transaksional. Elemen luar hanya boleh memodifikasi anak entitas melalui gerbang Root!</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="dual-write-problem">
+            <h2><i class="fa-solid fa-triangle-exclamation"></i> 4. Bahaya Maut: The Dual-Write Problem</h2>
+            <p>
+                Dalam arsitektur Event-Driven terdistribusi, pengembang sering kali menulis kode seperti ini:
+            </p>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-bad">
+                    <div class="code-pane-header"><i class="fa-solid fa-xmark"></i> Kode Berbahaya: The Dual-Write Bug</div>
+                    <pre><code>// 1. Simpan ke database SQL
+await db.query('UPDATE pesanan SET status = "PAID" WHERE id = ?', [id]);
+
+// 2. Publikasikan event ke Kafka / RabbitMQ
+// BAHAYA: Jika server mati atau jaringan Kafka putus di baris ini...
+await kafka.produce('order-events', { id, event: 'OrderPaid' });
+// HASIL: Database sudah PAID, tapi modul Notifikasi dan Gudang TIDAK PERNAH TAHU!</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="transactional-outbox">
+            <h2><i class="fa-solid fa-envelope-open-text"></i> 5. Solusi Industri: The Transactional Outbox Pattern</h2>
+            <p>
+                Bagaimana menjamin pesan Kafka 100% pasti terkirim jika data SQL berhasil disimpan?
+            </p>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-check-double"></i> Mekanika Transactional Outbox</div>
+                <div class="callout-body">
+                    1. Buat satu tabel khusus di database SQL: <code>outbox_events (id, agregat_tipe, payload_json, status, created_at)</code>.<br>
+                    2. Simpan mutasi data pesanan dan baris event outbox <strong>DALAM SATU TRANSAKSI ACID SQL TUNGGAL</strong>:<br>
+                    <pre><code>BEGIN TRANSACTION;
+UPDATE pesanan SET status = 'PAID' WHERE id = 'ORD-101';
+INSERT INTO outbox_events (payload) VALUES ('{"event":"OrderPaid","id":"ORD-101"}');
+COMMIT;</code></pre>
+                    3. Background worker (atau Change Data Capture / Debezium) membaca tabel outbox dan mem-forward event ke Kafka.<br>
+                    4. <strong>Jaminan Mutlak:</strong> Jika transaksi SQL rollback, event tidak akan masuk outbox. Jika transaksi SQL commit, event dijamin 100% tersimpan dan siap dipublikasikan ke Kafka!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-money-bill-transfer"></i> War Story: E-Commerce Kehilangan Sinkronisasi Saldo Akibat Dual-Write</div>
+                <div class="callout-body">
+                    Sebuah startup fintech mengeksekusi pendebetan saldo pengguna di database SQL dan kemudian memanggil event broker Redis Pub/Sub untuk mentransfer uang ke mitra bank.
+                    <br><br>
+                    Saat jaringan cloud mereka mengalami lonjakan sesaat (*Network Blip*), 140 transaksi berhasil memotong saldo di SQL, namun gagal mengirimkan sinyal event transfer ke broker.
+                    <br><br>
+                    Pelanggan mengamuk karena uang mereka terpotong tanpa adanya pengiriman dana ke tujuan!
+                    <br><br>
+                    <strong>Solusi:</strong> Mengimplementasikan <strong>Transactional Outbox Pattern dengan Idempotency Consumer</strong>, memastikan tidak ada satu pun rupiah yang hilang akibat kegagalan transmisi jaringan.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Domain-Driven Design</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Apa perbedaan mendasar antara 'Entity' dan 'Value Object' di dalam Tactical Domain-Driven Design?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Entity dan Value Object sama-sama penting.')">A. Entity disimpan di database, sedangkan Value Object hanya ada di memori</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Entity memiliki identitas unik konstan lintas waktu (misal nomor pesanan), sedangkan Value Object tidak memiliki identitas dan kesamaannya ditentukan murni oleh kesamaan seluruh nilai propertinya.')">B. Entity memiliki identitas unik (ID) yang konsisten lintas waktu, sedangkan Value Object bersifat immutable dan kesamaannya ditentukan murni oleh nilai atributnya</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Value Object dapat digunakan di bahasa apa pun.')">C. Value Object hanya bisa dibuat dalam bahasa Java</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Mengapa Transactional Outbox Pattern menjadi standar industri untuk mempublikasikan event pada arsitektur Event-Driven?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Outbox pattern tidak menghapus kebutuhan database.')">A. Karena dapat menggantikan fungsi database utama</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Menyimpan payload event ke dalam tabel outbox di transaksi ACID database yang sama dengan mutasi data bisnis mengeliminasi risiko The Dual-Write Problem.')">B. Menjamin konsistensi atomik antara penyimpanan data bisnis dan pengiriman pesan event ke message broker (mengeliminasi The Dual-Write Problem)</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Outbox pattern mengutamakan reliabilitas konsistensi.')">C. Untuk mempercepat kecepatan browser merender CSS</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="03_clean_architecture.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 15: Clean Architecture
+            </a>
+            <a href="../../plan.html" class="btn btn-primary">
+                Lanjut ke Master Roadmap <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

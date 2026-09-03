@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 15: Desain Sistem Terdistribusi &amp; CAP/PACELC Theorem — Fundamental Coding (Velora)</title>
+    <meta name="description" content="Arsitektur sistem terdistribusi modern: Teorema CAP & PACELC, topologi konsensus Quorum (R + W > N), Event Sourcing, serta CQRS (Command Query Responsibility Segregation).">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../../index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="../../index.html" style="color:var(--text-secondary);text-decoration:none;">Track 05</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Fase 15: Sistem Terdistribusi</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../../plan.html" class="btn btn-secondary btn-sm" style="margin-right: 6px;">
+            <i class="fa-solid fa-map-location-dot"></i> Master Plan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-network-wired"></i>
+            PACELC Theorem <span>(R + W &gt; N)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Multi-Track</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Daftar Bab Fase 15</div>
+        <nav class="sidebar-nav">
+            <a href="#intro" class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Ilusi Sistem Terdistribusi</a>
+            <a href="#cap-theorem" class="nav-link"><i class="fa-solid fa-triangle-exclamation"></i> 2. Teorema CAP &amp; Kompromi Fisik</a>
+            <a href="#pacelc-theorem" class="nav-link"><i class="fa-solid fa-scale-unbalanced-flip"></i> 3. Teorema PACELC Abadi</a>
+            <a href="#quorum-consensus" class="nav-link"><i class="fa-solid fa-users-viewfinder"></i> 4. Rumus Quorum: R + W &gt; N</a>
+            <a href="#cqrs-eventsourcing" class="nav-link"><i class="fa-solid fa-book-journal-whills"></i> 5. CQRS &amp; Event Sourcing</a>
+            <a href="#war-stories" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories</a>
+            <a href="#quiz" class="nav-link"><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="module-header">
+            <div class="module-tag-row">
+                <span class="tag"><i class="fa-solid fa-sitemap"></i> Track 05: Arsitektur Sistem</span>
+                <span class="tag"><i class="fa-solid fa-clock"></i> 60 Menit Baca &amp; Praktik</span>
+                <span class="tag"><i class="fa-solid fa-signal" style="color:var(--brand-light)"></i> Mahir (Principal Engineer)</span>
+            </div>
+            <h1>Fase 15: Desain Sistem Terdistribusi &amp; CAP/PACELC Theorem</h1>
+            <p class="module-lead">
+                Membedah prinsip dasar rekayasa sistem terdistribusi berskala global: 8 Ilusi Jaringan, kebenaran mutlak Teorema CAP vs PACELC, kalkulasi konsensus Quorum Leaderless (R + W &gt; N), serta pemisahan arsitektur CQRS dengan Event Sourcing.
+            </p>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="intro">
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Delapan Ilusi Sistem Terdistribusi (The 8 Fallacies)</h2>
+            <p>
+                L. Peter Deutsch dan James Gosling merumuskan 8 asumsi salah yang sering dibuat oleh developer saat berpindah dari sistem monolitik ke sistem terdistribusi:
+            </p>
+            <ol style="margin-left: 24px; line-height: 1.8; color: var(--text-secondary);">
+                <li><em>"Jaringan selalu andal dan tidak pernah putus."</em> (Kenyataan: Kabel putus, router crash, AWS availability zone mati).</li>
+                <li><em>"Latensi jaringan adalah nol."</em> (Kenyataan: Kecepatan cahaya di kabel fiber optik memakan waktu 100ms lintas benua).</li>
+                <li><em>"Bandwidth tidak terbatas."</em></li>
+                <li><em>"Jaringan aman."</em></li>
+                <li><em>"Topologi jaringan tidak pernah berubah."</em></li>
+                <li><em>"Hanya ada 1 administrator sistem."</em></li>
+                <li><em>"Biaya transportasi data adalah nol."</em></li>
+                <li><em>"Jaringan bersifat homogen."</em></li>
+            </ol>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="cap-theorem">
+            <h2><i class="fa-solid fa-triangle-exclamation"></i> 2. Teorema CAP: Hukum Fisika Sistem Terdistribusi</h2>
+            <p>
+                Dirumuskan oleh Eric Brewer, Teorema CAP menyatakan bahwa dalam sistem penyimpanan data terdistribusi, Anda <strong>hanya dapat memilih maksimal dua dari tiga jaminan berikut</strong>:
+            </p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">C</div>
+                    <div class="pipeline-step-title">Consistency</div>
+                    <div class="pipeline-step-desc">Setiap operasi baca (Read) menerima data penulisan (Write) paling mutakhir atau menghasilkan error.</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">A</div>
+                    <div class="pipeline-step-title">Availability</div>
+                    <div class="pipeline-step-desc">Setiap request yang masuk selalu menerima respons sukses tanpa kegagalan (walau datanya mungkin sedikit usang).</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-step-num">P</div>
+                    <div class="pipeline-step-title">Partition Tolerance</div>
+                    <div class="pipeline-step-desc">Sistem tetap dapat beroperasi meskipun terjadi pemutusan kabel jaringan antar server node di data center.</div>
+                </div>
+            </div>
+
+            <div class="callout-box callout-pitfall">
+                <div class="callout-header"><i class="fa-solid fa-bomb"></i> Mengapa "Memilih CA Tanpa P" Adalah Mitos?</div>
+                <div class="callout-body">
+                    Di dunia nyata, <strong>Partisi Jaringan (P) adalah fakta fisik yang tidak bisa dihindari</strong>. Kabel fiber laut bisa putus kapan saja.
+                    <br><br>
+                    Oleh karena itu, pilihan nyata bagi seorang arsitek sistem ketika jaringan terbelah (Partition) hanyalah:
+                    <ul>
+                        <li><strong>Pilih CP (Consistency):</strong> Tolak atau tunda request pengguna demi memastikan data tidak pernah bertabrakan (contoh: Transfer Uang Bank, Google Spanner).</li>
+                        <li><strong>Pilih AP (Availability):</strong> Terima penulisan pengguna di node mana pun yang masih hidup, dan sinkronkan data nanti secara bertahap (*Eventual Consistency*, contoh: Like Instagram, Keranjang Belanja Amazon).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="pacelc-theorem">
+            <h2><i class="fa-solid fa-scale-unbalanced-flip"></i> 3. Teorema PACELC: Apa yang Terjadi Saat Jaringan Normal?</h2>
+            <p>
+                Kelemahan Teorema CAP adalah teorema tersebut hanya menjelaskan kondisi saat terjadi partisi jaringan (bencana). Daniel Abadi memperluasnya menjadi <strong>Teorema PACELC</strong>:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-book"></i> Rumus PACELC</span></div>
+                <pre><code>Jika terjadi PARTISI (P):
+    Pilih antara AVAILABILITY (A) atau CONSISTENCY (C)
+ELSE (E) saat kondisi jaringan NORMAL:
+    Pilih antara LATENCY (L) atau CONSISTENCY (C)</code></pre>
+            </div>
+
+            <table class="hex-table">
+                <thead>
+                    <tr>
+                        <th>Database</th>
+                        <th>Klasifikasi PACELC</th>
+                        <th>Karakteristik Operasional</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Apache Cassandra / DynamoDB</strong></td>
+                        <td><strong>PA / EL</strong></td>
+                        <td>Saat partisi pilih Available; saat normal utamakan Latensi super rendah daripada konsistensi ketat.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MongoDB / PostgreSQL Replica</strong></td>
+                        <td><strong>PC / EC</strong></td>
+                        <td>Selalu mengutamakan Konsistensi data, mengorbankan ketersediaan dan latensi baca jika replika tertinggal.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="quorum-consensus">
+            <h2><i class="fa-solid fa-users-viewfinder"></i> 4. Matematika Quorum Konsensus: R + W &gt; N</h2>
+            <p>
+                Pada sistem tanpa pemimpin terpusat (*Leaderless Replicas* seperti arsitektur Amazon Dynamo), konsistensi baca dan tulis diatur oleh formula <strong>Quorum</strong>:
+            </p>
+
+            <div class="callout-box callout-deepdive">
+                <div class="callout-header"><i class="fa-solid fa-calculator"></i> Hukum Overlapping Quorum</div>
+                <div class="callout-body">
+                    Misalkan total replika node: <code>N = 5</code>:
+                    <br>
+                    • <code>W</code> = Jumlah node yang wajib mengonfirmasi sebelum Write dinyatakan sukses.<br>
+                    • <code>R</code> = Jumlah node yang wajib dibaca saat request Read.<br><br>
+                    <strong>Jika <code>R + W &gt; N</code> (misal: W = 3, R = 3, total = 6 &gt; 5):</strong><br>
+                    Berdasarkan prinsip lubang merpati (Pigeonhole Principle), <strong>pasti ada minimal 1 node yang masuk ke dalam irisan grup baca dan tulis secara bersamaan!</strong> Dengan membandingkan nomor versi data, client dijamin 100% selalu membaca data paling mutakhir (*Strong Consistency*)!
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="cqrs-eventsourcing">
+            <h2><i class="fa-solid fa-book-journal-whills"></i> 5. Paradigma CQRS &amp; Event Sourcing</h2>
+
+            <div class="code-preview-pane">
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-arrows-split-up-and-off"></i> CQRS (Command Query Segregation)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Memisahkan jalur penulisan data (<strong>Command:</strong> Insert/Update dengan validasi ketat) dari jalur pembacaan (<strong>Query:</strong> Model denormalisasi cepat).<br>
+                        • Jalur baca bisa di-scale out menggunakan Elasticsearch / Read Replicas tanpa membebani database utama.
+                    </div>
+                </div>
+                <div class="code-pane-card code-pane-good">
+                    <div class="code-pane-header"><i class="fa-solid fa-timeline"></i> Event Sourcing (Buku Besar Abadi)</div>
+                    <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                        • Jangan simpan state akhir mutabel (seperti <code>saldo = 50000</code>).<br>
+                        • Simpan seluruh riwayat kejadian secara append-only: <code>[AkunDibuka, SaldoDitambah 100k, SaldoDitarik 50k]</code>.<br>
+                        • <strong>Keuntungan:</strong> Audit log 100% akurat dan kemampuan <em>Time Travel Debugging</em> (memutar ulang state sistem ke tanggal berapa pun di masa lalu).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="war-stories">
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
+
+            <div class="callout-box callout-production">
+                <div class="callout-header"><i class="fa-solid fa-clock"></i> War Story: Clock Skew Menghilangkan Data di Kluster Cassandra</div>
+                <div class="callout-body">
+                    Sebuah bank digital menggunakan Cassandra dengan resolusi konflik default <strong>Last-Write-Wins (LWW)</strong> berbasis timestamp NTP server lokal.
+                    <br><br>
+                    Salah satu server mengalami kerusakan sinkronisasi waktu dan jam internalnya <strong>berlari 10 detik lebih cepat ke masa depan</strong> (*Clock Skew*).
+                    <br><br>
+                    <strong>Dampak:</strong> Setiap data yang ditulis oleh server rusak tersebut memiliki timestamp yang jauh lebih tinggi daripada server lain. Ketika user melakukan update data terbaru di server normal beberapa detik kemudian, Cassandra <strong>mengabaikan update tersebut dan menganggap data lama dari server rusak sebagai data yang lebih mutakhir!</strong>
+                    <br><br>
+                    <strong>Solusi:</strong> Gunakan <strong>Vector Clocks / Lamport Timestamps</strong> untuk pelacakan kausalitas logis alih-alih jam dinding fisik (Wall Clock), atau gunakan hardware GPS Atomic Clock seperti Google TrueTime Spanner.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="quiz" class="quiz-section">
+            <h2><i class="fa-solid fa-circle-question"></i> 7. Kuis Uji Pemahaman: Sistem Terdistribusi</h2>
+
+            <!-- Soal 1 -->
+            <div class="quiz-card" style="margin-bottom:20px;">
+                <div class="quiz-question">1. Dalam formula Quorum konsensus leaderless (N = total replika, W = konfirmasi tulis, R = konfirmasi baca), kondisi apa yang menjamin client selalu membaca data mutakhir (Strong Consistency)?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Jika R + W <= N, ada kemungkinan tidak ada node irisan yang overlap.')">A. R + W &lt;= N</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Tepat! Ketika R + W > N, dijamin terdapat minimal 1 replika yang terlibat dalam kedua set operasi baca dan tulis secara bersamaan.')">B. R + W &gt; N</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'W dan R tidak harus sama.')">C. W wajib sama dengan N dan R wajib bernilai 1</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="quiz-card">
+                <div class="quiz-question">2. Menurut Teorema PACELC, apa yang menjadi pertimbangan kompromi utama sistem ketika jaringan dalam keadaan NORMAL (Else / tanpa partisi)?</div>
+                <div class="quiz-opts">
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'CPU vs RAM bukan dimensi Teorema PACELC.')">A. Pemakaian CPU vs Pemakaian Memori RAM</div>
+                    <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true, 'Sempurna! Pada kondisi jaringan normal tanpa gangguan (E), sistem harus memilih trade-off antara Latensi (L) yang cepat atau Konsistensi data yang ketat (C).')">B. Latensi (L) vs Konsistensi data (C)</div>
+                    <div class="quiz-opt" onclick="answerQuiz(this, false, 'Security bukan bagian dari PACELC.')">C. Biaya server vs Keamanan sistem</div>
+                </div>
+                <div class="quiz-fb"><i class=""></i> <span></span></div>
+            </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="mod-nav-footer">
+            <a href="02_git_internals.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Fase 14: Git Internals
+            </a>
+            <a href="../../plan.html" class="btn btn-primary">
+                Lanjut ke Master Roadmap <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+</div>
+
+<script src="../../assets/script.js"></script>
+</body>
+</html>

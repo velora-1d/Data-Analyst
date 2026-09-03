@@ -53,15 +53,14 @@
       "id": "arsitektur_sistem",
       "title": "Arsitektur Sistem & Repositori",
       "icon": "fa-solid fa-sitemap",
-      "badge": "Diskusi Mendalam",
-      "badgeColor": "var(--warning)",
-      "description": "Bedah tuntas Monorepo vs Polyrepo, Monolith vs Microservices, Clean & Hexagonal Architecture, serta Domain-Driven Design (DDD).",
+      "badge": "Aktif (4 Modul)",
+      "badgeColor": "var(--success)",
+      "description": "Monorepo vs Polyrepo, Modular Monolith vs Microservices, Clean & Hexagonal Architecture, serta Domain-Driven Design (DDD) & Outbox Pattern.",
       "modules": [
-        { "id": "arch_01_monorepo_polyrepo", "title": "1. Monorepo vs Polyrepo: Analisis Trade-Off & Studi Kasus", "url": "tracks/04_arsitektur_sistem/01_monorepo_polyrepo.html", "status": "planned", "duration": "60m" },
-        { "id": "arch_02_monolith_microservices", "title": "2. Modular Monolith vs Microservices: Kapan Harus Pecah?", "url": "tracks/04_arsitektur_sistem/02_monolith_microservices.html", "status": "planned", "duration": "55m" },
-        { "id": "arch_03_clean_architecture", "title": "3. Clean Architecture & Hexagonal Ports-and-Adapters", "url": "tracks/04_arsitektur_sistem/03_clean_architecture.html", "status": "planned", "duration": "50m" },
-        { "id": "arch_04_ddd_fundamentals", "title": "4. Domain-Driven Design (Bounded Context, Aggregates)", "url": "tracks/04_arsitektur_sistem/04_ddd_fundamentals.html", "status": "planned", "duration": "55m" },
-        { "id": "arch_05_event_driven", "title": "5. Event-Driven Architecture, Event Sourcing & CQRS", "url": "tracks/04_arsitektur_sistem/05_event_driven.html", "status": "planned", "duration": "50m" }
+        { "id": "arch_01_monorepo_polyrepo", "title": "Fase 13: Monorepo vs Polyrepo", "url": "tracks/04_architecture/01_monorepo_polyrepo.html", "status": "ready", "duration": "50m" },
+        { "id": "arch_02_monolith_microservices", "title": "Fase 14: Monolith vs Microservices", "url": "tracks/04_architecture/02_monolith_microservices.html", "status": "ready", "duration": "55m" },
+        { "id": "arch_03_clean_architecture", "title": "Fase 15: Clean & Hexagonal Architecture", "url": "tracks/04_architecture/03_clean_architecture.html", "status": "ready", "duration": "55m" },
+        { "id": "arch_04_ddd_event_driven", "title": "Fase 16: Domain-Driven Design & Outbox", "url": "tracks/04_architecture/04_ddd_event_driven.html", "status": "ready", "duration": "60m" }
       ]
     },
     {
