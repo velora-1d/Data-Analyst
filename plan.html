@@ -497,12 +497,12 @@
             <div class="phase-card" data-phase-id="fase-1">
                 <div class="phase-header">
                     <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-solid fa-square-check" style="color:var(--brand-light);"></i></button>
                         <span class="phase-number">FASE 01</span>
                         <span class="phase-title-text">Redesain Beranda Portal Kurikulum (index.html)</span>
                     </div>
                     <div class="phase-header-right">
-                        <span class="phase-status-tag status-active">Sedang Berjalan</span>
+                        <span class="phase-status-tag status-active">Selesai Diimplementasikan</span>
                         <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
                     </div>
                 </div>
@@ -510,20 +510,11 @@
                     <div class="phase-section">
                         <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Sasaran &amp; First Principles</div>
                         <div class="phase-section-text">
-                            Transformasi <code>index.html</code> menjadi kurikulum multi-track interaktif. Menerapkan Cognitive Load Reduction (Hick's Law), filter pencarian instan berbasis in-memory JavaScript, dan kartu track modular.
+                            Transformasi <code>index.html</code> menjadi portal kurikulum multi-track interaktif. Menerapkan Cognitive Load Reduction (Hick's Law), filter pencarian instan berbasis in-memory JavaScript, dan kartu track modular.
                         </div>
-                    </div>
-                    <div class="phase-section">
-                        <div class="phase-section-title"><i class="fa-solid fa-flask"></i> Lab &amp; Praktik Nyata</div>
-                        <div class="phase-section-text">
-                            Merombak hero section, grid 8 track, search bar filter instan, dan indikator penyelesaian modul tanpa memicu layout shift (CLS = 0).
-                        </div>
-                    </div>
-                    <div class="phase-callout pitfall">
-                        <strong>⚠️ Common Pitfall:</strong> Melakukan hardcoding link modul satu per satu di file HTML yang mempersulit pemeliharaan jangka panjang.
                     </div>
                     <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Siswa dapat menjelajahi 8 track dengan filter pencarian real-time dan navigasi instan.
+                        <strong>✅ Definition of Done:</strong> Siswa dapat menjelajahi 10 track dengan filter pencarian real-time dan navigasi instan. <a href="index.html" style="color:var(--brand-light);font-weight:700;margin-left:6px;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Beranda Portal</a>
                     </div>
                 </div>
             </div>
@@ -532,12 +523,12 @@
             <div class="phase-card" data-phase-id="fase-2">
                 <div class="phase-header">
                     <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-solid fa-square-check" style="color:var(--brand-light);"></i></button>
                         <span class="phase-number">FASE 02</span>
                         <span class="phase-title-text">Navigasi Sidebar Dinamis Berbasis nav-data.json &amp; SPA Router</span>
                     </div>
                     <div class="phase-header-right">
-                        <span class="phase-status-tag status-active">Sedang Berjalan</span>
+                        <span class="phase-status-tag status-active">Selesai Diimplementasikan</span>
                         <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
                     </div>
                 </div>
@@ -547,9 +538,6 @@
                         <div class="phase-section-text">
                             Membangun sistem Single Source of Truth (SSOT) untuk seluruh daftar modul menggunakan <code>assets/nav-data.json</code>. Render accordion sidebar dinamis via <code>DocumentFragment</code> untuk efisiensi DOM tanpa reflow berulang.
                         </div>
-                    </div>
-                    <div class="phase-callout pitfall">
-                        <strong>⚠️ Common Pitfall:</strong> Melakukan append DOM di dalam loop yang memicu reflow thrashing pada peramban web.
                     </div>
                     <div class="phase-callout dod">
                         <strong>✅ Definition of Done:</strong> Sidebar ter-render otomatis di seluruh modul dengan status bab aktif yang menyala biru.
@@ -561,12 +549,12 @@
             <div class="phase-card" data-phase-id="fase-3">
                 <div class="phase-header">
                     <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-solid fa-square-check" style="color:var(--brand-light);"></i></button>
                         <span class="phase-number">FASE 03</span>
                         <span class="phase-title-text">Standarisasi Component Library &amp; Callout Boxes</span>
                     </div>
                     <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
+                        <span class="phase-status-tag status-active">Selesai Diimplementasikan</span>
                         <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
                     </div>
                 </div>
@@ -578,7 +566,7 @@
                         </div>
                     </div>
                     <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Seluruh modul memiliki tampilan seragam untuk studi kasus kegagalan produksi dan komparasi arsitektur.
+                        <strong>✅ Definition of Done:</strong> Seluruh modul memiliki format seragam untuk studi kasus kegagalan produksi (<code>.callout-production</code>), komparasi arsitektur (<code>.callout-tradeoff</code>), dan anti-pattern (<code>.callout-pitfall</code>).
                     </div>
                 </div>
             </div>
@@ -598,12 +586,12 @@
             <div class="phase-card" data-phase-id="fase-4">
                 <div class="phase-header">
                     <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-solid fa-square-check" style="color:var(--brand-light);"></i></button>
                         <span class="phase-number">FASE 04</span>
                         <span class="phase-title-text">Database Storage Engine &amp; Struktur B-Tree (Deep Dive)</span>
                     </div>
                     <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
+                        <span class="phase-status-tag status-active">Selesai Diimplementasikan</span>
                         <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
                     </div>
                 </div>
@@ -619,7 +607,7 @@
                         </div>
                     </div>
                     <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Siswa mampu menggambar anatomi Slotted Page dan menjelaskan trade-off kapan memakai B+Tree (OLTP read-heavy) vs LSM-Tree (Log write-heavy).
+                        <strong>✅ Definition of Done:</strong> Pembuktian empiris hexdump <code>ecommerce.db</code> (29 pages x 4096B) dan pemahaman algoritma crash recovery ARIES. <a href="tracks/01_database_sql/01_storage_engine.html" style="color:var(--brand-light);font-weight:700;margin-left:6px;"><i class="fa-solid fa-book-open"></i> Buka Modul Fase 04</a>
                     </div>
                 </div>
             </div>
@@ -628,12 +616,12 @@
             <div class="phase-card" data-phase-id="fase-5">
                 <div class="phase-header">
                     <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-solid fa-square-check" style="color:var(--brand-light);"></i></button>
                         <span class="phase-number">FASE 05</span>
                         <span class="phase-title-text">Strategi Indexing &amp; Anatomi Execution Plan</span>
                     </div>
                     <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
+                        <span class="phase-status-tag status-active">Selesai Diimplementasikan</span>
                         <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
                     </div>
                 </div>
@@ -641,14 +629,14 @@
                     <div class="phase-section">
                         <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Konsep Utama &amp; Lab</div>
                         <div class="phase-section-text">
-                            Aturan Emas <em>Leftmost Prefix Rule</em> pada Composite Index. Perbedaan Table Scan, Index Scan, dan Covering Index (Index Only Scan). Analisis mendalam output <code>EXPLAIN QUERY PLAN</code>.
+                            Aturan Emas <em>Leftmost Prefix Rule</em> pada Composite Index. Perbedaan Table Scan, Index Scan, dan Covering Index (Index Only Scan). Analisis mendalam output <code>EXPLAIN QUERY PLAN</code> dan query SARGable.
                         </div>
                     </div>
                     <div class="phase-callout pitfall">
-                        <strong>⚠️ Common Pitfall:</strong> Menggunakan fungsi pembungkus pada kolom filter (<code>WHERE YEAR(tgl) = 2024</code>) yang mematikan fungsi B-Tree indeks.
+                        <strong>⚠️ Common Pitfall:</strong> Menggunakan fungsi pembungkus pada kolom filter (<code>WHERE strftime('%Y', tgl) = '2024'</code>) yang mematikan fungsi B-Tree indeks.
                     </div>
                     <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Transformasi query SCAN TABLE pada 5.600+ baris transaksi menjadi SEARCH TABLE USING COVERING INDEX.
+                        <strong>✅ Definition of Done:</strong> Transformasi query SCAN TABLE O(N) menjadi SEARCH TABLE USING COVERING INDEX O(log N). <a href="tracks/01_database_sql/02_indexing_strategy.html" style="color:var(--brand-light);font-weight:700;margin-left:6px;"><i class="fa-solid fa-book-open"></i> Buka Modul Fase 05</a>
                     </div>
                 </div>
             </div>
@@ -657,12 +645,12 @@
             <div class="phase-card" data-phase-id="fase-6">
                 <div class="phase-header">
                     <div class="phase-header-left">
-                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-regular fa-square"></i></button>
+                        <button class="phase-checkbox-btn" title="Tandai selesai"><i class="fa-solid fa-square-check" style="color:var(--brand-light);"></i></button>
                         <span class="phase-number">FASE 06</span>
                         <span class="phase-title-text">Transaksi, Level Isolasi &amp; Transaksi Terdistribusi</span>
                     </div>
                     <div class="phase-header-right">
-                        <span class="phase-status-tag status-planned">Terencana</span>
+                        <span class="phase-status-tag status-active">Selesai Diimplementasikan</span>
                         <i class="fa-solid fa-chevron-down phase-toggle-icon"></i>
                     </div>
                 </div>
@@ -670,11 +658,11 @@
                     <div class="phase-section">
                         <div class="phase-section-title"><i class="fa-solid fa-bullseye"></i> Konsep Utama</div>
                         <div class="phase-section-text">
-                            4 Anomali ANSI (Dirty Read, Non-Repeatable Read, Phantom Read, Serialization Anomaly). 4 Level Isolasi ANSI SQL. Two-Phase Locking (2PL), MVCC (Multi-Version Concurrency Control), dan perbandingan Two-Phase Commit (2PC) vs Saga Pattern terdistribusi.
+                            4 Anomali ANSI (Dirty Read, Non-Repeatable Read, Phantom Read, Serialization Anomaly Write Skew). 4 Level Isolasi ANSI SQL. Two-Phase Locking (2PL), MVCC (Multi-Version Concurrency Control), Optimistic Locking CAS, dan perbandingan Two-Phase Commit (2PC) vs Saga Pattern terdistribusi.
                         </div>
                     </div>
                     <div class="phase-callout dod">
-                        <strong>✅ Definition of Done:</strong> Simulasi penanganan race condition flash sale e-commerce menggunakan locking pesimistik dan optimistik.
+                        <strong>✅ Definition of Done:</strong> Penanganan race condition checkout multi-threading menggunakan Optimistic Versioning dan kompensasi Saga. <a href="tracks/01_database_sql/03_transactions_concurrency.html" style="color:var(--brand-light);font-weight:700;margin-left:6px;"><i class="fa-solid fa-book-open"></i> Buka Modul Fase 06</a>
                     </div>
                 </div>
             </div>
