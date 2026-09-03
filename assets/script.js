@@ -311,6 +311,87 @@ function initSupabaseERDCanvas() {
     window.addEventListener('resize', renderConnections);
 }
 
+// ============================================================
+// DYNAMIC MULTI-TRACK SIDEBAR LOADER (FASE 2)
+// ============================================================
+let navDataCache = null;
+
+async function loadNavData() {
+    if (navDataCache) return navDataCache;
+    try {
+        const isInSubdir = window.location.pathname.includes('/modul/') || window.location.pathname.includes('/tracks/');
+        const fetchPath = isInSubdir ? '../assets/nav-data.json' : 'assets/nav-data.json';
+        const res = await fetch(fetchPath);
+        if (res.ok) {
+            navDataCache = await res.json();
+            return navDataCache;
+        }
+    } catch (e) {
+        console.warn('Could not load nav-data.json:', e);
+    }
+    return null;
+}
+
+async function initDynamicMultiTrackSidebar() {
+    const container = document.getElementById('dynamicSidebarNav');
+    if (!container) return;
+
+    const data = await loadNavData();
+    if (!data || !data.tracks) return;
+
+    const currentPath = window.location.pathname;
+    const fragment = document.createDocumentFragment();
+    const accordionWrapper = document.createElement('div');
+    accordionWrapper.className = 'sidebar-track-accordion';
+
+    data.tracks.forEach((track, idx) => {
+        const item = document.createElement('div');
+        item.className = 'track-accordion-item';
+
+        const isCurrentTrack = track.modules && track.modules.some(m => currentPath.endsWith(m.url) || currentPath.includes(m.id));
+        if (isCurrentTrack || idx === 0) {
+            item.classList.add('expanded');
+        }
+
+        const btn = document.createElement('button');
+        btn.className = `track-accordion-btn ${isCurrentTrack ? 'active' : ''}`;
+        btn.innerHTML = `
+            <span><i class="${track.icon} track-accordion-icon"></i> ${track.title}</span>
+            <i class="fa-solid fa-chevron-down track-accordion-chevron"></i>
+        `;
+
+        btn.addEventListener('click', () => {
+            item.classList.toggle('expanded');
+        });
+
+        const content = document.createElement('div');
+        content.className = 'track-accordion-content';
+
+        if (track.modules && track.modules.length > 0) {
+            track.modules.forEach((mod, modIdx) => {
+                const link = document.createElement('a');
+                const isInSubdir = currentPath.includes('/modul/') || currentPath.includes('/tracks/');
+                const linkHref = isInSubdir ? `../${mod.url}` : mod.url;
+                link.href = linkHref;
+                link.className = 'sidebar-module-link';
+                if (currentPath.endsWith(mod.url) || currentPath.includes(mod.id)) {
+                    link.classList.add('current');
+                }
+                link.innerHTML = `<div class="num">${modIdx + 1}</div> ${mod.title.replace(/^Modul \d+:\s*/, '')}`;
+                content.appendChild(link);
+            });
+        }
+
+        item.appendChild(btn);
+        item.appendChild(content);
+        accordionWrapper.appendChild(item);
+    });
+
+    fragment.appendChild(accordionWrapper);
+    container.innerHTML = '';
+    container.appendChild(fragment);
+}
+
 // --- Page Lifecycle Re-initialization ---
 function reinitPage() {
     setTheme(getTheme());
@@ -322,6 +403,7 @@ function reinitPage() {
 
     initSidebar();
     initMobileSidebar();
+    initDynamicMultiTrackSidebar();
     initSupabaseERDCanvas();
     idlePrefetchLinks();
 }

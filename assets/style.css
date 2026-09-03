@@ -2084,3 +2084,232 @@ code:not([class*="language"]):not(.code-block code) {
     }
 }
 
+/* ============================================================
+   23. STANDARISASI COMPONENT LIBRARY & CALLOUT BOXES (FASE 3)
+   ============================================================ */
+.callout-box {
+    margin: 1.75rem 0;
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--r-lg);
+    border: 1px solid var(--border);
+    background: var(--bg-surface);
+    position: relative;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.callout-box:hover {
+    transform: translateY(-1px);
+}
+
+.callout-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+}
+
+.callout-header i {
+    font-size: 1.15rem;
+}
+
+.callout-body {
+    font-size: 0.925rem;
+    line-height: 1.75;
+    color: var(--text-secondary);
+}
+
+.callout-body code {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    color: var(--brand-light);
+}
+
+/* Variant: Production War Story / Kasus Nyata */
+.callout-production {
+    border-color: rgba(239, 68, 68, 0.4);
+    background: rgba(239, 68, 68, 0.05);
+    border-left: 4px solid var(--danger);
+}
+.callout-production .callout-header {
+    color: #F87171;
+}
+
+/* Variant: Architectural Trade-Off Matrix */
+.callout-tradeoff {
+    border-color: rgba(37, 99, 235, 0.4);
+    background: rgba(37, 99, 235, 0.05);
+    border-left: 4px solid var(--brand);
+}
+.callout-tradeoff .callout-header {
+    color: var(--brand-light);
+}
+
+/* Variant: Common Pitfalls & Anti-Patterns */
+.callout-pitfall {
+    border-color: rgba(245, 158, 11, 0.4);
+    background: rgba(245, 158, 11, 0.05);
+    border-left: 4px solid var(--warning);
+}
+.callout-pitfall .callout-header {
+    color: #FBBF24;
+}
+
+/* Variant: Computer Science Deep Dive */
+.callout-deepdive {
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(59, 130, 246, 0.06);
+    border-left: 4px solid #3B82F6;
+}
+.callout-deepdive .callout-header {
+    color: #93C5FD;
+}
+
+/* Variant: Definition of Done Checklist */
+.callout-dod {
+    border-color: rgba(16, 185, 129, 0.4);
+    background: rgba(16, 185, 129, 0.05);
+    border-left: 4px solid var(--success);
+}
+.callout-dod .callout-header {
+    color: #34D399;
+}
+
+/* Interactive Code Comparison Pane (Side-by-side or Stacked) */
+.code-preview-pane {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.75rem 0;
+}
+
+@media (max-width: 900px) {
+    .code-preview-pane {
+        grid-template-columns: 1fr;
+    }
+}
+
+.code-pane-card {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+}
+
+.code-pane-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--code-border);
+}
+
+.code-pane-bad .code-pane-header {
+    background: rgba(239, 68, 68, 0.12);
+    color: #F87171;
+}
+
+.code-pane-good .code-pane-header {
+    background: rgba(16, 185, 129, 0.12);
+    color: #34D399;
+}
+
+/* Responsive SVG Diagram Container */
+.svg-diagram-wrapper {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    text-align: center;
+    overflow-x: auto;
+}
+
+.svg-diagram-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* Dynamic Multi-Track Sidebar Accordion (Fase 2) */
+.sidebar-track-accordion {
+    margin-bottom: 1.25rem;
+}
+
+.track-accordion-item {
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.track-accordion-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 0.75rem;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s ease, color 0.15s ease;
+    border-radius: var(--r-sm);
+}
+
+.track-accordion-btn:hover {
+    background: var(--bg-surface-2);
+    color: var(--text-primary);
+}
+
+.track-accordion-btn.active {
+    color: var(--brand-light);
+    font-weight: 700;
+}
+
+.track-accordion-icon {
+    margin-right: 0.5rem;
+    color: var(--brand);
+}
+
+.track-accordion-chevron {
+    font-size: 0.7rem;
+    transition: transform 0.2s ease;
+    color: var(--text-muted);
+}
+
+.track-accordion-item.expanded .track-accordion-chevron {
+    transform: rotate(180deg);
+}
+
+.track-accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding-left: 0.75rem;
+}
+
+.track-accordion-item.expanded .track-accordion-content {
+    max-height: 500px;
+}
+
+
