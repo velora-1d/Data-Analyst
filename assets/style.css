@@ -755,7 +755,8 @@ section p {
     box-shadow: var(--shadow-sm);
 }
 
-.code-header {
+.code-header,
+.code-block-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1198,25 +1199,30 @@ blockquote strong {
     margin: 0;
 }
 
-.quiz-card {
+.quiz-card,
+.quiz-box {
     margin-bottom: 1.5rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--border);
 }
-.quiz-card:last-child {
+.quiz-card:last-child,
+.quiz-box:last-child {
     margin-bottom: 0;
     padding-bottom: 0;
     border-bottom: none;
 }
 
-.quiz-q {
+.quiz-q,
+.quiz-question {
     font-size: 0.9375rem;
     font-weight: 700;
     margin-bottom: 1rem;
     color: var(--text-primary);
+    line-height: 1.5;
 }
 
-.quiz-options {
+.quiz-options,
+.quiz-opts {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -2716,12 +2722,14 @@ pre.is-panning {
 }
 
 /* Variant: Common Pitfalls & Anti-Patterns */
-.callout-pitfall {
+.callout-pitfall,
+.callout-box.callout-warn {
     border-color: rgba(245, 158, 11, 0.4);
     background: rgba(245, 158, 11, 0.05);
     border-left: 4px solid var(--warning);
 }
-.callout-pitfall .callout-header {
+.callout-pitfall .callout-header,
+.callout-box.callout-warn .callout-header {
     color: #B45309;
 }
 
@@ -2736,21 +2744,25 @@ pre.is-panning {
 }
 
 /* Variant: Definition of Done Checklist */
-.callout-dod {
+.callout-dod,
+.callout-box.callout-good {
     border-color: rgba(16, 185, 129, 0.4);
     background: rgba(16, 185, 129, 0.05);
     border-left: 4px solid var(--success);
 }
-.callout-dod .callout-header {
+.callout-dod .callout-header,
+.callout-box.callout-good .callout-header {
     color: #059669;
 }
 
 /* Dark Theme Header Color Overrides */
 [data-theme="dark"] .callout-production .callout-header { color: #F87171; }
 [data-theme="dark"] .callout-tradeoff .callout-header   { color: #60A5FA; }
-[data-theme="dark"] .callout-pitfall .callout-header    { color: #FBBF24; }
+[data-theme="dark"] .callout-pitfall .callout-header,
+[data-theme="dark"] .callout-box.callout-warn .callout-header { color: #FBBF24; }
 [data-theme="dark"] .callout-deepdive .callout-header   { color: #93C5FD; }
-[data-theme="dark"] .callout-dod .callout-header        { color: #34D399; }
+[data-theme="dark"] .callout-dod .callout-header,
+[data-theme="dark"] .callout-box.callout-good .callout-header { color: #34D399; }
 
 /* Interactive Code Comparison Pane (Side-by-side or Stacked) */
 .code-preview-pane {
@@ -3135,4 +3147,228 @@ pre.is-panning {
     color: var(--text-secondary);
     margin: 0;
 }
+
+/* ============================================================
+   24. Pipeline Flow, Architecture Stages & Process Cards
+   (Standardisasi Multi-Module: Level REST, Event Loop, Sync Pipeline)
+   ============================================================ */
+.pipeline-flow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
+    margin: 1.75rem 0;
+}
+
+.pipeline-step {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 1.15rem 1rem;
+    text-align: left;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.pipeline-step:hover {
+    transform: translateY(-3px);
+    border-color: var(--brand-light);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
+}
+
+.pipeline-step-num {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    padding: 3px 10px;
+    background: var(--brand-subtle);
+    color: var(--brand-light);
+    border: 1px solid rgba(96, 165, 250, 0.3);
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+}
+
+[data-theme="light"] .pipeline-step-num {
+    background: #EFF6FF;
+    color: var(--brand);
+    border-color: #BFDBFE;
+}
+
+.pipeline-step-title {
+    font-weight: 800;
+    font-size: 0.98rem;
+    color: var(--text-primary);
+    margin-bottom: 0.45rem;
+    line-height: 1.35;
+}
+
+.pipeline-step-desc {
+    font-size: 0.84rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.pipeline-step-desc code {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    background: var(--bg-surface-2);
+    color: var(--brand-light);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+[data-theme="light"] .pipeline-step-desc code {
+    background: #EFF6FF;
+    color: var(--brand);
+    border-color: #BFDBFE;
+}
+
+@media (max-width: 640px) {
+    .pipeline-flow {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin: 1.25rem 0;
+    }
+    .pipeline-step {
+        padding: 1rem;
+    }
+}
+
+/* ============================================================
+   25. STANDARISASI MODULE HEADER, LEAD & ANATOMY UI COMPONENTS
+   ============================================================ */
+.module-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.module-tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.module-lead {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+    max-width: 85ch;
+}
+
+/* UI Anatomy Interactive Buttons & Component Sandbox */
+.btn-ui {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+    line-height: 1.4;
+    user-select: none;
+}
+
+.btn-ui:active {
+    transform: scale(0.98);
+}
+
+.btn-ui-primary {
+    background: var(--brand);
+    color: #FFFFFF;
+    border-color: var(--brand);
+}
+
+.btn-ui-primary:hover {
+    background: var(--brand-dark, #1D4ED8);
+    border-color: var(--brand-dark, #1D4ED8);
+}
+
+.btn-ui-secondary {
+    background: var(--bg-surface-2);
+    color: var(--text-primary);
+    border-color: var(--border);
+}
+
+.btn-ui-secondary:hover {
+    background: var(--bg-surface-3, var(--border));
+    color: var(--text-primary);
+}
+
+.btn-ui-outline {
+    background: transparent;
+    color: var(--text-primary);
+    border-color: var(--border-strong, #475569);
+}
+
+.btn-ui-outline:hover {
+    background: var(--bg-surface-2);
+    border-color: var(--text-primary);
+}
+
+.btn-ui-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border-color: transparent;
+}
+
+.btn-ui-ghost:hover {
+    background: var(--bg-surface-2);
+    color: var(--text-primary);
+}
+
+.btn-ui-danger {
+    background: var(--danger);
+    color: #FFFFFF;
+    border-color: var(--danger);
+}
+
+.btn-ui-danger:hover {
+    background: #DC2626;
+    border-color: #DC2626;
+}
+
+.btn-ui-icon {
+    padding: 0.45rem 0.6rem;
+    background: var(--bg-surface-2);
+    color: var(--text-secondary);
+    border-color: var(--border);
+    border-radius: var(--r-sm);
+}
+
+.btn-ui-icon:hover {
+    color: var(--text-primary);
+    background: var(--bg-surface-3, var(--border));
+}
+
+.category-block,
+.layout-category-block {
+    margin-bottom: 2rem;
+}
+
+.comp-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
 
