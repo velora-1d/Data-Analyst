@@ -1617,6 +1617,13 @@ blockquote strong {
     -webkit-overflow-scrolling: touch;
     margin: 1.5rem 0;
     border-radius: var(--r-lg);
+    cursor: grab;
+}
+.table-responsive.is-panning,
+.supabase-canvas.is-panning,
+pre.is-panning {
+    cursor: grabbing !important;
+    user-select: none;
 }
 
 .btn-hamburger {

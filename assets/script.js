@@ -570,6 +570,61 @@ function initResponsiveTables() {
     });
 }
 
+// Enable Mouse Drag-to-Scroll (Pan dengan kursor mouse pada Tabel, Pre Code, dan ERD Canvas)
+function initDragToScroll() {
+    const scrollables = document.querySelectorAll('.table-responsive, pre, .code-block pre, .supabase-canvas, .timeline-diagram, .svg-diagram-wrapper');
+    
+    scrollables.forEach(el => {
+        if (el.dataset.dragScrollInit) return;
+        el.dataset.dragScrollInit = "true";
+
+        let isDown = false;
+        let startX, startY;
+        let scrollLeft, scrollTop;
+
+        el.addEventListener('mousedown', e => {
+            // Abaikan jika klik pada tombol salin, link, atau drag header s-node
+            if (e.target.closest('button, a, .s-node-header, .copy-btn, input, textarea')) return;
+            // Abaikan jika bukan tombol kiri mouse
+            if (e.button !== 0) return;
+
+            isDown = true;
+            el.classList.add('is-panning');
+            startX = e.pageX - el.offsetLeft;
+            startY = e.pageY - el.offsetTop;
+            scrollLeft = el.scrollLeft;
+            scrollTop = el.scrollTop;
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (isDown) {
+                isDown = false;
+                el.classList.remove('is-panning');
+            }
+        });
+
+        el.addEventListener('mouseleave', () => {
+            if (isDown) {
+                isDown = false;
+                el.classList.remove('is-panning');
+            }
+        });
+
+        el.addEventListener('mousemove', e => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - el.offsetLeft;
+            const y = e.pageY - el.offsetTop;
+            const walkX = (x - startX) * 1.5; // multiplier scroll horizontal
+            const walkY = (y - startY) * 1.5; // multiplier scroll vertical (jika ada)
+            el.scrollLeft = scrollLeft - walkX;
+            if (el.classList.contains('supabase-canvas')) {
+                el.scrollTop = scrollTop - walkY;
+            }
+        });
+    });
+}
+
 // --- Page Lifecycle Re-initialization ---
 function reinitPage() {
     setTheme(getTheme());
@@ -586,6 +641,7 @@ function reinitPage() {
     initDynamicMultiTrackSidebar();
     initSupabaseERDCanvas();
     initResponsiveTables();
+    initDragToScroll();
 }
 
 // Initial boot
