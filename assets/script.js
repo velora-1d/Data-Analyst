@@ -436,12 +436,14 @@ async function initDynamicMultiTrackSidebar() {
         // Tentukan apakah accordion dibuka:
         let shouldExpand = false;
         if (userTrackPrefs[track.id] !== undefined) {
-            shouldExpand = userTrackPrefs[track.id];
-            // Jika sedang berada di modul track ini, pastikan tetap terbuka agar user tahu posisinya
-            if (isCurrentTrack) shouldExpand = true;
+            // Prioritas tertinggi: Hormati preferensi user 100%.
+            // Jika user sengaja menutupnya (false), TETAP TERTUTUP meskipun ini adalah isCurrentTrack.
+            shouldExpand = Boolean(userTrackPrefs[track.id]);
         } else {
-            // Default awal: Buka hanya track yang sedang aktif, atau track 1 jika di homepage
-            shouldExpand = isCurrentTrack || (idx === 0 && isHomePage);
+            // Default awal jika user belum pernah membuka/menutup accordion ini:
+            // - Jika sedang aktif membuka modul di track ini (dan bukan di homepage), buka agar user melihat modul aktif
+            // - Jika di homepage, seluruh accordion tertutup rapi secara default
+            shouldExpand = isCurrentTrack && !isHomePage;
         }
 
         if (shouldExpand) {
