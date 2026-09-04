@@ -2498,64 +2498,71 @@ pre.is-panning {
         padding: 0.75rem 0.85rem;
         font-size: 0.82rem;
     }
-    /* Auto-scroll table fallback for mobile */
+    /* Compact auto-fit table for mobile (Pas di layar, tidak perlu geser jika cukup) */
     .table-responsive {
         width: 100%;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        margin: 1.25rem 0;
+        margin: 1rem 0;
         border-radius: var(--r);
     }
     .table-responsive .compare-table,
-    .table-responsive .hex-table {
-        min-width: 580px;
-        margin: 0;
-    }
+    .table-responsive .hex-table,
     .compare-table,
     .hex-table {
-        display: block;
         width: 100%;
-        max-width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        min-width: 100%;
+        font-size: 0.74rem;
+        margin: 0;
         border-radius: var(--r);
     }
-    .compare-table thead,
-    .hex-table thead {
-        white-space: nowrap;
+    .compare-table thead th,
+    .hex-table thead th {
+        padding: 0.55rem 0.5rem;
+        font-size: 0.68rem;
+        letter-spacing: 0.02em;
+        white-space: normal; /* Biarkan wrap rapi */
     }
-    .compare-table td,
-    .hex-table td {
-        min-width: 120px;
+    .compare-table tbody td,
+    .hex-table tbody td {
+        padding: 0.55rem 0.5rem;
+        font-size: 0.73rem;
+        line-height: 1.45;
+        min-width: auto; /* Tidak dipaksa lebar 120px */
+        word-break: break-word;
+    }
+    .tbadge {
+        font-size: 0.65rem;
+        padding: 0.15rem 0.45rem;
     }
     .code-block {
         max-width: 100%;
         overflow: hidden;
         border-radius: var(--r);
-        margin: 1.25rem 0;
+        margin: 1rem 0;
     }
     .code-header {
-        padding: 0.5rem 0.75rem;
-        gap: 8px;
+        padding: 0.4rem 0.65rem;
+        gap: 6px;
     }
     .code-label {
-        font-size: 0.68rem;
-        letter-spacing: 0.04em;
+        font-size: 0.65rem;
+        letter-spacing: 0.02em;
         white-space: normal;
         word-break: break-word;
-        line-height: 1.35;
+        line-height: 1.3;
     }
     .copy-btn {
-        padding: 0.25rem 0.55rem;
-        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.65rem;
         flex-shrink: 0;
     }
     .code-block pre,
     pre {
         max-width: 100%;
-        padding: 0.85rem 0.75rem;
-        font-size: 0.76rem;
-        line-height: 1.65;
+        padding: 0.7rem 0.65rem;
+        font-size: 0.71rem; /* Scaling pas nyaman dibaca di layar HP */
+        line-height: 1.55;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
