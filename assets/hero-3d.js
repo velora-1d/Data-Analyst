@@ -100,10 +100,28 @@
     const scene = new THREE.Scene();
     const isMobile = window.innerWidth <= 768;
 
-    // Camera calibrated: close enough for prominent, bold coins, wide enough to avoid clipping
+    // Dynamic Camera Distance: Mathematically guarantees that the entire 3D orbit
+    // fits comfortably inside the canvas without EVER clipping horizontally or vertically
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.z = isMobile ? 11.5 : 9.2;
-    camera.position.y = 0.2;
+
+    function getOptimalCameraZ() {
+        if (!container || container.clientHeight === 0) return 10.4;
+        const aspect = container.clientWidth / container.clientHeight;
+        const fovRad = (camera.fov * Math.PI) / 180;
+        const tanHalfFov = Math.tan(fovRad / 2); // ~0.4142
+
+        // Farthest extent is Ring 3 (4.0) + badge radius (0.54) + safety margin = 4.8
+        const halfExtentX = 4.8;
+        const halfExtentY = 2.8;
+
+        const zFromWidth = halfExtentX / (tanHalfFov * aspect);
+        const zFromHeight = halfExtentY / tanHalfFov;
+
+        return Math.max(zFromWidth, zFromHeight, 10.2);
+    }
+
+    camera.position.z = getOptimalCameraZ();
+    camera.position.y = 0.15;
 
     const renderer = new THREE.WebGLRenderer({
         antialias: !isMobile,
@@ -154,7 +172,7 @@
     const systemGroup = new THREE.Group();
     scene.add(systemGroup);
 
-    // 1. Central Silicon CPU & Code Processor Monolith (Heroic 1.6 Scale)
+    // 1. Central Silicon CPU & Code Processor Monolith
     function createCpuTexture(dark) {
         const size = 256;
         const canvas = document.createElement('canvas');
@@ -203,12 +221,12 @@
         roughness: 0.3,
         metalness: 0.75
     });
-    const cpuGeo = new THREE.BoxGeometry(1.6, 1.6, 1.6);
+    const cpuGeo = new THREE.BoxGeometry(1.5, 1.5, 1.5);
     const cpuMesh = new THREE.Mesh(cpuGeo, cpuMat);
     systemGroup.add(cpuMesh);
 
     // Outer Faceted Crystal Wireframe Sphere Cage
-    const wireframeGeo = new THREE.IcosahedronGeometry(2.15, 1);
+    const wireframeGeo = new THREE.IcosahedronGeometry(2.05, 1);
     const wireframeMat = new THREE.MeshBasicMaterial({
         color: colors.wireframe,
         wireframe: true,
@@ -218,7 +236,7 @@
     const wireframeMesh = new THREE.Mesh(wireframeGeo, wireframeMat);
     systemGroup.add(wireframeMesh);
 
-    // 2. Orbital Tech Rings (Gentle incline: wide spread across horizontal space, low vertical reach)
+    // 2. Orbital Tech Rings (Radii 2.4, 3.2, 4.0 with gentle tilt to stay safely inside bounds)
     function createOrbitRing(radius, tube, rotX, rotY, color) {
         const ringGeo = new THREE.TorusGeometry(radius, tube, 16, 120);
         const ringMat = new THREE.MeshBasicMaterial({
@@ -232,10 +250,9 @@
         return ring;
     }
 
-    // Rings with gentle inclinations (22°-28° tilt) so they stay safely within vertical canvas
-    const ring1 = createOrbitRing(2.9, 0.02, Math.PI / 5.5, 0.18, colors.secondary);
-    const ring2 = createOrbitRing(3.85, 0.02, -Math.PI / 6.2, -0.22, colors.accent);
-    const ring3 = createOrbitRing(4.8, 0.018, Math.PI / 7.2, 0.32, colors.primary);
+    const ring1 = createOrbitRing(2.4, 0.018, Math.PI / 5.6, 0.18, colors.secondary);
+    const ring2 = createOrbitRing(3.2, 0.018, -Math.PI / 6.4, -0.22, colors.accent);
+    const ring3 = createOrbitRing(4.0, 0.016, Math.PI / 7.5, 0.30, colors.primary);
     systemGroup.add(ring1);
     systemGroup.add(ring2);
     systemGroup.add(ring3);
@@ -243,7 +260,7 @@
     // 3. Authentic Developer Technology Medallions (12 Official Stacks)
     // Strictly NO PURPLE, vibrant brand colors (Blues, Cyans, Emeralds, Golds, Coral Reds)
     const tokenData = [
-        // Ring 1: Inner Data & Systems Core (Radius = 2.9, Speed = +0.009)
+        // Ring 1: Inner Data & Systems Core (Radius = 2.4, Speed = +0.009)
         {
             name: 'PostgreSQL',
             symbol: 'SQL',
@@ -253,7 +270,7 @@
             brandHex: 0x38BDF8,
             bgTintDark: 'rgba(56, 189, 248, 0.18)',
             bgTintLight: 'rgba(56, 189, 248, 0.14)',
-            radius: 2.9,
+            radius: 2.4,
             speed: 0.009,
             offset: 0,
             url: '#tracksGrid'
@@ -267,7 +284,7 @@
             brandHex: 0x3178C6,
             bgTintDark: 'rgba(49, 120, 198, 0.18)',
             bgTintLight: 'rgba(49, 120, 198, 0.14)',
-            radius: 2.9,
+            radius: 2.4,
             speed: 0.009,
             offset: Math.PI / 2,
             url: 'tracks/04_data_structures_algorithms/01_linear_ds_arrays_lists.html'
@@ -281,7 +298,7 @@
             brandHex: 0xEF4444,
             bgTintDark: 'rgba(239, 68, 68, 0.18)',
             bgTintLight: 'rgba(239, 68, 68, 0.14)',
-            radius: 2.9,
+            radius: 2.4,
             speed: 0.009,
             offset: Math.PI,
             url: '#tracksGrid'
@@ -295,13 +312,13 @@
             brandHex: 0xDC2626,
             bgTintDark: 'rgba(220, 38, 38, 0.18)',
             bgTintLight: 'rgba(220, 38, 38, 0.14)',
-            radius: 2.9,
+            radius: 2.4,
             speed: 0.009,
             offset: (3 * Math.PI) / 2,
             url: 'database/schema.sql'
         },
 
-        // Ring 2: Middle Runtimes, Languages & OS Architecture (Radius = 3.85, Speed = -0.0075)
+        // Ring 2: Middle Runtimes, Languages & OS Architecture (Radius = 3.2, Speed = -0.0075)
         {
             name: 'JavaScript',
             symbol: 'JS',
@@ -311,7 +328,7 @@
             brandHex: 0xEAB308,
             bgTintDark: 'rgba(234, 179, 8, 0.18)',
             bgTintLight: 'rgba(234, 179, 8, 0.14)',
-            radius: 3.85,
+            radius: 3.2,
             speed: -0.0075,
             offset: Math.PI / 4,
             url: 'tracks/07_runtimes_memory/01_v8_event_loop.html'
@@ -325,7 +342,7 @@
             brandHex: 0x3B82F6,
             bgTintDark: 'rgba(59, 130, 246, 0.18)',
             bgTintLight: 'rgba(59, 130, 246, 0.14)',
-            radius: 3.85,
+            radius: 3.2,
             speed: -0.0075,
             offset: (3 * Math.PI) / 4,
             url: '#tracksGrid'
@@ -339,7 +356,7 @@
             brandHex: 0x0284C7,
             bgTintDark: 'rgba(2, 132, 199, 0.18)',
             bgTintLight: 'rgba(2, 132, 199, 0.14)',
-            radius: 3.85,
+            radius: 3.2,
             speed: -0.0075,
             offset: (5 * Math.PI) / 4,
             url: 'tracks/02_system_design/01_scalability_patterns.html'
@@ -353,13 +370,13 @@
             brandHex: 0x10B981,
             bgTintDark: 'rgba(16, 185, 129, 0.18)',
             bgTintLight: 'rgba(16, 185, 129, 0.14)',
-            radius: 3.85,
+            radius: 3.2,
             speed: -0.0075,
             offset: (7 * Math.PI) / 4,
             url: 'tracks/03_network_protocols/01_osi_tcp_udp.html'
         },
 
-        // Ring 3: Outer Distributed Networks & Cloud (Radius = 4.8, Speed = +0.0055)
+        // Ring 3: Outer Distributed Networks & Cloud (Radius = 4.0, Speed = +0.0055)
         {
             name: 'Golang',
             symbol: 'GO',
@@ -369,7 +386,7 @@
             brandHex: 0x00ADD8,
             bgTintDark: 'rgba(0, 173, 216, 0.18)',
             bgTintLight: 'rgba(0, 173, 216, 0.14)',
-            radius: 4.8,
+            radius: 4.0,
             speed: 0.0055,
             offset: Math.PI / 6,
             url: '#tracksGrid'
@@ -383,7 +400,7 @@
             brandHex: 0x2563EB,
             bgTintDark: 'rgba(37, 99, 235, 0.18)',
             bgTintLight: 'rgba(37, 99, 235, 0.14)',
-            radius: 4.8,
+            radius: 4.0,
             speed: 0.0055,
             offset: (2 * Math.PI) / 3,
             url: '#tracksGrid'
@@ -397,7 +414,7 @@
             brandHex: 0x06B6D4,
             bgTintDark: 'rgba(6, 182, 212, 0.18)',
             bgTintLight: 'rgba(6, 182, 212, 0.14)',
-            radius: 4.8,
+            radius: 4.0,
             speed: 0.0055,
             offset: (7 * Math.PI) / 6,
             url: 'tracks/02_frontend/01_rendering_pipeline.html'
@@ -411,7 +428,7 @@
             brandHex: 0x22C55E,
             bgTintDark: 'rgba(34, 197, 94, 0.18)',
             bgTintLight: 'rgba(34, 197, 94, 0.14)',
-            radius: 4.8,
+            radius: 4.0,
             speed: 0.0055,
             offset: (5 * Math.PI) / 3,
             url: 'tracks/07_runtimes_memory/01_v8_event_loop.html'
@@ -459,7 +476,7 @@
         // Fills the circular coin prominently (~75% inner diameter)
         const iconImg = loadedIcons[token.iconKey];
         if (iconImg && iconImg.complete && iconImg.naturalWidth !== 0) {
-            const iconSize = 166;
+            const iconSize = 165;
             ctx.drawImage(
                 iconImg,
                 center - iconSize / 2,
@@ -497,9 +514,9 @@
             const innerRotator = new THREE.Group();
             tokenGroup.add(innerRotator);
 
-            // Bold, prominent medallion radius (0.64 scale)
-            const badgeRadius = 0.64;
-            const badgeDepth = 0.09;
+            // Balanced, prominent medallion radius (0.54 scale)
+            const badgeRadius = 0.54;
+            const badgeDepth = 0.08;
 
             const badgeTex = createTechBadgeTexture(token, dark);
 
@@ -538,12 +555,12 @@
             innerRotator.add(rimMesh);
 
             // Colored Glowing Aura Halo Ring
-            const auraGeo = new THREE.RingGeometry(badgeRadius + 0.02, badgeRadius + 0.08, 36);
+            const auraGeo = new THREE.RingGeometry(badgeRadius + 0.02, badgeRadius + 0.07, 36);
             const auraMat = new THREE.MeshBasicMaterial({
                 color: token.brandHex,
                 side: THREE.DoubleSide,
                 transparent: true,
-                opacity: 0.6
+                opacity: 0.55
             });
             const auraMesh = new THREE.Mesh(auraGeo, auraMat);
             innerRotator.add(auraMesh);
@@ -603,7 +620,7 @@
 
     codeSnippets.forEach((snippet, idx) => {
         const pillGroup = new THREE.Group();
-        const pillGeo = new THREE.PlaneGeometry(1.1, 0.28);
+        const pillGeo = new THREE.PlaneGeometry(1.05, 0.26);
         const pillTex = createCodePillTexture(snippet, isDark());
         const pillMat = new THREE.MeshBasicMaterial({
             map: pillTex,
@@ -617,10 +634,10 @@
 
         floatingCodeNodes.push({
             group: pillGroup,
-            radius: 2.1 + (idx % 3) * 0.35,
+            radius: 1.8 + (idx % 3) * 0.3,
             speed: 0.007 * (idx % 2 === 0 ? 1 : -1),
             angle: (idx * Math.PI) / 4,
-            yOffset: ((idx - 3.5) * 0.3)
+            yOffset: ((idx - 3.5) * 0.28)
         });
     });
 
@@ -755,7 +772,7 @@
         if (width === 0 || height === 0) return;
 
         camera.aspect = width / height;
-        camera.position.z = window.innerWidth <= 768 ? 11.5 : 9.2;
+        camera.position.z = getOptimalCameraZ();
         camera.updateProjectionMatrix();
         renderer.setSize(width, height);
     }
@@ -851,7 +868,7 @@
             const r = token.data.radius;
             token.group.position.x = Math.cos(token.angle) * r;
             token.group.position.z = Math.sin(token.angle) * r;
-            token.group.position.y = Math.sin(token.angle * 2 + time * 0.8) * 0.22;
+            token.group.position.y = Math.sin(token.angle * 2 + time * 0.8) * 0.20;
 
             // Scale lerp for hover
             const curScale = token.group.scale.x;
