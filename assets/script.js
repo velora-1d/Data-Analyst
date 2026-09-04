@@ -306,9 +306,10 @@ function initSupabaseERDCanvas() {
         });
     }
 
-    // Initial render & resize handler
+    // Initial render, resize & canvas scroll handler
     setTimeout(renderConnections, 200);
     window.addEventListener('resize', renderConnections);
+    canvas.addEventListener('scroll', renderConnections, { passive: true });
 }
 
 // ============================================================
