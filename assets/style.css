@@ -1852,7 +1852,7 @@ blockquote strong {
     transition: box-shadow var(--t), border-color var(--t);
     position: relative;
     user-select: none;
-    touch-action: none;
+    touch-action: pan-x pan-y;
 }
 .s-node:hover {
     box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.2);
@@ -1875,6 +1875,7 @@ blockquote strong {
     justify-content: space-between;
     border-bottom: 1px solid #1E293B;
     cursor: grab;
+    touch-action: none;
 }
 .s-node-header:active {
     cursor: grabbing;
