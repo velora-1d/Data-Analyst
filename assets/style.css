@@ -3371,4 +3371,78 @@ pre.is-panning {
     margin: 1rem 0;
 }
 
+/* ============================================================
+   26. JAVASCRIPT EVENT LOOP & RESPONSIVE LOOP-TRACK DIAGRAM
+   ============================================================ */
+.event-loop-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.loop-track {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 1rem;
+    margin: 1.25rem 0;
+    overflow-x: auto;
+}
+
+.loop-node {
+    padding: 10px 14px;
+    border-radius: var(--r-sm);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.node-stack  { background: rgba(37, 99, 235, 0.15); color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.4); }
+.node-micro  { background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.4); }
+.node-raf    { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.4); }
+.node-render { background: rgba(239, 68, 68, 0.15); color: #F87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+.node-macro  { background: rgba(148, 163, 184, 0.15); color: #CBD5E1; border: 1px solid rgba(148, 163, 184, 0.4); }
+
+[data-theme="light"] .node-stack  { background: #EFF6FF; color: #1D4ED8; border-color: #BFDBFE; }
+[data-theme="light"] .node-micro  { background: #ECFDF5; color: #047857; border-color: #A7F3D0; }
+[data-theme="light"] .node-raf    { background: #FFFBEB; color: #B45309; border-color: #FDE68A; }
+[data-theme="light"] .node-render { background: #FEF2F2; color: #B91C1C; border-color: #FECACA; }
+[data-theme="light"] .node-macro  { background: #F1F5F9; color: #334155; border-color: #CBD5E1; }
+
+@media (max-width: 768px) {
+    .event-loop-box {
+        padding: 1rem;
+        margin: 1.25rem 0;
+    }
+    .loop-track {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 12px 10px;
+        overflow-x: visible;
+    }
+    .loop-node {
+        width: 100%;
+        white-space: normal;
+        padding: 10px 12px;
+        font-size: 0.85rem;
+        text-align: center;
+    }
+    .loop-track > i.fa-arrow-right {
+        transform: rotate(90deg);
+        align-self: center;
+        margin: 2px 0;
+        font-size: 0.8rem;
+    }
+}
+
 
