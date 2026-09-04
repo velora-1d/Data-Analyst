@@ -442,12 +442,33 @@
         }
 
         @media (max-width: 768px) {
-            .portal-hero h1 { font-size: 2.1rem; }
+            .portal-hero h1 { font-size: 2rem; }
             .portal-stats { grid-template-columns: 1fr 1fr; }
             .tracks-grid { grid-template-columns: 1fr; }
             .portal-controls { flex-direction: column; align-items: stretch; }
             .portal-controls-wrapper { padding: 0 1rem; }
             .portal-content-container { padding: 0 1rem 48px; }
+            .portal-search-box { min-width: 100%; }
+        }
+
+        @media (max-width: 480px) {
+            .portal-hero { padding: 3rem 1rem 2rem; }
+            .portal-hero h1 { font-size: 1.65rem; line-height: 1.25; }
+            .portal-hero p { font-size: 0.92rem; margin-bottom: 20px; }
+            .hero-actions { flex-direction: column; width: 100%; }
+            .hero-actions .btn { width: 100%; justify-content: center; min-height: 44px; }
+            .portal-stats { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .portal-stat-card { padding: 12px 8px; }
+            .portal-stat-num { font-size: 1.4rem; }
+            .portal-stat-lbl { font-size: 0.68rem; }
+            .portal-tab-btn { padding: 6px 11px; font-size: 0.78rem; flex-grow: 1; text-align: center; }
+            .track-card { padding: 1.25rem 1rem; }
+            .track-title { font-size: 1.15rem; }
+            .track-desc { font-size: 0.88rem; }
+            .track-footer { flex-direction: column; align-items: stretch; gap: 10px; }
+            .track-action-btn { width: 100%; justify-content: center; min-height: 42px; }
+            .section-header-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .section-header-title { font-size: 1.22rem; }
         }
     </style>
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=2.5.0">
