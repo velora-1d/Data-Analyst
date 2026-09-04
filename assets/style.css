@@ -230,8 +230,13 @@ a:hover {
 }
 
 ::selection {
-    background: var(--brand-subtle);
-    color: var(--text-primary);
+    background: rgba(37, 99, 235, 0.35);
+    color: #FFFFFF;
+}
+
+:focus-visible {
+    outline: 2px solid var(--brand-light);
+    outline-offset: 2px;
 }
 
 /* --- 3. Header Navbar --- */
@@ -958,14 +963,16 @@ pre code,
     gap: 0.5rem;
 }
 
-/* --- 11. Callouts --- */
+/* --- 11. Callouts (Impeccable Unified Border Architecture) --- */
 .callout {
     display: flex;
     gap: 1rem;
     padding: 1.125rem 1.25rem;
     border-radius: var(--r);
     margin: 1.5rem 0;
-    border-left: 4px solid;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    transition: border-color var(--t), background var(--t);
 }
 .callout > i {
     flex-shrink: 0;
@@ -986,19 +993,19 @@ pre code,
     font-weight: 800;
 }
 
-.callout.info    { background: var(--info-bg); border-color: var(--info); }
+.callout.info    { background: var(--info-bg); border-color: var(--info-border); }
 .callout.info    > i, .callout.info strong { color: var(--info); }
 .callout.info    .callout-body p { color: var(--text-secondary); }
 
-.callout.warning { background: var(--warning-bg); border-color: var(--warning); }
+.callout.warning { background: var(--warning-bg); border-color: var(--warning-border); }
 .callout.warning > i, .callout.warning strong { color: var(--warning); }
 .callout.warning .callout-body p { color: var(--text-secondary); }
 
-.callout.success { background: var(--success-bg); border-color: var(--success); }
+.callout.success { background: var(--success-bg); border-color: var(--success-border); }
 .callout.success > i, .callout.success strong { color: var(--success); }
 .callout.success .callout-body p { color: var(--text-secondary); }
 
-.callout.danger  { background: var(--danger-bg); border-color: var(--danger); }
+.callout.danger  { background: var(--danger-bg); border-color: var(--danger-border); }
 .callout.danger  > i, .callout.danger strong { color: var(--danger); }
 .callout.danger  .callout-body p { color: var(--text-secondary); }
 
@@ -1049,12 +1056,13 @@ pre code,
 }
 
 blockquote {
-    border-left: 4px solid var(--brand);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--brand);
     padding: 1rem 1.25rem;
     background: var(--bg-surface-2);
     font-style: italic;
     margin: 1.5rem 0;
-    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    border-radius: var(--r-sm);
     color: var(--text-secondary);
     line-height: 1.75;
 }
@@ -1913,7 +1921,6 @@ pre.is-panning {
 .explain-box {
     background: var(--bg-surface-2);
     border: 1px solid var(--border);
-    border-left: 4px solid var(--brand);
     border-radius: var(--r);
     padding: 1.25rem 1.5rem;
     margin: 1.5rem 0;
@@ -1922,9 +1929,8 @@ pre.is-panning {
 }
 
 .explain-box.purpose {
-    border-left-color: #0284C7;
     background: rgba(14, 165, 233, 0.08);
-    border-color: rgba(14, 165, 233, 0.25);
+    border-color: rgba(14, 165, 233, 0.3);
 }
 .explain-box.purpose .explain-title {
     color: #0284C7;
@@ -2820,7 +2826,6 @@ pre.is-panning {
 .callout-production {
     border-color: rgba(239, 68, 68, 0.4);
     background: rgba(239, 68, 68, 0.05);
-    border-left: 4px solid var(--danger);
 }
 .callout-production .callout-header {
     color: #DC2626;
@@ -2830,7 +2835,6 @@ pre.is-panning {
 .callout-tradeoff {
     border-color: rgba(37, 99, 235, 0.4);
     background: rgba(37, 99, 235, 0.05);
-    border-left: 4px solid var(--brand);
 }
 .callout-tradeoff .callout-header {
     color: #1D4ED8;
@@ -2841,7 +2845,6 @@ pre.is-panning {
 .callout-box.callout-warn {
     border-color: rgba(245, 158, 11, 0.4);
     background: rgba(245, 158, 11, 0.05);
-    border-left: 4px solid var(--warning);
 }
 .callout-pitfall .callout-header,
 .callout-box.callout-warn .callout-header {
@@ -2852,7 +2855,6 @@ pre.is-panning {
 .callout-deepdive {
     border-color: rgba(59, 130, 246, 0.4);
     background: rgba(59, 130, 246, 0.06);
-    border-left: 4px solid #3B82F6;
 }
 .callout-deepdive .callout-header {
     color: #1D4ED8;
@@ -2863,7 +2865,6 @@ pre.is-panning {
 .callout-box.callout-good {
     border-color: rgba(16, 185, 129, 0.4);
     background: rgba(16, 185, 129, 0.05);
-    border-left: 4px solid var(--success);
 }
 .callout-dod .callout-header,
 .callout-box.callout-good .callout-header {
@@ -3103,7 +3104,6 @@ pre.is-panning {
 .page-track-scope-banner {
     background: var(--bg-surface);
     border: 1px solid var(--border);
-    border-left: 4px solid var(--brand);
     border-radius: var(--r);
     padding: 1.15rem 1.4rem;
     margin-bottom: 1.75rem;
