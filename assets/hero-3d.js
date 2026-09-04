@@ -1,5 +1,5 @@
 /**
- * Fundamental Coding - Interactive 3D Architecture Core
+ * Fundamental Coding - Interactive 3D Architecture Core with Coding Tech Badges
  * Built with Three.js (r128) - Lightweight, High-Performance, Mobile-Optimized
  * UI/UX Pro Max & Impeccable Design Guidelines Compliant
  */
@@ -24,11 +24,40 @@
         container.innerHTML = `
             <div class="hero-3d-fallback">
                 <div class="fallback-cube">
-                    <i class="fa-solid fa-cube"></i>
+                    <i class="fa-solid fa-code"></i>
                 </div>
             </div>
         `;
         return;
+    }
+
+    // Add Interactive Tooltip Element inside container
+    let tooltip = container.querySelector('.hero-3d-hover-tooltip');
+    if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.className = 'hero-3d-hover-tooltip';
+        tooltip.style.cssText = `
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(15, 23, 42, 0.92);
+            color: #FFFFFF;
+            border: 1px solid rgba(96, 165, 250, 0.4);
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+        `;
+        container.appendChild(tooltip);
     }
 
     // Scene Setup
@@ -55,32 +84,33 @@
     const getColors = () => {
         const dark = isDark();
         return {
-            primary: dark ? 0x3B82F6 : 0x2563EB,    // Vibrant Blue
-            secondary: dark ? 0x60A5FA : 0x1D4ED8,  // Soft Sky / Deep Navy
-            accent: dark ? 0x38BDF8 : 0x0284C7,     // Cyan / Sky
-            core: dark ? 0x1E40AF : 0x3B82F6,       // Core Solid
-            wireframe: dark ? 0x93C5FD : 0x1E3A8A,  // Wireframe highlight
-            points: dark ? 0x93C5FD : 0x3B82F6,     // Starfield
+            primary: dark ? 0x3B82F6 : 0x2563EB,
+            secondary: dark ? 0x60A5FA : 0x1D4ED8,
+            accent: dark ? 0x38BDF8 : 0x0284C7,
+            core: dark ? 0x1E40AF : 0x3B82F6,
+            wireframe: dark ? 0x93C5FD : 0x1E3A8A,
+            points: dark ? 0x93C5FD : 0x3B82F6,
             ambient: dark ? 0x334155 : 0x94A3B8,
-            light: dark ? 0xFFFFFF : 0xE2E8F0
+            light: dark ? 0xFFFFFF : 0xE2E8F0,
+            tokenEdge: dark ? 0x1E293B : 0xCBD5E1
         };
     };
 
     let colors = getColors();
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(colors.ambient, 1.8);
+    const ambientLight = new THREE.AmbientLight(colors.ambient, 2.0);
     scene.add(ambientLight);
 
-    const mainLight = new THREE.DirectionalLight(0x60A5FA, 2.5);
-    mainLight.position.set(5, 8, 5);
+    const mainLight = new THREE.DirectionalLight(0x60A5FA, 2.6);
+    mainLight.position.set(6, 8, 6);
     scene.add(mainLight);
 
-    const rimLight = new THREE.DirectionalLight(0x38BDF8, 2.0);
+    const rimLight = new THREE.DirectionalLight(0x38BDF8, 2.2);
     rimLight.position.set(-6, -4, -4);
     scene.add(rimLight);
 
-    const pointLight = new THREE.PointLight(0x3B82F6, 3, 15);
+    const pointLight = new THREE.PointLight(0x3B82F6, 3.5, 16);
     pointLight.position.set(0, 0, 0);
     scene.add(pointLight);
 
@@ -116,14 +146,14 @@
     const innerMat = new THREE.MeshBasicMaterial({
         color: colors.accent,
         transparent: true,
-        opacity: 0.6
+        opacity: 0.65
     });
     const innerMesh = new THREE.Mesh(innerGeo, innerMat);
     systemGroup.add(innerMesh);
 
     // 2. Orbital Tech Rings
     function createOrbitRing(radius, tube, rotX, rotY, color) {
-        const ringGeo = new THREE.TorusGeometry(radius, tube, 16, 90);
+        const ringGeo = new THREE.TorusGeometry(radius, tube, 16, 100);
         const ringMat = new THREE.MeshBasicMaterial({
             color: color,
             transparent: true,
@@ -136,56 +166,201 @@
         return ring;
     }
 
-    const ring1 = createOrbitRing(3.2, 0.02, Math.PI / 3, 0.3, colors.secondary);
-    const ring2 = createOrbitRing(3.8, 0.02, -Math.PI / 3.5, -0.4, colors.accent);
-    const ring3 = createOrbitRing(4.5, 0.015, Math.PI / 2.2, 0.8, colors.primary);
+    const ring1 = createOrbitRing(3.3, 0.02, Math.PI / 3, 0.3, colors.secondary);
+    const ring2 = createOrbitRing(3.9, 0.02, -Math.PI / 3.5, -0.4, colors.accent);
+    const ring3 = createOrbitRing(4.6, 0.015, Math.PI / 2.2, 0.8, colors.primary);
     systemGroup.add(ring1);
     systemGroup.add(ring2);
     systemGroup.add(ring3);
 
-    // 3. Orbiting Satellite System Nodes (Representing Architectural Pillars)
-    const satelliteNodes = [];
-    const nodeData = [
-        { label: 'Database & SQL', color: 0x3B82F6, radius: 3.2, speed: 0.012, offset: 0 },
-        { label: 'Network & HTTP', color: 0x38BDF8, radius: 3.8, speed: -0.010, offset: Math.PI / 3 },
-        { label: 'Runtime & Memory', color: 0x60A5FA, radius: 3.2, speed: 0.012, offset: (2 * Math.PI) / 3 },
-        { label: 'Clean Code & Patterns', color: 0x2563EB, radius: 4.5, speed: -0.008, offset: Math.PI },
-        { label: 'Mobile Architecture', color: 0x38BDF8, radius: 3.8, speed: -0.010, offset: (4 * Math.PI) / 3 },
-        { label: 'UI/UX & Design Systems', color: 0x93C5FD, radius: 4.5, speed: -0.008, offset: (5 * Math.PI) / 3 }
+    // 3. High-DPI Vector Canvas Texture Generator for Coding Badges
+    function createTechBadgeTexture(symbol, label, colorHexStr, dark) {
+        const size = 256;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        const center = size / 2;
+        const radius = size * 0.45;
+
+        // Circular background disc
+        ctx.beginPath();
+        ctx.arc(center, center, radius, 0, Math.PI * 2);
+        ctx.fillStyle = dark ? '#0F172A' : '#FFFFFF';
+        ctx.fill();
+
+        // Accent outer border ring
+        ctx.lineWidth = 10;
+        const grad = ctx.createLinearGradient(0, 0, size, size);
+        grad.addColorStop(0, colorHexStr);
+        grad.addColorStop(1, '#1D4ED8');
+        ctx.strokeStyle = grad;
+        ctx.stroke();
+
+        // Subtle inner tinted circle
+        ctx.beginPath();
+        ctx.arc(center, center, radius - 7, 0, Math.PI * 2);
+        ctx.fillStyle = dark ? 'rgba(30, 58, 138, 0.4)' : 'rgba(239, 246, 255, 0.7)';
+        ctx.fill();
+
+        // Main Coding Symbol / Glif
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = '900 68px "JetBrains Mono", monospace';
+        ctx.fillStyle = colorHexStr;
+        ctx.fillText(symbol, center, center - 16);
+
+        // Subtext Label (Category)
+        ctx.font = 'bold 22px "Inter", sans-serif';
+        ctx.fillStyle = dark ? '#E2E8F0' : '#1E293B';
+        ctx.fillText(label, center, center + 46);
+
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.generateMipmaps = true;
+        texture.minFilter = THREE.LinearMipmapLinearFilter;
+        return texture;
+    }
+
+    // 4. 3D Floating Coding & Tech Tokens (Replacing Generic Cubes)
+    const tokenData = [
+        {
+            symbol: 'SQL',
+            label: 'DATABASE',
+            fullName: 'Track 01: Database & SQL Internals',
+            colorHexStr: '#38BDF8',
+            colorHex: 0x38BDF8,
+            radius: 3.3,
+            speed: 0.012,
+            offset: 0,
+            url: '#tracksGrid'
+        },
+        {
+            symbol: '</>',
+            label: 'FRONTEND',
+            fullName: 'Track 02: Browser Rendering Pipeline',
+            colorHexStr: '#60A5FA',
+            colorHex: 0x60A5FA,
+            radius: 3.9,
+            speed: -0.010,
+            offset: Math.PI / 3,
+            url: 'tracks/02_frontend/01_rendering_pipeline.html'
+        },
+        {
+            symbol: '{ ; }',
+            label: 'RUNTIME',
+            fullName: 'Track 07: V8 Event Loop & Memory',
+            colorHexStr: '#3B82F6',
+            colorHex: 0x3B82F6,
+            radius: 3.3,
+            speed: 0.012,
+            offset: (2 * Math.PI) / 3,
+            url: 'tracks/07_runtimes_memory/01_v8_event_loop.html'
+        },
+        {
+            symbol: '⑂',
+            label: 'GIT DAG',
+            fullName: 'Track 08: Git Internals & Data Structures',
+            colorHexStr: '#93C5FD',
+            colorHex: 0x93C5FD,
+            radius: 4.6,
+            speed: -0.008,
+            offset: Math.PI,
+            url: 'tracks/07_runtimes_memory/03_git_internals_advanced.html'
+        },
+        {
+            symbol: '❖',
+            label: 'SYSTEM ARCH',
+            fullName: 'Track 04: System Architecture & Scale',
+            colorHexStr: '#2563EB',
+            colorHex: 0x2563EB,
+            radius: 3.9,
+            speed: -0.010,
+            offset: (4 * Math.PI) / 3,
+            url: 'tracks/02_system_design/01_scalability_patterns.html'
+        },
+        {
+            symbol: '⊞',
+            label: 'UI/UX DESIGN',
+            fullName: 'Track 12: UI Anatomy & Design Tokens',
+            colorHexStr: '#38BDF8',
+            colorHex: 0x38BDF8,
+            radius: 4.6,
+            speed: -0.008,
+            offset: (5 * Math.PI) / 3,
+            url: 'tracks/11_ui_ux_design/01_ui_anatomy_tokens.html'
+        }
     ];
 
-    nodeData.forEach((data) => {
-        const satGroup = new THREE.Group();
-        const satGeo = new THREE.BoxGeometry(0.42, 0.42, 0.42);
-        const satMat = new THREE.MeshStandardMaterial({
-            color: data.color,
-            metalness: 0.6,
-            roughness: 0.3,
-            flatShading: true
+    const satelliteTokens = [];
+    const interactiveMeshes = [];
+
+    function buildTokens() {
+        // Clear previous if rebuilding
+        satelliteTokens.forEach(st => systemGroup.remove(st.group));
+        satelliteTokens.length = 0;
+        interactiveMeshes.length = 0;
+
+        const dark = isDark();
+
+        tokenData.forEach((data) => {
+            const tokenGroup = new THREE.Group();
+
+            // 3D Coin Cylinder Geometry: radiusTop, radiusBottom, height, radialSegments
+            const tokenRadius = 0.52;
+            const tokenHeight = 0.09;
+            const cylinderGeo = new THREE.CylinderGeometry(tokenRadius, tokenRadius, tokenHeight, 32);
+
+            // Textures for Front and Back Face
+            const badgeTexture = createTechBadgeTexture(data.symbol, data.label, data.colorHexStr, dark);
+
+            // Material Array: [sideEdge, topFace, bottomFace]
+            const edgeMat = new THREE.MeshStandardMaterial({
+                color: colors.tokenEdge,
+                metalness: 0.85,
+                roughness: 0.25
+            });
+
+            const faceMat = new THREE.MeshBasicMaterial({
+                map: badgeTexture,
+                transparent: true
+            });
+
+            const materials = [edgeMat, faceMat, faceMat];
+            const tokenMesh = new THREE.Mesh(cylinderGeo, materials);
+            tokenMesh.rotation.x = Math.PI / 2; // Face forward
+            tokenMesh.userData = { data: data };
+
+            // Outer Glowing Wire Ring
+            const ringGeo = new THREE.RingGeometry(tokenRadius + 0.02, tokenRadius + 0.05, 32);
+            const ringMat = new THREE.MeshBasicMaterial({
+                color: data.colorHex,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.55
+            });
+            const glowRing = new THREE.Mesh(ringGeo, ringMat);
+            glowRing.position.z = 0;
+
+            tokenGroup.add(tokenMesh);
+            tokenGroup.add(glowRing);
+            systemGroup.add(tokenGroup);
+
+            interactiveMeshes.push(tokenMesh);
+
+            satelliteTokens.push({
+                group: tokenGroup,
+                mesh: tokenMesh,
+                data: data,
+                angle: data.offset,
+                targetScale: 1
+            });
         });
-        const satMesh = new THREE.Mesh(satGeo, satMat);
+    }
 
-        const satWireGeo = new THREE.BoxGeometry(0.46, 0.46, 0.46);
-        const satWireMat = new THREE.MeshBasicMaterial({
-            color: 0xFFFFFF,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.3
-        });
-        const satWire = new THREE.Mesh(satWireGeo, satWireMat);
+    buildTokens();
 
-        satGroup.add(satMesh);
-        satGroup.add(satWire);
-        systemGroup.add(satGroup);
-
-        satelliteNodes.push({
-            group: satGroup,
-            data: data,
-            angle: data.offset
-        });
-    });
-
-    // 4. Subtle Ambient Particle Stars
+    // 5. Subtle Ambient Particle Stars
     const particleCount = isMobile ? 120 : 250;
     const particleGeo = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
@@ -207,13 +382,18 @@
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
-    // Interactive Mouse & Touch Dragging
+    // Interactive Mouse & Touch Dragging + Raycasting
+    const raycaster = new THREE.Raycaster();
+    const mouseNorm = new THREE.Vector2(-999, -999);
+
     let mouseX = 0;
     let mouseY = 0;
     let targetRotationX = 0;
     let targetRotationY = 0;
     let isDragging = false;
+    let hasDragged = false;
     let previousPointerPosition = { x: 0, y: 0 };
+    let hoveredToken = null;
 
     function onPointerMove(e) {
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -225,10 +405,16 @@
 
         mouseX = x;
         mouseY = y;
+        mouseNorm.x = x;
+        mouseNorm.y = y;
 
         if (isDragging) {
             const deltaX = clientX - previousPointerPosition.x;
             const deltaY = clientY - previousPointerPosition.y;
+
+            if (Math.abs(deltaX) > 2 || Math.abs(deltaY) > 2) {
+                hasDragged = true;
+            }
 
             targetRotationY += deltaX * 0.007;
             targetRotationX += deltaY * 0.007;
@@ -239,6 +425,7 @@
 
     container.addEventListener('mousedown', (e) => {
         isDragging = true;
+        hasDragged = false;
         previousPointerPosition = { x: e.clientX, y: e.clientY };
     });
 
@@ -248,12 +435,34 @@
     container.addEventListener('touchstart', (e) => {
         if (e.touches.length === 1) {
             isDragging = true;
+            hasDragged = false;
             previousPointerPosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
         }
     }, { passive: true });
 
     window.addEventListener('touchend', () => { isDragging = false; });
     container.addEventListener('touchmove', onPointerMove, { passive: true });
+
+    // Click on 3D Tech Token -> Navigate to Track
+    container.addEventListener('click', () => {
+        if (hasDragged) return; // Ignore drag release as click
+
+        raycaster.setFromCamera(mouseNorm, camera);
+        const intersects = raycaster.intersectObjects(interactiveMeshes);
+
+        if (intersects.length > 0) {
+            const hit = intersects[0].object;
+            const targetUrl = hit.userData.data.url;
+            if (targetUrl) {
+                if (targetUrl.startsWith('#')) {
+                    const targetEl = document.querySelector(targetUrl);
+                    if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    window.location.href = targetUrl;
+                }
+            }
+        }
+    });
 
     // Adaptive Theme Listener
     const themeObserver = new MutationObserver(() => {
@@ -266,7 +475,10 @@
         ring2.material.color.setHex(colors.accent);
         ring3.material.color.setHex(colors.primary);
         ambientLight.color.setHex(colors.ambient);
-        ambientLight.intensity = isDark() ? 1.8 : 2.5;
+        ambientLight.intensity = isDark() ? 2.0 : 2.6;
+
+        // Rebuild tokens with new light/dark background textures
+        buildTokens();
     });
 
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
@@ -301,10 +513,45 @@
     function animate() {
         requestAnimationFrame(animate);
 
-        if (!isVisible) return; // Save CPU & GPU when scrolled down
+        if (!isVisible) return;
 
         const delta = clock.getDelta();
         const time = clock.getElapsedTime();
+
+        // Raycasting Hover Detection
+        if (!isMobile) {
+            raycaster.setFromCamera(mouseNorm, camera);
+            const intersects = raycaster.intersectObjects(interactiveMeshes);
+
+            if (intersects.length > 0) {
+                const hit = intersects[0].object;
+                container.style.cursor = 'pointer';
+
+                satelliteTokens.forEach(st => {
+                    if (st.mesh === hit) {
+                        st.targetScale = 1.3;
+                        if (hoveredToken !== st) {
+                            hoveredToken = st;
+                            tooltip.innerHTML = `<i class="fa-solid fa-code"></i> ${st.data.fullName} &rarr;`;
+                            tooltip.style.opacity = '1';
+                            tooltip.style.transform = 'translateX(-50%) translateY(0px)';
+                        }
+                    } else {
+                        st.targetScale = 0.95;
+                    }
+                });
+            } else {
+                if (container.style.cursor === 'pointer') {
+                    container.style.cursor = 'grab';
+                }
+                satelliteTokens.forEach(st => { st.targetScale = 1; });
+                if (hoveredToken) {
+                    hoveredToken = null;
+                    tooltip.style.opacity = '0';
+                    tooltip.style.transform = 'translateX(-50%) translateY(10px)';
+                }
+            }
+        }
 
         // Smooth Lerp for Drag and Mouse Parallax
         systemGroup.rotation.y += (targetRotationY + mouseX * 0.35 - systemGroup.rotation.y) * 0.04;
@@ -329,16 +576,23 @@
         ring2.rotation.z -= 0.005;
         ring3.rotation.z += 0.003;
 
-        // Update Satellites
-        satelliteNodes.forEach((node) => {
-            node.angle += node.data.speed;
-            const r = node.data.radius;
-            node.group.position.x = Math.cos(node.angle) * r;
-            node.group.position.z = Math.sin(node.angle) * r;
-            node.group.position.y = Math.sin(node.angle * 2 + time) * 0.45;
+        // Update 3D Coding Tokens
+        satelliteTokens.forEach((token) => {
+            token.angle += token.data.speed;
+            const r = token.data.radius;
+            token.group.position.x = Math.cos(token.angle) * r;
+            token.group.position.z = Math.sin(token.angle) * r;
+            token.group.position.y = Math.sin(token.angle * 2 + time) * 0.45;
 
-            node.group.rotation.x += 0.02;
-            node.group.rotation.y += 0.02;
+            // Smooth scale lerp for hover
+            const curScale = token.group.scale.x;
+            const nextScale = curScale + (token.targetScale - curScale) * 0.15;
+            token.group.scale.set(nextScale, nextScale, nextScale);
+
+            // Orient Token to smoothly face camera so code icons remain legible
+            token.group.quaternion.copy(camera.quaternion);
+            // Add subtle floating wobbling tilt
+            token.group.rotation.z = Math.sin(time * 2 + token.angle) * 0.12;
         });
 
         // Drift Particles
