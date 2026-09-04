@@ -2491,13 +2491,34 @@ blockquote strong {
         font-size: 0.82rem;
     }
     /* Auto-scroll table fallback for mobile */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 1.25rem 0;
+        border-radius: var(--r);
+    }
+    .table-responsive .compare-table,
+    .table-responsive .hex-table {
+        min-width: 580px;
+        margin: 0;
+    }
     .compare-table,
     .hex-table {
         display: block;
+        width: 100%;
         max-width: 100%;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         border-radius: var(--r);
+    }
+    .compare-table thead,
+    .hex-table thead {
+        white-space: nowrap;
+    }
+    .compare-table td,
+    .hex-table td {
+        min-width: 120px;
     }
     .code-block pre,
     pre {

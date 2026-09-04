@@ -557,6 +557,19 @@ function injectPageTrackBanner(track) {
     }
 }
 
+// Auto-wrap tables with .table-responsive for flawless mobile touch-scrolling
+function initResponsiveTables() {
+    const tables = document.querySelectorAll('table.compare-table, table.hex-table');
+    tables.forEach(tbl => {
+        if (!tbl.parentElement.classList.contains('table-responsive')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'table-responsive';
+            tbl.parentNode.insertBefore(wrapper, tbl);
+            wrapper.appendChild(tbl);
+        }
+    });
+}
+
 // --- Page Lifecycle Re-initialization ---
 function reinitPage() {
     setTheme(getTheme());
@@ -572,6 +585,7 @@ function reinitPage() {
     initFavicon();
     initDynamicMultiTrackSidebar();
     initSupabaseERDCanvas();
+    initResponsiveTables();
 }
 
 // Initial boot

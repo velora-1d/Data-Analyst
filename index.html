@@ -946,25 +946,18 @@
 
     </div>
 
-    <!-- Section Struktur Database -->
-    <div id="struktur-database" class="db-section" style="margin-top: 50px;">
-        <h2><i class="fa-solid fa-folder-tree" style="color:var(--brand)"></i> Struktur File Database &amp; Query</h2>
-        <div class="schema-box">
-<pre><code>📁 Folder Database &amp; Query:
-├── 📂 database/
-│   ├── 🗄️ ecommerce.db        &lt;-- FILE DATABASE UTAMA (Buka file ini di DB Browser for SQLite / DBeaver!)
-│   └── 📄 schema.sql           &lt;-- DDL Skema 20 Tabel (Standar Industri: VARCHAR, CHAR, BIGINT)
-├── 📂 sql/
-│   ├── 📄 semua_query_latihan.sql &lt;-- 1 File Lengkap Berisi Semua Query Modul 1 s/d 7
-│   ├── 📄 01_tipe_data.sql s/d 07_analisis_nyata.sql
-└── 📂 modul/ (7 Modul Interaktif HTML Semantik Murni)</code></pre>
-        </div>
-
-        <!-- Tombol Unduh Beranda -->
-        <div class="db-download-actions">
-            <a href="database/ecommerce.db" download class="btn-db-download"><i class="fa-solid fa-database"></i> Unduh File Database (ecommerce.db)</a>
-            <a href="database/schema.sql" download class="btn-sql-download"><i class="fa-solid fa-file-code"></i> Unduh Skema DDL (schema.sql)</a>
-            <a href="sql/semua_query_latihan.sql" download class="btn-sql-download"><i class="fa-solid fa-box-archive"></i> Unduh Semua Query (semua_query_latihan.sql)</a>
+    <!-- Section Unduh Aset & Database Pendukung -->
+    <div id="unduh-aset" class="db-section" style="margin-top: 40px; text-align: center;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 24px;">
+            <a href="database/ecommerce.db" download class="btn btn-primary">
+                <i class="fa-solid fa-database"></i> Unduh Database (ecommerce.db)
+            </a>
+            <a href="database/schema.sql" download class="btn btn-secondary">
+                <i class="fa-solid fa-file-code"></i> Unduh Skema DDL (schema.sql)
+            </a>
+            <a href="sql/semua_query_latihan.sql" download class="btn btn-secondary">
+                <i class="fa-solid fa-box-archive"></i> Unduh Semua Query SQL
+            </a>
         </div>
     </div>
 
