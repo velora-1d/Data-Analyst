@@ -261,7 +261,7 @@ if (count &gt; 10) {
                         • Gunakan <strong>TanStack Query (React Query / SWR)</strong>.<br>
                         • <strong>Stale-While-Revalidate:</strong> Tampilkan data cache instan, perbarui di latar belakang.<br>
                         • <strong>Query Deduplication:</strong> 5 komponen meminta user yang sama &rarr; hanya 1 network request!<br>
-                        • Auto-refetch saat window kembali aktif (*window focus refetching*).
+                        • Auto-refetch saat window kembali aktif (<em>window focus refetching</em>).
                     </div>
                 </div>
             </div>
@@ -333,7 +333,7 @@ state.jumlah = 4; // Output: Total Belanja Terkalkulasi: 200000</code></pre>
                 <div class="callout-body">
                     Sebuah perusahaan marketplace menerapkan Server-Side Rendering (SSR) React penuh untuk halaman produk mereka. Meskipun HTML pertama kali muncul dengan cepat, pengguna di HP Android murah mengeluh bahwa tombol "Beli Sekarang" <strong>tidak bisa diklik selama 8 detik pertama</strong>!
                     <br><br>
-                    <strong>Penyebab (The Hydration Trap):</strong> Browser menerima 1.8 MB bundle JavaScript React. Sebelum pengguna bisa berinteraksi, React harus mem-parse seluruh script, membangun ulang pohon Virtual DOM di client, dan mencocokkannya dengan HTML dari server (*Full Page Hydration*). Main thread CPU terkunci 100% (High Total Blocking Time - TBT).
+                    <strong>Penyebab (The Hydration Trap):</strong> Browser menerima 1.8 MB bundle JavaScript React. Sebelum pengguna bisa berinteraksi, React harus mem-parse seluruh script, membangun ulang pohon Virtual DOM di client, dan mencocokkannya dengan HTML dari server (<em>Full Page Hydration</em>). Main thread CPU terkunci 100% (High Total Blocking Time - TBT).
                     <br><br>
                     <strong>Solusi:</strong> Mengadopsi <strong>Islands Architecture (Astro / Qwik)</strong>. Bagian header, deskripsi produk, ulasan, dan footer disajikan sebagai <em>Zero-JS HTML</em> murni. Hanya tombol "Beli Sekarang" yang dimuat sebagai pulau JavaScript interaktif (~8KB), memangkas waktu TBT dari 8 detik menjadi <strong>0.1 detik</strong>!
                 </div>

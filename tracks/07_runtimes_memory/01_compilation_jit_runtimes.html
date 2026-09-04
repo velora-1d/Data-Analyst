@@ -164,7 +164,7 @@
                         <td><strong>JIT (Just-In-Time)</strong></td>
                         <td>JavaScript (V8), Java (JVM), C# (.NET CLR)</td>
                         <td>Kombinasi: Mulai dari Interpreter, lalu fungsi yang sering dipanggil dikompilasi ke Native Machine Code saat runtime!</td>
-                        <td><strong>Keseimbangan emas:</strong> Portabel seperti script, namun mendekati kecepatan C saat program sudah berjalan panas (*warm up*).</td>
+                        <td><strong>Keseimbangan emas:</strong> Portabel seperti script, namun mendekati kecepatan C saat program sudah berjalan panas (<em>warm up</em>).</td>
                     </tr>
                 </tbody>
             </table>
@@ -203,12 +203,12 @@ tambah("Halo ", "Dunia"); // "Halo Dunia" (String concatenation CPU memory alloc
                 <div class="pipeline-step">
                     <div class="pipeline-step-num">Tahap 1</div>
                     <div class="pipeline-step-title">Ignition (Interpreter)</div>
-                    <div class="pipeline-step-desc">Mengubah kode JS menjadi <strong>Bytecode</strong> ringkas dan menjalankannya seketika. Mengumpulkan profil tipe data (*Type Feedback Vectors*).</div>
+                    <div class="pipeline-step-desc">Mengubah kode JS menjadi <strong>Bytecode</strong> ringkas dan menjalankannya seketika. Mengumpulkan profil tipe data (<em>Type Feedback Vectors</em>).</div>
                 </div>
                 <div class="pipeline-step">
                     <div class="pipeline-step-num">Tahap 2</div>
                     <div class="pipeline-step-title">Profiler (Hot Detection)</div>
-                    <div class="pipeline-step-desc">Mendeteksi fungsi mana yang dipanggil berulang-ulang ribuan kali (*Hot Function*).</div>
+                    <div class="pipeline-step-desc">Mendeteksi fungsi mana yang dipanggil berulang-ulang ribuan kali (<em>Hot Function</em>).</div>
                 </div>
                 <div class="pipeline-step">
                     <div class="pipeline-step-num">Tahap 3</div>
@@ -230,7 +230,7 @@ tambah("Halo ", "Dunia"); // "Halo Dunia" (String concatenation CPU memory alloc
                 <div class="callout-body">
                     Mendadak pada panggilan ke 10.001, developer memanggil: <code>tambah("teks", 5)</code>!
                     <br><br>
-                    Asumsi spekulatif TurboFan hancur berantakan. V8 terpaksa membuang machine code yang sudah dioptimasi dan mundur kembali ke bytecode Ignition (*Deoptimization Bailout*).
+                    Asumsi spekulatif TurboFan hancur berantakan. V8 terpaksa membuang machine code yang sudah dioptimasi dan mundur kembali ke bytecode Ignition (<em>Deoptimization Bailout</em>).
                     <br><br>
                     <strong>Aturan Kinerja V8:</strong> Tulis kode yang <strong>Monomorfik (Bentuk Objek dan Tipe Argumen Selalu Konsisten)</strong>! Objek yang bentuk propertinya diubah-ubah secara dinamis (Polimorfik / Megamorfik) akan menghancurkan performa JIT engine hingga 5x lipat.
                 </div>
@@ -261,13 +261,13 @@ Frame size 0
             <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Stories &amp; Anti-Patterns</h2>
 
             <div class="callout-box callout-production">
-                <div class="callout-header"><i class="fa-solid fa-bolt-lightning"></i> War Story: Menghapus Properti dengan `delete obj.prop` Melumpuhkan Hidden Classes V8</div>
+                <div class="callout-header"><i class="fa-solid fa-bolt-lightning"></i> War Story: Menghapus Properti dengan <code>delete obj.prop</code> Melumpuhkan Hidden Classes V8</div>
                 <div class="callout-body">
                     Sebuah layanan analitik data real-time menggunakan kata kunci JavaScript: <code>delete objek.sensitif_key</code> untuk membersihkan field sebelum dikirim ke client.
                     <br><br>
                     Ketika throughput mencapai 50.000 data per detik, performa server anjlok drastis dan CPU membara 100%.
                     <br><br>
-                    <strong>Penyebab:</strong> V8 mengoptimalkan objek JS menggunakan <strong>Hidden Classes (Shapes)</strong> di balik layar. Menghapus properti menggunakan <code>delete</code> secara paksa merusak transisi shape objek dan mengubahnya menjadi mode kamus lambat (*Slow Dictionary Mode*), mematikan seluruh optimasi inline cache TurboFan!
+                    <strong>Penyebab:</strong> V8 mengoptimalkan objek JS menggunakan <strong>Hidden Classes (Shapes)</strong> di balik layar. Menghapus properti menggunakan <code>delete</code> secara paksa merusak transisi shape objek dan mengubahnya menjadi mode kamus lambat (<em>Slow Dictionary Mode</em>), mematikan seluruh optimasi inline cache TurboFan!
                     <br><br>
                     <strong>Solusi Baku:</strong> Jangan pernah gunakan <code>delete</code> di dalam hot loop! Cukup set nilainya menjadi <code>undefined</code> atau buat objek baru yang bersih secara eksplisit.
                 </div>

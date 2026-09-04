@@ -237,7 +237,7 @@ COMMIT;</code></pre>
                 <div class="callout-body">
                     Sebuah startup fintech mengeksekusi pendebetan saldo pengguna di database SQL dan kemudian memanggil event broker Redis Pub/Sub untuk mentransfer uang ke mitra bank.
                     <br><br>
-                    Saat jaringan cloud mereka mengalami lonjakan sesaat (*Network Blip*), 140 transaksi berhasil memotong saldo di SQL, namun gagal mengirimkan sinyal event transfer ke broker.
+                    Saat jaringan cloud mereka mengalami lonjakan sesaat (<em>Network Blip</em>), 140 transaksi berhasil memotong saldo di SQL, namun gagal mengirimkan sinyal event transfer ke broker.
                     <br><br>
                     Pelanggan mengamuk karena uang mereka terpotong tanpa adanya pengiriman dana ke tujuan!
                     <br><br>

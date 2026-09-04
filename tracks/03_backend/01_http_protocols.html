@@ -333,7 +333,7 @@ evtSource.onmessage = (e) => {
                 <div class="callout-body">
                     Sebuah aplikasi berita online menggunakan WebSocket server untuk mengirimkan "Breaking News" kepada 5 juta pengguna ponsel.
                     <br><br>
-                    <strong>Bencana yang Terjadi:</strong> Menahan 5 juta koneksi TCP socket terbuka aktif secara bersamaan memakan memori RAM server luar biasa besar dan mengharuskan pemeliharaan server stateful yang sangat rumit di belakang Load Balancer. Ketika jaringan mobile seluler pengguna fluktuatif di daerah terpencil, terjadi badai rekoneksi (*Thundering Herd*) yang merobohkan kluster server WebSocket.
+                    <strong>Bencana yang Terjadi:</strong> Menahan 5 juta koneksi TCP socket terbuka aktif secara bersamaan memakan memori RAM server luar biasa besar dan mengharuskan pemeliharaan server stateful yang sangat rumit di belakang Load Balancer. Ketika jaringan mobile seluler pengguna fluktuatif di daerah terpencil, terjadi badai rekoneksi (<em>Thundering Herd</em>) yang merobohkan kluster server WebSocket.
                     <br><br>
                     <strong>Solusi:</strong> Menggantinya dengan <strong>Server-Sent Events (SSE) yang di-cache di Edge CDN (Cloudflare / CloudFront)</strong> atau Web Push Notifications. Server backend hanya mempublikasikan event satu kali, dan CDN yang mendistribusikannya ke jutaan pembaca secara stateless tanpa membebani server backend!
                 </div>

@@ -441,7 +441,7 @@ console.log('6: Synchronous Akhir');</code></pre>
                     <br><br>
                     <strong>Apa yang terjadi?</strong> Layar browser langsung freeze putih seketika! User tidak bisa mengklik tombol apa pun atau melakukan scroll.
                     <br><br>
-                    <strong>Penyebab:</strong> Spesifikasi W3C menyatakan bahwa <strong>Event Loop TIDAK AKAN PERNAH beralih ke tahap Render atau Macrotask sebelum Microtask Queue benar-benar KOSONG</strong>. Karena <code>queueMicrotask</code> terus menambahkan tugas baru tanpa henti, browser kelaparan (*Microtask Starvation*) dan tidak pernah sempat merender layar!
+                    <strong>Penyebab:</strong> Spesifikasi W3C menyatakan bahwa <strong>Event Loop TIDAK AKAN PERNAH beralih ke tahap Render atau Macrotask sebelum Microtask Queue benar-benar KOSONG</strong>. Karena <code>queueMicrotask</code> terus menambahkan tugas baru tanpa henti, browser kelaparan (<em>Microtask Starvation</em>) dan tidak pernah sempat merender layar!
                     <br><br>
                     <strong>Solusi Industri:</strong> Gunakan Macrotask (<code>setTimeout</code>) atau rAF untuk me-yield kontrol kembali ke UI thread:
                     <br>

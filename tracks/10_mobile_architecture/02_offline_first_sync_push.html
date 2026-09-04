@@ -78,7 +78,7 @@
 
             <h1>Modul 32: Arsitektur Mobile Offline-First, Local Database &amp; Push Notifications</h1>
             <p class="module-lead">
-                Membangun aplikasi mobile kelas dunia yang tangguh di segala kondisi jaringan internet: arsitektur *Local-First* berbasis SQLite, sinkronisasi dua arah dengan resolusi konflik data (CRDTs vs LWW), manajemen background worker ramah baterai (Android WorkManager &amp; iOS BackgroundTasks), serta bedah protokol transmisi *Push Notifications* waktu-nyata (Apple APNs &amp; Google FCM).
+                Membangun aplikasi mobile kelas dunia yang tangguh di segala kondisi jaringan internet: arsitektur <em>Local-First</em> berbasis SQLite, sinkronisasi dua arah dengan resolusi konflik data (CRDTs vs LWW), manajemen background worker ramah baterai (Android WorkManager &amp; iOS BackgroundTasks), serta bedah protokol transmisi <em>Push Notifications</em> waktu-nyata (Apple APNs &amp; Google FCM).
             </p>
         </div>
 
@@ -131,19 +131,19 @@
         </div>
 
         <section id="intro">
-            <h2><i class="fa-solid fa-circle-info"></i> 1. Realitas Jaringan Mobile: Jaringan Selalu Fluktuatif (*Flaky Network*)</h2>
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Realitas Jaringan Mobile: Jaringan Selalu Fluktuatif (<em>Flaky Network</em>)</h2>
             <p>
                 Berbeda dengan komputer server di data center yang terhubung kabel serat optik gigabit tanpa putus, smartphone hidup di dunia yang sangat tidak menentu:
             </p>
             <ul>
                 <li>Pengguna masuk ke dalam lift beton atau terowongan kereta (kehilangan sinyal seketika).</li>
-                <li>Perpindahan antena seluler (*tower handoff*) dari 5G ke 3G yang memicu lonjakan latensi dari 20ms ke 3.000ms.</li>
-                <li>Pengguna menyalakan Mode Pesawat (*Airplane Mode*).</li>
+                <li>Perpindahan antena seluler (<em>tower handoff</em>) dari 5G ke 3G yang memicu lonjakan latensi dari 20ms ke 3.000ms.</li>
+                <li>Pengguna menyalakan Mode Pesawat (<em>Airplane Mode</em>).</li>
             </ul>
             <div class="callout-box callout-good">
                 <div class="callout-header"><i class="fa-solid fa-lightbulb"></i> Prinsip Dasar Offline-First</div>
                 <div class="callout-body">
-                    Aplikasi mobile yang baik tidak boleh menampilkan layar pemuatan (*loading spinner*) berputar-putar tanpa henti hanya karena koneksi internet mati. Aplikasi wajib <strong>langsung terbuka dan menampilkan data terakhir yang tersimpan di perangkat dalam waktu 0 milidetik</strong>.
+                    Aplikasi mobile yang baik tidak boleh menampilkan layar pemuatan (<em>loading spinner</em>) berputar-putar tanpa henti hanya karena koneksi internet mati. Aplikasi wajib <strong>langsung terbuka dan menampilkan data terakhir yang tersimpan di perangkat dalam waktu 0 milidetik</strong>.
                 </div>
             </div>
         </section>
@@ -152,7 +152,7 @@
         <section id="local-db-architecture">
             <h2><i class="fa-solid fa-database"></i> 2. Local Database sebagai Single Source of Truth (SSOT)</h2>
             <p>
-                Dalam arsitektur *Offline-First*, antarmuka (UI) tidak pernah membaca data langsung dari network API. UI hanya boleh mengamati (*observe*) **Database Lokal**:
+                Dalam arsitektur <em>Offline-First</em>, antarmuka (UI) tidak pernah membaca data langsung dari network API. UI hanya boleh mengamati (<em>observe</em>) <strong>Database Lokal</strong>:
             </p>
 
             <div class="pipeline-flow">
@@ -186,7 +186,7 @@
                     <div class="code-pane-header"><i class="fa-solid fa-clock"></i> 1. Last-Write-Wins (LWW)</div>
                     <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
                         • <strong>Mekanisme:</strong> Mutasi yang memiliki timestamp paling akhir menimpa mutasi sebelumnya.<br>
-                        • <strong>Kelemahan Fatal:</strong> *Clock Skew* (jam pada HP pengguna bisa diatur manual oleh user atau berbeda beberapa detik antar pabrikan ponsel), menyebabkan data baru justru tertimpa data lama!<br>
+                        • <strong>Kelemahan Fatal:</strong> <em>Clock Skew</em> (jam pada HP pengguna bisa diatur manual oleh user atau berbeda beberapa detik antar pabrikan ponsel), menyebabkan data baru justru tertimpa data lama!<br>
                         • <strong>Pencegahan:</strong> Menggunakan Logical Lamport Timestamps atau Server-side Timestamping.
                     </div>
                 </div>
@@ -204,16 +204,16 @@
         <section id="background-tasks">
             <h2><i class="fa-solid fa-battery-half"></i> 4. Background Execution &amp; Anggaran Baterai Ponsel</h2>
             <p>
-                Sistem operasi modern (iOS &amp; Android) menerapkan aturan agresif untuk menghemat baterai. Aplikasi yang berjalan di background akan dibekukan (*suspended*) atau dimatikan oleh sistem.
+                Sistem operasi modern (iOS &amp; Android) menerapkan aturan agresif untuk menghemat baterai. Aplikasi yang berjalan di background akan dibekukan (<em>suspended</em>) atau dimatikan oleh sistem.
             </p>
 
             <ul>
                 <li>
-                    <strong>Android WorkManager:</strong> Framework resmi untuk tugas tertunda yang terjamin dieksekusi. Mendukung *Constraints*:
+                    <strong>Android WorkManager:</strong> Framework resmi untuk tugas tertunda yang terjamin dieksekusi. Mendukung <em>Constraints</em>:
                     <code>setRequiredNetworkType(NetworkType.UNMETERED)</code> (hanya jalan saat Wi-Fi) dan <code>setRequiresCharging(true)</code> (hanya saat dicas).
                 </li>
                 <li>
-                    <strong>Android Doze Mode:</strong> Saat layar HP mati dan tidak bergerak di atas meja, OS menunda semua akses network hingga jendela pemeliharaan (*maintenance window*) berikutnya.
+                    <strong>Android Doze Mode:</strong> Saat layar HP mati dan tidak bergerak di atas meja, OS menunda semua akses network hingga jendela pemeliharaan (<em>maintenance window</em>) berikutnya.
                 </li>
                 <li>
                     <strong>iOS BackgroundTasks Framework:</strong> Menggunakan <code>BGAppRefreshTask</code> (refresh konten pendek) dan <code>BGProcessingTask</code> (tugas berat seperti sinkronisasi database offline saat HP dicas di malam hari).
@@ -225,7 +225,7 @@
         <section id="push-notifications">
             <h2><i class="fa-solid fa-bell"></i> 5. Arsitektur Push Notifications: Apple APNs &amp; Google FCM</h2>
             <p>
-                Bagaimana aplikasi seperti WhatsApp atau Gojek dapat menampilkan notifikasi pesanan secara instan meskipun aplikasinya sedang dimatikan total (*swiped away*) oleh pengguna?
+                Bagaimana aplikasi seperti WhatsApp atau Gojek dapat menampilkan notifikasi pesanan secara instan meskipun aplikasinya sedang dimatikan total (<em>swiped away</em>) oleh pengguna?
             </p>
 
             <div class="callout-box callout-deepdive">
@@ -256,7 +256,7 @@
 
         <!-- Section 6 -->
         <section id="war-stories">
-            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Story: Badai 100K Mutasi Pesawat (*Airplane Retry Storm*)</h2>
+            <h2><i class="fa-solid fa-fire-flame-curved"></i> 6. Production War Story: Badai 100K Mutasi Pesawat (<em>Airplane Retry Storm</em>)</h2>
             <div class="callout-box callout-warn">
                 <div class="callout-header"><i class="fa-solid fa-triangle-exclamation"></i> Bencana Kasus Nyata: Server Backend Ambruk Pasca Musim Mudik Lebaran</div>
                 <div class="callout-body">
@@ -264,7 +264,7 @@
                         Sebuah aplikasi e-commerce tiket dan perhotelan memiliki fitur ulasan hotel offline. Ribuan pengguna yang berada di pesawat menulis ulasan dan mengunggah foto hotel secara offline sepanjang penerbangan 2 jam.
                     </p>
                     <p>
-                        <strong>Dampak yang Terjadi:</strong> Saat pesawat mendarat di bandara dan ratusan penumpang mematikan Mode Pesawat secara bersamaan, aplikasi mendeteksi sinyal internet dan seketika mengeksekusi antrean mutasi lokal tanpa *jitter*. Lebih dari 100.000 aplikasi serentak meluncurkan request mutasi HTTP POST ke backend di detik yang sama. Server database origin kolaps, CPU load melonjak ke 98%, dan API gateway menolak koneksi dengan error 504 Gateway Timeout.
+                        <strong>Dampak yang Terjadi:</strong> Saat pesawat mendarat di bandara dan ratusan penumpang mematikan Mode Pesawat secara bersamaan, aplikasi mendeteksi sinyal internet dan seketika mengeksekusi antrean mutasi lokal tanpa <em>jitter</em>. Lebih dari 100.000 aplikasi serentak meluncurkan request mutasi HTTP POST ke backend di detik yang sama. Server database origin kolaps, CPU load melonjak ke 98%, dan API gateway menolak koneksi dengan error 504 Gateway Timeout.
                     </p>
                     <p>
                         <strong>Solusi Arsitektur:</strong> Tim merekayasa ulang modul sinkronisasi mobile dengan menerapkan:

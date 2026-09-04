@@ -176,7 +176,7 @@
         <section id="kube-services">
             <h2><i class="fa-solid fa-network-wired"></i> 3. Abstraksi Jaringan: Kubernetes Services &amp; Ingress</h2>
             <p>
-                Karena Pods di Kubernetes bersifat fana (*ephemeral* &mdash; bisa mati dan dibuat ulang dengan IP baru kapan saja), kita tidak boleh mengarahkan trafik langsung ke IP Pod. Kita menggunakan <strong>Kubernetes Service</strong>:
+                Karena Pods di Kubernetes bersifat fana (<em>ephemeral</em> &mdash; bisa mati dan dibuat ulang dengan IP baru kapan saja), kita tidak boleh mengarahkan trafik langsung ke IP Pod. Kita menggunakan <strong>Kubernetes Service</strong>:
             </p>
 
             <table class="hex-table">
@@ -191,7 +191,7 @@
                     <tr>
                         <td><strong>ClusterIP (Default)</strong></td>
                         <td>Internal Kluster Saja</td>
-                        <td>Memberikan 1 IP Virtual stabil yang membagi beban (*Load Balance*) ke seluruh Pod target via iptables/IPVS.</td>
+                        <td>Memberikan 1 IP Virtual stabil yang membagi beban (<em>Load Balance</em>) ke seluruh Pod target via iptables/IPVS.</td>
                     </tr>
                     <tr>
                         <td><strong>NodePort</strong></td>

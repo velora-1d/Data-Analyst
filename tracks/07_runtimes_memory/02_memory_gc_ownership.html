@@ -268,7 +268,7 @@ println!("{}", s1); </code></pre>
                 <div class="callout-body">
                     Discord memiliki layanan "Read States" yang mencatat pesan mana yang sudah dibaca oleh ratusan juta pengguna. Layanan ini awalnya dibangun dengan bahasa Go.
                     <br><br>
-                    <strong>Masalah:</strong> Setiap 2 menit sekali, Garbage Collector Go melakukan siklus pemindaian memori pada cache berisi miliaran objek kecil. Hal ini menimbulkan lonjakan latensi (*Latency Spike*) hingga <strong>800 milidetik</strong> yang membuat suara dan status pesan tersendat!
+                    <strong>Masalah:</strong> Setiap 2 menit sekali, Garbage Collector Go melakukan siklus pemindaian memori pada cache berisi miliaran objek kecil. Hal ini menimbulkan lonjakan latensi (<em>Latency Spike</em>) hingga <strong>800 milidetik</strong> yang membuat suara dan status pesan tersendat!
                     <br><br>
                     <strong>Solusi:</strong> Discord menulis ulang layanan tersebut menggunakan <strong>Rust</strong>. Karena Rust mengalokasikan dan membebaskan memori secara deterministik tanpa Garbage Collector, grafik latensi seketika berubah menjadi garis datar stabil di bawah <strong>1 milidetik</strong> tanpa lonjakan sama sekali!
                 </div>

@@ -406,7 +406,7 @@
             </div>
             <h1>Kamus Perintah <span>Server Linux, Git &amp; DevOps</span></h1>
             <p>
-                Katalog komprehensif sintaks dan perintah produksi tingkat lanjut untuk Software Engineer, DevOps, dan SRE: membedah cara kerja perintah di balik layar (*kernel syscalls &amp; objects DAG*), fungsi praktis, serta skenario penggunaan riil saat insiden produksi.
+                Katalog komprehensif sintaks dan perintah produksi tingkat lanjut untuk Software Engineer, DevOps, dan SRE: membedah cara kerja perintah di balik layar (<em>kernel syscalls &amp; objects DAG</em>), fungsi praktis, serta skenario penggunaan riil saat insiden produksi.
             </p>
         </section>
 
@@ -469,7 +469,7 @@
                                 <span class="cs-card-badge">Plumbing</span>
                             </div>
                             <div class="cs-desc-block">
-                                <strong>Fungsi Internal:</strong> Mendekompresi objek dari direktori objek Git dan mencetaknya dalam format yang mudah dibaca manusia (*pretty-print*). Gunakan flag <code>-t</code> untuk melihat tipe objeknya (blob, tree, commit, tag).
+                                <strong>Fungsi Internal:</strong> Mendekompresi objek dari direktori objek Git dan mencetaknya dalam format yang mudah dibaca manusia (<em>pretty-print</em>). Gunakan flag <code>-t</code> untuk melihat tipe objeknya (blob, tree, commit, tag).
                             </div>
                             <div class="cs-case-box">
                                 <span>Kasus Nyata Produksi</span>
@@ -532,11 +532,11 @@
                                 <span class="cs-card-badge">Plumbing</span>
                             </div>
                             <div class="cs-desc-block">
-                                <strong>Fungsi Internal:</strong> Memperbarui file referensi pointer branch secara atomik aman (*thread-safe lock*) ke commit SHA yang baru dibuat.
+                                <strong>Fungsi Internal:</strong> Memperbarui file referensi pointer branch secara atomik aman (<em>thread-safe lock</em>) ke commit SHA yang baru dibuat.
                             </div>
                             <div class="cs-case-box">
                                 <span>Kasus Nyata Produksi</span>
-                                Memindahkan pointer branch ke commit baru tanpa mengubah status direktori kerja (*working tree*) Anda.
+                                Memindahkan pointer branch ke commit baru tanpa mengubah status direktori kerja (<em>working tree</em>) Anda.
                             </div>
                         </div>
                         <div class="cs-card-footer">
@@ -572,7 +572,7 @@
             <!-- 2. Git Forensik & Recovery -->
             <section id="git-forensik" class="cs-category-section" data-cat="git">
                 <div class="cs-category-header">
-                    <div class="cs-category-title"><i class="fa-solid fa-clock-rotate-left"></i> 2. Git Forensik &amp; Pemulihan Data (*Disaster Recovery*)</div>
+                    <div class="cs-category-title"><i class="fa-solid fa-clock-rotate-left"></i> 2. Git Forensik &amp; Pemulihan Data (<em>Disaster Recovery</em>)</div>
                     <span class="cs-card-badge">Emergency</span>
                 </div>
                 <div class="cs-cards-grid">
@@ -585,7 +585,7 @@
                                 <span class="cs-card-badge">Forensik</span>
                             </div>
                             <div class="cs-desc-block">
-                                <strong>Fungsi Internal:</strong> Membaca catatan riwayat pergerakan pointer `HEAD` lokal. Setiap operasi checkout, commit, reset, rebase, atau merge dicatat beserta commit SHA asalnya, bahkan jika commit tersebut sudah tidak punya branch.
+                                <strong>Fungsi Internal:</strong> Membaca catatan riwayat pergerakan pointer <code>HEAD</code> lokal. Setiap operasi checkout, commit, reset, rebase, atau merge dicatat beserta commit SHA asalnya, bahkan jika commit tersebut sudah tidak punya branch.
                             </div>
                             <div class="cs-case-box">
                                 <span>Kasus Nyata Produksi</span>
@@ -627,7 +627,7 @@
                                 <span class="cs-card-badge">Diagnostik</span>
                             </div>
                             <div class="cs-desc-block">
-                                <strong>Fungsi Internal:</strong> Menggunakan algoritma pencarian biner (*binary search* O(log N)) pada riwayat commit untuk melacak commit tepat mana yang pertama kali memperkenalkan regresi bug ke dalam sistem.
+                                <strong>Fungsi Internal:</strong> Menggunakan algoritma pencarian biner (<em>binary search</em> O(log N)) pada riwayat commit untuk melacak commit tepat mana yang pertama kali memperkenalkan regresi bug ke dalam sistem.
                             </div>
                             <div class="cs-case-box">
                                 <span>Kasus Nyata Produksi</span>
@@ -796,7 +796,7 @@
                                 <span class="cs-card-badge">Sistem</span>
                             </div>
                             <div class="cs-desc-block">
-                                <strong>Fungsi Internal:</strong> Mengubah batas kuota *Resource Limit* (soft limit &amp; hard limit) jumlah File Descriptor per shell session. Standar bawaan Linux biasanya 1024 yang sangat kecil untuk server dengan 10.000 koneksi bersamaan.
+                                <strong>Fungsi Internal:</strong> Mengubah batas kuota <em>Resource Limit</em> (soft limit &amp; hard limit) jumlah File Descriptor per shell session. Standar bawaan Linux biasanya 1024 yang sangat kecil untuk server dengan 10.000 koneksi bersamaan.
                             </div>
                             <div class="cs-case-box">
                                 <span>Kasus Nyata Produksi</span>
@@ -832,7 +832,7 @@
                             </div>
                             <div class="cs-case-box">
                                 <span>Kasus Nyata Produksi</span>
-                                *Golden Rule* SRE: Selalu jalankan <code>nginx -t</code> sebelum reload agar kesalahan titik-koma (syntax error) tidak menjatuhkan server produksi.
+                                <em>Golden Rule</em> SRE: Selalu jalankan <code>nginx -t</code> sebelum reload agar kesalahan titik-koma (syntax error) tidak menjatuhkan server produksi.
                             </div>
                         </div>
                         <div class="cs-card-footer">
@@ -849,11 +849,11 @@
                                 <span class="cs-card-badge">Nginx</span>
                             </div>
                             <div class="cs-desc-block">
-                                <strong>Fungsi Internal:</strong> Mengirimkan sinyal POSIX <code>SIGHUP</code> ke proses Nginx Master. Master membaca konfigurasi baru, menyalakan worker baru, dan mematikan worker lama secara elegan (*graceful*) setelah koneksi aktifnya selesai.
+                                <strong>Fungsi Internal:</strong> Mengirimkan sinyal POSIX <code>SIGHUP</code> ke proses Nginx Master. Master membaca konfigurasi baru, menyalakan worker baru, dan mematikan worker lama secara elegan (<em>graceful</em>) setelah koneksi aktifnya selesai.
                             </div>
                             <div class="cs-case-box">
                                 <span>Kasus Nyata Produksi</span>
-                                Memperbarui sertifikat SSL Let's Encrypt atau mengubah upstream proxy tanpa ada 1 pun pengguna yang mengalami kegagalan koneksi (*zero downtime*).
+                                Memperbarui sertifikat SSL Let's Encrypt atau mengubah upstream proxy tanpa ada 1 pun pengguna yang mengalami kegagalan koneksi (<em>zero downtime</em>).
                             </div>
                         </div>
                         <div class="cs-card-footer">
@@ -870,7 +870,7 @@
                                 <span class="cs-card-badge">Systemd</span>
                             </div>
                             <div class="cs-desc-block">
-                                <strong>Fungsi Internal:</strong> Melakukan streaming biner log sistem dari daemon `systemd-journald` khusus untuk unit service tertentu secara *live* (*follow* flag <code>-f</code>).
+                                <strong>Fungsi Internal:</strong> Melakukan streaming biner log sistem dari daemon <code>systemd-journald</code> khusus untuk unit service tertentu secara <em>live</em> (<em>follow</em> flag <code>-f</code>).
                             </div>
                             <div class="cs-case-box">
                                 <span>Kasus Nyata Produksi</span>
@@ -902,7 +902,7 @@
                                 <span class="cs-card-badge">Kernel</span>
                             </div>
                             <div class="cs-desc-block">
-                                <strong>Fungsi Internal:</strong> Memanggil *syscall* <code>unshare()</code> Linux Kernel untuk melepaskan proses dari namespace host. Proses di dalamnya melihat PID 1 miliknya sendiri dan stack network tersendiri murni tanpa Docker daemon.
+                                <strong>Fungsi Internal:</strong> Memanggil <em>syscall</em> <code>unshare()</code> Linux Kernel untuk melepaskan proses dari namespace host. Proses di dalamnya melihat PID 1 miliknya sendiri dan stack network tersendiri murni tanpa Docker daemon.
                             </div>
                             <div class="cs-case-box">
                                 <span>Kasus Nyata Produksi</span>
@@ -927,7 +927,7 @@
                             </div>
                             <div class="cs-case-box">
                                 <span>Kasus Nyata Produksi</span>
-                                Mencegah satu aplikasi yang bocor memori menenggelamkan seluruh node server produksi (*OOM killer containment*).
+                                Mencegah satu aplikasi yang bocor memori menenggelamkan seluruh node server produksi (<em>OOM killer containment</em>).
                             </div>
                         </div>
                         <div class="cs-card-footer">
@@ -976,7 +976,7 @@
                                 <span class="cs-card-badge">Android</span>
                             </div>
                             <div class="cs-desc-block">
-                                <strong>Fungsi Internal:</strong> Melakukan streaming biner log sistem Android OS dari daemon ADB, difilter khusus untuk menangkap pesan error fatal (*Fatal Exception*), NullPointer, dan Native SIGSEGV crash.
+                                <strong>Fungsi Internal:</strong> Melakukan streaming biner log sistem Android OS dari daemon ADB, difilter khusus untuk menangkap pesan error fatal (<em>Fatal Exception</em>), NullPointer, dan Native SIGSEGV crash.
                             </div>
                             <div class="cs-case-box">
                                 <span>Kasus Nyata Produksi</span>
@@ -997,11 +997,11 @@
                                 <span class="cs-card-badge">iOS</span>
                             </div>
                             <div class="cs-desc-block">
-                                <strong>Fungsi Internal:</strong> Mengirimkan simulasi payload notifikasi APNs langsung ke simulator iPhone yang sedang aktif (*booted*) tanpa membutuhkan sertifikat Apple Developer berbayar.
+                                <strong>Fungsi Internal:</strong> Mengirimkan simulasi payload notifikasi APNs langsung ke simulator iPhone yang sedang aktif (<em>booted</em>) tanpa membutuhkan sertifikat Apple Developer berbayar.
                             </div>
                             <div class="cs-case-box">
                                 <span>Kasus Nyata Produksi</span>
-                                Menguji penanganan Push Notification di aplikasi iOS dan memverifikasi *deep link navigation* saat notifikasi diklik.
+                                Menguji penanganan Push Notification di aplikasi iOS dan memverifikasi <em>deep link navigation</em> saat notifikasi diklik.
                             </div>
                         </div>
                         <div class="cs-card-footer">

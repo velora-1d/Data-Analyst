@@ -182,7 +182,7 @@
                     Oleh karena itu, pilihan nyata bagi seorang arsitek sistem ketika jaringan terbelah (Partition) hanyalah:
                     <ul>
                         <li><strong>Pilih CP (Consistency):</strong> Tolak atau tunda request pengguna demi memastikan data tidak pernah bertabrakan (contoh: Transfer Uang Bank, Google Spanner).</li>
-                        <li><strong>Pilih AP (Availability):</strong> Terima penulisan pengguna di node mana pun yang masih hidup, dan sinkronkan data nanti secara bertahap (*Eventual Consistency*, contoh: Like Instagram, Keranjang Belanja Amazon).</li>
+                        <li><strong>Pilih AP (Availability):</strong> Terima penulisan pengguna di node mana pun yang masih hidup, dan sinkronkan data nanti secara bertahap (<em>Eventual Consistency</em>, contoh: Like Instagram, Keranjang Belanja Amazon).</li>
                     </ul>
                 </div>
             </div>
@@ -230,7 +230,7 @@ ELSE (E) saat kondisi jaringan NORMAL:
         <section id="quorum-consensus">
             <h2><i class="fa-solid fa-users-viewfinder"></i> 4. Matematika Quorum Konsensus: R + W &gt; N</h2>
             <p>
-                Pada sistem tanpa pemimpin terpusat (*Leaderless Replicas* seperti arsitektur Amazon Dynamo), konsistensi baca dan tulis diatur oleh formula <strong>Quorum</strong>:
+                Pada sistem tanpa pemimpin terpusat (<em>Leaderless Replicas</em> seperti arsitektur Amazon Dynamo), konsistensi baca dan tulis diatur oleh formula <strong>Quorum</strong>:
             </p>
 
             <div class="callout-box callout-deepdive">
@@ -241,7 +241,7 @@ ELSE (E) saat kondisi jaringan NORMAL:
                     • <code>W</code> = Jumlah node yang wajib mengonfirmasi sebelum Write dinyatakan sukses.<br>
                     • <code>R</code> = Jumlah node yang wajib dibaca saat request Read.<br><br>
                     <strong>Jika <code>R + W &gt; N</code> (misal: W = 3, R = 3, total = 6 &gt; 5):</strong><br>
-                    Berdasarkan prinsip lubang merpati (Pigeonhole Principle), <strong>pasti ada minimal 1 node yang masuk ke dalam irisan grup baca dan tulis secara bersamaan!</strong> Dengan membandingkan nomor versi data, client dijamin 100% selalu membaca data paling mutakhir (*Strong Consistency*)!
+                    Berdasarkan prinsip lubang merpati (Pigeonhole Principle), <strong>pasti ada minimal 1 node yang masuk ke dalam irisan grup baca dan tulis secara bersamaan!</strong> Dengan membandingkan nomor versi data, client dijamin 100% selalu membaca data paling mutakhir (<em>Strong Consistency</em>)!
                 </div>
             </div>
         </section>
@@ -278,7 +278,7 @@ ELSE (E) saat kondisi jaringan NORMAL:
                 <div class="callout-body">
                     Sebuah bank digital menggunakan Cassandra dengan resolusi konflik default <strong>Last-Write-Wins (LWW)</strong> berbasis timestamp NTP server lokal.
                     <br><br>
-                    Salah satu server mengalami kerusakan sinkronisasi waktu dan jam internalnya <strong>berlari 10 detik lebih cepat ke masa depan</strong> (*Clock Skew*).
+                    Salah satu server mengalami kerusakan sinkronisasi waktu dan jam internalnya <strong>berlari 10 detik lebih cepat ke masa depan</strong> (<em>Clock Skew</em>).
                     <br><br>
                     <strong>Dampak:</strong> Setiap data yang ditulis oleh server rusak tersebut memiliki timestamp yang jauh lebih tinggi daripada server lain. Ketika user melakukan update data terbaru di server normal beberapa detik kemudian, Cassandra <strong>mengabaikan update tersebut dan menganggap data lama dari server rusak sebagai data yang lebih mutakhir!</strong>
                     <br><br>

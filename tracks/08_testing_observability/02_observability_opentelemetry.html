@@ -156,7 +156,7 @@
                     </tr>
                     <tr>
                         <td><strong>2. Traces</strong></td>
-                        <td>Rentang waktu bersarang (*Spans*) dari request awal hingga selesai</td>
+                        <td>Rentang waktu bersarang (<em>Spans</em>) dari request awal hingga selesai</td>
                         <td>OpenTelemetry, Jaeger, Grafana Tempo</td>
                         <td><strong>"Di microservice mana dan query apa waktu terbuang?"</strong> (Menemukan bottleneck latensi).</td>
                     </tr>
@@ -205,7 +205,7 @@
 
         <!-- Section 4 -->
         <section id="w3c-traceparent">
-            <h2><i class="fa-solid fa-passport"></i> 4. Bedah Header Standar W3C `traceparent` (RFC)</h2>
+            <h2><i class="fa-solid fa-passport"></i> 4. Bedah Header Standar W3C <code>traceparent</code> (RFC)</h2>
             <p>
                 Bagaimana Trace ID bisa berpindah lintas bahasa (Node.js &rarr; Go &rarr; Java)? Melalui HTTP header standar global <strong>W3C Trace Context</strong>:
             </p>

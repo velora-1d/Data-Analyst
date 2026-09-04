@@ -78,7 +78,7 @@
 
             <h1>Modul 31: Arsitektur Mobile Runtimes, JSI, Fabric &amp; Flutter Impeller</h1>
             <p class="module-lead">
-                Membedah bagaimana kode aplikasi dieksekusi di perangkat keras seluler (smartphone): evolusi komunikasi antar-bahasa dari serialisasi JSON asinkronus (*Old Bridge*) ke pointer C++ langsung (*JSI &amp; Fabric*), revolusi GPU renderer Flutter Impeller yang membasmi lag animasi iOS, kompilasi biner Kotlin Multiplatform, hingga manajemen memori perangkat keras (iOS ARC vs Android ART Garbage Collection).
+                Membedah bagaimana kode aplikasi dieksekusi di perangkat keras seluler (smartphone): evolusi komunikasi antar-bahasa dari serialisasi JSON asinkronus (<em>Old Bridge</em>) ke pointer C++ langsung (<em>JSI &amp; Fabric</em>), revolusi GPU renderer Flutter Impeller yang membasmi lag animasi iOS, kompilasi biner Kotlin Multiplatform, hingga manajemen memori perangkat keras (iOS ARC vs Android ART Garbage Collection).
             </p>
         </div>
 
@@ -152,7 +152,7 @@
                         <td>Swift/SwiftUI (iOS)<br>Kotlin/Jetpack Compose (Android)</td>
                         <td>Komponen widget native langsung dari OS (UIKit / Android View)</td>
                         <td>Maksimal (Kompilasi LLVM / AOT mesin)</td>
-                        <td>Wajib menulis dua basis kode (*codebase*) terpisah untuk tim iOS dan Android.</td>
+                        <td>Wajib menulis dua basis kode (<em>codebase</em>) terpisah untuk tim iOS dan Android.</td>
                     </tr>
                     <tr>
                         <td><strong>Bridge / JSI Cross-Platform</strong></td>
@@ -176,7 +176,7 @@
         <section id="rn-bridge-vs-jsi">
             <h2><i class="fa-solid fa-bolt"></i> 2. React Native Internals: Runtuhnya Old Bridge &amp; Lahirnya JSI / Fabric</h2>
             <p>
-                Selama hampir satu dekade, React Native dikritik karena masalah performa (*frame drop* saat scrolling cepat). Untuk memahami solusinya, kita wajib membedah apa yang terjadi di tingkat memori:
+                Selama hampir satu dekade, React Native dikritik karena masalah performa (<em>frame drop</em> saat scrolling cepat). Untuk memahami solusinya, kita wajib membedah apa yang terjadi di tingkat memori:
             </p>
 
             <div class="code-preview-pane">
@@ -185,7 +185,7 @@
                     <div style="padding:16px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
                         • <strong>Pemisahan Ketat:</strong> Thread JavaScript (V8/JSC) dan Thread Native (Objective-C/Java) berada di semesta memori terpisah.<br>
                         • <strong>Serialisasi JSON Lambat:</strong> Setiap sentuhan jari (Touch Event) diubah menjadi string JSON mentah <code>JSON.stringify()</code>, dilempar melintasi bridge asinkronus, lalu di-parse ulang di sisi JS.<br>
-                        • <strong>Masalah White Screen:</strong> Saat scrolling daftar 10.000 produk secara cepat, antrean pesan bridge penuh (*congested*), menyebabkan layar putih karena instruksi render tertunda.
+                        • <strong>Masalah White Screen:</strong> Saat scrolling daftar 10.000 produk secara cepat, antrean pesan bridge penuh (<em>congested</em>), menyebabkan layar putih karena instruksi render tertunda.
                     </div>
                 </div>
                 <div class="code-pane-card code-pane-good">
@@ -237,12 +237,12 @@ jsi::Value calculateDistance(jsi::Runtime& rt, const jsi::Value& thisVal, const 
         <section id="kmp-compilation">
             <h2><i class="fa-solid fa-cubes"></i> 4. Kotlin Multiplatform (KMP): Berbagi Logika, Mempertahankan UI Native</h2>
             <p>
-                Berbeda dengan Flutter dan React Native yang berusaha menyatukan logika dan UI, **Kotlin Multiplatform (KMP)** mengambil pendekatan pragmatis: <em>"Share business logic, keep the UI native."</em>
+                Berbeda dengan Flutter dan React Native yang berusaha menyatukan logika dan UI, <strong>Kotlin Multiplatform (KMP)</strong> mengambil pendekatan pragmatis: <em>"Share business logic, keep the UI native."</em>
             </p>
             <ul>
                 <li><strong>Di Android:</strong> Kode Kotlin bersama dikompilasi langsung menjadi bytecode JVM / Android DEX murni. Nol overhead performa.</li>
-                <li><strong>Di iOS:</strong> Kompiler **Kotlin/Native (berbasis LLVM)** mengubah kode Kotlin bersama langsung menjadi binary statis berkas Framework Objective-C/Swift (Mach-O ARM64).</li>
-                <li><strong>Lapisan UI:</strong> Tim iOS bebas mendesain menggunakan deklaratif **SwiftUI** murni, sementara tim Android menggunakan **Jetpack Compose** murni.</li>
+                <li><strong>Di iOS:</strong> Kompiler <strong>Kotlin/Native (berbasis LLVM)</strong> mengubah kode Kotlin bersama langsung menjadi binary statis berkas Framework Objective-C/Swift (Mach-O ARM64).</li>
+                <li><strong>Lapisan UI:</strong> Tim iOS bebas mendesain menggunakan deklaratif <strong>SwiftUI</strong> murni, sementara tim Android menggunakan <strong>Jetpack Compose</strong> murni.</li>
             </ul>
         </section>
 
@@ -257,7 +257,7 @@ jsi::Value calculateDistance(jsi::Runtime& rt, const jsi::Value& thisVal, const 
                 <div class="code-pane-card code-pane-good">
                     <div class="code-pane-header"><i class="fa-brands fa-apple"></i> iOS: Automatic Reference Counting (ARC)</div>
                     <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
-                        • <strong>Deterministik Waktu Nyata:</strong> Setiap objek memiliki penghitung referensi (*reference counter*). Saat counter mencapai 0, memori <strong>seketika itu juga</strong> dibebaskan (nol pause).<br>
+                        • <strong>Deterministik Waktu Nyata:</strong> Setiap objek memiliki penghitung referensi (<em>reference counter</em>). Saat counter mencapai 0, memori <strong>seketika itu juga</strong> dibebaskan (nol pause).<br>
                         • <strong>Bahaya Utama:</strong> <em>Retain Cycles</em> (dua objek saling memegang referensi <code>strong</code>). Wajib dipecahkan menggunakan pointer <code>weak</code> atau <code>unowned</code>.
                     </div>
                 </div>
@@ -265,7 +265,7 @@ jsi::Value calculateDistance(jsi::Runtime& rt, const jsi::Value& thisVal, const 
                     <div class="code-pane-header"><i class="fa-brands fa-android"></i> Android: ART Generational Garbage Collection</div>
                     <div style="padding:14px;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
                         • <strong>Asinkronus Tracing:</strong> Objek dialokasikan di Young Generation Heap. Garbage Collector (Concurrent Mark-Sweep) berjalan periodik membersihkan objek mati.<br>
-                        • <strong>Tantangan:</strong> Jika aplikasi mengalokasikan ribuan objek saat scrolling (misal parsing JSON di loop), GC memicu *GC pauses* yang menyebabkan *frame drop*.
+                        • <strong>Tantangan:</strong> Jika aplikasi mengalokasikan ribuan objek saat scrolling (misal parsing JSON di loop), GC memicu <em>GC pauses</em> yang menyebabkan <em>frame drop</em>.
                     </div>
                 </div>
             </div>
@@ -278,10 +278,10 @@ jsi::Value calculateDistance(jsi::Runtime& rt, const jsi::Value& thisVal, const 
                 <div class="callout-header"><i class="fa-solid fa-triangle-exclamation"></i> Bencana Kasus Nyata: Aplikasi Peta Finansial Drop dari 60 FPS ke 12 FPS</div>
                 <div class="callout-body">
                     <p>
-                        Sebuah aplikasi dompet digital menampilkan peta interaktif lokasi merchant terdekat di kota Jakarta. Setiap kali pengguna menggeser peta (*onRegionChange*), aplikasi mengirim koordinat lat/long ke sisi JavaScript untuk mencari 500 merchant terdekat, lalu mengirimkan array marker kembali ke sisi native iOS/Android.
+                        Sebuah aplikasi dompet digital menampilkan peta interaktif lokasi merchant terdekat di kota Jakarta. Setiap kali pengguna menggeser peta (<em>onRegionChange</em>), aplikasi mengirim koordinat lat/long ke sisi JavaScript untuk mencari 500 merchant terdekat, lalu mengirimkan array marker kembali ke sisi native iOS/Android.
                     </p>
                     <p>
-                        <strong>Dampak yang Terjadi:</strong> Karena masih menggunakan arsitektur <em>Old Bridge</em>, setiap pergeseran jari 1 piksel memicu ratusan pesan <code>JSON.stringify()</code> dan <code>JSON.parse()</code> seberat 2MB melintasi jembatan thread. Thread bridge mengalami kemacetan total (*choke*). Tampilan peta membeku, animasi rute anjlok ke 12 FPS, dan HP pengguna menjadi sangat panas dalam 3 menit.
+                        <strong>Dampak yang Terjadi:</strong> Karena masih menggunakan arsitektur <em>Old Bridge</em>, setiap pergeseran jari 1 piksel memicu ratusan pesan <code>JSON.stringify()</code> dan <code>JSON.parse()</code> seberat 2MB melintasi jembatan thread. Thread bridge mengalami kemacetan total (<em>choke</em>). Tampilan peta membeku, animasi rute anjlok ke 12 FPS, dan HP pengguna menjadi sangat panas dalam 3 menit.
                     </p>
                     <p>
                         <strong>Solusi Arsitektur Baru:</strong> Tim memigrasikan modul peta ke <strong>React Native New Architecture (JSI / TurboModules)</strong>. Alih-alih melempar string JSON melintasi jembatan, fungsi native C++ memanipulasi koordinat marker secara langsung di memori GPU shared pointer. Kemacetan JSON lenyap 100%, penggunaan CPU merosot 75%, dan peta kembali meluncur mulus di 60 FPS mentok!
