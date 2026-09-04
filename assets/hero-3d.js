@@ -203,8 +203,207 @@
     systemGroup.add(ring2);
     systemGroup.add(ring3);
 
-    // 3. High-DPI Tech Badge Vector Texture Generator
-    // 3. High-DPI Tech Badge Vector Texture Generator
+    // 3. Official Vector SVG Logo Cache & Texture Generator
+    const loadedIcons = {};
+
+    // 4. Authentic Developer Technology Badges (12 Core Engineering Stacks with Official SVG Logos)
+    // Distinctive, official brand colors: Postgres, TS, Git, Redis, JS, Python, Docker, Linux, Go, K8s, React, Node
+    // Strictly NO PURPLE, rich in blues, cyans, emeralds, golds, and reds
+    const tokenData = [
+        // Ring 1: Inner Data & Systems Core (Radius = 3.3, Speed = +0.011)
+        {
+            name: 'PostgreSQL',
+            symbol: 'SQL',
+            label: 'POSTGRESQL',
+            iconFile: 'postgres.svg',
+            fullName: 'Track 01: Relational DB & SQL Internals',
+            brandHexStr: '#38BDF8', // Official Postgres Sapphire/Cyan
+            brandHex: 0x38BDF8,
+            bgTintDark: 'rgba(56, 189, 248, 0.16)',
+            bgTintLight: 'rgba(56, 189, 248, 0.12)',
+            radius: 3.3,
+            speed: 0.011,
+            offset: 0,
+            url: '#tracksGrid'
+        },
+        {
+            name: 'TypeScript',
+            symbol: 'TS',
+            label: 'TYPESCRIPT',
+            iconFile: 'typescript.svg',
+            fullName: 'Track 04: Type Systems & Data Structures',
+            brandHexStr: '#3178C6', // Official TypeScript Royal Blue
+            brandHex: 0x3178C6,
+            bgTintDark: 'rgba(49, 120, 198, 0.16)',
+            bgTintLight: 'rgba(49, 120, 198, 0.12)',
+            radius: 3.3,
+            speed: 0.011,
+            offset: Math.PI / 2,
+            url: 'tracks/04_data_structures_algorithms/01_linear_ds_arrays_lists.html'
+        },
+        {
+            name: 'Git',
+            symbol: 'GIT',
+            label: 'GIT',
+            iconFile: 'git.svg',
+            fullName: 'Track 08: Git Internals & Content Storage',
+            brandHexStr: '#EF4444', // Official Git Coral Red
+            brandHex: 0xEF4444,
+            bgTintDark: 'rgba(239, 68, 68, 0.16)',
+            bgTintLight: 'rgba(239, 68, 68, 0.12)',
+            radius: 3.3,
+            speed: 0.011,
+            offset: Math.PI,
+            url: 'tracks/07_runtimes_memory/03_git_internals_advanced.html'
+        },
+        {
+            name: 'Redis',
+            symbol: 'REDIS',
+            label: 'REDIS',
+            iconFile: 'redis.svg',
+            fullName: 'Track 01: In-Memory Caching & Redis Protocol',
+            brandHexStr: '#DC2626', // Official Redis Crimson
+            brandHex: 0xDC2626,
+            bgTintDark: 'rgba(220, 38, 38, 0.16)',
+            bgTintLight: 'rgba(220, 38, 38, 0.12)',
+            radius: 3.3,
+            speed: 0.011,
+            offset: (3 * Math.PI) / 2,
+            url: '#tracksGrid'
+        },
+
+        // Ring 2: Mid Runtimes & Execution Engines (Radius = 4.3, Speed = -0.0085)
+        {
+            name: 'JavaScript',
+            symbol: 'JS',
+            label: 'JAVASCRIPT',
+            iconFile: 'javascript.svg',
+            fullName: 'Track 07: JavaScript JIT & Garbage Collection',
+            brandHexStr: '#F59E0B', // Official JS Vibrant Gold
+            brandHex: 0xF59E0B,
+            bgTintDark: 'rgba(245, 158, 11, 0.16)',
+            bgTintLight: 'rgba(245, 158, 11, 0.12)',
+            radius: 4.3,
+            speed: -0.0085,
+            offset: Math.PI / 4,
+            url: 'tracks/07_runtimes_memory/01_v8_event_loop.html'
+        },
+        {
+            name: 'Python',
+            symbol: 'PYTHON',
+            label: 'PYTHON',
+            iconFile: 'python.svg',
+            fullName: 'Track 09: Python Bytecode, GIL & Architecture',
+            brandHexStr: '#3B82F6', // Official Python Blue
+            brandHex: 0x3B82F6,
+            bgTintDark: 'rgba(59, 130, 246, 0.16)',
+            bgTintLight: 'rgba(59, 130, 246, 0.12)',
+            radius: 4.3,
+            speed: -0.0085,
+            offset: (3 * Math.PI) / 4,
+            url: '#tracksGrid'
+        },
+        {
+            name: 'Docker',
+            symbol: 'DOCKER',
+            label: 'DOCKER',
+            iconFile: 'docker.svg',
+            fullName: 'Track 06: Linux Namespaces, Cgroups & Docker',
+            brandHexStr: '#0284C7', // Official Docker Ocean Blue
+            brandHex: 0x0284C7,
+            bgTintDark: 'rgba(2, 132, 199, 0.16)',
+            bgTintLight: 'rgba(2, 132, 199, 0.12)',
+            radius: 4.3,
+            speed: -0.0085,
+            offset: (5 * Math.PI) / 4,
+            url: 'tracks/02_system_design/01_scalability_patterns.html'
+        },
+        {
+            name: 'Linux',
+            symbol: 'LINUX',
+            label: 'LINUX',
+            iconFile: 'linux.svg',
+            fullName: 'Track 05: Linux Kernel, POSIX & Bash',
+            brandHexStr: '#10B981', // Linux Matrix Green
+            brandHex: 0x10B981,
+            bgTintDark: 'rgba(16, 185, 129, 0.16)',
+            bgTintLight: 'rgba(16, 185, 129, 0.12)',
+            radius: 4.3,
+            speed: -0.0085,
+            offset: (7 * Math.PI) / 4,
+            url: 'tracks/03_network_protocols/01_osi_tcp_udp.html'
+        },
+
+        // Ring 3: Outer Distributed Networks & Cloud Architecture (Radius = 5.3, Speed = +0.0065)
+        {
+            name: 'Golang',
+            symbol: 'GO',
+            label: 'GOLANG',
+            iconFile: 'go.svg',
+            fullName: 'Track 04: Go Concurrency, CSP & Channels',
+            brandHexStr: '#00ADD8', // Official Go Gopher Cyan
+            brandHex: 0x00ADD8,
+            bgTintDark: 'rgba(0, 173, 216, 0.16)',
+            bgTintLight: 'rgba(0, 173, 216, 0.12)',
+            radius: 5.3,
+            speed: 0.0065,
+            offset: Math.PI / 6,
+            url: '#tracksGrid'
+        },
+        {
+            name: 'Kubernetes',
+            symbol: 'K8S',
+            label: 'KUBERNETES',
+            iconFile: 'kubernetes.svg',
+            fullName: 'Track 06: Distributed Systems & Kubernetes',
+            brandHexStr: '#2563EB', // Official K8s Helm Blue
+            brandHex: 0x2563EB,
+            bgTintDark: 'rgba(37, 99, 235, 0.16)',
+            bgTintLight: 'rgba(37, 99, 235, 0.12)',
+            radius: 5.3,
+            speed: 0.0065,
+            offset: (2 * Math.PI) / 3,
+            url: '#tracksGrid'
+        },
+        {
+            name: 'React',
+            symbol: 'REACT',
+            label: 'REACT',
+            iconFile: 'react.svg',
+            fullName: 'Track 02: Browser Rendering Pipeline & Fiber Tree',
+            brandHexStr: '#06B6D4', // Official React Atom Cyan
+            brandHex: 0x06B6D4,
+            bgTintDark: 'rgba(6, 182, 212, 0.16)',
+            bgTintLight: 'rgba(6, 182, 212, 0.12)',
+            radius: 5.3,
+            speed: 0.0065,
+            offset: (7 * Math.PI) / 6,
+            url: 'tracks/02_frontend/01_rendering_pipeline.html'
+        },
+        {
+            name: 'Node.js',
+            symbol: 'NODE',
+            label: 'NODE.JS',
+            iconFile: 'nodejs.svg',
+            fullName: 'Track 07: Node.js, Libuv & Thread Pool Architecture',
+            brandHexStr: '#22C55E', // Official Node.js Emerald Green
+            brandHex: 0x22C55E,
+            bgTintDark: 'rgba(34, 197, 94, 0.16)',
+            bgTintLight: 'rgba(34, 197, 94, 0.12)',
+            radius: 5.3,
+            speed: 0.0065,
+            offset: (5 * Math.PI) / 3,
+            url: 'tracks/07_runtimes_memory/01_v8_event_loop.html'
+        }
+    ];
+
+    // Preload official SVG logos into memory
+    tokenData.forEach(token => {
+        const img = new Image();
+        img.src = `assets/icons/tech/${token.iconFile}`;
+        img.onload = () => { loadedIcons[token.iconFile] = img; };
+    });
+
     function createTechBadgeTexture(token, dark) {
         const size = 256;
         const canvas = document.createElement('canvas');
@@ -215,209 +414,84 @@
         const center = size / 2;
         const radius = size * 0.44;
 
-        // Circular background disc
-        ctx.beginPath();
-        ctx.arc(center, center, radius, 0, Math.PI * 2);
-        ctx.fillStyle = dark ? '#0B132B' : '#FFFFFF';
-        ctx.fill();
-
-        // Thick distinct brand border
-        ctx.lineWidth = 11;
-        ctx.strokeStyle = token.brandHexStr;
-        ctx.stroke();
-
-        // Inner soft tinted surface
-        ctx.beginPath();
-        ctx.arc(center, center, radius - 7, 0, Math.PI * 2);
-        ctx.fillStyle = dark ? token.bgTintDark : token.bgTintLight;
-        ctx.fill();
-
-        // Technology Symbol / Monogram (Dynamic sizing to fit 2-4 chars perfectly)
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        const symLen = token.symbol.length;
-        const fontSize = symLen <= 2 ? 66 : symLen === 3 ? 54 : 42;
-        ctx.font = `900 ${fontSize}px "JetBrains Mono", monospace`;
-        ctx.fillStyle = token.brandHexStr;
-        ctx.fillText(token.symbol, center, center - 13);
-
-        // Technology Name Sub-Label
-        ctx.font = '900 20px "Inter", sans-serif';
-        ctx.fillStyle = dark ? '#F8FAFC' : '#0F172A';
-        ctx.fillText(token.label, center, center + 40);
-
         const texture = new THREE.CanvasTexture(canvas);
         texture.generateMipmaps = true;
         texture.minFilter = THREE.LinearMipmapLinearFilter;
+
+        function drawBadge() {
+            ctx.clearRect(0, 0, size, size);
+
+            // Circular background disc
+            ctx.beginPath();
+            ctx.arc(center, center, radius, 0, Math.PI * 2);
+            ctx.fillStyle = dark ? '#0B132B' : '#FFFFFF';
+            ctx.fill();
+
+            // Thick distinct brand border
+            ctx.lineWidth = 10;
+            ctx.strokeStyle = token.brandHexStr;
+            ctx.stroke();
+
+            // Inner soft tinted surface
+            ctx.beginPath();
+            ctx.arc(center, center, radius - 7, 0, Math.PI * 2);
+            ctx.fillStyle = dark ? token.bgTintDark : token.bgTintLight;
+            ctx.fill();
+
+            // Inner subtle concentric border
+            ctx.beginPath();
+            ctx.arc(center, center, radius - 16, 0, Math.PI * 2);
+            ctx.strokeStyle = dark ? 'rgba(255, 255, 255, 0.09)' : 'rgba(0, 0, 0, 0.06)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // Draw Real Official SVG Logo
+            const iconImg = loadedIcons[token.iconFile];
+            if (iconImg && iconImg.complete && iconImg.naturalWidth !== 0) {
+                const iconSize = 92;
+                ctx.drawImage(
+                    iconImg,
+                    center - iconSize / 2,
+                    center - iconSize / 2 - 16,
+                    iconSize,
+                    iconSize
+                );
+            } else {
+                // High-fidelity fallback text while SVG is finishing decode
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                const symLen = token.symbol.length;
+                const fontSize = symLen <= 2 ? 62 : symLen === 3 ? 50 : 38;
+                ctx.font = `900 ${fontSize}px "JetBrains Mono", monospace`;
+                ctx.fillStyle = token.brandHexStr;
+                ctx.fillText(token.symbol, center, center - 14);
+            }
+
+            // Official Technology Name Sub-Label
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.font = '800 18px "Inter", -apple-system, sans-serif';
+            ctx.fillStyle = dark ? '#F8FAFC' : '#0F172A';
+            ctx.fillText(token.label, center, center + 48);
+
+            texture.needsUpdate = true;
+        }
+
+        const iconImg = loadedIcons[token.iconFile];
+        if (iconImg && iconImg.complete) {
+            drawBadge();
+        } else {
+            const img = new Image();
+            img.src = `assets/icons/tech/${token.iconFile}`;
+            img.onload = () => {
+                loadedIcons[token.iconFile] = img;
+                drawBadge();
+            };
+            drawBadge();
+        }
+
         return texture;
     }
-
-    // 4. Authentic Developer Technology Badges (12 Core Engineering Stacks)
-    // Distinctive, official brand colors: Postgres, TS, Git, Redis, JS, Python, Docker, Linux, Go, K8s, React, Node
-    // Strictly NO PURPLE, rich in blues, cyans, emeralds, golds, and reds
-    const tokenData = [
-        // Ring 1: Inner Data & Systems Core (Radius = 3.3, Speed = +0.011)
-        {
-            symbol: 'SQL',
-            label: 'POSTGRES',
-            fullName: 'Track 01: Relational DB & SQL Internals',
-            brandHexStr: '#38BDF8', // Cyan / Postgres
-            brandHex: 0x38BDF8,
-            bgTintDark: 'rgba(56, 189, 248, 0.18)',
-            bgTintLight: 'rgba(56, 189, 248, 0.14)',
-            radius: 3.3,
-            speed: 0.011,
-            offset: 0,
-            url: '#tracksGrid'
-        },
-        {
-            symbol: 'TS',
-            label: 'TYPESCRIPT',
-            fullName: 'Track 04: Type Systems & Data Structures',
-            brandHexStr: '#3178C6', // Deep TypeScript Blue
-            brandHex: 0x3178C6,
-            bgTintDark: 'rgba(49, 120, 198, 0.18)',
-            bgTintLight: 'rgba(49, 120, 198, 0.14)',
-            radius: 3.3,
-            speed: 0.011,
-            offset: Math.PI / 2,
-            url: 'tracks/04_data_structures_algorithms/01_linear_ds_arrays_lists.html'
-        },
-        {
-            symbol: 'GIT',
-            label: 'GIT DAG',
-            fullName: 'Track 08: Git Internals & Content Storage',
-            brandHexStr: '#EF4444', // Git Flame Coral Red
-            brandHex: 0xEF4444,
-            bgTintDark: 'rgba(239, 68, 68, 0.18)',
-            bgTintLight: 'rgba(239, 68, 68, 0.14)',
-            radius: 3.3,
-            speed: 0.011,
-            offset: Math.PI,
-            url: 'tracks/07_runtimes_memory/03_git_internals_advanced.html'
-        },
-        {
-            symbol: 'KV',
-            label: 'REDIS',
-            fullName: 'Track 01: In-Memory Caching & Redis Protocol',
-            brandHexStr: '#DC2626', // Redis Crimson
-            brandHex: 0xDC2626,
-            bgTintDark: 'rgba(220, 38, 38, 0.18)',
-            bgTintLight: 'rgba(220, 38, 38, 0.14)',
-            radius: 3.3,
-            speed: 0.011,
-            offset: (3 * Math.PI) / 2,
-            url: '#tracksGrid'
-        },
-
-        // Ring 2: Mid Runtimes & Execution Engines (Radius = 4.3, Speed = -0.0085)
-        {
-            symbol: 'JS',
-            label: 'V8 ENGINE',
-            fullName: 'Track 07: JavaScript JIT & Garbage Collection',
-            brandHexStr: '#F59E0B', // JS Gold Yellow
-            brandHex: 0xF59E0B,
-            bgTintDark: 'rgba(245, 158, 11, 0.18)',
-            bgTintLight: 'rgba(245, 158, 11, 0.14)',
-            radius: 4.3,
-            speed: -0.0085,
-            offset: Math.PI / 4,
-            url: 'tracks/07_runtimes_memory/01_v8_event_loop.html'
-        },
-        {
-            symbol: 'PY',
-            label: 'PYTHON',
-            fullName: 'Track 09: Python Bytecode, GIL & Architecture',
-            brandHexStr: '#3B82F6', // Python Royal Blue
-            brandHex: 0x3B82F6,
-            bgTintDark: 'rgba(59, 130, 246, 0.18)',
-            bgTintLight: 'rgba(59, 130, 246, 0.14)',
-            radius: 4.3,
-            speed: -0.0085,
-            offset: (3 * Math.PI) / 4,
-            url: '#tracksGrid'
-        },
-        {
-            symbol: 'DKR',
-            label: 'CONTAINER',
-            fullName: 'Track 06: Linux Namespaces, Cgroups & Docker',
-            brandHexStr: '#0284C7', // Docker Sky/Ocean Blue
-            brandHex: 0x0284C7,
-            bgTintDark: 'rgba(2, 132, 199, 0.18)',
-            bgTintLight: 'rgba(2, 132, 199, 0.14)',
-            radius: 4.3,
-            speed: -0.0085,
-            offset: (5 * Math.PI) / 4,
-            url: 'tracks/02_system_design/01_scalability_patterns.html'
-        },
-        {
-            symbol: 'SH',
-            label: 'LINUX OS',
-            fullName: 'Track 05: Linux Kernel, POSIX & Bash',
-            brandHexStr: '#10B981', // Terminal Matrix Green
-            brandHex: 0x10B981,
-            bgTintDark: 'rgba(16, 185, 129, 0.18)',
-            bgTintLight: 'rgba(16, 185, 129, 0.14)',
-            radius: 4.3,
-            speed: -0.0085,
-            offset: (7 * Math.PI) / 4,
-            url: 'tracks/03_network_protocols/01_osi_tcp_udp.html'
-        },
-
-        // Ring 3: Outer Distributed Networks & Cloud Architecture (Radius = 5.3, Speed = +0.0065)
-        {
-            symbol: 'GO',
-            label: 'GOROUTINE',
-            fullName: 'Track 04: Go Concurrency, CSP & Channels',
-            brandHexStr: '#00ADD8', // Gopher Cyan
-            brandHex: 0x00ADD8,
-            bgTintDark: 'rgba(0, 173, 216, 0.18)',
-            bgTintLight: 'rgba(0, 173, 216, 0.14)',
-            radius: 5.3,
-            speed: 0.0065,
-            offset: Math.PI / 6,
-            url: '#tracksGrid'
-        },
-        {
-            symbol: 'K8S',
-            label: 'CLUSTER',
-            fullName: 'Track 06: Distributed Systems & Kubernetes',
-            brandHexStr: '#2563EB', // K8s Helm Blue
-            brandHex: 0x2563EB,
-            bgTintDark: 'rgba(37, 99, 235, 0.18)',
-            bgTintLight: 'rgba(37, 99, 235, 0.14)',
-            radius: 5.3,
-            speed: 0.0065,
-            offset: (2 * Math.PI) / 3,
-            url: '#tracksGrid'
-        },
-        {
-            symbol: 'RC',
-            label: 'REACT DOM',
-            fullName: 'Track 02: Browser Rendering Pipeline & Fiber Tree',
-            brandHexStr: '#06B6D4', // React Atom Cyan
-            brandHex: 0x06B6D4,
-            bgTintDark: 'rgba(6, 182, 212, 0.18)',
-            bgTintLight: 'rgba(6, 182, 212, 0.14)',
-            radius: 5.3,
-            speed: 0.0065,
-            offset: (7 * Math.PI) / 6,
-            url: 'tracks/02_frontend/01_rendering_pipeline.html'
-        },
-        {
-            symbol: 'NODE',
-            label: 'ASYNC I/O',
-            fullName: 'Track 07: Node.js, Libuv & Thread Pool Architecture',
-            brandHexStr: '#22C55E', // Node.js Emerald
-            brandHex: 0x22C55E,
-            bgTintDark: 'rgba(34, 197, 94, 0.18)',
-            bgTintLight: 'rgba(34, 197, 94, 0.14)',
-            radius: 5.3,
-            speed: 0.0065,
-            offset: (5 * Math.PI) / 3,
-            url: 'tracks/07_runtimes_memory/01_v8_event_loop.html'
-        }
-    ];
 
     const satelliteTokens = [];
     const interactiveMeshes = [];
@@ -736,7 +810,7 @@
                         st.targetScale = 1.35;
                         if (hoveredToken !== st) {
                             hoveredToken = st;
-                            tooltip.innerHTML = `<span style="color:${st.data.brandHexStr};font-weight:900;">${st.data.symbol}</span> • ${st.data.fullName} &rarr;`;
+                            tooltip.innerHTML = `<span style="color:${st.data.brandHexStr};font-weight:900;">${st.data.name || st.data.symbol}</span> • ${st.data.fullName} &rarr;`;
                             tooltip.style.borderColor = st.data.brandHexStr;
                             tooltip.style.opacity = '1';
                             tooltip.style.transform = 'translateX(-50%) translateY(0px)';
