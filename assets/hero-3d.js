@@ -65,8 +65,8 @@
     const isMobile = window.innerWidth <= 768;
 
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.z = isMobile ? 12 : 9.8;
-    camera.position.y = 0.4;
+    camera.position.z = isMobile ? 13.5 : 11.2;
+    camera.position.y = 0.3;
 
     const renderer = new THREE.WebGLRenderer({
         antialias: !isMobile,
@@ -196,13 +196,14 @@
         return ring;
     }
 
-    const ring1 = createOrbitRing(3.4, 0.02, Math.PI / 3, 0.3, colors.secondary);
-    const ring2 = createOrbitRing(4.1, 0.02, -Math.PI / 3.5, -0.4, colors.accent);
-    const ring3 = createOrbitRing(4.8, 0.015, Math.PI / 2.2, 0.8, colors.primary);
+    const ring1 = createOrbitRing(3.3, 0.02, Math.PI / 3, 0.25, colors.secondary);
+    const ring2 = createOrbitRing(4.3, 0.02, -Math.PI / 3.4, -0.35, colors.accent);
+    const ring3 = createOrbitRing(5.3, 0.015, Math.PI / 2.3, 0.75, colors.primary);
     systemGroup.add(ring1);
     systemGroup.add(ring2);
     systemGroup.add(ring3);
 
+    // 3. High-DPI Tech Badge Vector Texture Generator
     // 3. High-DPI Tech Badge Vector Texture Generator
     function createTechBadgeTexture(token, dark) {
         const size = 256;
@@ -212,7 +213,7 @@
         const ctx = canvas.getContext('2d');
 
         const center = size / 2;
-        const radius = size * 0.45;
+        const radius = size * 0.44;
 
         // Circular background disc
         ctx.beginPath();
@@ -221,27 +222,29 @@
         ctx.fill();
 
         // Thick distinct brand border
-        ctx.lineWidth = 12;
+        ctx.lineWidth = 11;
         ctx.strokeStyle = token.brandHexStr;
         ctx.stroke();
 
         // Inner soft tinted surface
         ctx.beginPath();
-        ctx.arc(center, center, radius - 8, 0, Math.PI * 2);
+        ctx.arc(center, center, radius - 7, 0, Math.PI * 2);
         ctx.fillStyle = dark ? token.bgTintDark : token.bgTintLight;
         ctx.fill();
 
-        // Technology Symbol / Logo
+        // Technology Symbol / Monogram (Dynamic sizing to fit 2-4 chars perfectly)
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.font = '900 68px "JetBrains Mono", monospace';
+        const symLen = token.symbol.length;
+        const fontSize = symLen <= 2 ? 66 : symLen === 3 ? 54 : 42;
+        ctx.font = `900 ${fontSize}px "JetBrains Mono", monospace`;
         ctx.fillStyle = token.brandHexStr;
-        ctx.fillText(token.symbol, center, center - 14);
+        ctx.fillText(token.symbol, center, center - 13);
 
-        // Technology Name Label
-        ctx.font = '900 24px "Inter", sans-serif';
+        // Technology Name Sub-Label
+        ctx.font = '900 20px "Inter", sans-serif';
         ctx.fillStyle = dark ? '#F8FAFC' : '#0F172A';
-        ctx.fillText(token.label, center, center + 44);
+        ctx.fillText(token.label, center, center + 40);
 
         const texture = new THREE.CanvasTexture(canvas);
         texture.generateMipmaps = true;
@@ -249,86 +252,170 @@
         return texture;
     }
 
-    // 4. Authentic Developer Technology Badges
-    // Distinctive, official brand colors: Postgres Blue, JS Yellow, Git Red-Orange, Docker Cyan, Linux Green, React Cyan
+    // 4. Authentic Developer Technology Badges (12 Core Engineering Stacks)
+    // Distinctive, official brand colors: Postgres, TS, Git, Redis, JS, Python, Docker, Linux, Go, K8s, React, Node
+    // Strictly NO PURPLE, rich in blues, cyans, emeralds, golds, and reds
     const tokenData = [
+        // Ring 1: Inner Data & Systems Core (Radius = 3.3, Speed = +0.011)
         {
             symbol: 'SQL',
             label: 'POSTGRES',
-            fullName: 'Track 01: Database & SQL Internals',
+            fullName: 'Track 01: Relational DB & SQL Internals',
             brandHexStr: '#38BDF8', // Cyan / Postgres
             brandHex: 0x38BDF8,
             bgTintDark: 'rgba(56, 189, 248, 0.18)',
             bgTintLight: 'rgba(56, 189, 248, 0.14)',
-            radius: 3.4,
-            speed: 0.012,
+            radius: 3.3,
+            speed: 0.011,
             offset: 0,
             url: '#tracksGrid'
         },
         {
-            symbol: 'JS',
-            label: 'V8 ENGINE',
-            fullName: 'Track 07: JavaScript Engine & Memory GC',
-            brandHexStr: '#F59E0B', // JS Gold Yellow (Vibrant)
-            brandHex: 0xF59E0B,
-            bgTintDark: 'rgba(245, 158, 11, 0.18)',
-            bgTintLight: 'rgba(245, 158, 11, 0.14)',
-            radius: 4.1,
-            speed: -0.010,
-            offset: Math.PI / 3,
-            url: 'tracks/07_runtimes_memory/01_v8_event_loop.html'
+            symbol: 'TS',
+            label: 'TYPESCRIPT',
+            fullName: 'Track 04: Type Systems & Data Structures',
+            brandHexStr: '#3178C6', // Deep TypeScript Blue
+            brandHex: 0x3178C6,
+            bgTintDark: 'rgba(49, 120, 198, 0.18)',
+            bgTintLight: 'rgba(49, 120, 198, 0.14)',
+            radius: 3.3,
+            speed: 0.011,
+            offset: Math.PI / 2,
+            url: 'tracks/04_data_structures_algorithms/01_linear_ds_arrays_lists.html'
         },
         {
             symbol: 'GIT',
             label: 'GIT DAG',
-            fullName: 'Track 08: Git Internals & DAG Architecture',
+            fullName: 'Track 08: Git Internals & Content Storage',
             brandHexStr: '#EF4444', // Git Flame Coral Red
             brandHex: 0xEF4444,
             bgTintDark: 'rgba(239, 68, 68, 0.18)',
             bgTintLight: 'rgba(239, 68, 68, 0.14)',
-            radius: 3.4,
-            speed: 0.012,
-            offset: (2 * Math.PI) / 3,
+            radius: 3.3,
+            speed: 0.011,
+            offset: Math.PI,
             url: 'tracks/07_runtimes_memory/03_git_internals_advanced.html'
         },
         {
-            symbol: 'DOCKER',
+            symbol: 'KV',
+            label: 'REDIS',
+            fullName: 'Track 01: In-Memory Caching & Redis Protocol',
+            brandHexStr: '#DC2626', // Redis Crimson
+            brandHex: 0xDC2626,
+            bgTintDark: 'rgba(220, 38, 38, 0.18)',
+            bgTintLight: 'rgba(220, 38, 38, 0.14)',
+            radius: 3.3,
+            speed: 0.011,
+            offset: (3 * Math.PI) / 2,
+            url: '#tracksGrid'
+        },
+
+        // Ring 2: Mid Runtimes & Execution Engines (Radius = 4.3, Speed = -0.0085)
+        {
+            symbol: 'JS',
+            label: 'V8 ENGINE',
+            fullName: 'Track 07: JavaScript JIT & Garbage Collection',
+            brandHexStr: '#F59E0B', // JS Gold Yellow
+            brandHex: 0xF59E0B,
+            bgTintDark: 'rgba(245, 158, 11, 0.18)',
+            bgTintLight: 'rgba(245, 158, 11, 0.14)',
+            radius: 4.3,
+            speed: -0.0085,
+            offset: Math.PI / 4,
+            url: 'tracks/07_runtimes_memory/01_v8_event_loop.html'
+        },
+        {
+            symbol: 'PY',
+            label: 'PYTHON',
+            fullName: 'Track 09: Python Bytecode, GIL & Architecture',
+            brandHexStr: '#3B82F6', // Python Royal Blue
+            brandHex: 0x3B82F6,
+            bgTintDark: 'rgba(59, 130, 246, 0.18)',
+            bgTintLight: 'rgba(59, 130, 246, 0.14)',
+            radius: 4.3,
+            speed: -0.0085,
+            offset: (3 * Math.PI) / 4,
+            url: '#tracksGrid'
+        },
+        {
+            symbol: 'DKR',
             label: 'CONTAINER',
-            fullName: 'Track 06: Linux Runtimes & Docker Internals',
-            brandHexStr: '#2563EB', // Docker Royal Blue
-            brandHex: 0x2563EB,
-            bgTintDark: 'rgba(37, 99, 235, 0.18)',
-            bgTintLight: 'rgba(37, 99, 235, 0.14)',
-            radius: 4.8,
-            speed: -0.008,
-            offset: Math.PI,
+            fullName: 'Track 06: Linux Namespaces, Cgroups & Docker',
+            brandHexStr: '#0284C7', // Docker Sky/Ocean Blue
+            brandHex: 0x0284C7,
+            bgTintDark: 'rgba(2, 132, 199, 0.18)',
+            bgTintLight: 'rgba(2, 132, 199, 0.14)',
+            radius: 4.3,
+            speed: -0.0085,
+            offset: (5 * Math.PI) / 4,
             url: 'tracks/02_system_design/01_scalability_patterns.html'
         },
         {
-            symbol: 'BASH',
+            symbol: 'SH',
             label: 'LINUX OS',
-            fullName: 'Track 05: Linux Kernel & Network Protocols',
+            fullName: 'Track 05: Linux Kernel, POSIX & Bash',
             brandHexStr: '#10B981', // Terminal Matrix Green
             brandHex: 0x10B981,
             bgTintDark: 'rgba(16, 185, 129, 0.18)',
             bgTintLight: 'rgba(16, 185, 129, 0.14)',
-            radius: 4.1,
-            speed: -0.010,
-            offset: (4 * Math.PI) / 3,
+            radius: 4.3,
+            speed: -0.0085,
+            offset: (7 * Math.PI) / 4,
             url: 'tracks/03_network_protocols/01_osi_tcp_udp.html'
         },
+
+        // Ring 3: Outer Distributed Networks & Cloud Architecture (Radius = 5.3, Speed = +0.0065)
         {
-            symbol: 'REACT',
-            label: 'FRONTEND',
-            fullName: 'Track 02: Browser Rendering Pipeline & DOM',
-            brandHexStr: '#06B6D4', // React / Web Cyan
+            symbol: 'GO',
+            label: 'GOROUTINE',
+            fullName: 'Track 04: Go Concurrency, CSP & Channels',
+            brandHexStr: '#00ADD8', // Gopher Cyan
+            brandHex: 0x00ADD8,
+            bgTintDark: 'rgba(0, 173, 216, 0.18)',
+            bgTintLight: 'rgba(0, 173, 216, 0.14)',
+            radius: 5.3,
+            speed: 0.0065,
+            offset: Math.PI / 6,
+            url: '#tracksGrid'
+        },
+        {
+            symbol: 'K8S',
+            label: 'CLUSTER',
+            fullName: 'Track 06: Distributed Systems & Kubernetes',
+            brandHexStr: '#2563EB', // K8s Helm Blue
+            brandHex: 0x2563EB,
+            bgTintDark: 'rgba(37, 99, 235, 0.18)',
+            bgTintLight: 'rgba(37, 99, 235, 0.14)',
+            radius: 5.3,
+            speed: 0.0065,
+            offset: (2 * Math.PI) / 3,
+            url: '#tracksGrid'
+        },
+        {
+            symbol: 'RC',
+            label: 'REACT DOM',
+            fullName: 'Track 02: Browser Rendering Pipeline & Fiber Tree',
+            brandHexStr: '#06B6D4', // React Atom Cyan
             brandHex: 0x06B6D4,
             bgTintDark: 'rgba(6, 182, 212, 0.18)',
             bgTintLight: 'rgba(6, 182, 212, 0.14)',
-            radius: 4.8,
-            speed: -0.008,
-            offset: (5 * Math.PI) / 3,
+            radius: 5.3,
+            speed: 0.0065,
+            offset: (7 * Math.PI) / 6,
             url: 'tracks/02_frontend/01_rendering_pipeline.html'
+        },
+        {
+            symbol: 'NODE',
+            label: 'ASYNC I/O',
+            fullName: 'Track 07: Node.js, Libuv & Thread Pool Architecture',
+            brandHexStr: '#22C55E', // Node.js Emerald
+            brandHex: 0x22C55E,
+            bgTintDark: 'rgba(34, 197, 94, 0.18)',
+            bgTintLight: 'rgba(34, 197, 94, 0.14)',
+            radius: 5.3,
+            speed: 0.0065,
+            offset: (5 * Math.PI) / 3,
+            url: 'tracks/07_runtimes_memory/01_v8_event_loop.html'
         }
     ];
 
@@ -348,8 +435,8 @@
             const innerRotator = new THREE.Group();
             tokenGroup.add(innerRotator);
 
-            const badgeRadius = 0.58;
-            const badgeDepth = 0.10;
+            const badgeRadius = 0.52;
+            const badgeDepth = 0.08;
 
             const badgeTex = createTechBadgeTexture(token, dark);
 
@@ -388,7 +475,7 @@
             innerRotator.add(rimMesh);
 
             // Colored Glowing Aura Halo Ring
-            const auraGeo = new THREE.RingGeometry(badgeRadius + 0.02, badgeRadius + 0.08, 32);
+            const auraGeo = new THREE.RingGeometry(badgeRadius + 0.02, badgeRadius + 0.07, 32);
             const auraMat = new THREE.MeshBasicMaterial({
                 color: token.brandHex,
                 side: THREE.DoubleSide,
@@ -418,12 +505,14 @@
     // 5. Floating Code Syntax Snippet Badges
     // Real code floating around the architecture core
     const codeSnippets = [
-        'SELECT * FROM users;',
-        'async function execute()',
+        'SELECT * FROM db;',
+        'async/await v8',
         'git commit -m "feat"',
         'docker run -d -p 80',
         '200 OK • HTTP/3',
-        'O(log N) B-Tree'
+        'O(log N) B-Tree',
+        'go func() { chan <- x }',
+        'kubectl apply -f app.yml'
     ];
 
     const floatingCodeNodes = [];
@@ -444,7 +533,7 @@
 
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.font = '600 20px "JetBrains Mono", monospace';
+        ctx.font = '600 19px "JetBrains Mono", monospace';
         ctx.fillStyle = dark ? '#93C5FD' : '#1E40AF';
         ctx.fillText(text, 128, 32);
 
@@ -454,12 +543,12 @@
 
     codeSnippets.forEach((snippet, idx) => {
         const pillGroup = new THREE.Group();
-        const pillGeo = new THREE.PlaneGeometry(1.2, 0.3);
+        const pillGeo = new THREE.PlaneGeometry(1.15, 0.28);
         const pillTex = createCodePillTexture(snippet, isDark());
         const pillMat = new THREE.MeshBasicMaterial({
             map: pillTex,
             transparent: true,
-            opacity: 0.8
+            opacity: 0.82
         });
         const pillMesh = new THREE.Mesh(pillGeo, pillMat);
         pillGroup.add(pillMesh);
@@ -468,10 +557,10 @@
 
         floatingCodeNodes.push({
             group: pillGroup,
-            radius: 2.6 + (idx % 2) * 0.4,
-            speed: 0.008 * (idx % 2 === 0 ? 1 : -1),
-            angle: (idx * Math.PI) / 3,
-            yOffset: ((idx - 2.5) * 0.45)
+            radius: 2.3 + (idx % 3) * 0.35,
+            speed: 0.007 * (idx % 2 === 0 ? 1 : -1),
+            angle: (idx * Math.PI) / 4,
+            yOffset: ((idx - 3.5) * 0.35)
         });
     });
 
@@ -606,7 +695,7 @@
         if (width === 0 || height === 0) return;
 
         camera.aspect = width / height;
-        camera.position.z = window.innerWidth <= 768 ? 12 : 9.8;
+        camera.position.z = window.innerWidth <= 768 ? 13.5 : 11.2;
         camera.updateProjectionMatrix();
         renderer.setSize(width, height);
     }
