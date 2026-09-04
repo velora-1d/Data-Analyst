@@ -442,6 +442,7 @@
         }
 
         @media (max-width: 768px) {
+            .portal-hero { padding: calc(var(--header-h) + 28px) 1.25rem 2.5rem; }
             .portal-hero h1 { font-size: 2rem; }
             .portal-stats { grid-template-columns: 1fr 1fr; }
             .tracks-grid { grid-template-columns: 1fr; }
@@ -452,7 +453,7 @@
         }
 
         @media (max-width: 480px) {
-            .portal-hero { padding: 3rem 1rem 2rem; }
+            .portal-hero { padding: calc(var(--header-h) + 24px) 1rem 2rem; }
             .portal-hero h1 { font-size: 1.65rem; line-height: 1.25; }
             .portal-hero p { font-size: 0.92rem; margin-bottom: 20px; }
             .hero-actions { flex-direction: column; width: 100%; }

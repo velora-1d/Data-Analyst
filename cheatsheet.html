@@ -322,6 +322,7 @@
         }
 
         @media (max-width: 768px) {
+            .cs-hero { padding: calc(var(--header-h) + 24px) 1.25rem 2.5rem; }
             .cs-hero h1 { font-size: 2rem; }
             .cs-cards-grid { grid-template-columns: 1fr; }
             .cs-controls-bar { flex-direction: column; align-items: stretch; }
@@ -329,7 +330,7 @@
         }
 
         @media (max-width: 480px) {
-            .cs-hero { padding: 3rem 1rem 2rem; }
+            .cs-hero { padding: calc(var(--header-h) + 20px) 1rem 2rem; }
             .cs-hero h1 { font-size: 1.6rem; }
             .cs-hero p { font-size: 0.92rem; }
             .cs-filter-btn { padding: 6px 11px; font-size: 0.78rem; }
