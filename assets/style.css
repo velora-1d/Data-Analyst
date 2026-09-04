@@ -669,13 +669,16 @@ a:hover {
     margin-bottom: 1rem;
 }
 
-.module-hero h1 {
+.module-hero h1,
+.module-header h1,
+h1 {
     font-size: 2.25rem;
     font-weight: 900;
     letter-spacing: -0.035em;
     line-height: 1.2;
     color: var(--text-primary);
     margin-bottom: 1rem;
+    text-wrap: balance;
 }
 
 .module-desc {
@@ -683,6 +686,11 @@ a:hover {
     font-size: 1.05rem;
     margin-bottom: 1.5rem;
     line-height: 1.75;
+    text-align: justify;
+    text-justify: inter-word;
+    text-wrap: pretty;
+    hyphens: auto;
+    -webkit-hyphens: auto;
 }
 
 .module-tags {
@@ -725,6 +733,7 @@ section h2 {
     color: var(--text-primary);
     padding-bottom: 0.5rem;
     border-bottom: 1px solid var(--border);
+    text-wrap: balance;
 }
 section h2 i {
     color: var(--brand);
@@ -736,6 +745,7 @@ section h3 {
     font-weight: 700;
     color: var(--text-primary);
     margin: 1.75rem 0 0.75rem;
+    text-wrap: balance;
 }
 
 section p {
@@ -743,6 +753,11 @@ section p {
     margin-bottom: 1rem;
     line-height: 1.8;
     font-size: 0.96875rem;
+    text-align: justify;
+    text-justify: inter-word;
+    text-wrap: pretty;
+    hyphens: auto;
+    -webkit-hyphens: auto;
 }
 
 /* --- 9. Code Blocks --- */
@@ -2449,6 +2464,10 @@ pre.is-panning {
         color: var(--text-secondary);
         margin-top: 0.45rem;
         margin-bottom: 0;
+        text-align: left;
+        text-wrap: pretty;
+        hyphens: auto;
+        -webkit-hyphens: auto;
     }
     .module-hero {
         padding: 1.25rem 1rem;
@@ -2459,6 +2478,10 @@ pre.is-panning {
         font-size: 0.875rem;
         line-height: 1.62;
         margin-bottom: 1.15rem;
+        text-align: left;
+        text-wrap: pretty;
+        hyphens: auto;
+        -webkit-hyphens: auto;
     }
     .module-tags,
     .module-tag-row {
@@ -2488,6 +2511,10 @@ pre.is-panning {
         font-size: 0.88rem;
         line-height: 1.65;
         margin-bottom: 0.9rem;
+        text-align: left;
+        text-wrap: pretty;
+        hyphens: auto;
+        -webkit-hyphens: auto;
     }
     ul, ol {
         padding-left: 1.25rem;
@@ -2497,6 +2524,8 @@ pre.is-panning {
         font-size: 0.88rem;
         line-height: 1.6;
         margin-bottom: 0.3rem;
+        text-align: left;
+        text-wrap: pretty;
     }
     .concept-foundation-box {
         padding: 1rem 0.9rem;
@@ -2524,6 +2553,10 @@ pre.is-panning {
     .concept-card-text {
         font-size: 0.82rem;
         line-height: 1.5;
+        text-align: left;
+        text-wrap: pretty;
+        hyphens: auto;
+        -webkit-hyphens: auto;
     }
     .concept-box-header {
         flex-direction: column;
@@ -3228,6 +3261,9 @@ pre.is-panning {
     line-height: 1.65;
     color: var(--text-secondary);
     margin: 0;
+    text-align: justify;
+    text-justify: inter-word;
+    text-wrap: pretty;
 }
 
 /* ============================================================
@@ -3349,6 +3385,11 @@ pre.is-panning {
     margin-top: 0.75rem;
     margin-bottom: 0;
     max-width: 85ch;
+    text-align: justify;
+    text-justify: inter-word;
+    text-wrap: pretty;
+    hyphens: auto;
+    -webkit-hyphens: auto;
 }
 
 /* UI Anatomy Interactive Buttons & Component Sandbox */
