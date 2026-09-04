@@ -361,6 +361,30 @@ function initHeaderBrand() {
             headerLeft.appendChild(brandBadge);
         }
     }
+
+    // Attach 3D interactive tilt to all instances of .header-brand-author
+    const brandBadges = document.querySelectorAll('.header-brand-author');
+    brandBadges.forEach(badge => {
+        if (badge.dataset.tilt3dReady) return;
+        badge.dataset.tilt3dReady = 'true';
+
+        badge.addEventListener('mousemove', (e) => {
+            const rect = badge.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = ((y - centerY) / centerY) * -10;
+            const rotateY = ((x - centerX) / centerX) * 10;
+
+            badge.style.transform = `perspective(600px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-2px)`;
+        });
+
+        badge.addEventListener('mouseleave', () => {
+            badge.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+        });
+    });
 }
 
 function initFavicon() {

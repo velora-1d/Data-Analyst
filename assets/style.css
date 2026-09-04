@@ -312,47 +312,140 @@ a:hover {
     opacity: 0.6;
 }
 
-/* --- Brand Velora & Author Badge in Header --- */
+/* --- Brand Velora & Author Badge in Header (3D Animated Experience) --- */
 .header-brand-author {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    background: var(--bg-surface-2);
-    border: 1px solid var(--border);
+    gap: 8px;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 100%);
+    border: 1px solid rgba(96, 165, 250, 0.25);
     border-radius: 999px;
-    padding: 3px 10px;
+    padding: 4px 12px;
     font-size: 0.75rem;
     font-weight: 600;
     white-space: nowrap;
     line-height: 1.2;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    perspective: 600px;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    cursor: default;
+    user-select: none;
 }
 
+[data-theme="light"] .header-brand-author {
+    background: linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%);
+    border-color: #BFDBFE;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.header-brand-author:hover {
+    transform: translateY(-1.5px) scale(1.02);
+    border-color: var(--brand-light);
+    box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="light"] .header-brand-author:hover {
+    border-color: var(--brand);
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* 3D Sheen Sweep Animation */
+.header-brand-author::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%);
+    transform: skewX(-25deg);
+    pointer-events: none;
+    animation: badge-3d-sheen 6s infinite ease-in-out;
+}
+
+[data-theme="light"] .header-brand-author::after {
+    background: linear-gradient(90deg, transparent 0%, rgba(37, 99, 235, 0.12) 50%, transparent 100%);
+}
+
+@keyframes badge-3d-sheen {
+    0%, 70% { left: -120%; }
+    85%, 100% { left: 160%; }
+}
+
+/* Brand Pill with 3D Rotating Shield */
 .header-brand-author .brand-pill {
     color: var(--brand-light);
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    gap: 6px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    transform: translateZ(6px);
 }
 
+[data-theme="light"] .header-brand-author .brand-pill {
+    color: var(--brand);
+}
+
+.header-brand-author .brand-pill i {
+    display: inline-block;
+    animation: shield-3d-spin 8s infinite ease-in-out;
+    transform-origin: center center;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes shield-3d-spin {
+    0%, 80% { transform: perspective(300px) rotateY(0deg); }
+    90% { transform: perspective(300px) rotateY(180deg) scale(1.15); }
+    100% { transform: perspective(300px) rotateY(360deg); }
+}
+
+/* 3D Pulsing Orbital Divider */
 .header-brand-author .brand-divider {
-    color: var(--text-muted);
-    font-size: 0.65rem;
-    opacity: 0.7;
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--brand-light);
+    opacity: 0.85;
+    font-size: 0;
+    line-height: 0;
+    animation: divider-3d-pulse 2.5s infinite ease-in-out;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    transform: translateZ(4px);
 }
 
+[data-theme="light"] .header-brand-author .brand-divider {
+    background: var(--brand);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes divider-3d-pulse {
+    0%, 100% { transform: translateZ(4px) scale(1); opacity: 0.7; }
+    50% { transform: translateZ(4px) scale(1.35); opacity: 1; }
+}
+
+/* Author Pill with 3D Depth */
 .header-brand-author .author-pill {
     color: var(--text-secondary);
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    font-weight: 500;
+    gap: 6px;
+    font-weight: 600;
+    transform: translateZ(4px);
 }
 
 .header-brand-author .author-pill i {
     color: var(--brand);
     font-size: 0.75rem;
+    transition: transform 0.25s ease;
+}
+
+.header-brand-author:hover .author-pill i {
+    transform: rotate(15deg) scale(1.1);
 }
 
 @media (max-width: 992px) {
@@ -655,7 +748,7 @@ a:hover {
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
+    height: 2px;
     background: linear-gradient(90deg, var(--brand), var(--brand-light));
 }
 
@@ -1517,7 +1610,7 @@ blockquote strong {
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
+    height: 2px;
     background: var(--brand);
     transform: scaleX(0);
     transform-origin: left;
@@ -3169,7 +3262,7 @@ pre.is-panning {
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
+    height: 2px;
     background: linear-gradient(90deg, var(--brand), #60A5FA, var(--brand-dark));
 }
 
