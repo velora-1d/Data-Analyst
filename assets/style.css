@@ -2520,10 +2520,35 @@ blockquote strong {
     .hex-table td {
         min-width: 120px;
     }
+    .code-block {
+        max-width: 100%;
+        overflow: hidden;
+        border-radius: var(--r);
+        margin: 1.25rem 0;
+    }
+    .code-header {
+        padding: 0.5rem 0.75rem;
+        gap: 8px;
+    }
+    .code-label {
+        font-size: 0.68rem;
+        letter-spacing: 0.04em;
+        white-space: normal;
+        word-break: break-word;
+        line-height: 1.35;
+    }
+    .copy-btn {
+        padding: 0.25rem 0.55rem;
+        font-size: 0.7rem;
+        flex-shrink: 0;
+    }
     .code-block pre,
     pre {
-        padding: 1rem 0.85rem;
-        font-size: 0.8rem;
+        max-width: 100%;
+        padding: 0.85rem 0.75rem;
+        font-size: 0.76rem;
+        line-height: 1.65;
+        overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
     .callout-box {
