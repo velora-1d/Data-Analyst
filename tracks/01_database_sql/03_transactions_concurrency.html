@@ -18,12 +18,13 @@
             border-radius: var(--r-lg);
             padding: 20px;
             margin-bottom: 18px;
-            border-left: 4px solid var(--brand);
+            box-shadow: var(--shadow-sm);
+            transition: border-color var(--t), background var(--t);
         }
 
-        .anomaly-card.danger { border-left-color: var(--danger); }
-        .anomaly-card.warning { border-left-color: var(--warning); }
-        .anomaly-card.info { border-left-color: var(--brand-light); }
+        .anomaly-card.danger { border-color: var(--danger-border); background: var(--danger-bg); }
+        .anomaly-card.warning { border-color: var(--warning-border); background: var(--warning-bg); }
+        .anomaly-card.info { border-color: var(--info-border); background: var(--info-bg); }
 
         .timeline-diagram {
             display: flex;
