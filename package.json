@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "npx serve . -p 3000",
     "start": "npx serve . -p 3000",
+    "db:seed": "node database/seed.js",
     "deploy:vercel": "npx vercel --prod"
   },
   "keywords": [

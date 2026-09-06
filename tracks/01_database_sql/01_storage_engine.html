@@ -487,7 +487,7 @@ Write-Host 'Tipe Page 1  : 0x' ('{0:X2}' -f \$bytes[100]);
                 <div class="code-header">
                     <span class="code-label"><i class="fa-solid fa-square-poll-horizontal"></i> Output Eksekusi Aktual dari ecommerce.db</span>
                 </div>
-                <pre><code>Panjang File : 118784 Bytes (29 Halaman x 4096 Byte)
+                <pre><code>Panjang File : 1409024 Bytes (344 Halaman x 4096 Byte)
 Magic String : SQLite format 3 
 Page Size    : 4096 Bytes
 Tipe Page 1  : 0x05 (Interior Table B-Tree - Schema Root)</code></pre>
@@ -496,7 +496,7 @@ Tipe Page 1  : 0x05 (Interior Table B-Tree - Schema Root)</code></pre>
             <div class="callout-box callout-dod">
                 <div class="callout-header"><i class="fa-solid fa-circle-check"></i> Bukti Empiris Byte Biner:</div>
                 <div class="callout-body">
-                    Terbukti secara empiris: <code>118.784 byte / 4.096 byte = persis 29 pages</code>. Page 1 memiliki tipe <code>0x05</code> (Interior Table B-Tree) yang bertindak sebagai root tree untuk tabel master skema SQLite (<code>sqlite_schema</code>)!
+                    Terbukti secara empiris: <code>1.409.024 byte / 4.096 byte = persis 344 pages</code>. Page 1 memiliki tipe <code>0x05</code> (Interior Table B-Tree) yang bertindak sebagai root tree untuk tabel master skema SQLite (<code>sqlite_schema</code>)!
                 </div>
             </div>
         </section>
