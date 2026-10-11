@@ -38,6 +38,14 @@
           "humanSubtitle": "Uji Mandiri 10 Kasus Query E-Commerce"
         },
         {
+          "id": "semua_query",
+          "title": "Pustaka 30 Query Lengkap",
+          "url": "semua_query.html",
+          "status": "ready",
+          "duration": "60m",
+          "humanSubtitle": "Katalog 30 Perintah Industri Lengkap dengan Penjelasan"
+        },
+        {
           "id": "03_agregasi",
           "title": "Agregasi & Metrik",
           "url": "modul/03_agregasi.html",

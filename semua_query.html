@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Belajar Semua Query SQL E-Commerce — 30 Perintah Lengkap (Velora)</title>
+    <meta name="description" content="Katalog komprehensif 30 contoh query SQL industri terbagi dalam 6 kategori: Dasar, Filter, Agregasi, JOIN, Subquery/CTE, dan Window Functions berbasis ecommerce.db. Disusun oleh Mahin Utsman Nawawi, S.H.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css?v=2.5.0">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=2.5.0">
+    <style>
+        .query-hero {
+            padding: calc(var(--header-h) + 36px) 24px 32px;
+            text-align: center;
+            background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.22) 0%, transparent 65%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .query-badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .query-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .badge-blue { background: var(--brand); color: #FFFFFF; }
+        .badge-surface { background: var(--bg-surface-2); color: var(--brand-light); border: 1px solid var(--border-light); }
+        .badge-green { background: rgba(16, 185, 129, 0.18); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.4); }
+
+        .query-hero h1 {
+            font-size: 2.6rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            letter-spacing: -0.025em;
+            margin-bottom: 12px;
+        }
+
+        .query-hero h1 span {
+            background: linear-gradient(135deg, #93C5FD 0%, #3B82F6 50%, #1D4ED8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .query-hero p {
+            max-width: 840px;
+            margin: 0 auto 20px;
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Filter Controls & Search Bar */
+        .query-controls-container {
+            width: 100%;
+            max-width: 1240px;
+            margin: 28px auto 0;
+            padding: 0 16px;
+            box-sizing: border-box;
+        }
+
+        .query-controls-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            padding: 16px 20px;
+            border-radius: var(--r-xl);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .query-search-wrap {
+            position: relative;
+            width: 100%;
+        }
+
+        .query-search-wrap i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .query-search-input {
+            width: 100%;
+            padding: 12px 16px 12px 46px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.18s ease;
+        }
+
+        .query-search-input:focus {
+            border-color: var(--brand-light);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+        }
+
+        .category-tabs-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .cat-tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 8px 14px;
+            border-radius: var(--r);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .cat-tab-btn:hover {
+            border-color: var(--brand-light);
+            color: var(--brand-light);
+            background: var(--bg-surface-2);
+        }
+
+        .cat-tab-btn.active {
+            background: var(--brand);
+            border-color: var(--brand);
+            color: #FFFFFF;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+        }
+
+        /* Container & Cards */
+        .query-content-container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 32px 16px 64px;
+        }
+
+        .category-section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 40px 0 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .category-section-title h2 {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-section-title h2 i {
+            color: var(--brand-light);
+        }
+
+        .category-badge-count {
+            font-size: 0.78rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: var(--bg-surface-2);
+            color: var(--brand-light);
+            border: 1px solid var(--border-light);
+            font-weight: 700;
+        }
+
+        .query-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r-xl);
+            margin-bottom: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .query-card:hover {
+            border-color: var(--brand-light);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .query-card-header {
+            padding: 16px 22px;
+            background: var(--bg-surface-2);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .query-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .query-number-pill {
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            font-weight: 800;
+            background: var(--brand);
+            color: #FFFFFF;
+            padding: 4px 9px;
+            border-radius: var(--r-sm);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .query-title-text {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .query-category-tag {
+            font-size: 0.73rem;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 999px;
+            background: rgba(59, 130, 246, 0.14);
+            color: var(--brand-light);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .query-card-body {
+            padding: 22px;
+        }
+
+        /* Kotak Tujuan "Query Ini Untuk Apa" */
+        .for-what-box {
+            background: rgba(37, 99, 235, 0.08);
+            border: 1px solid rgba(37, 99, 235, 0.25);
+            border-left: 4px solid var(--brand);
+            padding: 14px 18px;
+            border-radius: var(--r);
+            margin-bottom: 14px;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .for-what-box .box-title {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: var(--brand-light);
+            margin-bottom: 6px;
+        }
+
+        .when-use-box {
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 12px 16px;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            line-height: 1.5;
+        }
+
+        .when-use-box i {
+            color: #10B981;
+            margin-top: 3px;
+        }
+
+        .sql-snippet-wrap {
+            position: relative;
+            margin-bottom: 14px;
+        }
+
+        .how-it-works-box {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 12px 16px;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+
+        .how-it-works-box strong {
+            color: var(--text-primary);
+        }
+
+        .how-it-works-box ul {
+            margin: 6px 0 0 16px;
+            padding: 0;
+        }
+
+        .how-it-works-box li {
+            margin-bottom: 3px;
+        }
+
+        .btn-copy-code {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 5px 10px;
+            border-radius: var(--r-sm);
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.15s ease;
+            z-index: 5;
+        }
+
+        .btn-copy-code:hover {
+            color: #FFFFFF;
+            border-color: var(--brand-light);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <a href="index.html" class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+            Fundamental Coding
+        </a>
+        <div class="header-brand-author">
+            <span class="brand-pill"><i class="fa-solid fa-shield-halved"></i> Velora</span>
+            <span class="brand-divider">•</span>
+            <span class="author-pill"><i class="fa-solid fa-user-graduate"></i> Mahin Utsman Nawawi, S.H</span>
+        </div>
+        <nav class="breadcrumb">
+            <i class="fa-solid fa-chevron-right"></i>
+            <span style="font-weight:600;color:var(--brand-light);">Pustaka Semua Query SQL</span>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="latihan.html" class="btn btn-secondary btn-sm" style="margin-right: 4px;">
+            <i class="fa-solid fa-pen-to-square"></i> 10 Soal Latihan
+        </a>
+        <span class="db-badge">
+            <i class="fa-solid fa-database"></i>
+            ecommerce.db <span>(30 Perintah)</span>
+        </span>
+        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar Multi-Track Otomatis -->
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i> Navigasi Platform</div>
+        <div id="dynamicSidebarNav"></div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-header"><i class="fa-solid fa-layer-group"></i> 6 Jenis Query</div>
+        <nav class="sidebar-nav">
+            <a href="#cat-1" class="nav-link"><i class="fa-solid fa-table"></i> 1. Query Dasar (5)</a>
+            <a href="#cat-2" class="nav-link"><i class="fa-solid fa-filter"></i> 2. Filtering Data (5)</a>
+            <a href="#cat-3" class="nav-link"><i class="fa-solid fa-calculator"></i> 3. Agregasi &amp; Metrik (5)</a>
+            <a href="#cat-4" class="nav-link"><i class="fa-solid fa-link"></i> 4. Relasi JOIN (5)</a>
+            <a href="#cat-5" class="nav-link"><i class="fa-solid fa-code-branch"></i> 5. Subquery &amp; CTE (5)</a>
+            <a href="#cat-6" class="nav-link"><i class="fa-solid fa-chart-line"></i> 6. Window Functions (5)</a>
+        </nav>
+
+        <div class="nav-divider"></div>
+        <div class="sidebar-credits">
+            <div><strong>Fundamental Coding</strong> by <strong>Velora</strong></div>
+            <div class="author">Disusun oleh: <strong>Mahin Utsman Nawawi, S.H</strong></div>
+        </div>
+    </aside>
+
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="query-hero">
+            <div class="query-badges">
+                <span class="query-badge badge-blue"><i class="fa-solid fa-book-bookmark"></i> 30 CONTOH PERINTAH SIAP PAKAI</span>
+                <span class="query-badge badge-surface"><i class="fa-solid fa-database"></i> DATABASE RIIL E-COMMERCE</span>
+                <span class="query-badge badge-green"><i class="fa-solid fa-lightbulb"></i> DISERTAI TUJUAN &amp; SKENARIO</span>
+            </div>
+            <h1>Belajar Semua Query SQL: <span>Katalog 30 Perintah Industri</span></h1>
+            <p>
+                Pelajari anatomi query basis data relasional mulai dari tingkat dasar hingga analitik lanjutan. Setiap contoh dilengkapi penjelasan konkret <strong>"Query ini untuk apa?"</strong>, skenario penggunaan di dunia kerja nyata, dan bagaimana database engine memprosesnya.
+            </p>
+        </section>
+
+        <div class="query-content-container">
+
+            <!-- Controls: Search & Category Tabs -->
+            <div class="query-controls-bar">
+                <div class="query-search-wrap">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" class="query-search-input" id="querySearchInput" placeholder="Cari query (misal: omzet, join, limit, subquery, running total, margin)..." oninput="filterQueryList()">
+                </div>
+
+                <div class="category-tabs-row">
+                    <button class="cat-tab-btn active" onclick="filterCategory('all', this)"><i class="fa-solid fa-border-all"></i> Semua (30)</button>
+                    <button class="cat-tab-btn" onclick="filterCategory('cat-1', this)"><i class="fa-solid fa-table"></i> Dasar (5)</button>
+                    <button class="cat-tab-btn" onclick="filterCategory('cat-2', this)"><i class="fa-solid fa-filter"></i> Filter (5)</button>
+                    <button class="cat-tab-btn" onclick="filterCategory('cat-3', this)"><i class="fa-solid fa-calculator"></i> Agregasi (5)</button>
+                    <button class="cat-tab-btn" onclick="filterCategory('cat-4', this)"><i class="fa-solid fa-link"></i> JOIN (5)</button>
+                    <button class="cat-tab-btn" onclick="filterCategory('cat-5', this)"><i class="fa-solid fa-code-branch"></i> Subquery &amp; CTE (5)</button>
+                    <button class="cat-tab-btn" onclick="filterCategory('cat-6', this)"><i class="fa-solid fa-chart-line"></i> Window (5)</button>
+                </div>
+            </div>
+
+            <!-- ===================================================================
+                 KATEGORI 1: QUERY DASAR & PEMILIHAN KOLOM (5 CONTOH)
+                 =================================================================== -->
+            <div class="category-block" id="cat-1" data-cat="cat-1">
+                <div class="category-section-title">
+                    <h2><i class="fa-solid fa-table"></i> Kategori 1: Query Dasar &amp; Pemilihan Kolom</h2>
+                    <span class="category-badge-count">5 Contoh Perintah</span>
+                </div>
+
+                <!-- Query 1.1 -->
+                <article class="query-card" data-keywords="select limit produk berat kolom overfetching">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">1.1</span>
+                            <div class="query-title-text">Memilih Kolom Spesifik &amp; Pembatasan Baris Data</div>
+                        </div>
+                        <span class="query-category-tag">SELECT &amp; LIMIT</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk menarik sampel katalog nama produk dan berat fisiknya tanpa menyedot seluruh tabel. Hal ini sangat penting untuk mencegah pemborosan RAM server (*overfetching*) saat sistem hanya membutuhkan data tertentu untuk perhitungan berat paket pengiriman.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat backend API membuat endpoint ringkas katalog produk atau tim logistik mengecek berat rata-rata barang untuk pengemasan.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    nama_produk, 
+    berat_gram
+FROM produk
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li><code>SELECT nama_produk, berat_gram</code>: Database engine hanya membaca 2 kolom dari disk penyimpanan.</li>
+                                <li><code>LIMIT 5</code>: Menghentikan eksekusi pemindaian (*cursor scan*) tepat setelah baris ke-5 ditemukan.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 1.2 -->
+                <article class="query-card" data-keywords="alias as kalkulasi harga jual modal margin laba profit">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">1.2</span>
+                            <div class="query-title-text">Memberi Alias Kolom &amp; Kalkulasi Margin Keuntungan</div>
+                        </div>
+                        <span class="query-category-tag">AS &amp; Aritmatika</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk menghitung estimasi keuntungan kotor (margin rupiah) per unit produk secara langsung pada tingkat database tanpa perlu memproses pengurangan harga di bahasa pemrograman frontend/backend.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Di dashboard keuangan manajemen toko ketika finance manager mengecek produk mana yang memberikan sumbangan laba nominal terbesar.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    sku,
+    harga_modal,
+    harga_jual,
+    (harga_jual - harga_modal) AS keuntungan_nominal
+FROM variasi_produk
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li>Ekspresi <code>(harga_jual - harga_modal)</code> menghitung selisih harga secara on-the-fly per baris.</li>
+                                <li>Kata kunci <code>AS keuntungan_nominal</code> memberi label nama kolom baru di struktur response query.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 1.3 -->
+                <article class="query-card" data-keywords="distinct unik alamat kota provinsi kurir ekspedisi">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">1.3</span>
+                            <div class="query-title-text">Menghilangkan Duplikasi Baris Wilayah Pengiriman</div>
+                        </div>
+                        <span class="query-category-tag">DISTINCT &amp; ORDER BY</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk mengekstrak daftar unik nama provinsi dan kota tujuan pesanan yang pernah dilayani, sehingga tidak ada nama kota yang muncul berulang-ulang meskipun terdapat ribuan pelanggan di kota tersebut.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Untuk mengisi dropdown wilayah pengiriman pada form checkout atau analisis jangkauan coverage ekspedisi kurir.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT DISTINCT 
+    kota, 
+    provinsi
+FROM alamat_pelanggan
+ORDER BY provinsi ASC, kota ASC
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li><code>DISTINCT</code> mengeliminasi rekaman duplikat pada kombinasi pasangan nilai <code>kota</code> dan <code>provinsi</code>.</li>
+                                <li><code>ORDER BY provinsi ASC, kota ASC</code> menata urutan alfabetis dari provinsi lalu ke tingkat kota.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 1.4 -->
+                <article class="query-card" data-keywords="limit offset paginasi pagination halaman dashboard">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">1.4</span>
+                            <div class="query-title-text">Paginasi Halaman Data Transaksi (Pagination)</div>
+                        </div>
+                        <span class="query-category-tag">LIMIT &amp; OFFSET</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk membagi ribuan transaksi ke dalam halaman-halaman antarmuka aplikasi. Contoh di bawah mengambil data untuk <strong>Halaman ke-2</strong> dengan ukuran 5 baris per halaman (melewatkan 5 data teratas pertama).
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Pada REST API endpoint table dashboard admin (misal <code>/api/orders?page=2&amp;limit=5</code>).</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    nomor_invoice, 
+    tanggal_pesanan, 
+    total_bayar
+FROM pesanan
+ORDER BY total_bayar DESC
+LIMIT 5 OFFSET 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li><code>LIMIT 5</code>: Mengambil maksimum 5 rekaman.</li>
+                                <li><code>OFFSET 5</code>: Melompati 5 baris hasil teratas (peringkat 1 s/d 5) dan mengembalikan peringkat 6 s/d 10.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 1.5 -->
+                <article class="query-card" data-keywords="coalesce null diskon voucher aman default">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">1.5</span>
+                            <div class="query-title-text">Penanganan Nilai Kosong Diskon (COALESCE)</div>
+                        </div>
+                        <span class="query-category-tag">COALESCE &amp; NULL Handling</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk mengamankan data transaksi yang tidak menggunakan kupon voucher (`voucher_id` bernilai `NULL`). Fungsi `COALESCE` mengganti nilai `NULL` menjadi angka default `0` agar aman saat dikonsumsi oleh aplikasi klien.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat proses ekspor data invoice ke sistem pelaporan pajak/akuntansi agar tidak menimbulkan kegagalan *NullPointerException*.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    nomor_invoice,
+    COALESCE(voucher_id, 0) AS voucher_id_bersih,
+    potongan_diskon,
+    total_bayar
+FROM pesanan
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li><code>COALESCE(voucher_id, 0)</code>: Mengevaluasi nilai <code>voucher_id</code>; jika bernilai <code>NULL</code>, maka angka <code>0</code> yang akan dikembalikan.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- ===================================================================
+                 KATEGORI 2: FILTERING & PENCARIAN SPESIFIK (5 CONTOH)
+                 =================================================================== -->
+            <div class="category-block" id="cat-2" data-cat="cat-2">
+                <div class="category-section-title">
+                    <h2><i class="fa-solid fa-filter"></i> Kategori 2: Filtering &amp; Pencarian Spesifik</h2>
+                    <span class="category-badge-count">5 Contoh Perintah</span>
+                </div>
+
+                <!-- Query 2.1 -->
+                <article class="query-card" data-keywords="where and pesanan selesai status total bayar audit">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">2.1</span>
+                            <div class="query-title-text">Filter Transaksi Selesai Bernilai Tinggi (WHERE &amp; AND)</div>
+                        </div>
+                        <span class="query-category-tag">WHERE &amp; Operator &gt;=</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk mengaudit transaksi sukses dengan nilai pembayaran di atas Rp 1.000.000 guna memastikan seluruh pesanan bernilai jumbo telah selesai diproses tanpa kendala retur atau keluhan pelanggan.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat tim rekonsiliasi keuangan memverifikasi transfer dana masuk bernilai tinggi dari payment gateway ke rekening bank perusahaan.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    nomor_invoice, 
+    tanggal_pesanan, 
+    total_bayar, 
+    status_pesanan
+FROM pesanan
+WHERE status_pesanan = 'Selesai' 
+  AND total_bayar >= 1000000
+ORDER BY total_bayar DESC 
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li>Klausa <code>WHERE</code> menyaring baris sebelum diurutkan. Operator <code>AND</code> mewajibkan kedua kriteria bernilai benar (TRUE).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 2.2 -->
+                <article class="query-card" data-keywords="in operator daftar himpunan diproses dikirim antrean gudang">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">2.2</span>
+                            <div class="query-title-text">Filter Berdasarkan Kumpulan Status Antrean (Operator IN)</div>
+                        </div>
+                        <span class="query-category-tag">Operator IN</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan oleh tim gudang dan logistik untuk memantau seluruh antrean paket yang statusnya sedang 'Diproses' atau sedang 'Dikirim' agar tidak ada pesanan tertinggal (*order backlog*).
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Pada layar monitor fulfillment gudang pusat yang me-refresh status pesanan yang masih berjalan secara real-time.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    nomor_invoice, 
+    tanggal_pesanan, 
+    status_pesanan, 
+    total_bayar
+FROM pesanan
+WHERE status_pesanan IN ('Diproses', 'Dikirim')
+ORDER BY tanggal_pesanan DESC
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li><code>status_pesanan IN ('Diproses', 'Dikirim')</code> mencocokkan baris mana pun yang nilainya ada di dalam set daftar yang diberikan.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 2.3 -->
+                <article class="query-card" data-keywords="between rentang inklusif nilai belanja menengah">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">2.3</span>
+                            <div class="query-title-text">Filter Rentang Nilai Belanja Menengah (Operator BETWEEN)</div>
+                        </div>
+                        <span class="query-category-tag">Operator BETWEEN</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk menganalisis pesanan yang berada pada rentang nilai belanja menengah (antara Rp 250.000 hingga Rp 500.000), yaitu target segmen konsumen paling dominan di platform e-commerce.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat tim growth marketing merancang syarat batas minimum belanja untuk mendapatkan gratis ongkir spesial.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    nomor_invoice, 
+    total_bayar, 
+    status_pesanan
+FROM pesanan
+WHERE total_bayar BETWEEN 250000 AND 500000
+ORDER BY total_bayar DESC
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li><code>BETWEEN 250000 AND 500000</code> bersifat inklusif, menyaring angka dari 250 ribu hingga 500 ribu secara ringkas dan efisien.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 2.4 -->
+                <article class="query-card" data-keywords="like wildcard pencarian teks wireless gaming produk">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">2.4</span>
+                            <div class="query-title-text">Pencarian Pola Kata Kunci Produk (LIKE &amp; Wildcard)</div>
+                        </div>
+                        <span class="query-category-tag">LIKE &amp; Wildcard %</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk mendukung fitur kotak pencarian (*search bar*) toko online yang mencari barang berdasarkan substring kata kunci seperti perangkat 'Wireless' atau perlengkapan 'Gaming'.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Pada endpoint search API katalog ketika pembeli mengetik kata kunci bebas di search bar website.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    produk_id, 
+    nama_produk, 
+    deskripsi
+FROM produk
+WHERE nama_produk LIKE '%Wireless%' 
+   OR nama_produk LIKE '%Gaming%'
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li>Simbol <code>%</code> adalah wildcard yang mencocokkan sembarang karakter di awal maupun di akhir kata kunci yang dicari.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 2.5 -->
+                <article class="query-card" data-keywords="is null pesanan voucher organik tanpa diskon">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">2.5</span>
+                            <div class="query-title-text">Deteksi Transaksi Organik Tanpa Voucher (IS NULL)</div>
+                        </div>
+                        <span class="query-category-tag">IS NULL</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk mengukur kesehatan transaksi alami toko: transaksi mana saja yang dibuat oleh pembeli tanpa menggunakan kode voucher diskon sama sekali (`voucher_id IS NULL`).
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat manajemen menghitung seberapa besar ketergantungan toko terhadap subsidi diskon promosi (*organic conversion rate*).</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    nomor_invoice, 
+    potongan_diskon, 
+    voucher_id, 
+    total_bayar, 
+    tanggal_pesanan
+FROM pesanan
+WHERE voucher_id IS NULL
+ORDER BY tanggal_pesanan DESC
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li>Standar SQL mewajibkan sintaks <code>IS NULL</code> karena nilai <code>NULL</code> menandakan ketiadaan nilai (*unknown*), bukan angka nol atau teks kosong.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- ===================================================================
+                 KATEGORI 3: AGREGASI & METRIK BISNIS (5 CONTOH)
+                 =================================================================== -->
+            <div class="category-block" id="cat-3" data-cat="cat-3">
+                <div class="category-section-title">
+                    <h2><i class="fa-solid fa-calculator"></i> Kategori 3: Agregasi &amp; Metrik Bisnis</h2>
+                    <span class="category-badge-count">5 Contoh Perintah</span>
+                </div>
+
+                <!-- Query 3.1 -->
+                <article class="query-card" data-keywords="count sum total transaksi omzet kotor pesanan sukses">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">3.1</span>
+                            <div class="query-title-text">Menghitung Total Transaksi &amp; Omzet Kotor Penjualan</div>
+                        </div>
+                        <span class="query-category-tag">COUNT &amp; SUM</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk menghitung dua Key Performance Indicator (KPI) paling krusial di e-commerce: total volume transaksi sukses dan total uang masuk kotor (*Gross Revenue*).
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Ditampilkan di kartu ringkasan eksekutif (*Executive Summary Card*) di pojok atas dashboard pemilik bisnis.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    COUNT(*) AS total_transaksi_selesai,
+    SUM(total_bayar) AS total_omzet_kotor
+FROM pesanan
+WHERE status_pesanan = 'Selesai';</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li><code>COUNT(*)</code> menghitung seluruh jumlah baris transaksi sukses.</li>
+                                <li><code>SUM(total_bayar)</code> menjumlahkan akumulasi nilai uang dari seluruh transaksi tersebut.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 3.2 -->
+                <article class="query-card" data-keywords="avg round aov average order value rata rata belanja">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">3.2</span>
+                            <div class="query-title-text">Menghitung Rata-rata Nilai Belanja Pesanan (AOV)</div>
+                        </div>
+                        <span class="query-category-tag">AVG &amp; ROUND</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk menghitung *Average Order Value (AOV)*, yaitu rata-rata rupiah yang dihabiskan seorang pembeli setiap kali membuat pesanan di toko online.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat tim produk mengevaluasi efektivitas rekomendasi paket *bundling* atau *cross-selling* barang tambahan di keranjang belanja.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    COUNT(DISTINCT pelanggan_id) AS total_pembeli_aktif,
+    ROUND(AVG(total_bayar), 0) AS rata_rata_belanja_aov
+FROM pesanan
+WHERE status_pesanan = 'Selesai';</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li><code>AVG(total_bayar)</code> menghitung nilai rata-rata aritmatika seluruh transaksi selesai.</li>
+                                <li><code>ROUND(..., 0)</code> membulatkan nilai desimal ke bilangan bulat rupiah terdekat.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 3.3 -->
+                <article class="query-card" data-keywords="group by metode pembayaran qris transfer cod pendapatan">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">3.3</span>
+                            <div class="query-title-text">Rekap Pendapatan per Metode Pembayaran (GROUP BY)</div>
+                        </div>
+                        <span class="query-category-tag">GROUP BY &amp; JOIN</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk mengelompokkan omzet berdasarkan kanal pembayaran (QRIS, Kartu Kredit, Virtual Account, COD, dll.) guna mengetahui saluran transaksi favorit pelanggan.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat negosiasi persentase biaya transaksi (*MDR Fee*) dengan payment gateway vendor.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    mp.nama_metode,
+    COUNT(p.pesanan_id) AS jumlah_transaksi,
+    SUM(p.total_bayar) AS total_pendapatan
+FROM pesanan p
+JOIN metode_pembayaran mp ON p.metode_id = mp.metode_id
+WHERE p.status_pesanan = 'Selesai'
+GROUP BY mp.nama_metode
+ORDER BY total_pendapatan DESC;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li>Klausa <code>GROUP BY mp.nama_metode</code> memisahkan baris pesanan ke dalam kelompok kategori pembayaran sebelum fungsi agregasi dihitung.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 3.4 -->
+                <article class="query-card" data-keywords="strftime group by bulan tren bulanan omzet bulanan">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">3.4</span>
+                            <div class="query-title-text">Tren Omzet Bulanan Toko (STRFTIME &amp; GROUP BY)</div>
+                        </div>
+                        <span class="query-category-tag">STRFTIME &amp; Tren Waktu</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk mengekstrak tahun-bulan (`YYYY-MM`) dari tanggal transaksi dan merekap pertumbuhan omzet dari bulan ke bulan guna melihat pola musiman (*seasonality*).
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Sebagai sumber data grafik batang (*Bar Chart*) bulanan pada laporan keuangan bulanan direksi.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    STRFTIME('%Y-%m', tanggal_pesanan) AS periode_bulan,
+    COUNT(*) AS jumlah_pesanan,
+    SUM(total_bayar) AS omzet_bulanan
+FROM pesanan
+WHERE status_pesanan = 'Selesai'
+GROUP BY periode_bulan
+ORDER BY periode_bulan ASC
+LIMIT 6;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li><code>STRFTIME('%Y-%m', tanggal_pesanan)</code> mengabaikan hari dan jam, menyisakan format tahun dan bulan sebagai kunci pengelompokan.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 3.5 -->
+                <article class="query-card" data-keywords="having filter agregasi omzet kategori threshold">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">3.5</span>
+                            <div class="query-title-text">Menyaring Kelompok Kategori Beromzet Tinggi (HAVING)</div>
+                        </div>
+                        <span class="query-category-tag">HAVING &amp; Threshold</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk memfilter hasil grup agregasi: hanya menampilkan kategori produk yang total omzet penjualannya mencapai ambang batas target (di atas Rp 50.000.000).
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat rapat strategi bisnis untuk memisahkan kategori unggulan (*star categories*) dari kategori yang penjualannya lambat.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    k.nama_kategori,
+    SUM(rp.subtotal) AS total_omzet
+FROM rincian_pesanan rp
+JOIN variasi_produk vp ON rp.variasi_id = vp.variasi_id
+JOIN produk pr ON vp.produk_id = pr.produk_id
+JOIN subkategori sk ON pr.subkategori_id = sk.subkategori_id
+JOIN kategori k ON sk.kategori_id = k.kategori_id
+GROUP BY k.nama_kategori
+HAVING total_omzet >= 50000000
+ORDER BY total_omzet DESC;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li><code>HAVING</code> menyaring baris *setelah* agregasi terjadi, berbeda dengan <code>WHERE</code> yang menyaring baris sebelum dihitung totalnya.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- ===================================================================
+                 KATEGORI 4: RELASI MULTI-TABEL & JOIN (5 CONTOH)
+                 =================================================================== -->
+            <div class="category-block" id="cat-4" data-cat="cat-4">
+                <div class="category-section-title">
+                    <h2><i class="fa-solid fa-link"></i> Kategori 4: Relasi Multi-Tabel &amp; JOIN</h2>
+                    <span class="category-badge-count">5 Contoh Perintah</span>
+                </div>
+
+                <!-- Query 4.1 -->
+                <article class="query-card" data-keywords="inner join pelanggan pesanan nama email invoice">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">4.1</span>
+                            <div class="query-title-text">Menghubungkan Transaksi dengan Profil Pelanggan (INNER JOIN)</div>
+                        </div>
+                        <span class="query-category-tag">INNER JOIN Dasar</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk menampilkan nomor invoice pesanan lengkap bersama identitas asli orang yang membelinya (nama lengkap, email, nomor HP) dari tabel terpisah `pelanggan`.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat Customer Support mencari riwayat pemilik pesanan ketika ada komplain pembayaran.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    p.nomor_invoice,
+    pel.nama_lengkap,
+    pel.email,
+    p.total_bayar,
+    p.status_pesanan
+FROM pesanan p
+INNER JOIN pelanggan pel ON p.pelanggan_id = pel.pelanggan_id
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li>Klausa <code>INNER JOIN</code> mencocokkan foreign key <code>p.pelanggan_id</code> dengan primary key <code>pel.pelanggan_id</code>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 4.2 -->
+                <article class="query-card" data-keywords="multi join nota belanja invoice rincian produk item struk">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">4.2</span>
+                            <div class="query-title-text">Mencetak Rincian Struk Faktur Belanja Lengkap (Multi-JOIN)</div>
+                        </div>
+                        <span class="query-category-tag">Multi-Table JOIN</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk mengumpulkan seluruh komponen struk belanja fisik: dari nomor invoice, nama produk, spesifikasi warna/ukuran varian, jumlah beli, hingga subtotal harga per baris.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat sistem mencetak surat jalan atau invoice PDF yang dimasukkan ke dalam paket pengiriman barang.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    p.nomor_invoice,
+    pr.nama_produk,
+    vp.warna,
+    vp.ukuran,
+    rp.jumlah,
+    rp.harga_satuan,
+    rp.subtotal
+FROM pesanan p
+INNER JOIN rincian_pesanan rp ON p.pesanan_id = rp.pesanan_id
+INNER JOIN variasi_produk vp ON rp.variasi_id = vp.variasi_id
+INNER JOIN produk pr ON vp.produk_id = pr.produk_id
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li>Menggabungkan 4 tabel sekaligus secara berantai: Pesanan &rarr; Rincian &rarr; Varian SKU &rarr; Katalog Induk Produk.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 4.3 -->
+                <article class="query-card" data-keywords="join kurir resi status pengiriman logistik ekspedisi">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">4.3</span>
+                            <div class="query-title-text">Melacak Kurir Ekspedisi &amp; Nomor Resi Pengiriman</div>
+                        </div>
+                        <span class="query-category-tag">Relasi Logistik</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk memonitor progres pengiriman logistik: menggabungkan pesanan dengan partner kurir pengangkut (JNE, SiCepat, dll.) dan nomor resi pelacakan aktif.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Ditampilkan pada halaman pelacakan pesanan pembeli (*Order Tracking Screen*) di aplikasi seluler toko.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    p.nomor_invoice,
+    k.nama_kurir,
+    k.layanan,
+    sp.status_pengiriman,
+    sp.nomor_resi
+FROM pesanan p
+INNER JOIN kurir_ekspedisi k ON p.kurir_id = k.kurir_id
+INNER JOIN status_pengiriman sp ON p.pesanan_id = sp.pesanan_id
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li>Menghubungkan entitas transaksi dengan status logistik kurir eksternal secara terintegrasi.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 4.4 -->
+                <article class="query-card" data-keywords="left join null pelanggan belum belanja aktivasi churn">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">4.4</span>
+                            <div class="query-title-text">Menemukan Pelanggan Terdaftar yang Belum Pernah Belanja</div>
+                        </div>
+                        <span class="query-category-tag">LEFT JOIN &amp; IS NULL</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk mendeteksi akun pelanggan yang sudah mendaftar tetapi belum pernah menyelesaikan satu transaksi pun, guna mencari user pasif untuk program reaktivasi.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Tim CRM marketing menggunakan data ini untuk mengirimkan voucher selamat datang (*First-order Incentive*).</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    pel.pelanggan_id,
+    pel.nama_lengkap,
+    pel.email,
+    pel.tanggal_daftar
+FROM pelanggan pel
+LEFT JOIN pesanan p ON pel.pelanggan_id = p.pelanggan_id
+WHERE p.pesanan_id IS NULL
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li><code>LEFT JOIN</code> mempertahankan seluruh data pelanggan di sisi kiri, dan kondisi <code>WHERE p.pesanan_id IS NULL</code> menyaring akun yang tidak punya relasi transaksi.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 4.5 -->
+                <article class="query-card" data-keywords="join stok gudang variasi produk menipis restock inventaris">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">4.5</span>
+                            <div class="query-title-text">Memantau Stok Menipis per Lokasi Gudang Fisik</div>
+                        </div>
+                        <span class="query-category-tag">Inventaris Multi-Gudang</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk mendeteksi barang-barang yang stoknya kritis (tersisa 10 unit atau kurang) beserta informasi di gudang kota mana barang tersebut disimpan.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Di sistem procurement gudang untuk memicu Purchase Order otomatis ke supplier (*Low Stock Alert*).</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    pr.nama_produk,
+    vp.sku,
+    g.nama_gudang,
+    g.kota,
+    sg.stok_tersedia
+FROM stok_gudang sg
+INNER JOIN gudang g ON sg.gudang_id = g.gudang_id
+INNER JOIN variasi_produk vp ON sg.variasi_id = vp.variasi_id
+INNER JOIN produk pr ON vp.produk_id = pr.produk_id
+WHERE sg.stok_tersedia <= 10
+ORDER BY sg.stok_tersedia ASC
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li>Menghubungkan tabel persediaan fisik <code>stok_gudang</code> dengan master <code>gudang</code> dan katalog SKU barang.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- ===================================================================
+                 KATEGORI 5: SUBQUERY & COMMON TABLE EXPRESSIONS (CTE) (5 CONTOH)
+                 =================================================================== -->
+            <div class="category-block" id="cat-5" data-cat="cat-5">
+                <div class="category-section-title">
+                    <h2><i class="fa-solid fa-code-branch"></i> Kategori 5: Subquery &amp; Common Table Expressions (CTE)</h2>
+                    <span class="category-badge-count">5 Contoh Perintah</span>
+                </div>
+
+                <!-- Query 5.1 -->
+                <article class="query-card" data-keywords="subquery scalar rata rata where pesanan di atas rata rata">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">5.1</span>
+                            <div class="query-title-text">Mencari Pesanan di Atas Rata-rata Toko (Scalar Subquery)</div>
+                        </div>
+                        <span class="query-category-tag">Scalar Subquery</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk memfilter pesanan yang nominal belanjanya secara dinamis lebih tinggi daripada rata-rata belanja seluruh transaksi toko tanpa perlu menghitung angka rata-rata secara manual di luar query.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat analis mengidentifikasi transaksi pembeli berkantong tebal (*High Spender Segment*).</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    nomor_invoice, 
+    total_bayar, 
+    tanggal_pesanan
+FROM pesanan
+WHERE total_bayar > (
+    SELECT AVG(total_bayar) 
+    FROM pesanan 
+    WHERE status_pesanan = 'Selesai'
+)
+ORDER BY total_bayar DESC
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li>Subquery di dalam kurung dieksekusi terlebih dahulu menghasilkan 1 angka rata-rata, lalu angka tersebut dijadikan batas pembanding klausa <code>WHERE</code> luar.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 5.2 -->
+                <article class="query-card" data-keywords="subquery in filter pelanggan pembeli kategori elektronik">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">5.2</span>
+                            <div class="query-title-text">Menyaring Pelanggan Pembeli Kategori Khusus (Subquery IN)</div>
+                        </div>
+                        <span class="query-category-tag">Subquery di Klausa IN</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk memfilter profil pelanggan yang pernah membeli produk dari kategori induk tertentu (misal Kategori ID = 1 / Elektronik) untuk sasaran promosi bertarget.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat tim pemasaran ingin meluncurkan promo gadget terbaru hanya kepada user yang punya minat belanja barang elektronik.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    pel.nama_lengkap, 
+    pel.email
+FROM pelanggan pel
+WHERE pel.pelanggan_id IN (
+    SELECT DISTINCT p.pelanggan_id
+    FROM pesanan p
+    JOIN rincian_pesanan rp ON p.pesanan_id = rp.pesanan_id
+    JOIN variasi_produk vp ON rp.variasi_id = vp.variasi_id
+    JOIN produk pr ON vp.produk_id = pr.produk_id
+    JOIN subkategori sk ON pr.subkategori_id = sk.subkategori_id
+    WHERE sk.kategori_id = 1
+)
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li>Subquery menghasilkan daftar array ID pelanggan yang memenuhi kriteria, lalu query utama mengambil identitas nama &amp; email mereka.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 5.3 -->
+                <article class="query-card" data-keywords="derived table subquery from rata rata transaksi frekuensi belanja">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">5.3</span>
+                            <div class="query-title-text">Menghitung Rata-rata Frekuensi Belanja per User (Derived Table)</div>
+                        </div>
+                        <span class="query-category-tag">Derived Table (FROM Subquery)</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk menghitung rata-rata dari hasil agregasi tingkat pertama: seberapa sering seorang pelanggan berbelanja di toko kita selama hidupnya (*Purchase Frequency*).
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Untuk metrik Customer Lifetime Value (CLV) dan analisis loyalitas pelanggan.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    ROUND(AVG(transaksi_per_user), 1) AS rata_rata_pesanan_per_user
+FROM (
+    SELECT 
+        pelanggan_id, 
+        COUNT(*) AS transaksi_per_user
+    FROM pesanan
+    GROUP BY pelanggan_id
+);</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li>Subquery di dalam klausa <code>FROM</code> membentuk tabel virtual sementara yang kemudian dihitung rata-ratanya oleh query luar.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 5.4 -->
+                <article class="query-card" data-keywords="cte with common table expression bersih modular terisolasi">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">5.4</span>
+                            <div class="query-title-text">Membuat Alur Analisis Bersih Modular (Single CTE)</div>
+                        </div>
+                        <span class="query-category-tag">WITH CTE</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk menstrukturkan query kompleks agar mudah dibaca seperti membaca paragraf kode pemrograman biasa, dengan mendefinisikan tabel sementara bernama `pesanan_sukses` di awal.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Praktik terbaik arsitektur data SQL (*Clean Code Data Pipeline*) agar query analitik mudah di-maintain dan di-review rekan kerja.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">WITH pesanan_sukses AS (
+    SELECT 
+        pesanan_id, 
+        nomor_invoice, 
+        pelanggan_id, 
+        total_bayar
+    FROM pesanan
+    WHERE status_pesanan = 'Selesai'
+)
+SELECT 
+    ps.nomor_invoice,
+    pel.nama_lengkap,
+    ps.total_bayar
+FROM pesanan_sukses ps
+JOIN pelanggan pel ON ps.pelanggan_id = pel.pelanggan_id
+ORDER BY ps.total_bayar DESC
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li>Blok <code>WITH pesanan_sukses AS (...)</code> mengisolasi proses filtering terlebih dahulu, membuat query gabungan di bawahnya jauh lebih rapi.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 5.5 -->
+                <article class="query-card" data-keywords="multi cte omzet kotor diskon bakar uang net revenue">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">5.5</span>
+                            <div class="query-title-text">Komparasi Omzet Kotor &amp; Beban Diskon (Multi-CTE)</div>
+                        </div>
+                        <span class="query-category-tag">Multi-CTE Analitik</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk menghitung pendapatan bersih (*Net Revenue*) dengan cara menyusun dua blok kalkulasi independen: total omzet kotor dan total biaya subsidi diskon promo yang dikeluarkan toko.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat evaluasi profitabilitas promosi oleh tim finance dan CEO dalam menghitung return on investment kampanye diskon.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">WITH rekap_omzet AS (
+    SELECT SUM(total_bayar) AS gross_revenue
+    FROM pesanan
+    WHERE status_pesanan = 'Selesai'
+),
+rekap_diskon AS (
+    SELECT SUM(potongan_diskon) AS total_bakar_uang
+    FROM pesanan
+    WHERE status_pesanan = 'Selesai'
+)
+SELECT 
+    ro.gross_revenue,
+    rd.total_bakar_uang,
+    (ro.gross_revenue - rd.total_bakar_uang) AS net_revenue
+FROM rekap_omzet ro, rekap_diskon rd;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li>Membuat beberapa CTE sekaligus yang dipisahkan tanda koma, lalu menggabungkannya dalam satu laporan baris akhir.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- ===================================================================
+                 KATEGORI 6: WINDOW FUNCTIONS & ANALISIS PERINGKAT (5 CONTOH)
+                 =================================================================== -->
+            <div class="category-block" id="cat-6" data-cat="cat-6">
+                <div class="category-section-title">
+                    <h2><i class="fa-solid fa-chart-line"></i> Kategori 6: Window Functions &amp; Analisis Tren</h2>
+                    <span class="category-badge-count">5 Contoh Perintah</span>
+                </div>
+
+                <!-- Query 6.1 -->
+                <article class="query-card" data-keywords="row_number partition by urutan transaksi repeat order pertama">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">6.1</span>
+                            <div class="query-title-text">Menomori Urutan Belanja Historis User (ROW_NUMBER)</div>
+                        </div>
+                        <span class="query-category-tag">ROW_NUMBER() OVER</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk menomori secara kronologis setiap transaksi yang dilakukan oleh masing-masing pelanggan (transaksi ke-1, ke-2, ke-3, dst.) guna membedakan pembelian perdana dari pembelian berulang (*repeat order*).
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat menghitung metrik retensi dan cohort analisis perilaku pembeli di platform online.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    pelanggan_id,
+    nomor_invoice,
+    tanggal_pesanan,
+    ROW_NUMBER() OVER(
+        PARTITION BY pelanggan_id 
+        ORDER BY tanggal_pesanan ASC
+    ) AS urutan_transaksi_ke
+FROM pesanan
+LIMIT 6;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li><code>PARTITION BY pelanggan_id</code> memisahkan nomor urut per user, dan urutan di-reset kembali ke angka 1 setiap kali berganti pelanggan.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 6.2 -->
+                <article class="query-card" data-keywords="dense_rank peringkat ranking produk terlaris penjualan juara">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">6.2</span>
+                            <div class="query-title-text">Menentukan Ranking Produk Terlaris (DENSE_RANK)</div>
+                        </div>
+                        <span class="query-category-tag">DENSE_RANK() OVER</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk menentukan peringkat produk paling laku berdasarkan total kuantitas terjual tanpa ada nomor ranking yang terlewat jika terjadi jumlah penjualan yang seri.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Menampilkan badge *"Produk Terlaris #1, #2, #3"* pada halaman etalase toko online.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    pr.nama_produk,
+    SUM(rp.jumlah) AS total_terjual,
+    DENSE_RANK() OVER(
+        ORDER BY SUM(rp.jumlah) DESC
+    ) AS ranking_terlaris
+FROM rincian_pesanan rp
+JOIN variasi_produk vp ON rp.variasi_id = vp.variasi_id
+JOIN produk pr ON vp.produk_id = pr.produk_id
+GROUP BY pr.produk_id
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li><code>DENSE_RANK()</code> mengurutkan produk dari jumlah terjual terbanyak dan memberikan peringkat berurutan 1, 2, 3 tanpa celah.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 6.3 -->
+                <article class="query-card" data-keywords="running total akumulasi kumulatif omzet berjalan kas grafik">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">6.3</span>
+                            <div class="query-title-text">Menghitung Akumulasi Omzet Berjalan (Running Total)</div>
+                        </div>
+                        <span class="query-category-tag">Running Total (SUM OVER)</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk melihat total uang masuk kumulatif dari hari ke hari (penjualan hari ini ditambahkan dengan seluruh penjualan hari-hari sebelumnya) sepanjang tahun.
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Untuk memplot grafik garis kumulatif kas perusahaan menuju pencapaian target tahunan (*Year-to-Date Revenue pacing*).</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    DATE(tanggal_pesanan) AS tanggal,
+    SUM(total_bayar) AS omzet_harian,
+    SUM(SUM(total_bayar)) OVER(
+        ORDER BY DATE(tanggal_pesanan) ASC
+    ) AS running_total_omzet
+FROM pesanan
+WHERE status_pesanan = 'Selesai'
+GROUP BY DATE(tanggal_pesanan)
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li><code>SUM(...) OVER(ORDER BY tanggal ASC)</code> menjumlahkan nilai baris demi baris secara progresif dari rekaman paling awal.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 6.4 -->
+                <article class="query-card" data-keywords="lag over pertumbuhan bulan lalu perbandingan mom varians">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">6.4</span>
+                            <div class="query-title-text">Membandingkan Omzet dengan Bulan Sebelumnya (LAG)</div>
+                        </div>
+                        <span class="query-category-tag">LAG() OVER (MoM Growth)</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk menarik nilai omzet dari 1 baris sebelumnya secara langsung ke baris saat ini, sehingga kita bisa menghitung selisih pertumbuhan penjualan dari bulan lalu (*Month-over-Month*).
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat rapat evaluasi bulanan tim growth untuk melihat persentase kenaikan atau penurunan omzet toko.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    STRFTIME('%Y-%m', tanggal_pesanan) AS bulan,
+    SUM(total_bayar) AS omzet_bulan_ini,
+    LAG(SUM(total_bayar), 1) OVER(
+        ORDER BY STRFTIME('%Y-%m', tanggal_pesanan) ASC
+    ) AS omzet_bulan_lalu
+FROM pesanan
+WHERE status_pesanan = 'Selesai'
+GROUP BY bulan
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li><code>LAG(..., 1)</code> mengintip dan mengambil data tepat 1 baris di atas baris yang sedang aktif.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Query 6.5 -->
+                <article class="query-card" data-keywords="kontribusi persen partition by porsi penjualan kategori">
+                    <div class="query-card-header">
+                        <div class="query-title-wrap">
+                            <span class="query-number-pill">6.5</span>
+                            <div class="query-title-text">Menghitung Porsi Persentase Terhadap Induk Kategori</div>
+                        </div>
+                        <span class="query-category-tag">SUM() OVER PARTITION BY</span>
+                    </div>
+                    <div class="query-card-body">
+                        <div class="for-what-box">
+                            <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Query ini untuk apa?</div>
+                            Digunakan untuk menghitung berapa persen sumbangan omzet satu produk tertentu terhadap total omzet seluruh kategori induknya (analisis pareto produk).
+                        </div>
+                        <div class="when-use-box">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Kapan digunakan?</strong> Saat merencanakan strategi alokasi anggaran iklan promosi agar terfokus pada produk penyumbang 80% omzet kategori.</div>
+                        </div>
+                        <div class="sql-snippet-wrap">
+                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <pre class="code-block"><code class="language-sql">SELECT 
+    k.nama_kategori,
+    pr.nama_produk,
+    SUM(rp.subtotal) AS omzet_produk,
+    ROUND(
+        SUM(rp.subtotal) * 100.0 / 
+        SUM(SUM(rp.subtotal)) OVER(PARTITION BY k.kategori_id), 
+        2
+    ) AS persen_kontribusi_kategori
+FROM rincian_pesanan rp
+JOIN variasi_produk vp ON rp.variasi_id = vp.variasi_id
+JOIN produk pr ON vp.produk_id = pr.produk_id
+JOIN subkategori sk ON pr.subkategori_id = sk.subkategori_id
+JOIN kategori k ON sk.kategori_id = k.kategori_id
+GROUP BY pr.produk_id
+LIMIT 5;</code></pre>
+                        </div>
+                        <div class="how-it-works-box">
+                            <strong>Cara kerjanya:</strong>
+                            <ul>
+                                <li>Penyebut rumus menggunakan <code>OVER(PARTITION BY k.kategori_id)</code> yang secara otomatis menghitung total omzet satu kategori tanpa merusak detail baris produk.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<script src="assets/script.js?v=2.5.0"></script>
+<script>
+    // Live Search Filter Function
+    function filterQueryList() {
+        const query = document.getElementById('querySearchInput').value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.query-card');
+
+        cards.forEach(card => {
+            const keywords = card.getAttribute('data-keywords') || '';
+            const textContent = card.innerText.toLowerCase();
+            if (keywords.includes(query) || textContent.includes(query)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    // Category Tabs Filter Function
+    function filterCategory(catId, btn) {
+        document.querySelectorAll('.cat-tab-btn').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+
+        const blocks = document.querySelectorAll('.category-block');
+        blocks.forEach(block => {
+            if (catId === 'all') {
+                block.style.display = 'block';
+            } else {
+                if (block.id === catId) {
+                    block.style.display = 'block';
+                } else {
+                    block.style.display = 'none';
+                }
+            }
+        });
+    }
+
+    // Salin Kode SQL dengan feedback interaktif
+    function salinKode(btn) {
+        const codeBlock = btn.nextElementSibling.querySelector('code');
+        if (!codeBlock) return;
+        const text = codeBlock.innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-check" style="color:#10B981;"></i> Disalin!';
+            btn.style.borderColor = '#10B981';
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.style.borderColor = '';
+            }, 2000);
+        }).catch(err => {
+            console.error('Gagal menyalin:', err);
+        });
+    }
+</script>
+
+</body>
+</html>

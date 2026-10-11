@@ -439,6 +439,10 @@ async function initDynamicMultiTrackSidebar() {
             <i class="fa-solid fa-house"></i>
             <span>Portal Utama</span>
         </a>
+        <a href="${prefix}semua_query.html" class="quick-nav-link ${cleanCurrent === 'semua_query' ? 'active' : ''}">
+            <i class="fa-solid fa-book-bookmark"></i>
+            <span>Pustaka Semua Query</span>
+        </a>
         <a href="${prefix}latihan.html" class="quick-nav-link ${cleanCurrent === 'latihan' ? 'active' : ''}">
             <i class="fa-solid fa-pen-to-square"></i>
             <span>Latihan Query SQL</span>
