@@ -583,7 +583,7 @@
             </div>
             <h1>Latihan Query SQL: <span>Query Dasar &amp; Filtering</span></h1>
             <p>
-                Asah keterampilan analisis SQL Anda menggunakan data transaksi nyata di <strong>ecommerce.db</strong>. Pecahkan 10 studi kasus bisnis di bawah ini secara mandiri pada aplikasi SQLite Anda.
+                Asah keterampilan analisis SQL Anda menggunakan data transaksi nyata di <strong>ecommerce.db</strong>. Buka database di <strong>TablePlus</strong>, amati struktur tabel yang relevan, dan pecahkan 10 studi kasus bisnis di bawah ini secara mandiri.
             </p>
         </section>
 
@@ -596,7 +596,7 @@
                     <i class="fa-solid fa-database"></i>
                     <div>
                         <div style="font-weight:700;color:var(--text-primary);">Database Latihan: ecommerce.db</div>
-                        <div style="font-size:0.85rem;color:var(--text-secondary);">20 Tabel Relasional &bull; 5.631 baris transaksi riil &bull; SQLite format</div>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);">20 Tabel Relasional &bull; 5.631 baris transaksi riil &bull; Format SQLite (buka di TablePlus)</div>
                     </div>
                 </div>
                 <div class="download-btn-group">
@@ -616,7 +616,7 @@
             <div class="latihan-nav-bar" style="margin-bottom: 24px; justify-content: space-between;">
                 <div style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:0.95rem;color:var(--text-primary);">
                     <i class="fa-solid fa-list-check" style="color:var(--brand-light);"></i>
-                    Daftar 10 Kasus Bisnis Mandiri
+                    Daftar 10 Misi Analisis Data Mandiri
                 </div>
 
                 <div class="quick-jump-wrap">
@@ -637,7 +637,7 @@
             </div>
 
             <!-- ===================================================================
-                 DAFTAR 10 SOAL & JAWABAN
+                 DAFTAR 10 SOAL LATIHAN ANALISIS DATA
                  =================================================================== -->
 
             <!-- SOAL 1 -->
@@ -646,42 +646,31 @@
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">1</div>
                         <div>
-                            <div class="soal-title-text">Audit Kupon Promosi &amp; Kuota Penggunaan</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: SELECT &bull; FROM &bull; LIMIT</div>
+                            <div class="soal-title-text">Cek Sampel Kupon Promo Aktif</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Pemohon: Tim Marketing &bull; Fokus: Pengambilan Sampel Data Awal</div>
                         </div>
                     </div>
-                    <span class="soal-topic-tag">SELECT &amp; LIMIT</span>
+                    <span class="soal-topic-tag">Eksplorasi Sampel</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Tim promosi ingin mengaudit katalog kupon diskon yang sedang aktif di toko online untuk mengecek kode kupon, jenis diskon, nominal potongan, dan sisa batas kuota penggunaannya.
+                        <strong>Latar Belakang:</strong> Tim Marketing mau merilis materi promosi <em>Flash Sale Gajian</em>. Sebelum materi disebar, manajer butuh mengecek sampel kupon apa saja yang sedang terdaftar, bagaimana tipe diskonnya, besaran potongannya, dan sisa kuota pemakaiannya.
                     </div>
-                    <div class="spec-grid">
-                        <div class="spec-item">
-                            <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">voucher_promo</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kolom Diminta</div>
-                            <div class="spec-value">kode_voucher, tipe_diskon, nilai_diskon, kuota_pemakaian</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Batasan Baris</div>
-                            <div class="spec-value">5 baris pertama</div>
-                        </div>
+                    <div class="scenario-box" style="background: rgba(56, 189, 248, 0.05); border-left-color: var(--brand-light);">
+                        <strong>Tugas Analisis:</strong> Buka katalog promo voucher di TablePlus. Tampilkan data kode kupon, tipe diskon, nominal diskon, dan sisa kuota penggunaannya. Tampilkan 5 baris pertama sebagai sampel awal agar data cepat ditinjau.
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Gunakan klausa <code>LIMIT 5</code> di akhir query untuk membatasi jumlah data yang diambil agar tidak membebani memori.</span>
+                        <span><strong>Tips Analis:</strong> Di dunia kerja, hindari mengambil seluruh data jika tim hanya meminta sampel awal. Pilih kolom yang relevan dan batasi jumlah barisnya.</span>
                     </div>
 
                     <!-- Scratchpad Coba Tulis Query -->
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
-                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
+                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query:</span>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di TablePlus</span>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query SQL Anda di sini untuk latihan...&#10;Contoh: SELECT kode_voucher..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis rancangan query SQL Anda di sini..."></textarea>
                     </div>
                 </div>
             </article>
@@ -692,44 +681,29 @@
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">2</div>
                         <div>
-                            <div class="soal-title-text">Kalkulasi Ongkos Kirim Paket Berat 5 Kg</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: SELECT &bull; AS &bull; Aritmatika (*)</div>
+                            <div class="soal-title-text">Simulasi Ongkos Kirim Paket 5 Kg</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Pemohon: Tim Customer Care &bull; Fokus: Perhitungan Tarif &amp; Penamaan Kolom</div>
                         </div>
                     </div>
-                    <span class="soal-topic-tag">AS &amp; Kalkulasi</span>
+                    <span class="soal-topic-tag">Kalkulasi Otomatis</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Tim operasional logistik ingin membuat simulasi biaya pengiriman barang untuk pesanan paket seberat 5 kilogram dari seluruh opsi kurir ekspedisi.
+                        <strong>Latar Belakang:</strong> Tim Layanan Pelanggan (CS) sering ditanya pembeli mengenai perkiraan ongkos kirim jika mereka belanja barang berat. Manajer logistik ingin membuat panduan cepat perkiraan tarif ongkir paket 5 kg untuk semua opsi ekspedisi dan layanannya.
                     </div>
-                    <div class="spec-grid">
-                        <div class="spec-item">
-                            <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">kurir_ekspedisi</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kolom Diminta</div>
-                            <div class="spec-value">nama_kurir, layanan, tarif_per_kg</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kolom Kalkulasi</div>
-                            <div class="spec-value">tarif_per_kg * 5 AS estimasi_ongkir_5kg</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Batasan Baris</div>
-                            <div class="spec-value">5 baris pertama</div>
-                        </div>
+                    <div class="scenario-box" style="background: rgba(56, 189, 248, 0.05); border-left-color: var(--brand-light);">
+                        <strong>Tugas Analisis:</strong> Buka data kurir ekspedisi di TablePlus. Tampilkan nama kurir, jenis layanan, dan tarif dasar per kg. Tambahkan kolom baru hasil perkiraan tarif untuk paket 5 kg dengan nama label yang rapi agar mudah dipahami tim CS. Tampilkan 5 data pertama.
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Kalikan kolom tarif dengan 5 di klausa SELECT: <code>(tarif_per_kg * 5) AS estimasi_ongkir_5kg</code>.</span>
+                        <span><strong>Tips Analis:</strong> Database bisa langsung melakukan perhitungan matematika. Berikan nama alias yang komunikatif agar tim non-teknis tidak bingung membaca header tabel laporan.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
-                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
+                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query:</span>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di TablePlus</span>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query SQL Anda di sini untuk latihan...&#10;Contoh: SELECT nama_kurir, layanan..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis rancangan query SQL Anda di sini..."></textarea>
                     </div>
                 </div>
             </article>
@@ -740,44 +714,29 @@
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">3</div>
                         <div>
-                            <div class="soal-title-text">Peringatan Stok Menipis di Gudang (WHERE &lt;=)</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE &bull; ORDER BY jumlah_stok ASC &bull; LIMIT 5</div>
+                            <div class="soal-title-text">Deteksi Stok Barang Kritis di Gudang</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Pemohon: Tim Operasional Gudang &bull; Fokus: Penyaringan &amp; Prioritas Masalah</div>
                         </div>
                     </div>
-                    <span class="soal-topic-tag">WHERE &amp; Operator &lt;=</span>
+                    <span class="soal-topic-tag">Penyaringan Kondisi</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Manajer gudang membutuhkan sistem peringatan dini (restock alert) untuk produk yang persediaannya kritis agar segera dipesan ulang ke pemasok.
+                        <strong>Latar Belakang:</strong> Jangan sampai toko mengecewakan pembeli karena produk laku keras tapi stok di gudang ternyata sudah habis. Kepala Gudang butuh daftar barang yang persediaan fisiknya sudah kritis (sisa 10 unit ke bawah) agar tim pengadaan bisa segera memesan ke pemasok hari ini.
                     </div>
-                    <div class="spec-grid">
-                        <div class="spec-item">
-                            <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">stok_gudang</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kondisi Filter</div>
-                            <div class="spec-value">jumlah_stok &lt;= 10</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Pengurutan</div>
-                            <div class="spec-value">ORDER BY jumlah_stok ASC (Paling sedikit dulu)</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Batasan Baris</div>
-                            <div class="spec-value">5 baris pertama</div>
-                        </div>
+                    <div class="scenario-box" style="background: rgba(56, 189, 248, 0.05); border-left-color: var(--brand-light);">
+                        <strong>Tugas Analisis:</strong> Buka data stok gudang di TablePlus. Saring hanya barang yang stoknya 10 unit ke bawah. Urutkan mulai dari sisa stok yang paling sedikit agar produk yang paling darurat langsung terlihat di puncak daftar, lalu ambil 5 produk teratas.
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Gunakan operator perbandingan <code>&lt;= 10</code> dan urutkan dengan <code>ORDER BY jumlah_stok ASC</code>.</span>
+                        <span><strong>Tips Analis:</strong> Mengurutkan data dari angka terkecil membantu pengambil keputusan langsung fokus pada stok yang paling membutuhkan tindakan cepat.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
-                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
+                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query:</span>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di TablePlus</span>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query WHERE stok_gudang di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis rancangan query SQL Anda di sini..."></textarea>
                     </div>
                 </div>
             </article>
@@ -788,44 +747,29 @@
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">4</div>
                         <div>
-                            <div class="soal-title-text">Kurasi Ulasan Tertulis Pelanggan (WHERE, AND, &amp; IS NOT NULL)</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE rating = 3 &bull; AND komentar IS NOT NULL &bull; LIMIT 5</div>
+                            <div class="soal-title-text">Riset Masukan Berharga dari Ulasan Netral</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Pemohon: Tim Product &amp; CX &bull; Fokus: Filter Ganda &amp; Validasi Data Teks</div>
                         </div>
                     </div>
-                    <span class="soal-topic-tag">WHERE, AND, &amp; IS NOT NULL</span>
+                    <span class="soal-topic-tag">Filter Ganda</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Tim evaluasi kepuasan pelanggan ingin meneliti ulasan bintang 3 yang memiliki feedback komentar tertulis (bukan ulasan yang dikosongkan pembeli).
+                        <strong>Latar Belakang:</strong> Ulasan bintang 5 biasanya hanya pujian singkat, sedangkan bintang 1 cenderung emosional. Ulasan pembeli dengan rating bintang 3 (netral) biasanya menyimpan saran objektif yang sangat berguna bagi pengembangan kualitas produk, asalkan ada teks komentar yang ditulis pembeli.
                     </div>
-                    <div class="spec-grid">
-                        <div class="spec-item">
-                            <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">ulasan_produk</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kondisi Filter</div>
-                            <div class="spec-value">rating = 3 AND komentar IS NOT NULL</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kolom Diminta</div>
-                            <div class="spec-value">ulasan_id, produk_id, rating, komentar</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Batasan Baris</div>
-                            <div class="spec-value">5 baris pertama</div>
-                        </div>
+                    <div class="scenario-box" style="background: rgba(56, 189, 248, 0.05); border-left-color: var(--brand-light);">
+                        <strong>Tugas Analisis:</strong> Buka data ulasan produk di TablePlus. Temukan ulasan yang bernilai persis bintang 3 dan pembelinya benar-benar mengisi catatan komentar (bukan komentar kosong). Tampilkan 5 ulasan pertama untuk dipelajari tim produk.
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Nilai numerik rating tanpa petik <code>rating = 3</code> dan cek kolom yang terisi dengan <code>IS NOT NULL</code> (bukan <code>&lt;&gt; NULL</code>).</span>
+                        <span><strong>Tips Analis:</strong> Pastikan Anda menggunakan cara pengecekan data kosong yang tepat dalam database relasional agar ulasan tanpa teks benar-benar tersaring keluar.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
-                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
+                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query:</span>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di TablePlus</span>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query kurasi ulasan pelanggan di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis rancangan query SQL Anda di sini..."></textarea>
                     </div>
                 </div>
             </article>
@@ -836,44 +780,29 @@
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">5</div>
                         <div>
-                            <div class="soal-title-text">Sebaran Kota Pemasok Logistik (DISTINCT)</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: SELECT DISTINCT &bull; ORDER BY kota ASC</div>
+                            <div class="soal-title-text">Pemetaan Kota Pemasok Tanpa Duplikasi</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Pemohon: Tim Pengadaan Barang &bull; Fokus: Pembersihan Nilai Ganda &amp; Urutan Alfabet</div>
                         </div>
                     </div>
-                    <span class="soal-topic-tag">DISTINCT &amp; ORDER BY</span>
+                    <span class="soal-topic-tag">Deduplikasi Data</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Divisi pengadaan barang (procurement) membutuhkan rekapitulasi kota-kota tempat mitra pemasok berdomisili untuk pemetaan rute suplai logistik tanpa duplikasi nama kota.
+                        <strong>Latar Belakang:</strong> Tim logistik sedang merancang rute penjemputan suplai barang. Manajer Pengadaan meminta daftar kota asal rekanan pemasok dengan instruksi: <em>"Buat daftarnya ringkas, jangan ada nama kota yang muncul berulang kali, dan urutkan rapi dari A sampai Z!"</em>.
                     </div>
-                    <div class="spec-grid">
-                        <div class="spec-item">
-                            <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">supplier</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kolom Diminta</div>
-                            <div class="spec-value">kota (nilai unik)</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Pengurutan</div>
-                            <div class="spec-value">ORDER BY kota ASC (A ke Z)</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Batasan Baris</div>
-                            <div class="spec-value">Semua kota unik (10 baris)</div>
-                        </div>
+                    <div class="scenario-box" style="background: rgba(56, 189, 248, 0.05); border-left-color: var(--brand-light);">
+                        <strong>Tugas Analisis:</strong> Buka data supplier di TablePlus. Ambil data kota tempat pemasok berada dengan menghilangkan seluruh duplikasi nama kota, lalu susun urutannya dari abjad A ke Z.
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Gunakan kata kunci <code>SELECT DISTINCT kota</code> untuk mengeliminasi duplikasi nama kota.</span>
+                        <span><strong>Tips Analis:</strong> Ketika banyak vendor berasal dari kota yang sama, laporan yang baik harus menyaring nilai unik agar tidak menyajikan data kembar kepada pimpinan.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
-                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
+                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query:</span>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di TablePlus</span>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query DISTINCT kota supplier di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis rancangan query SQL Anda di sini..."></textarea>
                     </div>
                 </div>
             </article>
@@ -884,44 +813,29 @@
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">6</div>
                         <div>
-                            <div class="soal-title-text">Analisis Saluran Pembayaran Digital (Operator IN)</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE tipe IN ('Virtual Account', 'E-Wallet') &bull; ORDER BY biaya_admin ASC, nama_metode ASC</div>
+                            <div class="soal-title-text">Perbandingan Saluran Pembayaran Digital</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Pemohon: Tim Fintech &amp; Pembayaran &bull; Fokus: Himpunan Kategori &amp; Urutan Bertingkat</div>
                         </div>
                     </div>
-                    <span class="soal-topic-tag">Operator IN</span>
+                    <span class="soal-topic-tag">Himpunan Kategori</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Manajer produk fintech ingin mengevaluasi saluran pembayaran perbankan digital bertipe Virtual Account dan E-Wallet beserta struktur biaya layanannya.
+                        <strong>Latar Belakang:</strong> Aplikasi ingin mendorong transaksi instan non-tunai. Tim produk butuh perbandingan opsi pembayaran yang masuk kelompok Virtual Account atau E-Wallet, serta ingin mengetahui saluran mana yang membebankan biaya admin paling hemat bagi pelanggan.
                     </div>
-                    <div class="spec-grid">
-                        <div class="spec-item">
-                            <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">metode_pembayaran</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kondisi Filter</div>
-                            <div class="spec-value">tipe IN ('Virtual Account', 'E-Wallet')</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Pengurutan</div>
-                            <div class="spec-value">biaya_admin ASC, nama_metode ASC</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kolom Diminta</div>
-                            <div class="spec-value">nama_metode, tipe, biaya_admin</div>
-                        </div>
+                    <div class="scenario-box" style="background: rgba(56, 189, 248, 0.05); border-left-color: var(--brand-light);">
+                        <strong>Tugas Analisis:</strong> Buka data metode pembayaran di TablePlus. Saring hanya opsi yang termasuk tipe Virtual Account atau E-Wallet. Tampilkan nama metode, jenis kategorinya, dan biaya admin. Urutkan mulai dari biaya admin termurah ke termahal. Jika biayanya sama, urutkan nama metodenya dari A ke Z.
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Operator <code>IN ('Virtual Account', 'E-Wallet')</code> jauh lebih ringkas dan elegan dibanding menulis multi-kondisi <code>OR</code>.</span>
+                        <span><strong>Tips Analis:</strong> Menyaring beberapa kategori sekaligus akan lebih rapi jika menggunakan perintah himpunan dibanding membuat banyak syarat yang panjang.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
-                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
+                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query:</span>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di TablePlus</span>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query operator IN metode pembayaran di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis rancangan query SQL Anda di sini..."></textarea>
                     </div>
                 </div>
             </article>
@@ -932,44 +846,29 @@
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">7</div>
                         <div>
-                            <div class="soal-title-text">Evaluasi Promo Belanja Skala Menengah (BETWEEN)</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE minimal_belanja BETWEEN 100000 AND 250000 &bull; ORDER BY minimal_belanja ASC</div>
+                            <div class="soal-title-text">Seleksi Voucher untuk Belanja Kelas Menengah</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Pemohon: Tim Promosi &bull; Fokus: Rentang Nilai Numerik</div>
                         </div>
                     </div>
-                    <span class="soal-topic-tag">Operator BETWEEN</span>
+                    <span class="soal-topic-tag">Rentang Nilai</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Tim kampanye pemasaran ingin memfilter kupon voucher yang dirancang khusus untuk memicu transaksi bernilai menengah (syarat minimal belanja Rp 100.000 s/d Rp 250.000).
+                        <strong>Latar Belakang:</strong> Tim promosi sedang menyiapkan kampanye untuk segmen pembeli berkeranjang belanja menengah (antara Rp 100.000 hingga Rp 250.000). Mereka butuh daftar voucher yang syarat minimal belanjanya berada pas di rentang tersebut.
                     </div>
-                    <div class="spec-grid">
-                        <div class="spec-item">
-                            <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">voucher_promo</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kondisi Filter</div>
-                            <div class="spec-value">minimal_belanja BETWEEN 100000 AND 250000</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Pengurutan</div>
-                            <div class="spec-value">minimal_belanja ASC (Syarat terkecil ke terbesar)</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kolom Diminta</div>
-                            <div class="spec-value">kode_voucher, tipe_diskon, nilai_diskon, minimal_belanja</div>
-                        </div>
+                    <div class="scenario-box" style="background: rgba(56, 189, 248, 0.05); border-left-color: var(--brand-light);">
+                        <strong>Tugas Analisis:</strong> Buka katalog voucher promo di TablePlus. Saring kupon yang syarat minimal belanjanya berada di rentang Rp 100.000 sampai Rp 250.000. Urutkan dari syarat belanja yang paling terjangkau ke yang lebih besar.
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> <code>BETWEEN nilai_awal AND nilai_akhir</code> bersifat inklusif (kedua nilai batas ikut masuk).</span>
+                        <span><strong>Tips Analis:</strong> Memfilter rentang angka dapat dilakukan secara natural dan ringkas menggunakan operator khusus rentang yang sudah mencakup kedua batas nilainya.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
-                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
+                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query:</span>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di TablePlus</span>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query BETWEEN voucher di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis rancangan query SQL Anda di sini..."></textarea>
                     </div>
                 </div>
             </article>
@@ -980,44 +879,29 @@
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">8</div>
                         <div>
-                            <div class="soal-title-text">Audit Legalitas Identitas Vendor Supplier (Pencarian Teks LIKE)</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE nama_supplier LIKE 'PT%' &bull; ORDER BY nama_supplier ASC</div>
+                            <div class="soal-title-text">Audit Legalitas Rekanan Berbadan Hukum PT</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Pemohon: Tim Legal &amp; Kepatuhan &bull; Fokus: Pencarian Pola Awalan Teks</div>
                         </div>
                     </div>
-                    <span class="soal-topic-tag">LIKE &amp; Wildcard</span>
+                    <span class="soal-topic-tag">Pola Awalan Teks</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Tim legal perusahaan mewajibkan pendataan vendor penyedia barang yang berbadan hukum resmi Perseroan Terbatas (PT).
+                        <strong>Latar Belakang:</strong> Untuk kontrak kerja sama bernilai besar, kebijakan audit internal memprioritaskan rekanan yang telah berbadan hukum resmi Perseroan Terbatas (PT). Tim legal meminta daftar seluruh pemasok yang nama perusahaannya berawalan status PT.
                     </div>
-                    <div class="spec-grid">
-                        <div class="spec-item">
-                            <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">supplier</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kondisi Filter</div>
-                            <div class="spec-value">nama_supplier LIKE 'PT%'</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Pengurutan</div>
-                            <div class="spec-value">nama_supplier ASC (A ke Z)</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kolom Diminta</div>
-                            <div class="spec-value">supplier_id, nama_supplier, kontak_person, kota</div>
-                        </div>
+                    <div class="scenario-box" style="background: rgba(56, 189, 248, 0.05); border-left-color: var(--brand-light);">
+                        <strong>Tugas Analisis:</strong> Buka data supplier di TablePlus. Cari rekanan pemasok yang nama perusahaannya diawali dengan kata 'PT'. Tampilkan identitas vendor, nama perusahaan, kontak person yang bisa dihubungi, dan kota asalnya. Urutkan nama perusahaannya dari A ke Z.
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Karakter persen <code>%</code> di akhir string mencocokkan teks yang berawalan dengan pola tersebut.</span>
+                        <span><strong>Tips Analis:</strong> Pencarian teks fleksibel di database memungkinkan Anda mencari kata yang memiliki awalan tertentu dengan bantuan simbol khusus penanda teks lanjutan.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
-                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
+                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query:</span>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di TablePlus</span>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query LIKE PT supplier di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis rancangan query SQL Anda di sini..."></textarea>
                     </div>
                 </div>
             </article>
@@ -1028,44 +912,29 @@
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">9</div>
                         <div>
-                            <div class="soal-title-text">Paginasi Leaderboard Produk Mewah Halaman ke-2 (ORDER BY, LIMIT, OFFSET)</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: ORDER BY harga_jual DESC &bull; LIMIT 5 OFFSET 5</div>
+                            <div class="soal-title-text">Paginasi Etalase Produk Premium Halaman ke-2</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Pemohon: Tim Front-End &bull; Fokus: Urutan Tertinggi &amp; Pemotongan Halaman</div>
                         </div>
                     </div>
-                    <span class="soal-topic-tag">LIMIT &amp; OFFSET</span>
+                    <span class="soal-topic-tag">Paginasi Data</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Pada katalog aplikasi eksekutif, data variasi produk termahal ditampilkan sebanyak 5 barang per halaman. Pengguna sedang membuka Halaman ke-2 (peringkat 6 s/d 10 termahal).
+                        <strong>Latar Belakang:</strong> Di etalase "Produk Sultan", katalog aplikasi menampilkan produk termahal sebanyak 5 item per halaman. Halaman pertama (peringkat 1 s/d 5 termahal) sudah selesai disiapkan. Sekarang tim pengembang aplikasi butuh data untuk mengisi **Halaman 2** (produk peringkat 6 s/d 10 termahal).
                     </div>
-                    <div class="spec-grid">
-                        <div class="spec-item">
-                            <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">variasi_produk</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Pengurutan</div>
-                            <div class="spec-value">ORDER BY harga_jual DESC (Termahal dulu)</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Halaman Target</div>
-                            <div class="spec-value">Halaman 2 (Lewati 5 produk pertama, ambil 5 berikutnya)</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kolom Diminta</div>
-                            <div class="spec-value">sku, warna, ukuran, harga_jual</div>
-                        </div>
+                    <div class="scenario-box" style="background: rgba(56, 189, 248, 0.05); border-left-color: var(--brand-light);">
+                        <strong>Tugas Analisis:</strong> Buka data variasi produk di TablePlus. Tampilkan kode varian, warna, ukuran, dan harga jualnya. Urutkan mulai dari harga yang paling mahal ke paling murah. Lewati 5 produk termahal pertama, lalu ambil 5 produk berikutnya.
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Gunakan rumus paginasi <code>ORDER BY harga_jual DESC LIMIT 5 OFFSET 5</code>.</span>
+                        <span><strong>Tips Analis:</strong> Paginasi pada aplikasi web bekerja dengan cara menentukan berapa banyak data yang ingin diambil dan berapa banyak data teratas yang perlu dilewati.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
-                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
+                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query:</span>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di TablePlus</span>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query paginasi produk termahal di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis rancangan query SQL Anda di sini..."></textarea>
                     </div>
                 </div>
             </article>
@@ -1076,48 +945,29 @@
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">10</div>
                         <div>
-                            <div class="soal-title-text">Audit Risiko Transaksi Tertunda &amp; Batal (Multi-Kondisi AND, OR, Kurung)</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE (status_pesanan = 'Dibatalkan' OR status_pesanan = 'Menunggu Pembayaran') AND total_bayar &gt;= 50000000 &bull; ORDER BY total_bayar DESC &bull; LIMIT 5</div>
+                            <div class="soal-title-text">Investigasi Transaksi Bernilai Besar yang Tertahan</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Pemohon: Tim Finance &amp; Risiko &bull; Fokus: Logika Gabungan &amp; Pengelompokan Syarat</div>
                         </div>
                     </div>
-                    <span class="soal-topic-tag">Multi-Kondisi AND &amp; OR</span>
+                    <span class="soal-topic-tag">Logika Gabungan</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Tim manajemen risiko ingin memeriksa pesanan bernilai transaksi fantastis (di atas Rp 50.000.000) yang gagal diproses atau masih tertunda pembayarannya.
+                        <strong>Latar Belakang:</strong> Manajer keuangan mendeteksi potensi kehilangan omzet besar. Ada beberapa pesanan bernilai transaksi fantastis (di atas Rp 50.000.000) yang statusnya bermasalah karena masih 'Menunggu Pembayaran' atau sudah 'Dibatalkan'. Tim mitigasi butuh daftar transaksi ini segera untuk ditindaklanjuti.
                     </div>
-                    <div class="spec-grid">
-                        <div class="spec-item">
-                            <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">pesanan</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kondisi Filter</div>
-                            <div class="spec-value">(status_pesanan = 'Dibatalkan' OR status_pesanan = 'Menunggu Pembayaran') AND total_bayar &gt;= 50000000</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Pengurutan</div>
-                            <div class="spec-value">ORDER BY total_bayar DESC (Terbesar dulu)</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Batasan Baris</div>
-                            <div class="spec-value">5 baris pertama</div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">Kolom Diminta</div>
-                            <div class="spec-value">nomor_invoice, tanggal_pesanan, status_pesanan, ongkos_kirim, total_bayar</div>
-                        </div>
+                    <div class="scenario-box" style="background: rgba(56, 189, 248, 0.05); border-left-color: var(--brand-light);">
+                        <strong>Tugas Analisis:</strong> Buka data pesanan transaksi di TablePlus. Tampilkan data nomor nota, tanggal, status pesanan, ongkos kirim, dan total bayar. Saring pesanan yang total bayarnya minimal Rp 50.000.000 dan statusnya berada di antara 'Dibatalkan' atau 'Menunggu Pembayaran'. Urutkan dari transaksi bernilai rupiah terbesar, ambil 5 transaksi paling prioritas.
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Wajib membungkus kondisi status dengan tanda kurung <code>(status_pesanan = 'Dibatalkan' OR status_pesanan = 'Menunggu Pembayaran')</code> sebelum dirangkai dengan <code>AND</code> agar presedensi operator benar.</span>
+                        <span><strong>Tips Analis:</strong> Ketika menggabungkan syarat pilihan (salah satu boleh benar) dengan syarat wajib, perhatikan urutan evaluasi logika dalam database agar kriteria tidak salah terfilter.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
-                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
+                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query:</span>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di TablePlus</span>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query multi-kondisi tanda kurung di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis rancangan query SQL Anda di sini..."></textarea>
                     </div>
                 </div>
             </article>

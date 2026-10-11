@@ -1,81 +1,82 @@
-# Latihan Mandiri SQL: Studi Kasus Riil E-Commerce
+# Latihan Mandiri: Studi Kasus Analis Data E-Commerce
 
-Panduan latihan menulis query SQL dasar menggunakan database riil e-commerce Indonesia: [`database/ecommerce.db`](../database/ecommerce.db).
+Selamat datang di studi kasus data e-commerce! Di sini kamu berperan sebagai **Junior Data Analyst**. Kamu akan membantu berbagai divisi menyelesaikan permasalahan operasional sehari-hari menggunakan database perusahaan: [`database/ecommerce.db`](../database/ecommerce.db).
 
-> **Petunjuk Pengerjaan:**
-> 1. Buka database `database/ecommerce.db` menggunakan aplikasi SQLite pilihan Anda (seperti **DB Browser for SQLite**, ekstensi VS Code **SQLite Viewer**, atau via CLI `sqlite3`).
-> 2. Soal-soal di bawah ini dirancang dari **skenario bisnis baru dan tabel-tabel berbeda** (bukan sekadar mengulang contoh di Modul 2) untuk menguji pemahaman analisis mandiri Anda.
-> 3. Kerjakan setiap nomor soal secara mandiri tanpa melihat kunci jawaban terlebih dahulu.
-> 4. Kunci jawaban dan pembahasan teknis lengkap tersedia di file terpisah: [`kunci_jawaban.md`](./kunci_jawaban.md) serta versi interaktif di [`latihan.html`](../latihan.html).
-
----
-
-## Daftar 10 Soal Latihan Mandiri
-
-### Soal 1: Audit Kupon Promosi & Kuota Penggunaan (SELECT & LIMIT)
-Tim promosi ingin mengaudit katalog kupon diskon yang sedang aktif beserta batas kuota penggunaannya.
-- **Tabel:** `voucher_promo`
-- **Instruksi:** Tampilkan kolom kode kupon (`kode_voucher`), jenis diskon (`tipe_diskon`), nominal/persen diskon (`nilai_diskon`), dan batas pemakaian (`kuota_pemakaian`). Batasi hasilnya hanya **5 baris pertama**.
+Untuk setiap misi:
+1. Pahami kebutuhan dari tim terkait.
+2. Buka database di **TablePlus**, lalu amati struktur tabel yang relevan.
+3. Tulis query untuk menarik data yang diminta.
 
 ---
 
-### Soal 2: Kalkulasi Ongkos Kirim Paket Berat (Kalkulasi Matematika & Kolom Alias AS)
-Tim operasional ingin membuat simulasi estimasi tarif pengiriman barang untuk paket berbobot 5 kilogram.
-- **Tabel:** `kurir_ekspedisi`
-- **Instruksi:** Tampilkan kolom `nama_kurir`, jenis `layanan`, `tarif_per_kg`, serta buat kolom kalkulasi perkiraan ongkir 5 kg (`tarif_per_kg * 5`) dengan nama alias `estimasi_ongkir_5kg`. Batasi hasilnya **5 baris pertama**.
+## 10 Misi Analisis Data
 
 ---
 
-### Soal 3: Peringatan Stok Menipis di Gudang (WHERE & Operator <=)
-Manajer gudang membutuhkan sistem peringatan dini (restock alert) untuk produk yang persediaannya kritis agar segera dipesan ulang ke pemasok.
-- **Tabel:** `stok_gudang`
-- **Instruksi:** Tampilkan kolom identitas stok (`stok_id`), gudang penyimpanan (`gudang_id`), varian barang (`variasi_id`), dan sisa stok fisik (`jumlah_stok`). Saring data hanya untuk stok yang berjumlah 10 unit ke bawah (`jumlah_stok <= 10`). Urutkan dari stok yang paling kritis/sedikit (`ORDER BY jumlah_stok ASC`) dan batasi **5 baris pertama**.
+### Misi 1: Cek Sampel Kupon Promo Aktif
+- **Divisi Pemohon:** Tim Marketing
+- **Cerita Kasus:** Tim Marketing mau merilis materi promo *Flash Sale Gajian*. Sebelum materi promo disebarkan, manajer butuh mengecek sampel kupon apa saja yang saat ini terdaftar, bagaimana bentuk diskonnya, besaran potongannya, dan sisa kuota penggunaannya.
+- **Kebutuhan Analisis:** Buka katalog voucher promo di TablePlus. Tampilkan data kode kupon, tipe diskon, nilai diskon, dan sisa kuota pemakaiannya. Tampilkan 5 baris pertama sebagai sampel awal.
 
 ---
 
-### Soal 4: Kurasi Ulasan Tertulis Pelanggan (WHERE, AND, & IS NOT NULL)
-Tim evaluasi kepuasan pelanggan ingin meneliti ulasan bintang 3 yang memiliki feedback komentar tertulis (bukan ulasan yang dikosongkan pembeli).
-- **Tabel:** `ulasan_produk`
-- **Instruksi:** Tampilkan kolom nomor ulasan (`ulasan_id`), produk terkait (`produk_id`), nilai bintang (`rating`), dan isi tanggapan pembeli (`komentar`). Filter hanya ulasan yang bernilai `rating = 3` DAN kolom `komentar IS NOT NULL`. Batasi hasil **5 baris pertama**.
+### Misi 2: Simulasi Ongkos Kirim Paket 5 Kg
+- **Divisi Pemohon:** Tim Customer Care & Logistik
+- **Cerita Kasus:** Tim CS sering menerima pertanyaan dari pelanggan mengenai perkiraan ongkos kirim jika mereka membeli barang berat. Manajer logistik ingin membuat panduan cepat tarif ongkir untuk paket seberat 5 kilogram dari seluruh ekspedisi yang bekerja sama dengan toko kita.
+- **Kebutuhan Analisis:** Buka data kurir ekspedisi di TablePlus. Tampilkan nama kurir, jenis layanan, dan tarif dasar per kg. Tambahkan satu kolom baru hasil perhitungan tarif untuk paket 5 kg dengan label nama kolom yang rapi dan mudah dipahami. Tampilkan 5 data pertama.
 
 ---
 
-### Soal 5: Sebaran Kota Pemasok Logistik Tanpa Duplikasi (DISTINCT & ORDER BY)
-Divisi pengadaan barang (procurement) membutuhkan rekapitulasi kota-kota tempat mitra pemasok berdomisili untuk pemetaan rute suplai.
-- **Tabel:** `supplier`
-- **Instruksi:** Dapatkan daftar nama kota unik dari kolom `kota` tanpa ada nama kota yang berulang. Urutkan hasilnya berdasarkan abjad dari A ke Z (`ORDER BY kota ASC`).
+### Misi 3: Deteksi Stok Barang Kritis di Gudang
+- **Divisi Pemohon:** Tim Operasional Gudang
+- **Cerita Kasus:** Kepala Gudang butuh daftar barang yang persediaan fisiknya sudah menipis (tersisa 10 unit ke bawah). Data ini mendesak agar tim pengadaan barang bisa langsung memesan ulang ke pemasok sebelum stok benar-benar habis terjual.
+- **Kebutuhan Analisis:** Buka data stok gudang di TablePlus. Saring hanya barang yang jumlah stoknya 10 unit ke bawah. Urutkan mulai dari yang stoknya paling sedikit agar barang yang paling darurat terlihat pertama kali, lalu ambil 5 produk teratas.
 
 ---
 
-### Soal 6: Analisis Saluran Pembayaran Perbankan Digital (Operator IN)
-Manajer produk fintech ingin mengevaluasi saluran pembayaran perbankan digital bertipe Virtual Account dan E-Wallet.
-- **Tabel:** `metode_pembayaran`
-- **Instruksi:** Tampilkan kolom nama saluran (`nama_metode`), kategori pembayaran (`tipe`), dan biaya layanan (`biaya_admin`). Saring metode yang tipenya adalah `'Virtual Account'` atau `'E-Wallet'`. Urutkan hasilnya dari biaya admin termurah ke termahal, lalu urutkan nama metodenya secara ascending.
+### Misi 4: Riset Masukan Berharga dari Ulasan Netral
+- **Divisi Pemohon:** Tim Product & Customer Experience
+- **Cerita Kasus:** Tim pengembangan produk ingin mencari masukan perbaikan yang objektif. Ulasan dengan rating bintang 3 (netral) biasanya memuat kritik yang membangun, asalkan pembeli memang menuliskan catatan ulasan secara lengkap (bukan review kosong).
+- **Kebutuhan Analisis:** Buka data ulasan produk di TablePlus. Saring ulasan yang memberikan rating 3 dan memiliki teks komentar tertulis dari pembeli. Tampilkan 5 ulasan pertama untuk dipelajari tim produk.
 
 ---
 
-### Soal 7: Evaluasi Promo Belanja Skala Menengah (Operator BETWEEN)
-Tim kampanye pemasaran ingin memfilter kupon voucher yang dirancang khusus untuk memicu transaksi bernilai menengah.
-- **Tabel:** `voucher_promo`
-- **Instruksi:** Tampilkan kolom `kode_voucher`, `tipe_diskon`, `nilai_diskon`, dan syarat belanja minimal (`minimal_belanja`). Filter voucher yang memiliki nilai `minimal_belanja` berada di antara `100000` sampai `250000` (inklusif). Urutkan dari syarat minimal belanja terkecil ke terbesar.
+### Misi 5: Pemetaan Kota Pemasok Tanpa Duplikasi
+- **Divisi Pemohon:** Tim Pengadaan (Procurement)
+- **Cerita Kasus:** Tim logistik ingin memetakan persebaran wilayah para pemasok barang toko kita. Manajer meminta daftar kota tempat para pemasok berada. Buat daftarnya rapi, ringkas, tanpa ada nama kota yang muncul berulang kali, dan tersusun alfabetis dari A sampai Z.
+- **Kebutuhan Analisis:** Buka data supplier di TablePlus. Ambil data kota tempat pemasok berada tanpa ada kota yang terduplikasi, lalu urutkan nama kotanya dari A ke Z.
 
 ---
 
-### Soal 8: Audit Legalitas Identitas Vendor Supplier (Pencarian Teks LIKE)
-Tim legal perusahaan mewajibkan pendataan vendor penyedia barang yang berbadan hukum resmi Perseroan Terbatas (PT).
-- **Tabel:** `supplier`
-- **Instruksi:** Tampilkan kolom nomor identitas (`supplier_id`), nama mitra (`nama_supplier`), nama perwakilan (`kontak_person`), dan lokasi `kota`. Saring mitra yang nama perusahaannya diawali dengan kata `'PT'` (`LIKE 'PT%'`). Urutkan dari nama supplier secara alfabetis (A ke Z).
+### Misi 6: Perbandingan Saluran Pembayaran Digital
+- **Divisi Pemohon:** Tim Pembayaran & Finansial
+- **Cerita Kasus:** Tim produk ingin mendorong penggunaan metode pembayaran instan. Mereka ingin membandingkan saluran pembayaran yang tergolong dalam kelompok Virtual Account atau E-Wallet, serta melihat opsi mana yang membebankan biaya admin paling hemat bagi pengguna.
+- **Kebutuhan Analisis:** Buka data metode pembayaran di TablePlus. Saring hanya opsi pembayaran yang bertipe Virtual Account atau E-Wallet. Tampilkan nama metode, kategorinya, serta biaya admin. Urutkan dari biaya admin yang paling murah ke yang paling mahal. Jika biaya adminnya sama, urutkan nama metodenya secara alfabetis.
 
 ---
 
-### Soal 9: Paginasi Leaderboard Produk Mewah Halaman ke-2 (ORDER BY, LIMIT, OFFSET)
-Pada katalog aplikasi eksekutif, data variasi produk termahal ditampilkan sebanyak 5 barang per halaman.
-- **Tabel:** `variasi_produk`
-- **Instruksi:** Tampilkan kode barang (`sku`), pilihan `warna`, `ukuran`, dan harga jual (`harga_jual`). Urutkan dari varian harga termahal ke termurah (`ORDER BY harga_jual DESC`). Ambil data untuk **Halaman 2** (artinya lewati 5 produk termahal pertama, lalu ambil 5 produk berikutnya).
+### Misi 7: Seleksi Voucher untuk Belanja Skala Menengah
+- **Divisi Pemohon:** Tim Promosi & Kampanye
+- **Cerita Kasus:** Tim marketing menyiapkan promo khusus untuk segmen pelanggan belanja menengah (keranjang belanja antara Rp 100.000 hingga Rp 250.000). Mereka butuh daftar kupon yang syarat minimal belanjanya berada tepat di rentang nominal tersebut.
+- **Kebutuhan Analisis:** Buka katalog voucher promo di TablePlus. Ambil data kupon yang menetapkan batas minimal belanja di antara rentang Rp 100.000 sampai Rp 250.000. Urutkan dari syarat belanja yang paling terjangkau ke yang lebih tinggi.
 
 ---
 
-### Soal 10: Audit Risiko Transaksi Tertunda & Batal (Multi-Kondisi AND, OR, Kurung)
-Tim manajemen risiko ingin memeriksa pesanan bernilai transaksi fantastis (di atas Rp 50.000.000) yang gagal diproses atau masih tertunda pembayarannya.
-- **Tabel:** `pesanan`
-- **Instruksi:** Tampilkan nomor nota (`nomor_invoice`), waktu belanja (`tanggal_pesanan`), status pengiriman (`status_pesanan`), biaya kirim (`ongkos_kirim`), dan nilai akhir (`total_bayar`). Filter pesanan yang memiliki `status_pesanan = 'Dibatalkan'` ATAU `status_pesanan = 'Menunggu Pembayaran'`, DAN bernilai `total_bayar >= 50000000`. Pastikan kondisi status dibungkus tanda kurung `( ... )`. Urutkan dari nilai transaksi terbesar (`ORDER BY total_bayar DESC`) dan batasi **5 baris**.
+### Misi 8: Audit Legalitas Rekanan Berbadan Hukum PT
+- **Divisi Pemohon:** Tim Legal & Manajemen Vendor
+- **Cerita Kasus:** Untuk kerja sama bernilai besar, kebijakan audit mengharuskan prioritas kerja sama diberikan kepada mitra yang berbadan hukum resmi Perseroan Terbatas (PT). Tim legal meminta daftar seluruh rekanan pemasok yang perusahaannya berawalan status PT.
+- **Kebutuhan Analisis:** Buka data supplier di TablePlus. Saring pemasok yang nama perusahaannya diawali dengan kata 'PT'. Tampilkan identitas pemasok, nama perusahaan, kontak person yang bisa dihubungi, dan kota asalnya. Urutkan nama perusahaannya dari A ke Z.
+
+---
+
+### Misi 9: Paginasi Etalase Produk Premium Halaman ke-2
+- **Divisi Pemohon:** Tim Front-End & Pengembang Web
+- **Cerita Kasus:** Pada etalase aplikasi, daftar produk dengan harga tertinggi ditampilkan bertahap (5 produk per halaman). Halaman pertama (peringkat 1 sampai 5 termahal) sudah selesai ditampilkan. Sekarang tim pengembang butuh data untuk menampilkan **Halaman 2** (produk peringkat 6 sampai 10 termahal).
+- **Kebutuhan Analisis:** Buka data variasi produk di TablePlus. Tampilkan kode varian, warna, ukuran, dan harga jualnya. Urutkan dari harga yang paling mahal ke paling murah. Lewati 5 produk termahal pertama, lalu ambil 5 produk berikutnya.
+
+---
+
+### Misi 10: Investigasi Transaksi Bernilai Besar yang Tertahan
+- **Divisi Pemohon:** Tim Keuangan & Manajemen Risiko
+- **Cerita Kasus:** Manajemen keuangan mendeteksi adanya transaksi bernilai sangat besar (di atas Rp 50.000.000) yang berisiko gagal menjadi pemasukan toko karena statusnya masih 'Menunggu Pembayaran' atau sudah 'Dibatalkan'. Tim butuh data transaksi ini segera untuk ditindaklanjuti.
+- **Kebutuhan Analisis:** Buka data pesanan di TablePlus. Tampilkan informasi faktur, tanggal transaksi, status, biaya kirim, dan total bayar. Saring pesanan yang total bayarnya minimal Rp 50.000.000 dan statusnya berada di antara 'Dibatalkan' atau 'Menunggu Pembayaran'. Urutkan dari transaksi bernilai rupiah paling besar, lalu ambil 5 data teratas.
