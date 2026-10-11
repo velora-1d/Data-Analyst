@@ -19,7 +19,7 @@
 <!-- Header -->
 <header class="header">
     <div class="header-left">
-        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <button class="btn-hamburger" id="sidebarToggle" type="button" aria-label="Navigasi Menu" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
         <a href="../index.html" class="logo">
             <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
             Fundamental Coding
@@ -29,18 +29,18 @@
             <span class="brand-divider">•</span>
             <span class="author-pill"><i class="fa-solid fa-user-graduate"></i> Mahin Utsman Nawawi, S.H</span>
         </div>
-        <nav class="breadcrumb">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
             <i class="fa-solid fa-chevron-right"></i>
             <span>Modul 1: Tipe Data SQL</span>
         </nav>
     </div>
     <div class="header-right">
         <div class="module-nav">
-            <button class="btn-icon" disabled title="Awal kurikulum"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="btn-icon" disabled type="button" aria-label="Awal kurikulum" title="Awal kurikulum"><i class="fa-solid fa-chevron-left"></i></button>
             <span class="module-count">1 / 7</span>
-            <a href="02_query_dasar.html" class="btn-icon" title="Modul 2: Query Dasar"><i class="fa-solid fa-chevron-right"></i></a>
+            <a href="02_query_dasar.html" class="btn-icon" aria-label="Modul 2: Query Dasar" title="Modul 2: Query Dasar"><i class="fa-solid fa-chevron-right"></i></a>
         </div>
-        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+        <button class="btn-theme" id="themeToggle" type="button" aria-label="Ganti Tema" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
     </div>
 </header>
 
@@ -62,7 +62,7 @@
         <div class="nav-divider"></div>
 
         <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Bab Materi Modul 01</div>
-        <nav class="sidebar-nav">
+        <nav class="sidebar-nav" aria-label="Bab Materi Modul 01">
             <a href="#intro"       class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Pengantar Tipe Data</a>
             <a href="#affinity"    class="nav-link"><i class="fa-solid fa-microchip"></i> 2. SQLite Type Affinity</a>
             <a href="#pragma"      class="nav-link"><i class="fa-solid fa-table-list"></i> 3. Inspeksi Skema PRAGMA</a>
@@ -70,12 +70,14 @@
             <a href="#text"        class="nav-link"><i class="fa-solid fa-font"></i> 5. Tipe TEXT &amp; String</a>
             <a href="#integer"     class="nav-link"><i class="fa-solid fa-hashtag"></i> 6. Tipe INTEGER &amp; Rupiah</a>
             <a href="#real"        class="nav-link"><i class="fa-solid fa-percent"></i> 7. Tipe REAL &amp; Presisi</a>
-            <a href="#null"        class="nav-link"><i class="fa-solid fa-ban"></i> 9. Tipe Nilai NULL (Missing Data)</a>
-            <a href="#unique"      class="nav-link"><i class="fa-solid fa-fingerprint"></i> 10. Kolom UNIQUE &amp; UUID</a>
-            <a href="#cast"        class="nav-link"><i class="fa-solid fa-arrow-right-arrow-left"></i> 11. Type Casting (CAST)</a>
-            <a href="#ddl-dml"     class="nav-link"><i class="fa-solid fa-database"></i> 12. Desain Tabel DDL &amp; DML</a>
-            <a href="#rangkuman"   class="nav-link"><i class="fa-solid fa-layer-group"></i> 13. Rangkuman Best Practice</a>
-            <a href="#quiz"        class="nav-link"><i class="fa-solid fa-circle-question"></i> 14. Kuis Interaktif</a>
+            <a href="#datetime"    class="nav-link"><i class="fa-regular fa-calendar"></i> 8. Tipe DATETIME Transaksi</a>
+            <a href="#boolean"     class="nav-link"><i class="fa-solid fa-toggle-on"></i> 9. Tipe BOOLEAN (Flag True/False)</a>
+            <a href="#null"        class="nav-link"><i class="fa-solid fa-ban"></i> 10. Tipe Nilai NULL (Missing Data)</a>
+            <a href="#unique"      class="nav-link"><i class="fa-solid fa-fingerprint"></i> 11. Kolom UNIQUE &amp; UUID</a>
+            <a href="#cast"        class="nav-link"><i class="fa-solid fa-arrow-right-arrow-left"></i> 12. Type Casting (CAST)</a>
+            <a href="#ddl-dml"     class="nav-link"><i class="fa-solid fa-database"></i> 13. Desain Tabel DDL &amp; DML</a>
+            <a href="#rangkuman"   class="nav-link"><i class="fa-solid fa-layer-group"></i> 14. Rangkuman Best Practice</a>
+            <a href="#quiz"        class="nav-link"><i class="fa-solid fa-circle-question"></i> 15. Kuis Interaktif</a>
         </nav>
 
         <div class="nav-divider"></div>
@@ -205,15 +207,21 @@
                         <td>Format: YYYY-MM-DD HH:MM:SS</td>
                         <td>Waktu pesanan dibuat, tanggal bayar, riwayat update status kurir</td>
                     </tr>
+                    <tr>
+                        <td><span class="tbadge tb-bool">BOOLEAN</span></td>
+                        <td>Nilai biner logika (Benar / Salah)</td>
+                        <td>Disimpan sebagai <code>1</code> (True) atau <code>0</code> (False)</td>
+                        <td>Flag alamat utama (<code>is_utama</code>), verifikasi user, promo aktif</td>
+                    </tr>
                 </tbody>
             </table>
         </section>
 
         <!-- 2. SQLite Type Affinity -->
         <section id="affinity">
-            <h2><i class="fa-solid fa-microchip"></i> 2. Bagaimana SQLite Memperlakukan VARCHAR dan CHAR?</h2>
+            <h2><i class="fa-solid fa-microchip"></i> 2. Bagaimana SQLite Memperlakukan VARCHAR, CHAR &amp; BOOLEAN?</h2>
             <p>
-                Jika Anda membuat tabel dengan <code>nama_lengkap VARCHAR(150)</code> atau <code>kode_pos CHAR(5)</code> di SQLite, SQLite menerimanya secara 100% valid.
+                Jika Anda membuat tabel dengan <code>nama_lengkap VARCHAR(150)</code>, <code>kode_pos CHAR(5)</code>, atau <code>is_utama BOOLEAN</code> di SQLite, SQLite menerimanya secara 100% valid.
             </p>
             <p>
                 Namun, di bawah kap mesinnya, SQLite menerapkan aturan yang disebut <strong>Type Affinity</strong>:
@@ -222,7 +230,7 @@
                 <i class="fa-solid fa-lightbulb"></i>
                 <div class="callout-body">
                     <strong>Prinsip Type Affinity SQLite:</strong>
-                    <p>Semua tipe data yang mengandung kata <code>CHAR</code>, <code>VARCHAR</code>, <code>TEXT</code>, atau <code>CLOB</code> secara otomatis dimasukkan ke dalam kelas penyimpanan <strong>TEXT Affinity</strong>. Hal ini membuat SQLite sangat fleksibel dan ringan, namun tetap kompatibel dengan DDL database enterprise lainnya.</p>
+                    <p>Semua tipe data teks (<code>CHAR</code>, <code>VARCHAR</code>, <code>TEXT</code>) diarahkan ke <strong>TEXT Affinity</strong>. Sedangkan tipe <code>BOOLEAN</code> di SQLite tidak memiliki storage class terpisah, melainkan otomatis dimasukkan ke dalam <strong>INTEGER Affinity</strong> dengan nilai <code>1</code> untuk TRUE dan <code>0</code> untuk FALSE. Ini membuat SQLite hemat ruang dan sangat cepat diproses CPU.</p>
                 </div>
             </div>
         </section>
@@ -771,9 +779,116 @@
             </div>
         </section>
 
-        <!-- 9. NULL -->
+        <!-- 9. BOOLEAN -->
+        <section id="boolean">
+            <h2><i class="fa-solid fa-toggle-on"></i> 9. Tipe BOOLEAN (Flag Nilai Benar / Salah &amp; Representasi Biner)</h2>
+            <p>
+                Dalam sistem operasional e-commerce, banyak sekali atribut data yang hanya memiliki dua status (kondisi biner): <strong>Ya / Tidak</strong>, <strong>Aktif / Non-Aktif</strong>, atau <strong>Benar (TRUE) / Salah (FALSE)</strong>. Tipe data ini dinamakan <strong>BOOLEAN</strong>.
+            </p>
+
+            <div class="callout info">
+                <i class="fa-solid fa-microchip"></i>
+                <div class="callout-body">
+                    <strong>Bagaimana Mesin Database Memperlakukan BOOLEAN?</strong>
+                    <ul style="margin: 0.5rem 0 0 1rem; padding-left: 0.5rem; line-height: 1.7;">
+                        <li><strong>PostgreSQL:</strong> Memiliki tipe data asli <code>BOOLEAN</code> (menerima literal <code>TRUE</code>, <code>FALSE</code>, atau <code>NULL</code>).</li>
+                        <li><strong>MySQL / MariaDB:</strong> Menganggap <code>BOOLEAN</code> sebagai alias dari <code>TINYINT(1)</code>, di mana <code>1</code> berarti TRUE dan <code>0</code> berarti FALSE.</li>
+                        <li><strong>SQLite:</strong> Menggunakan <strong>INTEGER Affinity</strong>. SQLite tidak menyediakan kelas penyimpanan biner khusus, sehingga kolom berlabel <code>BOOLEAN</code> disimpan fisik sebagai angka <code>1</code> (True) dan <code>0</code> (False).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>A. Contoh Kasus Nyata di Database: Flag Alamat Utama (is_utama)</h3>
+            <p>
+                Pada tabel <code>alamat_pelanggan</code> di <code>ecommerce.db</code>, seorang pelanggan dapat menyimpan beberapa alamat pengiriman (rumah, kantor, kos), namun hanya ada <strong>satu alamat utama</strong> yang ditandai dengan kolom flag <code>is_utama = 1</code>.
+            </p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label"><i class="fa-solid fa-code"></i> SQL Query 1: Filter &amp; Konversi Label Boolean</span>
+                    <button class="copy-btn" type="button" aria-label="Salin Query" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
+                </div>
+                <pre><code><span class="sql-cmt">-- Mengambil alamat pelanggan dan menerjemahkan nilai boolean 1/0 ke teks manusiawi</span>
+<span class="sql-kw">SELECT</span>
+    alamat_id,
+    pelanggan_id,
+    label_alamat,
+    kota,
+    is_utama,
+    <span class="sql-kw">CASE</span>
+        <span class="sql-kw">WHEN</span> is_utama = <span class="sql-num">1</span> <span class="sql-kw">THEN</span> <span class="sql-str">'Alamat Utama'</span>
+        <span class="sql-kw">ELSE</span> <span class="sql-str">'Alamat Tambahan'</span>
+    <span class="sql-kw">END</span> <span class="sql-kw">AS</span> status_alamat
+<span class="sql-kw">FROM</span> alamat_pelanggan
+<span class="sql-kw">LIMIT</span> <span class="sql-num">5</span>;</code></pre>
+            </div>
+
+            <div class="output-block">
+                <div class="output-header"><i class="fa-solid fa-table"></i> Hasil Query Kolom is_utama (ecommerce.db)</div>
+                <table class="data-table">
+                    <thead><tr><th>alamat_id</th><th>pelanggan_id</th><th>label_alamat</th><th>kota</th><th>is_utama</th><th>status_alamat</th></tr></thead>
+                    <tbody>
+                        <tr><td class="v-num">1</td><td class="v-num">1</td><td class="v-str">Rumah</td><td>Jakarta Selatan</td><td class="v-num">1</td><td><span class="tbadge tb-int">Alamat Utama</span></td></tr>
+                        <tr><td class="v-num">2</td><td class="v-num">2</td><td class="v-str">Rumah</td><td>Pekanbaru</td><td class="v-num">1</td><td><span class="tbadge tb-int">Alamat Utama</span></td></tr>
+                        <tr><td class="v-num">3</td><td class="v-num">3</td><td class="v-str">Rumah</td><td>Palembang</td><td class="v-num">1</td><td><span class="tbadge tb-int">Alamat Utama</span></td></tr>
+                        <tr><td class="v-num">4</td><td class="v-num">4</td><td class="v-str">Rumah</td><td>Pekanbaru</td><td class="v-num">1</td><td><span class="tbadge tb-int">Alamat Utama</span></td></tr>
+                        <tr><td class="v-num">5</td><td class="v-num">4</td><td class="v-str">Kantor</td><td>Pekanbaru</td><td class="v-num">0</td><td><span class="tbadge tb-null">Alamat Tambahan</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>B. Trik Analisis Bisnis: Menghitung Rasio &amp; Persentase Menggunakan Boolean</h3>
+            <p>
+                Karena nilai Boolean disimpan sebagai <code>1</code> dan <code>0</code>, seorang Data Analyst dapat memanfaatkan sifat matematika ini untuk menghitung metrik bisnis secara super cepat tanpa perlu query panjang:
+            </p>
+            <ul>
+                <li><code>SUM(is_utama)</code>: Langsung menjumlahkan berapa banyak baris yang bernilai TRUE (karena menjumlahkan angka 1).</li>
+                <li><code>AVG(is_utama) * 100</code>: Menghasilkan <strong>persentase rasio</strong> baris TRUE terhadap seluruh total data.</li>
+            </ul>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label"><i class="fa-solid fa-code"></i> SQL Query 2: Analisis Rasio Adopsi Boolean</span>
+                    <button class="copy-btn" type="button" aria-label="Salin Query" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
+                </div>
+                <pre><code><span class="sql-cmt">-- Menghitung total alamat dan rasio kepemilikan alamat utama</span>
+<span class="sql-kw">SELECT</span>
+    <span class="sql-fn">COUNT</span>(*)                                  <span class="sql-kw">AS</span> total_alamat,
+    <span class="sql-fn">SUM</span>(is_utama)                             <span class="sql-kw">AS</span> total_alamat_utama,
+    <span class="sql-fn">COUNT</span>(*) <span class="sql-op">-</span> <span class="sql-fn">SUM</span>(is_utama)                   <span class="sql-kw">AS</span> total_alamat_tambahan,
+    <span class="sql-fn">ROUND</span>(<span class="sql-fn">AVG</span>(is_utama) <span class="sql-op">*</span> <span class="sql-num">100.0</span>, <span class="sql-num">1</span>)           <span class="sql-kw">AS</span> persen_alamat_utama
+<span class="sql-kw">FROM</span> alamat_pelanggan;</code></pre>
+            </div>
+
+            <div class="output-block">
+                <div class="output-header"><i class="fa-solid fa-table"></i> Hasil Agregasi Boolean pada 1.551 Baris Data</div>
+                <table class="data-table">
+                    <thead><tr><th>total_alamat</th><th>total_alamat_utama</th><th>total_alamat_tambahan</th><th>persen_alamat_utama</th></tr></thead>
+                    <tbody>
+                        <tr><td class="v-num">1,551</td><td class="v-num">1,200</td><td class="v-num">351</td><td class="v-kw">77.4%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout warning">
+                <i class="fa-solid fa-lightbulb"></i>
+                <div class="callout-body">
+                    <strong>Konvensi Penamaan Standar Industri untuk Kolom Boolean:</strong>
+                    <p style="margin-top:0.25rem;">
+                        Selalu awali nama kolom boolean dengan kata predikat tanya (prefix) agar maknanya jelas tanpa perlu membaca dokumentasi skema:
+                    </p>
+                    <ul style="margin: 0.35rem 0 0 1rem; padding-left: 0.5rem; line-height: 1.6;">
+                        <li><code>is_...</code> (contoh: <code>is_utama</code>, <code>is_active</code>, <code>is_verified</code>)</li>
+                        <li><code>has_...</code> (contoh: <code>has_discount</code>, <code>has_warranty</code>)</li>
+                        <li><code>can_...</code> (contoh: <code>can_refund</code>, <code>can_cod</code>)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. NULL -->
         <section id="null">
-            <h2><i class="fa-solid fa-ban"></i> 9. Tipe Nilai NULL (Missing Data &amp; Unknown State)</h2>
+            <h2><i class="fa-solid fa-ban"></i> 10. Tipe Nilai NULL (Missing Data &amp; Unknown State)</h2>
             <p>
                 Di dalam database relasional, <code>NULL</code> bukanlah sebuah nilai biasa. <code>NULL</code> adalah <strong>Storage Class khusus di SQLite</strong> yang menandakan bahwa suatu data <strong>tidak ada, belum diketahui, atau tidak berlaku</strong> (<em>missing value / absence of data</em>).
             </p>
@@ -894,9 +1009,9 @@
             </div>
         </section>
 
-        <!-- 10. UNIQUE -->
+        <!-- 11. UNIQUE -->
         <section id="unique">
-            <h2><i class="fa-solid fa-fingerprint"></i> 10. Kolom UNIQUE &amp; Tipe Identifier Unik (UUID)</h2>
+            <h2><i class="fa-solid fa-fingerprint"></i> 11. Kolom UNIQUE &amp; Tipe Identifier Unik (UUID)</h2>
             <p>
                 Banyak pemula menyebut <strong>"tipe data unique"</strong>. Secara kaidah teknis database SQL, <strong>UNIQUE bukanlah sebuah tipe data fisik</strong>, melainkan sebuah <strong>Constraint (Batasan Integritas Kolom)</strong>. Tipe data fisiknya tetap berupa <code>TEXT</code>, <code>VARCHAR</code>, atau <code>INTEGER</code>, namun mesin database diberikan aturan ketat: <em>"Tidak boleh ada 2 baris data yang memiliki nilai kembar pada kolom ini!"</em>.
             </p>
@@ -996,9 +1111,9 @@
             </div>
         </section>
 
-        <!-- 11. CAST -->
+        <!-- 12. CAST -->
         <section id="cast">
-            <h2><i class="fa-solid fa-arrow-right-arrow-left"></i> 11. Type Casting dengan CAST()</h2>
+            <h2><i class="fa-solid fa-arrow-right-arrow-left"></i> 12. Type Casting dengan CAST()</h2>
             <p>
                 Fungsi <code>CAST(ekspresi AS tipe_tujuan)</code> digunakan untuk mengonversi tipe data secara eksplisit pada saat query berjalan. Sangat dibutuhkan saat menghitung margin laba persentase.
             </p>
@@ -1006,7 +1121,7 @@
             <div class="code-block">
                 <div class="code-header">
                     <span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span>
-                    <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
+                    <button class="copy-btn" type="button" aria-label="Salin Query" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
                 </div>
                 <pre><code><span class="sql-cmt">-- Menghitung persentase profit margin per variasi produk</span>
 <span class="sql-kw">SELECT</span> 
@@ -1048,9 +1163,9 @@
             </div>
         </section>
 
-        <!-- 12. DDL & DML -->
+        <!-- 13. DDL & DML -->
         <section id="ddl-dml">
-            <h2><i class="fa-solid fa-database"></i> 12. DDL &amp; DML: Desain Tabel &amp; Manipulasi Data</h2>
+            <h2><i class="fa-solid fa-database"></i> 13. DDL &amp; DML: Desain Tabel &amp; Manipulasi Data</h2>
             <p>
                 Selain membaca data (query <code>SELECT</code>), pengolahan data SQL melibatkan 2 kelompok perintah utama:
                 <strong>DDL (Data Definition Language)</strong> untuk mendefinisikan struktur skema tabel, dan 
@@ -1064,8 +1179,8 @@
 
             <div class="code-block">
                 <div class="code-header">
-                    <span class="code-label"><i class="fa-solid fa-code"></i> DDL: Membuat & Mengubah Tabel</span>
-                    <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
+                    <span class="code-label"><i class="fa-solid fa-code"></i> DDL: Membuat &amp; Mengubah Tabel</span>
+                    <button class="copy-btn" type="button" aria-label="Salin DDL" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
                 </div>
                 <pre><code><span class="sql-cmt">-- 1. CREATE TABLE: Membuat tabel kategori promo baru dengan Constraints</span>
 <span class="sql-kw">CREATE TABLE IF NOT EXISTS</span> kategori_promo (
@@ -1090,7 +1205,7 @@
             <div class="code-block">
                 <div class="code-header">
                     <span class="code-label"><i class="fa-solid fa-code"></i> DML: Manipulasi Baris Data</span>
-                    <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
+                    <button class="copy-btn" type="button" aria-label="Salin DML" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button>
                 </div>
                 <pre><code><span class="sql-cmt">-- 1. INSERT: Menambah data promo baru</span>
 <span class="sql-kw">INSERT INTO</span> kategori_promo (nama_kategori, diskon_pct, status_aktif)
@@ -1119,14 +1234,15 @@
             </div>
         </section>
 
-        <!-- 13. Rangkuman -->
+        <!-- 14. Rangkuman -->
         <section id="rangkuman">
-            <h2><i class="fa-solid fa-layer-group"></i> 13. Rangkuman &amp; Best Practices Pengolahan Data</h2>
+            <h2><i class="fa-solid fa-layer-group"></i> 14. Rangkuman &amp; Best Practices Pengolahan Data</h2>
             <table class="compare-table">
                 <thead><tr><th>Skenario Kasus</th><th>Pendekatan Terbaik SQL</th><th>Contoh Kode</th></tr></thead>
                 <tbody>
                     <tr><td>Uang Rupiah</td><td>Gunakan INTEGER bulat untuk mencegah bug koma</td><td><code>total_bayar INTEGER</code></td></tr>
                     <tr><td>Persentase Laba</td><td>Gunakan CAST ke REAL sebelum membagi</td><td><code>CAST(untung AS REAL) / omzet * 100</code></td></tr>
+                    <tr><td>Status Biner (Boolean)</td><td>Gunakan INTEGER (0 atau 1) dengan prefix is_/has_</td><td><code>is_utama INTEGER DEFAULT 0</code></td></tr>
                     <tr><td>Pencegahan Duplikasi Akun</td><td>Gunakan Constraint UNIQUE pada email/no_hp</td><td><code>email VARCHAR(100) NOT NULL UNIQUE</code></td></tr>
                     <tr><td>Identifier Unik Global</td><td>Gunakan format UUID v4 (VARCHAR 36)</td><td><code>transaksi_id VARCHAR(36) UNIQUE</code></td></tr>
                     <tr><td>Pengecekan Nilai Kosong</td><td>Gunakan IS NULL / IS NOT NULL (Bukan = NULL)</td><td><code>WHERE voucher_id IS NOT NULL</code></td></tr>
@@ -1139,9 +1255,9 @@
             </table>
         </section>
 
-        <!-- 14. Quiz -->
+        <!-- 15. Quiz -->
         <section id="quiz">
-            <h2><i class="fa-solid fa-circle-question"></i> 14. Kuis Interaktif Pemahaman</h2>
+            <h2><i class="fa-solid fa-circle-question"></i> 15. Kuis Interaktif Pemahaman</h2>
             <div class="quiz-section">
                 <div class="quiz-head"><i class="fa-solid fa-trophy"></i><h3>Uji Pemahaman: Tipe Data SQL E-Commerce</h3></div>
 
@@ -1185,6 +1301,17 @@
                         <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this,true,'Tepat! PRIMARY KEY hanya boleh 1 per tabel dan wajib NOT NULL, sedangkan constraint UNIQUE boleh diterapkan ke banyak kolom dan boleh menampung nilai NULL.')"><div class="opt-letter">A</div> PRIMARY KEY hanya 1 per tabel &amp; tidak boleh NULL, sedangkan UNIQUE bisa di banyak kolom &amp; boleh NULL</div>
                         <div class="quiz-opt" onclick="answerQuiz(this,false,'UNIQUE mengizinkan nilai NULL pada SQL standar.')"><div class="opt-letter">B</div> UNIQUE sama sekali tidak mengizinkan nilai NULL seperti PRIMARY KEY</div>
                         <div class="quiz-opt" onclick="answerQuiz(this,false,'Keduanya otomatis membuat indeks pencarian yang cepat.')"><div class="opt-letter">C</div> PRIMARY KEY membuat indeks pencarian, sedangkan UNIQUE tidak membuat indeks</div>
+                    </div>
+                    <div class="quiz-fb"><i></i><span></span></div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="quiz-card">
+                    <div class="quiz-q">5. Bagaimana mesin database SQLite menyimpan dan menginterpretasikan kolom bertipe BOOLEAN?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-opt" data-correct="true" onclick="answerQuiz(this,true,'Tepat! SQLite menggunakan INTEGER Affinity: angka 1 mewakili TRUE dan angka 0 mewakili FALSE.')"><div class="opt-letter">A</div> Disimpan sebagai INTEGER dengan nilai 1 (TRUE) dan 0 (FALSE)</div>
+                        <div class="quiz-opt" onclick="answerQuiz(this,false,'Teks \'TRUE\' dan \'FALSE\' adalah string TEXT, bukan storage class integer boolean di SQLite.')"><div class="opt-letter">B</div> Disimpan sebagai tipe TEXT bertuliskan 'TRUE' atau 'FALSE'</div>
+                        <div class="quiz-opt" onclick="answerQuiz(this,false,'SQLite tidak memiliki kelas penyimpanan terpisah untuk boolean.')"><div class="opt-letter">C</div> Disimpan dalam kelas penyimpanan biner khusus bernama BIT MASK</div>
                     </div>
                     <div class="quiz-fb"><i></i><span></span></div>
                 </div>
