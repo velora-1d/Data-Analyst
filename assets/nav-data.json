@@ -30,6 +30,14 @@
           "humanSubtitle": "Mengambil Data Tertentu & Membatasi Halaman"
         },
         {
+          "id": "latihan_query",
+          "title": "Latihan 10 Soal & Jawaban",
+          "url": "latihan.html",
+          "status": "ready",
+          "duration": "45m",
+          "humanSubtitle": "Uji Mandiri 10 Kasus Query E-Commerce"
+        },
+        {
           "id": "03_agregasi",
           "title": "Agregasi & Metrik",
           "url": "modul/03_agregasi.html",
