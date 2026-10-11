@@ -1,11 +1,12 @@
-# Kunci Jawaban & Pembahasan: Latihan Mandiri SQL
+# Kunci Jawaban & Pembahasan: Studi Kasus Analis Data E-Commerce
 
-Dokumen ini berisi solusi query SQL terverifikasi di [`database/ecommerce.db`](../database/ecommerce.db), pembahasan logika klausa, dan pratinjau hasil data untuk seluruh soal pada [`soal_latihan.md`](./soal_latihan.md).
+Dokumen ini berisi solusi query SQL resmi untuk memecahkan 10 misi studi kasus pada [`soal_latihan.md`](./soal_latihan.md). Seluruh query telah diuji langsung pada database transaksi nyata: [`database/ecommerce.db`](../database/ecommerce.db) menggunakan **TablePlus**.
 
 ---
 
-### Jawaban Soal 1: Audit Kupon Promosi & Kuota Penggunaan (SELECT & LIMIT)
-**Instruksi:** Tampilkan `kode_voucher`, `tipe_diskon`, `nilai_diskon`, dan `kuota_pemakaian` dari tabel `voucher_promo` sebanyak 5 baris pertama.
+### Misi 1: Cek Sampel Kupon Promo Aktif
+- **Divisi Pemohon:** Tim Marketing
+- **Tabel Sumber di TablePlus:** `voucher_promo`
 
 ```sql
 SELECT 
@@ -17,12 +18,11 @@ FROM voucher_promo
 LIMIT 5;
 ```
 
-**Pembahasan Logika:**
-- `SELECT kode_voucher, tipe_diskon, nilai_diskon, kuota_pemakaian`: Menarik kolom-kolom spesifik untuk kebutuhan promosi tanpa memuat kolom minimal belanja.
-- `FROM voucher_promo`: Menunjuk tabel sumber data promo voucher.
-- `LIMIT 5`: Menghentikan pembacaan engine database setelah 5 baris pertama ditemukan, sangat hemat bandwidth dan memori.
+**Pembahasan Logika Analis:**
+- **Pemilihan Kolom:** Kolom `kode_voucher`, `tipe_diskon`, `nilai_diskon`, dan `kuota_pemakaian` dipilih karena memuat informasi esensial yang diminta tim marketing untuk materi promosi. Kolom lain seperti tanggal kedaluwarsa atau minimal belanja tidak ditarik agar output ringkas.
+- `LIMIT 5`: Menghentikan pembacaan engine database setelah 5 baris pertama ditemukan, sangat efisien untuk sekadar verifikasi sampel data.
 
-**Pratinjau Hasil di ecommerce.db:**
+**Pratinjau Hasil di TablePlus:**
 | kode_voucher | tipe_diskon | nilai_diskon | kuota_pemakaian |
 |---|---|---|---|
 | GAJIANHEMAT50 | Nominal | 50000 | 1000 |
@@ -33,8 +33,9 @@ LIMIT 5;
 
 ---
 
-### Jawaban Soal 2: Kalkulasi Ongkos Kirim Paket Berat (Kalkulasi Matematika & Kolom Alias AS)
-**Instruksi:** Tampilkan `nama_kurir`, `layanan`, `tarif_per_kg`, dan kalkulasi tarif 5 kg (`tarif_per_kg * 5`) dengan alias `estimasi_ongkir_5kg` dari tabel `kurir_ekspedisi` (5 baris).
+### Misi 2: Simulasi Ongkos Kirim Paket 5 Kg
+- **Divisi Pemohon:** Tim Customer Care & Logistik
+- **Tabel Sumber di TablePlus:** `kurir_ekspedisi`
 
 ```sql
 SELECT 
@@ -46,24 +47,25 @@ FROM kurir_ekspedisi
 LIMIT 5;
 ```
 
-**Pembahasan Logika:**
-- `(tarif_per_kg * 5)`: Melakukan operasi perkalian matematis langsung di level database engine.
-- `AS estimasi_ongkir_5kg`: Memberi nama baru pada header kolom hasil hitungan agar ramah dibaca tim bisnis (tanpa nama aneh seperti `tarif_per_kg * 5`).
-- `LIMIT 5`: Membatasi tampilan 5 opsi kurir pertama.
+**Pembahasan Logika Analis:**
+- **Perhitungan Langsung:** Operasi `(tarif_per_kg * 5)` menghitung biaya total paket 5 kg langsung di dalam database tanpa perlu dihitung manual di spreadsheet.
+- **Alias Kolom (`AS`):** Memberikan nama `estimasi_ongkir_5kg` agar header laporan ramah dibaca oleh staf Customer Care.
+- `LIMIT 5`: Menampilkan 5 sampel kurir pertama sebagai bahan panduan cepat.
 
-**Pratinjau Hasil di ecommerce.db:**
+**Pratinjau Hasil di TablePlus:**
 | nama_kurir | layanan | tarif_per_kg | estimasi_ongkir_5kg |
 |---|---|---|---|
 | JNE Express | Reguler (2-3 Hari) | 10000 | 50000 |
 | JNE Express | YES - Yakin Esok Sampai | 20000 | 100000 |
 | SiCepat Express | SiUntung Reguler | 9500 | 47500 |
 | SiCepat Express | BEST - Besok Sampai Tujuan | 18500 | 92500 |
-| J&amp;T Express | EZ Standard Service | 11000 | 55000 |
+| J&T Express | EZ Standard Service | 11000 | 55000 |
 
 ---
 
-### Jawaban Soal 3: Peringatan Stok Menipis di Gudang (WHERE & Operator <=)
-**Instruksi:** Saring stok gudang dari tabel `stok_gudang` yang berjumlah 10 unit ke bawah (`jumlah_stok <= 10`), urutkan dari yang paling sedikit (`ASC`), batasi 5 baris.
+### Misi 3: Deteksi Stok Barang Kritis di Gudang
+- **Divisi Pemohon:** Tim Operasional Gudang
+- **Tabel Sumber di TablePlus:** `stok_gudang`
 
 ```sql
 SELECT 
@@ -77,12 +79,12 @@ ORDER BY jumlah_stok ASC
 LIMIT 5;
 ```
 
-**Pembahasan Logika:**
-- `WHERE jumlah_stok <= 10`: Menyaring hanya baris data fisik yang memenuhi ambang batas kritis (kondisi boolean bernilai True).
-- `ORDER BY jumlah_stok ASC`: Mengurutkan dari stok yang paling kritis (terkecil) ke yang lebih banyak agar prioritas restock tertangani pertama kali.
-- `LIMIT 5`: Mengambil 5 varian barang teratas yang paling mendesak untuk di-restock.
+**Pembahasan Logika Analis:**
+- `WHERE jumlah_stok <= 10`: Menyaring hanya barang dengan stok fisik 10 unit ke bawah yang masuk kategori kritis.
+- `ORDER BY jumlah_stok ASC`: Mengurutkan dari angka stok terkecil (paling sedikit) ke yang lebih banyak. Dengan urutan menaik ini, barang yang tersisa 2 unit langsung berada di posisi teratas daftar prioritas restock.
+- `LIMIT 5`: Mengambil 5 barang paling darurat untuk segera dipesan ke pabrik hari ini.
 
-**Pratinjau Hasil di ecommerce.db:**
+**Pratinjau Hasil di TablePlus:**
 | stok_id | gudang_id | variasi_id | jumlah_stok |
 |---|---|---|---|
 | 125 | 5 | 25 | 2 |
@@ -93,8 +95,9 @@ LIMIT 5;
 
 ---
 
-### Jawaban Soal 4: Kurasi Ulasan Tertulis Pelanggan (WHERE, AND, & IS NOT NULL)
-**Instruksi:** Filter tabel `ulasan_produk` untuk ulasan bernilai `rating = 3` DAN kolom `komentar IS NOT NULL`. Batasi 5 baris.
+### Misi 4: Riset Masukan Berharga dari Ulasan Netral
+- **Divisi Pemohon:** Tim Product & Customer Experience
+- **Tabel Sumber di TablePlus:** `ulasan_produk`
 
 ```sql
 SELECT 
@@ -108,11 +111,12 @@ WHERE rating = 3
 LIMIT 5;
 ```
 
-**Pembahasan Logika:**
-- `rating = 3`: Memfilter ulasan dengan skor netral (bintang 3).
-- `AND komentar IS NOT NULL`: Memastikan bahwa pembeli benar-benar mengetikkan ulasan teks (bukan hanya memberikan bintang tanpa komentar). Ingat: jangan gunakan `<> NULL` karena di SQL standar nilai NULL wajib diuji dengan `IS NOT NULL`.
+**Pembahasan Logika Analis:**
+- `WHERE rating = 3`: Memfokuskan analisis hanya pada ulasan dengan skor netral (bintang 3).
+- `AND komentar IS NOT NULL`: Memastikan bahwa pembeli benar-benar mengisi teks ulasan. Di SQL standar, nilai kosong (`NULL`) tidak boleh dibandingkan dengan `= NULL` atau `<> NULL`, melainkan harus menggunakan `IS NOT NULL`.
+- `LIMIT 5`: Mengambil 5 sampel ulasan pertama untuk dianalisis tim produk.
 
-**Pratinjau Hasil di ecommerce.db:**
+**Pratinjau Hasil di TablePlus:**
 | ulasan_id | produk_id | rating | komentar |
 |---|---|---|---|
 | 4 | 15 | 3 | Kualitas bahan sangat bagus, jahitan rapi, ukuran pas di badan. |
@@ -123,8 +127,9 @@ LIMIT 5;
 
 ---
 
-### Jawaban Soal 5: Sebaran Kota Pemasok Logistik Tanpa Duplikasi (DISTINCT & ORDER BY)
-**Instruksi:** Dapatkan nama kota unik dari tabel `supplier` dan urutkan secara ascending (A ke Z).
+### Misi 5: Pemetaan Kota Pemasok Tanpa Duplikasi
+- **Divisi Pemohon:** Tim Pengadaan (Procurement)
+- **Tabel Sumber di TablePlus:** `supplier`
 
 ```sql
 SELECT DISTINCT 
@@ -133,11 +138,11 @@ FROM supplier
 ORDER BY kota ASC;
 ```
 
-**Pembahasan Logika:**
-- `SELECT DISTINCT kota`: Menghapus semua nama kota yang duplikat sehingga setiap kota hanya muncul tepat 1 kali.
-- `ORDER BY kota ASC`: Mengurutkan nama kota secara alfabetis dari A sampai Z.
+**Pembahasan Logika Analis:**
+- `SELECT DISTINCT kota`: Menghapus duplikasi nama kota. Jika ada beberapa pemasok berdomisili di kota yang sama, nama kota tersebut hanya ditampilkan 1 kali dalam laporan.
+- `ORDER BY kota ASC`: Mengurutkan nama kota secara alfabetis dari abjad A sampai Z untuk memudahkan pencarian rute logistik.
 
-**Pratinjau Hasil di ecommerce.db:**
+**Pratinjau Hasil di TablePlus:**
 | kota |
 |---|
 | Balikpapan |
@@ -153,8 +158,9 @@ ORDER BY kota ASC;
 
 ---
 
-### Jawaban Soal 6: Analisis Saluran Pembayaran Perbankan Digital (Operator IN)
-**Instruksi:** Tampilkan metode pembayaran dari tabel `metode_pembayaran` yang bertipe `'Virtual Account'` atau `'E-Wallet'`, urutkan dari biaya admin termurah.
+### Misi 6: Perbandingan Saluran Pembayaran Digital
+- **Divisi Pemohon:** Tim Pembayaran & Finansial
+- **Tabel Sumber di TablePlus:** `metode_pembayaran`
 
 ```sql
 SELECT 
@@ -166,11 +172,11 @@ WHERE tipe IN ('Virtual Account', 'E-Wallet')
 ORDER BY biaya_admin ASC, nama_metode ASC;
 ```
 
-**Pembahasan Logika:**
-- `WHERE tipe IN ('Virtual Account', 'E-Wallet')`: Jauh lebih ringkas dan elegan dibanding menulis multi-kondisi `OR` (`WHERE tipe = 'Virtual Account' OR tipe = 'E-Wallet'`).
-- `ORDER BY biaya_admin ASC, nama_metode ASC`: Pengurutan bertingkat. Data diurutkan berdasarkan `biaya_admin` terkecil dulu; jika ada biaya admin yang sama, urutkan berdasarkan `nama_metode` dari A ke Z.
+**Pembahasan Logika Analis:**
+- `WHERE tipe IN ('Virtual Account', 'E-Wallet')`: Operator `IN` menyaring data berdasarkan kumpulan nilai, jauh lebih ringkas dan bersih dibanding menggunakan rangkaian `OR`.
+- `ORDER BY biaya_admin ASC, nama_metode ASC`: Pengurutan bertingkat. Data diurutkan dari biaya admin termurah ke termahal; jika biaya adminnya sama, urutan dilanjutkan berdasarkan alfabetis nama metode dari A ke Z.
 
-**Pratinjau Hasil di ecommerce.db:**
+**Pratinjau Hasil di TablePlus:**
 | nama_metode | tipe | biaya_admin |
 |---|---|---|
 | GoPay Indonesia | E-Wallet | 1000 |
@@ -183,8 +189,9 @@ ORDER BY biaya_admin ASC, nama_metode ASC;
 
 ---
 
-### Jawaban Soal 7: Evaluasi Promo Belanja Skala Menengah (Operator BETWEEN)
-**Instruksi:** Saring voucher dari tabel `voucher_promo` yang memiliki `minimal_belanja` antara Rp 100.000 sampai Rp 250.000, urutkan dari yang terendah.
+### Misi 7: Seleksi Voucher untuk Belanja Skala Menengah
+- **Divisi Pemohon:** Tim Promosi & Kampanye
+- **Tabel Sumber di TablePlus:** `voucher_promo`
 
 ```sql
 SELECT 
@@ -197,11 +204,11 @@ WHERE minimal_belanja BETWEEN 100000 AND 250000
 ORDER BY minimal_belanja ASC;
 ```
 
-**Pembahasan Logika:**
-- `WHERE minimal_belanja BETWEEN 100000 AND 250000`: Menyaring rentang nilai secara inklusif (sama artinya dengan `minimal_belanja >= 100000 AND minimal_belanja <= 250000`).
-- `ORDER BY minimal_belanja ASC`: Mengurutkan dari syarat transaksi terendah ke tertinggi.
+**Pembahasan Logika Analis:**
+- `WHERE minimal_belanja BETWEEN 100000 AND 250000`: Operator `BETWEEN` menyaring rentang nilai secara inklusif (angka 100.000 dan 250.000 ikut dihitung masuk).
+- `ORDER BY minimal_belanja ASC`: Mengurutkan dari syarat belanja yang paling ringan ke yang lebih tinggi.
 
-**Pratinjau Hasil di ecommerce.db:**
+**Pratinjau Hasil di TablePlus:**
 | kode_voucher | tipe_diskon | nilai_diskon | minimal_belanja |
 |---|---|---|---|
 | ONGKIRGRATIS15 | Nominal | 15000 | 100000 |
@@ -212,8 +219,9 @@ ORDER BY minimal_belanja ASC;
 
 ---
 
-### Jawaban Soal 8: Audit Legalitas Identitas Vendor Supplier (Pencarian Teks LIKE)
-**Instruksi:** Cari vendor dari tabel `supplier` yang namanya diawali dengan `'PT'`, urutkan nama supplier secara ascending.
+### Misi 8: Audit Legalitas Rekanan Berbadan Hukum PT
+- **Divisi Pemohon:** Tim Legal & Manajemen Vendor
+- **Tabel Sumber di TablePlus:** `supplier`
 
 ```sql
 SELECT 
@@ -226,11 +234,11 @@ WHERE nama_supplier LIKE 'PT%'
 ORDER BY nama_supplier ASC;
 ```
 
-**Pembahasan Logika:**
-- `LIKE 'PT%'`: Wildcard `%` di akhir kata berarti mencocokkan teks yang diawali huruf 'PT' dan diikuti oleh karakter apa pun setelahnya.
-- `ORDER BY nama_supplier ASC`: Mengurutkan daftar perusahaan dari abjad A ke Z.
+**Pembahasan Logika Analis:**
+- `WHERE nama_supplier LIKE 'PT%'`: Simbol wildcard `%` di belakang huruf 'PT' mencocokkan semua teks yang berawalan dengan kata 'PT' tanpa membatasi panjang karakternya.
+- `ORDER BY nama_supplier ASC`: Mengurutkan daftar perusahaan dari A ke Z agar mempermudah tim audit legal mengecek kelengkapan berkas.
 
-**Pratinjau Hasil di ecommerce.db:**
+**Pratinjau Hasil di TablePlus:**
 | supplier_id | nama_supplier | kontak_person | kota |
 |---|---|---|---|
 | 9 | PT Banten Niaga Cipta | Siti Maryam | Tangerang |
@@ -242,8 +250,9 @@ ORDER BY nama_supplier ASC;
 
 ---
 
-### Jawaban Soal 9: Paginasi Leaderboard Produk Mewah Halaman ke-2 (ORDER BY, LIMIT, OFFSET)
-**Instruksi:** Tampilkan 5 variasi produk termahal halaman ke-2 (peringkat 6 s/d 10 termahal) dari tabel `variasi_produk`.
+### Misi 9: Paginasi Etalase Produk Premium Halaman ke-2
+- **Divisi Pemohon:** Tim Front-End & Pengembang Web
+- **Tabel Sumber di TablePlus:** `variasi_produk`
 
 ```sql
 SELECT 
@@ -256,11 +265,11 @@ ORDER BY harga_jual DESC
 LIMIT 5 OFFSET 5;
 ```
 
-**Pembahasan Logika:**
-- `ORDER BY harga_jual DESC`: Mengurutkan harga jual dari yang paling mahal (jutaan rupiah) ke yang paling murah.
-- `LIMIT 5 OFFSET 5`: Rumus paginasi standar di mana `OFFSET 5` melompati 5 baris pertama (halaman 1), dan `LIMIT 5` mengambil 5 baris berikutnya (halaman 2).
+**Pembahasan Logika Analis:**
+- `ORDER BY harga_jual DESC`: Mengurutkan dari produk berharga paling mahal ke paling terjangkau.
+- `LIMIT 5 OFFSET 5`: Logika paginasi aplikasi. `OFFSET 5` melompati 5 produk termahal pertama (halaman 1), kemudian `LIMIT 5` mengambil 5 produk berikutnya untuk mengisi slot halaman ke-2.
 
-**Pratinjau Hasil di ecommerce.db:**
+**Pratinjau Hasil di TablePlus:**
 | sku | warna | ukuran | harga_jual |
 |---|---|---|---|
 | SAM-S24U-BLK-256 | Titanium Black | 256GB | 19999000 |
@@ -271,8 +280,9 @@ LIMIT 5 OFFSET 5;
 
 ---
 
-### Jawaban Soal 10: Audit Risiko Transaksi Tertunda & Batal (Multi-Kondisi AND, OR, Kurung)
-**Instruksi:** Filter pesanan di tabel `pesanan` yang berstatus `'Dibatalkan'` atau `'Menunggu Pembayaran'` dan bernilai `total_bayar >= 50000000`. Batasi 5 baris dengan urutan total bayar terbesar.
+### Misi 10: Investigasi Transaksi Bernilai Besar yang Tertahan
+- **Divisi Pemohon:** Tim Keuangan & Manajemen Risiko
+- **Tabel Sumber di TablePlus:** `pesanan`
 
 ```sql
 SELECT 
@@ -288,12 +298,12 @@ ORDER BY total_bayar DESC
 LIMIT 5;
 ```
 
-**Pembahasan Logika:**
-- `(status_pesanan = 'Dibatalkan' OR status_pesanan = 'Menunggu Pembayaran')`: Wajib dibungkus tanda kurung `( ... )` agar klausa `OR` diproses sebagai satu kelompok logika sebelum disandingkan dengan operator `AND`.
-- `AND total_bayar >= 50000000`: Memastikan hanya transaksi bernilai sangat besar (kategori risiko tinggi) yang disaring.
-- `ORDER BY total_bayar DESC`: Mengurutkan transaksi fantastis dari yang paling jumbo.
+**Pembahasan Logika Analis:**
+- **Tanda Kurung `( ... )`:** Wajib membungkus kondisi status agar klausa `OR` dihitung sebagai satu kesatuan filter status sebelum dievaluasi bersama kondisi `AND total_bayar >= 50000000`. Jika tanpa tanda kurung, aturan presedensi operator SQL akan menyebabkan data transaksi yang terambil salah.
+- `ORDER BY total_bayar DESC`: Mengurutkan transaksi fantastis dari nominal terbesar agar tim mitigasi bisa memprioritaskan penyelamatan omzet tertinggi.
+- `LIMIT 5`: Mengambil 5 faktur paling prioritas untuk ditindaklanjuti.
 
-**Pratinjau Hasil di ecommerce.db:**
+**Pratinjau Hasil di TablePlus:**
 | nomor_invoice | tanggal_pesanan | status_pesanan | ongkos_kirim | total_bayar |
 |---|---|---|---|---|
 | INV/20240613/02323 | 2024-06-13 16:10:13 | Dibatalkan | 30000 | 73043000 |
