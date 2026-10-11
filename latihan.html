@@ -579,11 +579,11 @@
             <div class="latihan-badges">
                 <span class="latihan-badge badge-blue"><i class="fa-solid fa-pen-to-square"></i> 10 SOAL LATIHAN MANDIRI</span>
                 <span class="latihan-badge badge-surface"><i class="fa-solid fa-database"></i> ECOMMERCE.DB (20 TABEL)</span>
-                <span class="latihan-badge badge-green"><i class="fa-solid fa-key"></i> KUNCI JAWABAN TERSEDIA</span>
+                <span class="latihan-badge badge-green"><i class="fa-solid fa-brain"></i> TANTANGAN MANDIRI</span>
             </div>
             <h1>Latihan Query SQL: <span>Query Dasar &amp; Filtering</span></h1>
             <p>
-                Asah keterampilan SQL Anda menggunakan data transaksi nyata. Kerjakan 10 soal secara mandiri menggunakan <strong>Menu Latihan</strong>, lalu periksa pemahaman dan solusi optimal Anda di <strong>Menu Kunci Jawaban</strong>.
+                Asah keterampilan analisis SQL Anda menggunakan data transaksi nyata di <strong>ecommerce.db</strong>. Pecahkan 10 studi kasus bisnis di bawah ini secara mandiri pada aplikasi SQLite Anda.
             </p>
         </section>
 
@@ -612,18 +612,11 @@
                 </div>
             </div>
 
-            <!-- Mode Switcher Bar (Menu Soal Latihan & Menu Jawaban) -->
-            <div class="latihan-nav-bar" style="margin-bottom: 24px;">
-                <div class="mode-tabs">
-                    <button class="mode-tab-btn active" id="btnModeSoal" type="button" onclick="switchLatihanMode('soal')">
-                        <i class="fa-solid fa-pen-nib"></i> Menu Soal Latihan (10 Soal)
-                    </button>
-                    <button class="mode-tab-btn" id="btnModeJawaban" type="button" onclick="switchLatihanMode('jawaban')">
-                        <i class="fa-solid fa-key"></i> Menu Kunci Jawaban &amp; Solusi
-                    </button>
-                    <button class="mode-tab-btn" id="btnModeSemua" type="button" onclick="switchLatihanMode('semua')">
-                        <i class="fa-solid fa-layer-group"></i> Tampilkan Keduanya (Mode Belajar)
-                    </button>
+            <!-- Bilah Navigasi Lompat Nomor Soal -->
+            <div class="latihan-nav-bar" style="margin-bottom: 24px; justify-content: space-between;">
+                <div style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:0.95rem;color:var(--text-primary);">
+                    <i class="fa-solid fa-list-check" style="color:var(--brand-light);"></i>
+                    Daftar 10 Kasus Bisnis Mandiri
                 </div>
 
                 <div class="quick-jump-wrap">
@@ -686,55 +679,9 @@
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
                             <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <button class="btn btn-secondary btn-sm" type="button" style="padding:2px 8px;font-size:0.75rem;" onclick="toggleJawaban(1)">
-                                <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 1
-                            </button>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
                         </div>
                         <textarea class="scratchpad-textarea" placeholder="Tulis query SQL Anda di sini untuk latihan...&#10;Contoh: SELECT kode_voucher..."></textarea>
-                    </div>
-                </div>
-
-                <!-- Bagian Jawaban Soal 1 -->
-                <div class="jawaban-section" id="jawaban-1">
-                    <div class="jawaban-header">
-                        <span class="jawaban-badge-title"><i class="fa-solid fa-circle-check"></i> Kunci Jawaban Soal 1</span>
-                        <span style="font-size:0.8rem;color:var(--text-muted);font-family:var(--mono);">Status: Terverifikasi di ecommerce.db</span>
-                    </div>
-                    <div class="jawaban-sql-wrap">
-                        <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
-                        <pre class="code-block"><code class="language-sql">SELECT 
-    kode_voucher, 
-    tipe_diskon, 
-    nilai_diskon, 
-    kuota_pemakaian
-FROM voucher_promo
-LIMIT 5;</code></pre>
-                    </div>
-                    <div class="jawaban-explanation">
-                        <strong>Pembahasan Logika:</strong>
-                        <ul>
-                            <li><code>SELECT kode_voucher, tipe_diskon, nilai_diskon, kuota_pemakaian</code>: Hanya mengambil kolom yang relevan dengan audit kupon tanpa memuat kolom minimal belanja.</li>
-                            <li><code>FROM voucher_promo</code>: Menentukan tabel sumber data promo voucher.</li>
-                            <li><code>LIMIT 5</code>: Menghentikan scan mesin SQLite setelah menemukan 5 record pertama.</li>
-                        </ul>
-                    </div>
-                    <div class="jawaban-output-preview">
-                        <div class="output-header">
-                            <span>Pratinjau Hasil Query (5 Baris)</span>
-                            <span>database/ecommerce.db</span>
-                        </div>
-                        <table class="output-table">
-                            <thead>
-                                <tr><th>kode_voucher</th><th>tipe_diskon</th><th>nilai_diskon</th><th>kuota_pemakaian</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>GAJIANHEMAT50</td><td>Nominal</td><td>50000</td><td>1000</td></tr>
-                                <tr><td>DISKONMEMBER25</td><td>Nominal</td><td>25000</td><td>2500</td></tr>
-                                <tr><td>ONGKIRGRATIS15</td><td>Nominal</td><td>15000</td><td>5000</td></tr>
-                                <tr><td>ELEKTRONIK100K</td><td>Nominal</td><td>100000</td><td>800</td></tr>
-                                <tr><td>FASHIONFEST20</td><td>Persen</td><td>20</td><td>1500</td></tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </article>
@@ -780,54 +727,9 @@ LIMIT 5;</code></pre>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
                             <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <button class="btn btn-secondary btn-sm" type="button" style="padding:2px 8px;font-size:0.75rem;" onclick="toggleJawaban(2)">
-                                <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 2
-                            </button>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
                         </div>
                         <textarea class="scratchpad-textarea" placeholder="Tulis query SQL Anda di sini untuk latihan...&#10;Contoh: SELECT nama_kurir, layanan..."></textarea>
-                    </div>
-                </div>
-
-                <div class="jawaban-section" id="jawaban-2">
-                    <div class="jawaban-header">
-                        <span class="jawaban-badge-title"><i class="fa-solid fa-circle-check"></i> Kunci Jawaban Soal 2</span>
-                        <span style="font-size:0.8rem;color:var(--text-muted);font-family:var(--mono);">Status: Terverifikasi di ecommerce.db</span>
-                    </div>
-                    <div class="jawaban-sql-wrap">
-                        <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
-                        <pre class="code-block"><code class="language-sql">SELECT 
-    nama_kurir, 
-    layanan, 
-    tarif_per_kg,
-    (tarif_per_kg * 5) AS estimasi_ongkir_5kg
-FROM kurir_ekspedisi
-LIMIT 5;</code></pre>
-                    </div>
-                    <div class="jawaban-explanation">
-                        <strong>Pembahasan Logika:</strong>
-                        <ul>
-                            <li><code>(tarif_per_kg * 5)</code>: Melakukan kalkulasi matematika langsung di mesin SQLite tanpa manipulasi manual di aplikasi.</li>
-                            <li><code>AS estimasi_ongkir_5kg</code>: Mengganti nama header kolom hasil kalkulasi agar mudah dibaca oleh tim bisnis.</li>
-                            <li><code>LIMIT 5</code>: Membatasi tampilan 5 opsi kurir pertama.</li>
-                        </ul>
-                    </div>
-                    <div class="jawaban-output-preview">
-                        <div class="output-header">
-                            <span>Pratinjau Hasil Query (5 Baris)</span>
-                            <span>database/ecommerce.db</span>
-                        </div>
-                        <table class="output-table">
-                            <thead>
-                                <tr><th>nama_kurir</th><th>layanan</th><th>tarif_per_kg</th><th>estimasi_ongkir_5kg</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>JNE Express</td><td>Reguler (2-3 Hari)</td><td>10000</td><td>50000</td></tr>
-                                <tr><td>JNE Express</td><td>YES - Yakin Esok Sampai</td><td>20000</td><td>100000</td></tr>
-                                <tr><td>SiCepat Express</td><td>SiUntung Reguler</td><td>9500</td><td>47500</td></tr>
-                                <tr><td>SiCepat Express</td><td>BEST - Besok Sampai Tujuan</td><td>18500</td><td>92500</td></tr>
-                                <tr><td>J&amp;T Express</td><td>EZ Standard Service</td><td>11000</td><td>55000</td></tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </article>
@@ -873,56 +775,9 @@ LIMIT 5;</code></pre>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
                             <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <button class="btn btn-secondary btn-sm" type="button" style="padding:2px 8px;font-size:0.75rem;" onclick="toggleJawaban(3)">
-                                <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 3
-                            </button>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
                         </div>
                         <textarea class="scratchpad-textarea" placeholder="Tulis query WHERE stok_gudang di sini..."></textarea>
-                    </div>
-                </div>
-
-                <div class="jawaban-section" id="jawaban-3">
-                    <div class="jawaban-header">
-                        <span class="jawaban-badge-title"><i class="fa-solid fa-circle-check"></i> Kunci Jawaban Soal 3</span>
-                        <span style="font-size:0.8rem;color:var(--text-muted);font-family:var(--mono);">Status: Terverifikasi di ecommerce.db</span>
-                    </div>
-                    <div class="jawaban-sql-wrap">
-                        <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
-                        <pre class="code-block"><code class="language-sql">SELECT 
-    stok_id, 
-    gudang_id, 
-    variasi_id, 
-    jumlah_stok
-FROM stok_gudang
-WHERE jumlah_stok &lt;= 10
-ORDER BY jumlah_stok ASC
-LIMIT 5;</code></pre>
-                    </div>
-                    <div class="jawaban-explanation">
-                        <strong>Pembahasan Logika:</strong>
-                        <ul>
-                            <li>Klausa <code>WHERE jumlah_stok &lt;= 10</code> menyaring hanya baris data fisik yang memenuhi ambang batas kritis.</li>
-                            <li><code>ORDER BY jumlah_stok ASC</code> mengurutkan dari stok yang paling kritis (terkecil) ke yang lebih banyak agar prioritas restock tertangani pertama kali.</li>
-                            <li><code>LIMIT 5</code> mengambil 5 varian barang teratas yang paling mendesak untuk di-restock.</li>
-                        </ul>
-                    </div>
-                    <div class="jawaban-output-preview">
-                        <div class="output-header">
-                            <span>Pratinjau Hasil Query (5 Baris)</span>
-                            <span>database/ecommerce.db</span>
-                        </div>
-                        <table class="output-table">
-                            <thead>
-                                <tr><th>stok_id</th><th>gudang_id</th><th>variasi_id</th><th>jumlah_stok</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>125</td><td>5</td><td>25</td><td>2</td></tr>
-                                <tr><td>132</td><td>2</td><td>27</td><td>2</td></tr>
-                                <tr><td>153</td><td>3</td><td>31</td><td>2</td></tr>
-                                <tr><td>176</td><td>1</td><td>36</td><td>2</td></tr>
-                                <tr><td>183</td><td>3</td><td>37</td><td>2</td></tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </article>
@@ -968,56 +823,9 @@ LIMIT 5;</code></pre>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
                             <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <button class="btn btn-secondary btn-sm" type="button" style="padding:2px 8px;font-size:0.75rem;" onclick="toggleJawaban(4)">
-                                <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 4
-                            </button>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
                         </div>
                         <textarea class="scratchpad-textarea" placeholder="Tulis query kurasi ulasan pelanggan di sini..."></textarea>
-                    </div>
-                </div>
-
-                <div class="jawaban-section" id="jawaban-4">
-                    <div class="jawaban-header">
-                        <span class="jawaban-badge-title"><i class="fa-solid fa-circle-check"></i> Kunci Jawaban Soal 4</span>
-                        <span style="font-size:0.8rem;color:var(--text-muted);font-family:var(--mono);">Status: Terverifikasi di ecommerce.db</span>
-                    </div>
-                    <div class="jawaban-sql-wrap">
-                        <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
-                        <pre class="code-block"><code class="language-sql">SELECT 
-    ulasan_id, 
-    produk_id, 
-    rating, 
-    komentar
-FROM ulasan_produk
-WHERE rating = 3 
-  AND komentar IS NOT NULL
-LIMIT 5;</code></pre>
-                    </div>
-                    <div class="jawaban-explanation">
-                        <strong>Pembahasan Logika:</strong>
-                        <ul>
-                            <li><code>rating = 3</code>: Memfilter ulasan dengan skor netral (bintang 3).</li>
-                            <li><code>AND komentar IS NOT NULL</code>: Memastikan bahwa pembeli benar-benar mengetikkan ulasan teks (bukan hanya memberikan bintang tanpa komentar). Di SQL standar, nilai NULL wajib diuji dengan <code>IS NOT NULL</code>.</li>
-                            <li><code>LIMIT 5</code>: Membatasi tampilan 5 sampel ulasan teratas.</li>
-                        </ul>
-                    </div>
-                    <div class="jawaban-output-preview">
-                        <div class="output-header">
-                            <span>Pratinjau Hasil Query (5 Baris)</span>
-                            <span>database/ecommerce.db</span>
-                        </div>
-                        <table class="output-table">
-                            <thead>
-                                <tr><th>ulasan_id</th><th>produk_id</th><th>rating</th><th>komentar</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>4</td><td>15</td><td>3</td><td>Kualitas bahan sangat bagus, jahitan rapi, ukuran pas di badan.</td></tr>
-                                <tr><td>8</td><td>5</td><td>3</td><td>Harga bersaing dibanding toko sebelah, respon admin cepat dan ramah.</td></tr>
-                                <tr><td>9</td><td>8</td><td>3</td><td>Packing aman sekali dengan bubble wrap tebal dan kardus tebal.</td></tr>
-                                <tr><td>18</td><td>6</td><td>3</td><td>Bintang 5! Sangat memuaskan, repeat order kedua kalinya.</td></tr>
-                                <tr><td>35</td><td>22</td><td>3</td><td>Bintang 5! Sangat memuaskan, repeat order kedua kalinya.</td></tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </article>
@@ -1063,55 +871,9 @@ LIMIT 5;</code></pre>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
                             <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <button class="btn btn-secondary btn-sm" type="button" style="padding:2px 8px;font-size:0.75rem;" onclick="toggleJawaban(5)">
-                                <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 5
-                            </button>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
                         </div>
                         <textarea class="scratchpad-textarea" placeholder="Tulis query DISTINCT kota supplier di sini..."></textarea>
-                    </div>
-                </div>
-
-                <div class="jawaban-section" id="jawaban-5">
-                    <div class="jawaban-header">
-                        <span class="jawaban-badge-title"><i class="fa-solid fa-circle-check"></i> Kunci Jawaban Soal 5</span>
-                        <span style="font-size:0.8rem;color:var(--text-muted);font-family:var(--mono);">Status: Terverifikasi di ecommerce.db</span>
-                    </div>
-                    <div class="jawaban-sql-wrap">
-                        <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
-                        <pre class="code-block"><code class="language-sql">SELECT DISTINCT 
-    kota
-FROM supplier
-ORDER BY kota ASC;</code></pre>
-                    </div>
-                    <div class="jawaban-explanation">
-                        <strong>Pembahasan Logika:</strong>
-                        <ul>
-                            <li><code>SELECT DISTINCT kota</code> menghapus seluruh nama kota yang duplikat sehingga setiap kota hanya muncul tepat satu kali.</li>
-                            <li><code>ORDER BY kota ASC</code> mengurutkan daftar nama kota secara alfabetis dari A sampai Z.</li>
-                        </ul>
-                    </div>
-                    <div class="jawaban-output-preview">
-                        <div class="output-header">
-                            <span>Pratinjau Hasil Query (10 Kota Unik)</span>
-                            <span>database/ecommerce.db</span>
-                        </div>
-                        <table class="output-table">
-                            <thead>
-                                <tr><th>kota</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>Balikpapan</td></tr>
-                                <tr><td>Bandung</td></tr>
-                                <tr><td>Denpasar</td></tr>
-                                <tr><td>Jakarta Pusat</td></tr>
-                                <tr><td>Makassar</td></tr>
-                                <tr><td>Medan</td></tr>
-                                <tr><td>Semarang</td></tr>
-                                <tr><td>Surabaya</td></tr>
-                                <tr><td>Tangerang</td></tr>
-                                <tr><td>Yogyakarta</td></tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </article>
@@ -1157,55 +919,9 @@ ORDER BY kota ASC;</code></pre>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
                             <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <button class="btn btn-secondary btn-sm" type="button" style="padding:2px 8px;font-size:0.75rem;" onclick="toggleJawaban(6)">
-                                <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 6
-                            </button>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
                         </div>
                         <textarea class="scratchpad-textarea" placeholder="Tulis query operator IN metode pembayaran di sini..."></textarea>
-                    </div>
-                </div>
-
-                <div class="jawaban-section" id="jawaban-6">
-                    <div class="jawaban-header">
-                        <span class="jawaban-badge-title"><i class="fa-solid fa-circle-check"></i> Kunci Jawaban Soal 6</span>
-                        <span style="font-size:0.8rem;color:var(--text-muted);font-family:var(--mono);">Status: Terverifikasi di ecommerce.db</span>
-                    </div>
-                    <div class="jawaban-sql-wrap">
-                        <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
-                        <pre class="code-block"><code class="language-sql">SELECT 
-    nama_metode, 
-    tipe, 
-    biaya_admin
-FROM metode_pembayaran
-WHERE tipe IN ('Virtual Account', 'E-Wallet')
-ORDER BY biaya_admin ASC, nama_metode ASC;</code></pre>
-                    </div>
-                    <div class="jawaban-explanation">
-                        <strong>Pembahasan Logika:</strong>
-                        <ul>
-                            <li><code>WHERE tipe IN ('Virtual Account', 'E-Wallet')</code> menyaring baris yang nilainya tercantum di dalam kumpulan pilihan.</li>
-                            <li><code>ORDER BY biaya_admin ASC, nama_metode ASC</code> mengurutkan secara bertingkat: biaya admin termurah terlebih dahulu; jika biaya sama, diurutkan alfabetis nama metode.</li>
-                        </ul>
-                    </div>
-                    <div class="jawaban-output-preview">
-                        <div class="output-header">
-                            <span>Pratinjau Hasil Query (7 Saluran Pembayaran)</span>
-                            <span>database/ecommerce.db</span>
-                        </div>
-                        <table class="output-table">
-                            <thead>
-                                <tr><th>nama_metode</th><th>tipe</th><th>biaya_admin</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>GoPay Indonesia</td><td>E-Wallet</td><td>1000</td></tr>
-                                <tr><td>OVO Cash</td><td>E-Wallet</td><td>1000</td></tr>
-                                <tr><td>ShopeePay Digital</td><td>E-Wallet</td><td>1000</td></tr>
-                                <tr><td>BNI Virtual Account</td><td>Virtual Account</td><td>1500</td></tr>
-                                <tr><td>BRI Virtual Account (BRIVA)</td><td>Virtual Account</td><td>1500</td></tr>
-                                <tr><td>BCA Virtual Account</td><td>Virtual Account</td><td>2000</td></tr>
-                                <tr><td>Mandiri Virtual Account</td><td>Virtual Account</td><td>2000</td></tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </article>
@@ -1251,54 +967,9 @@ ORDER BY biaya_admin ASC, nama_metode ASC;</code></pre>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
                             <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <button class="btn btn-secondary btn-sm" type="button" style="padding:2px 8px;font-size:0.75rem;" onclick="toggleJawaban(7)">
-                                <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 7
-                            </button>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
                         </div>
                         <textarea class="scratchpad-textarea" placeholder="Tulis query BETWEEN voucher di sini..."></textarea>
-                    </div>
-                </div>
-
-                <div class="jawaban-section" id="jawaban-7">
-                    <div class="jawaban-header">
-                        <span class="jawaban-badge-title"><i class="fa-solid fa-circle-check"></i> Kunci Jawaban Soal 7</span>
-                        <span style="font-size:0.8rem;color:var(--text-muted);font-family:var(--mono);">Status: Terverifikasi di ecommerce.db</span>
-                    </div>
-                    <div class="jawaban-sql-wrap">
-                        <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
-                        <pre class="code-block"><code class="language-sql">SELECT 
-    kode_voucher, 
-    tipe_diskon, 
-    nilai_diskon, 
-    minimal_belanja
-FROM voucher_promo
-WHERE minimal_belanja BETWEEN 100000 AND 250000
-ORDER BY minimal_belanja ASC;</code></pre>
-                    </div>
-                    <div class="jawaban-explanation">
-                        <strong>Pembahasan Logika:</strong>
-                        <ul>
-                            <li><code>WHERE minimal_belanja BETWEEN 100000 AND 250000</code> menyaring rentang nilai secara inklusif (sama artinya dengan <code>minimal_belanja &gt;= 100000 AND minimal_belanja &lt;= 250000</code>).</li>
-                            <li><code>ORDER BY minimal_belanja ASC</code> mengurutkan dari syarat transaksi terendah ke tertinggi.</li>
-                        </ul>
-                    </div>
-                    <div class="jawaban-output-preview">
-                        <div class="output-header">
-                            <span>Pratinjau Hasil Query (5 Voucher Promo)</span>
-                            <span>database/ecommerce.db</span>
-                        </div>
-                        <table class="output-table">
-                            <thead>
-                                <tr><th>kode_voucher</th><th>tipe_diskon</th><th>nilai_diskon</th><th>minimal_belanja</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>ONGKIRGRATIS15</td><td>Nominal</td><td>15000</td><td>100000</td></tr>
-                                <tr><td>BEAUTYGLOW15</td><td>Persen</td><td>15</td><td>120000</td></tr>
-                                <tr><td>DISKONMEMBER25</td><td>Nominal</td><td>25000</td><td>150000</td></tr>
-                                <tr><td>FASHIONFEST20</td><td>Persen</td><td>20</td><td>200000</td></tr>
-                                <tr><td>SUPERDEAL35K</td><td>Nominal</td><td>35000</td><td>250000</td></tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </article>
@@ -1344,55 +1015,9 @@ ORDER BY minimal_belanja ASC;</code></pre>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
                             <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <button class="btn btn-secondary btn-sm" type="button" style="padding:2px 8px;font-size:0.75rem;" onclick="toggleJawaban(8)">
-                                <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 8
-                            </button>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
                         </div>
                         <textarea class="scratchpad-textarea" placeholder="Tulis query LIKE PT supplier di sini..."></textarea>
-                    </div>
-                </div>
-
-                <div class="jawaban-section" id="jawaban-8">
-                    <div class="jawaban-header">
-                        <span class="jawaban-badge-title"><i class="fa-solid fa-circle-check"></i> Kunci Jawaban Soal 8</span>
-                        <span style="font-size:0.8rem;color:var(--text-muted);font-family:var(--mono);">Status: Terverifikasi di ecommerce.db</span>
-                    </div>
-                    <div class="jawaban-sql-wrap">
-                        <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
-                        <pre class="code-block"><code class="language-sql">SELECT 
-    supplier_id, 
-    nama_supplier, 
-    kontak_person, 
-    kota
-FROM supplier
-WHERE nama_supplier LIKE 'PT%'
-ORDER BY nama_supplier ASC;</code></pre>
-                    </div>
-                    <div class="jawaban-explanation">
-                        <strong>Pembahasan Logika:</strong>
-                        <ul>
-                            <li><code>LIKE 'PT%'</code>: Wildcard <code>%</code> di akhir kata mencocokkan teks yang diawali kata 'PT' dan diikuti karakter apa pun setelahnya.</li>
-                            <li><code>ORDER BY nama_supplier ASC</code>: Mengurutkan daftar perusahaan dari abjad A ke Z.</li>
-                        </ul>
-                    </div>
-                    <div class="jawaban-output-preview">
-                        <div class="output-header">
-                            <span>Pratinjau Hasil Query (6 Vendor PT)</span>
-                            <span>database/ecommerce.db</span>
-                        </div>
-                        <table class="output-table">
-                            <thead>
-                                <tr><th>supplier_id</th><th>nama_supplier</th><th>kontak_person</th><th>kota</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>9</td><td>PT Banten Niaga Cipta</td><td>Siti Maryam</td><td>Tangerang</td></tr>
-                                <tr><td>8</td><td>PT Celebes Global Logistik</td><td>Irfan Syamsuddin</td><td>Makassar</td></tr>
-                                <tr><td>1</td><td>PT Nusantara Mega Distribusi</td><td>Budi Hartono</td><td>Jakarta Pusat</td></tr>
-                                <tr><td>3</td><td>PT Sinergi Abadi Sentosa</td><td>Dewi Sartika</td><td>Bandung</td></tr>
-                                <tr><td>4</td><td>PT Surya Graha Perkasa</td><td>Ahmad Rizal</td><td>Semarang</td></tr>
-                                <tr><td>6</td><td>PT Tri Tunggal Sejahtera</td><td>Faisal Lubis</td><td>Medan</td></tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </article>
@@ -1438,54 +1063,9 @@ ORDER BY nama_supplier ASC;</code></pre>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
                             <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <button class="btn btn-secondary btn-sm" type="button" style="padding:2px 8px;font-size:0.75rem;" onclick="toggleJawaban(9)">
-                                <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 9
-                            </button>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
                         </div>
                         <textarea class="scratchpad-textarea" placeholder="Tulis query paginasi produk termahal di sini..."></textarea>
-                    </div>
-                </div>
-
-                <div class="jawaban-section" id="jawaban-9">
-                    <div class="jawaban-header">
-                        <span class="jawaban-badge-title"><i class="fa-solid fa-circle-check"></i> Kunci Jawaban Soal 9</span>
-                        <span style="font-size:0.8rem;color:var(--text-muted);font-family:var(--mono);">Status: Terverifikasi di ecommerce.db</span>
-                    </div>
-                    <div class="jawaban-sql-wrap">
-                        <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
-                        <pre class="code-block"><code class="language-sql">SELECT 
-    sku, 
-    warna, 
-    ukuran, 
-    harga_jual
-FROM variasi_produk
-ORDER BY harga_jual DESC
-LIMIT 5 OFFSET 5;</code></pre>
-                    </div>
-                    <div class="jawaban-explanation">
-                        <strong>Pembahasan Logika:</strong>
-                        <ul>
-                            <li><code>ORDER BY harga_jual DESC</code> mengurutkan harga jual dari yang paling mahal ke paling terjangkau.</li>
-                            <li><code>LIMIT 5 OFFSET 5</code>: Rumus paginasi standar di mana <code>OFFSET 5</code> melompati 5 varian termahal pertama (halaman 1), dan <code>LIMIT 5</code> mengambil 5 varian berikutnya (halaman 2).</li>
-                        </ul>
-                    </div>
-                    <div class="jawaban-output-preview">
-                        <div class="output-header">
-                            <span>Pratinjau Hasil Halaman 2 (Peringkat 6 - 10)</span>
-                            <span>database/ecommerce.db</span>
-                        </div>
-                        <table class="output-table">
-                            <thead>
-                                <tr><th>sku</th><th>warna</th><th>ukuran</th><th>harga_jual</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>SAM-S24U-BLK-256</td><td>Titanium Black</td><td>256GB</td><td>19.999.000</td></tr>
-                                <tr><td>SAM-ZFL5-GRA-512</td><td>Graphite</td><td>512GB</td><td>16.499.000</td></tr>
-                                <tr><td>SAM-ZFL5-MNT-256</td><td>Mint Green</td><td>256GB</td><td>14.499.000</td></tr>
-                                <tr><td>SNY-WH5-BLK</td><td>Black Matte</td><td>Over-Ear</td><td>5.499.000</td></tr>
-                                <tr><td>SNY-WH5-SLV</td><td>Silver Platinum</td><td>Over-Ear</td><td>5.499.000</td></tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </article>
@@ -1535,58 +1115,9 @@ LIMIT 5 OFFSET 5;</code></pre>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
                             <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query Anda:</span>
-                            <button class="btn btn-secondary btn-sm" type="button" style="padding:2px 8px;font-size:0.75rem;" onclick="toggleJawaban(10)">
-                                <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 10
-                            </button>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di SQLite</span>
                         </div>
                         <textarea class="scratchpad-textarea" placeholder="Tulis query multi-kondisi tanda kurung di sini..."></textarea>
-                    </div>
-                </div>
-
-                <div class="jawaban-section" id="jawaban-10">
-                    <div class="jawaban-header">
-                        <span class="jawaban-badge-title"><i class="fa-solid fa-circle-check"></i> Kunci Jawaban Soal 10</span>
-                        <span style="font-size:0.8rem;color:var(--text-muted);font-family:var(--mono);">Status: Terverifikasi di ecommerce.db</span>
-                    </div>
-                    <div class="jawaban-sql-wrap">
-                        <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
-                        <pre class="code-block"><code class="language-sql">SELECT 
-    nomor_invoice, 
-    tanggal_pesanan, 
-    status_pesanan, 
-    ongkos_kirim, 
-    total_bayar
-FROM pesanan
-WHERE (status_pesanan = 'Dibatalkan' OR status_pesanan = 'Menunggu Pembayaran')
-  AND total_bayar &gt;= 50000000
-ORDER BY total_bayar DESC
-LIMIT 5;</code></pre>
-                    </div>
-                    <div class="jawaban-explanation">
-                        <strong>Pembahasan Logika:</strong>
-                        <ul>
-                            <li><code>(status_pesanan = 'Dibatalkan' OR status_pesanan = 'Menunggu Pembayaran')</code>: Wajib dibungkus tanda kurung <code>( ... )</code> agar klausa <code>OR</code> diproses sebagai satu kelompok logika sebelum disandingkan dengan operator <code>AND</code>.</li>
-                            <li><code>AND total_bayar &gt;= 50000000</code>: Memastikan hanya transaksi bernilai sangat besar (kategori risiko tinggi) yang disaring.</li>
-                            <li><code>ORDER BY total_bayar DESC</code>: Mengurutkan transaksi fantastis dari yang paling jumbo.</li>
-                        </ul>
-                    </div>
-                    <div class="jawaban-output-preview">
-                        <div class="output-header">
-                            <span>Pratinjau Hasil Query (5 Transaksi Tertinggi)</span>
-                            <span>database/ecommerce.db</span>
-                        </div>
-                        <table class="output-table">
-                            <thead>
-                                <tr><th>nomor_invoice</th><th>tanggal_pesanan</th><th>status_pesanan</th><th>ongkos_kirim</th><th>total_bayar</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>INV/20240613/02323</td><td>2024-06-13 16:10:13</td><td>Dibatalkan</td><td>30.000</td><td>73.043.000</td></tr>
-                                <tr><td>INV/20240310/01450</td><td>2024-03-10 17:35:50</td><td>Dibatalkan</td><td>60.000</td><td>72.156.000</td></tr>
-                                <tr><td>INV/20240427/02253</td><td>2024-04-27 18:00:44</td><td>Dibatalkan</td><td>210.000</td><td>70.802.000</td></tr>
-                                <tr><td>INV/20240719/01108</td><td>2024-07-19 14:43:40</td><td>Dibatalkan</td><td>95.000</td><td>70.675.000</td></tr>
-                                <tr><td>INV/20240520/01813</td><td>2024-05-20 17:34:53</td><td>Dibatalkan</td><td>100.000</td><td>69.946.000</td></tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </article>
@@ -1596,71 +1127,5 @@ LIMIT 5;</code></pre>
 </div>
 
 <script src="assets/script.js?v=2.5.0"></script>
-<script>
-    // Mode Switcher: 'soal', 'jawaban', 'semua'
-    function switchLatihanMode(mode) {
-        const btnSoal = document.getElementById('btnModeSoal');
-        const btnJawaban = document.getElementById('btnModeJawaban');
-        const btnSemua = document.getElementById('btnModeSemua');
-        const allJawaban = document.querySelectorAll('.jawaban-section');
-        const allSoalArea = document.querySelectorAll('.area-soal');
-
-        btnSoal.classList.remove('active');
-        btnJawaban.classList.remove('active');
-        btnSemua.classList.remove('active');
-
-        if (mode === 'soal') {
-            btnSoal.classList.add('active');
-            // Sembunyikan semua kunci jawaban
-            allJawaban.forEach(el => el.style.display = 'none');
-            allSoalArea.forEach(el => el.style.display = 'block');
-        } else if (mode === 'jawaban') {
-            btnJawaban.classList.add('active');
-            // Tampilkan semua kunci jawaban, sembunyikan kotak scratchpad
-            allJawaban.forEach(el => el.style.display = 'block');
-            allSoalArea.forEach(el => el.style.display = 'none');
-        } else if (mode === 'semua') {
-            btnSemua.classList.add('active');
-            // Tampilkan keduanya (Mode Belajar Lengkap)
-            allJawaban.forEach(el => el.style.display = 'block');
-            allSoalArea.forEach(el => el.style.display = 'block');
-        }
-    }
-
-    // Toggle per-soal
-    function toggleJawaban(num) {
-        const target = document.getElementById('jawaban-' + num);
-        if (!target) return;
-        if (target.style.display === 'none' || getComputedStyle(target).display === 'none') {
-            target.style.display = 'block';
-        } else {
-            target.style.display = 'none';
-        }
-    }
-
-    // Fungsi Salin Kode SQL dengan feedback interaktif
-    function salinKode(btn) {
-        const codeBlock = btn.nextElementSibling.querySelector('code');
-        if (!codeBlock) return;
-        const text = codeBlock.innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-check" style="color:#10B981;"></i> Disalin!';
-            btn.style.borderColor = '#10B981';
-            setTimeout(() => {
-                btn.innerHTML = originalHTML;
-                btn.style.borderColor = '';
-            }, 2000);
-        }).catch(err => {
-            console.error('Gagal menyalin:', err);
-        });
-    }
-
-    // Inisialisasi awal: Default mode soal aktif (jawaban tersembunyi agar user bisa latihan)
-    document.addEventListener('DOMContentLoaded', () => {
-        switchLatihanMode('soal');
-    });
-</script>
-
 </body>
 </html>
