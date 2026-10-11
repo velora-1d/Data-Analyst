@@ -366,7 +366,7 @@
             <span class="brand-divider">•</span>
             <span class="author-pill"><i class="fa-solid fa-user-graduate"></i> Mahin Utsman Nawawi, S.H</span>
         </div>
-        <nav class="breadcrumb">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
             <i class="fa-solid fa-chevron-right"></i>
             <span style="font-weight:600;color:var(--brand-light);">Pustaka Semua Query SQL</span>
         </nav>
@@ -379,7 +379,7 @@
             <i class="fa-solid fa-database"></i>
             ecommerce.db <span>(30 Perintah)</span>
         </span>
-        <button class="btn-theme" id="themeToggle" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+        <button class="btn-theme" id="themeToggle" type="button" aria-label="Ganti tema" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
     </div>
 </header>
 
@@ -394,7 +394,7 @@
         <div class="nav-divider"></div>
 
         <div class="sidebar-header"><i class="fa-solid fa-layer-group"></i> 6 Jenis Query</div>
-        <nav class="sidebar-nav">
+        <nav class="sidebar-nav" aria-label="Daftar Kategori Query">
             <a href="#cat-1" class="nav-link"><i class="fa-solid fa-table"></i> 1. Query Dasar (5)</a>
             <a href="#cat-2" class="nav-link"><i class="fa-solid fa-filter"></i> 2. Filtering Data (5)</a>
             <a href="#cat-3" class="nav-link"><i class="fa-solid fa-calculator"></i> 3. Agregasi &amp; Metrik (5)</a>
@@ -434,13 +434,13 @@
                 </div>
 
                 <div class="category-tabs-row">
-                    <button class="cat-tab-btn active" onclick="filterCategory('all', this)"><i class="fa-solid fa-border-all"></i> Semua (30)</button>
-                    <button class="cat-tab-btn" onclick="filterCategory('cat-1', this)"><i class="fa-solid fa-table"></i> Dasar (5)</button>
-                    <button class="cat-tab-btn" onclick="filterCategory('cat-2', this)"><i class="fa-solid fa-filter"></i> Filter (5)</button>
-                    <button class="cat-tab-btn" onclick="filterCategory('cat-3', this)"><i class="fa-solid fa-calculator"></i> Agregasi (5)</button>
-                    <button class="cat-tab-btn" onclick="filterCategory('cat-4', this)"><i class="fa-solid fa-link"></i> JOIN (5)</button>
-                    <button class="cat-tab-btn" onclick="filterCategory('cat-5', this)"><i class="fa-solid fa-code-branch"></i> Subquery &amp; CTE (5)</button>
-                    <button class="cat-tab-btn" onclick="filterCategory('cat-6', this)"><i class="fa-solid fa-chart-line"></i> Window (5)</button>
+                    <button class="cat-tab-btn active" type="button" onclick="filterCategory('all', this)"><i class="fa-solid fa-border-all"></i> Semua (30)</button>
+                    <button class="cat-tab-btn" type="button" onclick="filterCategory('cat-1', this)"><i class="fa-solid fa-table"></i> Dasar (5)</button>
+                    <button class="cat-tab-btn" type="button" onclick="filterCategory('cat-2', this)"><i class="fa-solid fa-filter"></i> Filter (5)</button>
+                    <button class="cat-tab-btn" type="button" onclick="filterCategory('cat-3', this)"><i class="fa-solid fa-calculator"></i> Agregasi (5)</button>
+                    <button class="cat-tab-btn" type="button" onclick="filterCategory('cat-4', this)"><i class="fa-solid fa-link"></i> JOIN (5)</button>
+                    <button class="cat-tab-btn" type="button" onclick="filterCategory('cat-5', this)"><i class="fa-solid fa-code-branch"></i> Subquery &amp; CTE (5)</button>
+                    <button class="cat-tab-btn" type="button" onclick="filterCategory('cat-6', this)"><i class="fa-solid fa-chart-line"></i> Window (5)</button>
                 </div>
             </div>
 
@@ -472,7 +472,7 @@
                             <div><strong>Kapan digunakan?</strong> Saat backend API membuat endpoint ringkas katalog produk atau tim logistik mengecek berat rata-rata barang untuk pengemasan.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     nama_produk, 
     berat_gram
@@ -508,7 +508,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Di dashboard keuangan manajemen toko ketika finance manager mengecek produk mana yang memberikan sumbangan laba nominal terbesar.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     sku,
     harga_modal,
@@ -546,7 +546,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Untuk mengisi dropdown wilayah pengiriman pada form checkout atau analisis jangkauan coverage ekspedisi kurir.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT DISTINCT 
     kota, 
     provinsi
@@ -583,7 +583,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Pada REST API endpoint table dashboard admin (misal <code>/api/orders?page=2&amp;limit=5</code>).</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     nomor_invoice, 
     tanggal_pesanan, 
@@ -621,7 +621,7 @@ LIMIT 5 OFFSET 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Saat proses ekspor data invoice ke sistem pelaporan pajak/akuntansi agar tidak menimbulkan kegagalan *NullPointerException*.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     nomor_invoice,
     COALESCE(voucher_id, 0) AS voucher_id_bersih,
@@ -668,7 +668,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Saat tim rekonsiliasi keuangan memverifikasi transfer dana masuk bernilai tinggi dari payment gateway ke rekening bank perusahaan.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     nomor_invoice, 
     tanggal_pesanan, 
@@ -708,7 +708,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Pada layar monitor fulfillment gudang pusat yang me-refresh status pesanan yang masih berjalan secara real-time.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     nomor_invoice, 
     tanggal_pesanan, 
@@ -747,7 +747,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Saat tim growth marketing merancang syarat batas minimum belanja untuk mendapatkan gratis ongkir spesial.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     nomor_invoice, 
     total_bayar, 
@@ -785,7 +785,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Pada endpoint search API katalog ketika pembeli mengetik kata kunci bebas di search bar website.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     produk_id, 
     nama_produk, 
@@ -823,7 +823,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Saat manajemen menghitung seberapa besar ketergantungan toko terhadap subsidi diskon promosi (*organic conversion rate*).</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     nomor_invoice, 
     potongan_diskon, 
@@ -873,7 +873,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Ditampilkan di kartu ringkasan eksekutif (*Executive Summary Card*) di pojok atas dashboard pemilik bisnis.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     COUNT(*) AS total_transaksi_selesai,
     SUM(total_bayar) AS total_omzet_kotor
@@ -909,7 +909,7 @@ WHERE status_pesanan = 'Selesai';</code></pre>
                             <div><strong>Kapan digunakan?</strong> Saat tim produk mengevaluasi efektivitas rekomendasi paket *bundling* atau *cross-selling* barang tambahan di keranjang belanja.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     COUNT(DISTINCT pelanggan_id) AS total_pembeli_aktif,
     ROUND(AVG(total_bayar), 0) AS rata_rata_belanja_aov
@@ -945,7 +945,7 @@ WHERE status_pesanan = 'Selesai';</code></pre>
                             <div><strong>Kapan digunakan?</strong> Saat negosiasi persentase biaya transaksi (*MDR Fee*) dengan payment gateway vendor.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     mp.nama_metode,
     COUNT(p.pesanan_id) AS jumlah_transaksi,
@@ -984,7 +984,7 @@ ORDER BY total_pendapatan DESC;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Sebagai sumber data grafik batang (*Bar Chart*) bulanan pada laporan keuangan bulanan direksi.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     STRFTIME('%Y-%m', tanggal_pesanan) AS periode_bulan,
     COUNT(*) AS jumlah_pesanan,
@@ -1023,7 +1023,7 @@ LIMIT 6;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Saat rapat strategi bisnis untuk memisahkan kategori unggulan (*star categories*) dari kategori yang penjualannya lambat.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     k.nama_kategori,
     SUM(rp.subtotal) AS total_omzet
@@ -1074,7 +1074,7 @@ ORDER BY total_omzet DESC;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Saat Customer Support mencari riwayat pemilik pesanan ketika ada komplain pembayaran.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     p.nomor_invoice,
     pel.nama_lengkap,
@@ -1113,7 +1113,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Saat sistem mencetak surat jalan atau invoice PDF yang dimasukkan ke dalam paket pengiriman barang.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     p.nomor_invoice,
     pr.nama_produk,
@@ -1156,7 +1156,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Ditampilkan pada halaman pelacakan pesanan pembeli (*Order Tracking Screen*) di aplikasi seluler toko.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     p.nomor_invoice,
     k.nama_kurir,
@@ -1196,7 +1196,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Tim CRM marketing menggunakan data ini untuk mengirimkan voucher selamat datang (*First-order Incentive*).</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     pel.pelanggan_id,
     pel.nama_lengkap,
@@ -1235,7 +1235,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Di sistem procurement gudang untuk memicu Purchase Order otomatis ke supplier (*Low Stock Alert*).</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     pr.nama_produk,
     vp.sku,
@@ -1246,7 +1246,7 @@ FROM stok_gudang sg
 INNER JOIN gudang g ON sg.gudang_id = g.gudang_id
 INNER JOIN variasi_produk vp ON sg.variasi_id = vp.variasi_id
 INNER JOIN produk pr ON vp.produk_id = pr.produk_id
-WHERE sg.stok_tersedia <= 10
+WHERE sg.stok_tersedia &lt;= 10
 ORDER BY sg.stok_tersedia ASC
 LIMIT 5;</code></pre>
                         </div>
@@ -1288,7 +1288,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Saat analis mengidentifikasi transaksi pembeli berkantong tebal (*High Spender Segment*).</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     nomor_invoice, 
     total_bayar, 
@@ -1330,7 +1330,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Saat tim pemasaran ingin meluncurkan promo gadget terbaru hanya kepada user yang punya minat belanja barang elektronik.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     pel.nama_lengkap, 
     pel.email
@@ -1374,7 +1374,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Untuk metrik Customer Lifetime Value (CLV) dan analisis loyalitas pelanggan.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     ROUND(AVG(transaksi_per_user), 1) AS rata_rata_pesanan_per_user
 FROM (
@@ -1413,7 +1413,7 @@ FROM (
                             <div><strong>Kapan digunakan?</strong> Praktik terbaik arsitektur data SQL (*Clean Code Data Pipeline*) agar query analitik mudah di-maintain dan di-review rekan kerja.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">WITH pesanan_sukses AS (
     SELECT 
         pesanan_id, 
@@ -1460,7 +1460,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Saat evaluasi profitabilitas promosi oleh tim finance dan CEO dalam menghitung return on investment kampanye diskon.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">WITH rekap_omzet AS (
     SELECT SUM(total_bayar) AS gross_revenue
     FROM pesanan
@@ -1515,7 +1515,7 @@ FROM rekap_omzet ro, rekap_diskon rd;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Saat menghitung metrik retensi dan cohort analisis perilaku pembeli di platform online.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     pelanggan_id,
     nomor_invoice,
@@ -1555,7 +1555,7 @@ LIMIT 6;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Menampilkan badge *"Produk Terlaris #1, #2, #3"* pada halaman etalase toko online.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     pr.nama_produk,
     SUM(rp.jumlah) AS total_terjual,
@@ -1596,7 +1596,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Untuk memplot grafik garis kumulatif kas perusahaan menuju pencapaian target tahunan (*Year-to-Date Revenue pacing*).</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     DATE(tanggal_pesanan) AS tanggal,
     SUM(total_bayar) AS omzet_harian,
@@ -1636,7 +1636,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Saat rapat evaluasi bulanan tim growth untuk melihat persentase kenaikan atau penurunan omzet toko.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     STRFTIME('%Y-%m', tanggal_pesanan) AS bulan,
     SUM(total_bayar) AS omzet_bulan_ini,
@@ -1676,7 +1676,7 @@ LIMIT 5;</code></pre>
                             <div><strong>Kapan digunakan?</strong> Saat merencanakan strategi alokasi anggaran iklan promosi agar terfokus pada produk penyumbang 80% omzet kategori.</div>
                         </div>
                         <div class="sql-snippet-wrap">
-                            <button class="btn-copy-code" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
+                            <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                             <pre class="code-block"><code class="language-sql">SELECT 
     k.nama_kategori,
     pr.nama_produk,

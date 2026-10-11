@@ -17,22 +17,22 @@
 
 <header class="header">
     <div class="header-left">
-        <button class="btn-hamburger" id="sidebarToggle" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
+        <button class="btn-hamburger" id="sidebarToggle" type="button" aria-label="Navigasi Menu" title="Navigasi Menu"><i class="fa-solid fa-bars"></i></button>
         <a href="../index.html" class="logo"><div class="logo-icon"><i class="fa-solid fa-code"></i></div>Fundamental Coding</a>
         <div class="header-brand-author">
             <span class="brand-pill"><i class="fa-solid fa-shield-halved"></i> Velora</span>
             <span class="brand-divider">•</span>
             <span class="author-pill"><i class="fa-solid fa-user-graduate"></i> Mahin Utsman Nawawi, S.H</span>
         </div>
-        <nav class="breadcrumb"><i class="fa-solid fa-chevron-right"></i><span>Modul 2: Query Dasar</span></nav>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><i class="fa-solid fa-chevron-right"></i><span>Modul 2: Query Dasar</span></nav>
     </div>
     <div class="header-right">
         <div class="module-nav">
-            <a href="01_tipe_data.html" class="btn-icon" title="Modul 1"><i class="fa-solid fa-chevron-left"></i></a>
+            <a href="01_tipe_data.html" class="btn-icon" aria-label="Modul 1" title="Modul 1"><i class="fa-solid fa-chevron-left"></i></a>
             <span class="module-count">2 / 7</span>
-            <a href="03_agregasi.html" class="btn-icon" title="Modul 3"><i class="fa-solid fa-chevron-right"></i></a>
+            <a href="03_agregasi.html" class="btn-icon" aria-label="Modul 3" title="Modul 3"><i class="fa-solid fa-chevron-right"></i></a>
         </div>
-        <button class="btn-theme" id="themeToggle"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
+        <button class="btn-theme" id="themeToggle" type="button" aria-label="Ganti tema" title="Ganti Tema"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
     </div>
 </header>
 
@@ -53,7 +53,7 @@
         <div class="nav-divider"></div>
 
         <div class="sidebar-header"><i class="fa-solid fa-list-check"></i> Bab Materi Modul 02</div>
-        <nav class="sidebar-nav">
+        <nav class="sidebar-nav" aria-label="Daftar Bab Modul 02">
             <a href="#intro"    class="nav-link active"><i class="fa-solid fa-circle-info"></i> 1. Anatomi &amp; Urutan Query</a>
             <a href="#select"   class="nav-link"><i class="fa-solid fa-table"></i> 2. SELECT, Kata Kunci AS &amp; Kalkulasi</a>
             <a href="#where"    class="nav-link"><i class="fa-solid fa-filter"></i> 3. WHERE &amp; Perbandingan</a>
@@ -63,7 +63,7 @@
             <a href="#between"  class="nav-link"><i class="fa-solid fa-arrows-left-right"></i> 7. BETWEEN &amp; Rentang Tanggal</a>
             <a href="#in"       class="nav-link"><i class="fa-solid fa-list-check"></i> 8. Operator IN &amp; NOT IN</a>
             <a href="#like"     class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> 9. LIKE &amp; Wildcard Teks</a>
-            <a href="#rangkuman"class="nav-link"><i class="fa-solid fa-layer-group"></i> 10. Rangkuman Klausa</a>
+            <a href="#rangkuman" class="nav-link"><i class="fa-solid fa-layer-group"></i> 10. Rangkuman Klausa</a>
             <a href="#quiz"     class="nav-link"><i class="fa-solid fa-circle-question"></i> 11. Kuis Interaktif</a>
         </nav>
 
@@ -78,7 +78,7 @@
     <div class="main-inner">
         <div class="module-hero">
             <div class="module-badge">Modul 02 &mdash; Tingkat Pemula</div>
-            <h1>Query Dasar & Pemfilteran Data E-Commerce</h1>
+            <h1>Query Dasar &amp; Pemfilteran Data E-Commerce</h1>
             <p class="module-desc">
                 Pelajari cara mengambil, memfilter transaksi, mencari produk, mengurutkan data omzet tertinggi, dan membatasi baris data transaksi di toko online menggunakan klausa SQL fundamental.
             </p>
@@ -141,7 +141,7 @@
 
         <!-- 1. Intro -->
         <section id="intro">
-            <h2><i class="fa-solid fa-circle-info"></i> 1. Anatomi & Urutan Eksekusi Query SQL</h2>
+            <h2><i class="fa-solid fa-circle-info"></i> 1. Anatomi &amp; Urutan Eksekusi Query SQL</h2>
             <p>
                 Banyak pemula mengira SQL dieksekusi dari baris pertama (SELECT). Padahal database engine mengeksekusi klausa dengan urutan yang berbeda:
             </p>
@@ -203,7 +203,7 @@
             </ul>
 
             <div class="code-block">
-                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query: Penerapan Lengkap Kata Kunci AS</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query: Penerapan Lengkap Kata Kunci AS</span><button class="copy-btn" type="button" aria-label="Salin kode" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Mengambil katalog produk dengan kolom kalkulasi dan alias AS</span>
 <span class="sql-kw">SELECT</span> 
     produk_id,
@@ -234,7 +234,7 @@
 
         <!-- 3. WHERE -->
         <section id="where">
-            <h2><i class="fa-solid fa-filter"></i> 3. WHERE & Operator Perbandingan</h2>
+            <h2><i class="fa-solid fa-filter"></i> 3. WHERE &amp; Operator Perbandingan</h2>
             <p>
                 Klausa <code>WHERE</code> menyaring baris berdasarkan kondisi logika (True/False). Operator yang didukung: <code>=</code>, <code>!=</code> (atau <code>&lt;&gt;</code>), <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>.
             </p>
@@ -247,7 +247,7 @@
             </div>
 
             <div class="code-block">
-                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" type="button" aria-label="Salin kode" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Menampilkan transaksi pesanan yang telah 'Selesai' dengan nilai di atas Rp 300.000</span>
 <span class="sql-kw">SELECT</span> 
     nomor_invoice,
@@ -276,7 +276,7 @@
             </div>
 
             <div class="code-block">
-                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" type="button" aria-label="Salin kode" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Pesanan yang selesai ATAU dikirim, dan memiliki ongkir > 15000</span>
 <span class="sql-kw">SELECT</span> 
     nomor_invoice,
@@ -305,7 +305,7 @@
             </div>
 
             <div class="code-block">
-                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" type="button" aria-label="Salin kode" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Top 5 Transaksi dengan Belanja Terbesar</span>
 <span class="sql-kw">SELECT</span> 
     nomor_invoice,
@@ -336,7 +336,7 @@
             </div>
 
             <div class="code-block">
-                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" type="button" aria-label="Salin kode" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Melihat daftar kota dan provinsi unik asal pelanggan</span>
 <span class="sql-kw">SELECT DISTINCT</span> 
     provinsi,
@@ -348,7 +348,7 @@
 
         <!-- 7. BETWEEN -->
         <section id="between">
-            <h2><i class="fa-solid fa-arrows-left-right"></i> 7. BETWEEN: Rentang Angka & Tanggal</h2>
+            <h2><i class="fa-solid fa-arrows-left-right"></i> 7. BETWEEN: Rentang Angka &amp; Tanggal</h2>
 
             <div class="explain-box tip">
                 <div class="explain-title"><i class="fa-solid fa-calendar-days"></i> Buat Apa Klausa BETWEEN Digunakan?</div>
@@ -358,7 +358,7 @@
             </div>
 
             <div class="code-block">
-                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" type="button" aria-label="Salin kode" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Pesanan yang terjadi sepanjang Kuartal 3 (Juli - September 2023)</span>
 <span class="sql-kw">SELECT</span> 
     nomor_invoice,
@@ -373,9 +373,9 @@
 
         <!-- 8. IN -->
         <section id="in">
-            <h2><i class="fa-solid fa-list-check"></i> 8. Operator IN & NOT IN</h2>
+            <h2><i class="fa-solid fa-list-check"></i> 8. Operator IN &amp; NOT IN</h2>
             <div class="code-block">
-                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" type="button" aria-label="Salin kode" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Pelanggan yang beralamat di kota metropolitan utama</span>
 <span class="sql-kw">SELECT</span> pelanggan_id, label_alamat, kota, provinsi
 <span class="sql-kw">FROM</span> alamat_pelanggan
@@ -386,9 +386,9 @@
 
         <!-- 9. LIKE -->
         <section id="like">
-            <h2><i class="fa-solid fa-magnifying-glass"></i> 9. LIKE & Pencarian Pola Teks</h2>
+            <h2><i class="fa-solid fa-magnifying-glass"></i> 9. LIKE &amp; Pencarian Pola Teks</h2>
             <div class="code-block">
-                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
+                <div class="code-header"><span class="code-label"><i class="fa-solid fa-code"></i> SQL Query</span><button class="copy-btn" type="button" aria-label="Salin kode" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Salin</button></div>
                 <pre><code><span class="sql-cmt">-- Mencari produk yang mengandung kata 'Kaos' atau 'Kemeja'</span>
 <span class="sql-kw">SELECT</span> produk_id, nama_produk, deskripsi
 <span class="sql-kw">FROM</span> produk
@@ -403,10 +403,10 @@
             <table class="compare-table">
                 <thead><tr><th>Klausa / Operator</th><th>Fungsi Utama</th><th>Contoh di E-Commerce</th></tr></thead>
                 <tbody>
-                    <tr><td><code>SELECT</code></td><td>Memilih kolom & alias</td><td><code>SELECT total_bayar AS omzet</code></td></tr>
+                    <tr><td><code>SELECT</code></td><td>Memilih kolom &amp; alias</td><td><code>SELECT total_bayar AS omzet</code></td></tr>
                     <tr><td><code>WHERE</code></td><td>Menyaring baris transaksi</td><td><code>WHERE status_pesanan = 'Selesai'</code></td></tr>
                     <tr><td><code>ORDER BY</code></td><td>Mengurutkan nominal terbesar/terkecil</td><td><code>ORDER BY total_bayar DESC</code></td></tr>
-                    <tr><td><code>LIMIT & OFFSET</code></td><td>Membatasi jumlah baris / paginasi</td><td><code>LIMIT 10 OFFSET 20</code></td></tr>
+                    <tr><td><code>LIMIT &amp; OFFSET</code></td><td>Membatasi jumlah baris / paginasi</td><td><code>LIMIT 10 OFFSET 20</code></td></tr>
                     <tr><td><code>BETWEEN</code></td><td>Rentang tanggal atau harga</td><td><code>WHERE harga BETWEEN 50000 AND 100000</code></td></tr>
                     <tr><td><code>IN</code></td><td>Mencocokkan daftar kota/status</td><td><code>WHERE status IN ('Dikirim', 'Selesai')</code></td></tr>
                     <tr><td><code>LIKE</code></td><td>Pencarian pola teks dengan wildcard %</td><td><code>WHERE nama_produk LIKE '%Wireless%'</code></td></tr>
