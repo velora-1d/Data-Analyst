@@ -554,16 +554,16 @@
 
         <div class="sidebar-header"><i class="fa-solid fa-list-ol"></i> 10 Nomor Latihan</div>
         <nav class="sidebar-nav" aria-label="Daftar Soal Latihan">
-            <a href="#soal-1" class="nav-link"><i class="fa-solid fa-table"></i> Soal 1: SELECT &amp; LIMIT</a>
-            <a href="#soal-2" class="nav-link"><i class="fa-solid fa-calculator"></i> Soal 2: AS &amp; Kalkulasi</a>
-            <a href="#soal-3" class="nav-link"><i class="fa-solid fa-filter"></i> Soal 3: WHERE Numerik</a>
-            <a href="#soal-4" class="nav-link"><i class="fa-solid fa-calendar"></i> Soal 4: String &amp; Tanggal</a>
-            <a href="#soal-5" class="nav-link"><i class="fa-solid fa-fingerprint"></i> Soal 5: DISTINCT &amp; ORDER BY</a>
-            <a href="#soal-6" class="nav-link"><i class="fa-solid fa-list-check"></i> Soal 6: Operator IN</a>
-            <a href="#soal-7" class="nav-link"><i class="fa-solid fa-arrows-left-right"></i> Soal 7: Operator BETWEEN</a>
-            <a href="#soal-8" class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> Soal 8: LIKE &amp; Wildcard</a>
-            <a href="#soal-9" class="nav-link"><i class="fa-solid fa-forward"></i> Soal 9: Paginasi OFFSET</a>
-            <a href="#soal-10" class="nav-link"><i class="fa-solid fa-circle-question"></i> Soal 10: IS NULL</a>
+            <a href="#soal-1" class="nav-link"><i class="fa-solid fa-ticket"></i> Soal 1: Kupon Promo (SELECT &amp; LIMIT)</a>
+            <a href="#soal-2" class="nav-link"><i class="fa-solid fa-truck"></i> Soal 2: Ongkir Kurir (AS &amp; Kalkulasi)</a>
+            <a href="#soal-3" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Soal 3: Stok Menipis (WHERE &lt;=)</a>
+            <a href="#soal-4" class="nav-link"><i class="fa-solid fa-star"></i> Soal 4: Ulasan Pembeli (IS NOT NULL)</a>
+            <a href="#soal-5" class="nav-link"><i class="fa-solid fa-city"></i> Soal 5: Kota Supplier (DISTINCT &amp; ORDER)</a>
+            <a href="#soal-6" class="nav-link"><i class="fa-solid fa-wallet"></i> Soal 6: Saluran Pembayaran (Operator IN)</a>
+            <a href="#soal-7" class="nav-link"><i class="fa-solid fa-arrows-left-right"></i> Soal 7: Minimal Belanja (BETWEEN)</a>
+            <a href="#soal-8" class="nav-link"><i class="fa-solid fa-building"></i> Soal 8: Vendor PT (LIKE Wildcard)</a>
+            <a href="#soal-9" class="nav-link"><i class="fa-solid fa-forward"></i> Soal 9: Paginasi Halaman 2 (OFFSET)</a>
+            <a href="#soal-10" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Soal 10: Audit Risiko (AND, OR, Kurung)</a>
         </nav>
 
         <div class="nav-divider"></div>
@@ -653,7 +653,7 @@
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">1</div>
                         <div>
-                            <div class="soal-title-text">Pemilihan Kolom Tertentu &amp; Pembatasan Baris</div>
+                            <div class="soal-title-text">Audit Kupon Promosi &amp; Kuota Penggunaan</div>
                             <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: SELECT &bull; FROM &bull; LIMIT</div>
                         </div>
                     </div>
@@ -661,16 +661,16 @@
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Tim operasional logistik ingin melihat katalog produk beserta bobot barang dalam gram untuk memperkirakan kebutuhan kapasitas kardus packing pengiriman.
+                        <strong>Kasus Bisnis:</strong> Tim promosi ingin mengaudit katalog kupon diskon yang sedang aktif di toko online untuk mengecek kode kupon, jenis diskon, nominal potongan, dan sisa batas kuota penggunaannya.
                     </div>
                     <div class="spec-grid">
                         <div class="spec-item">
                             <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">produk</div>
+                            <div class="spec-value">voucher_promo</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Kolom Diminta</div>
-                            <div class="spec-value">nama_produk, berat_gram</div>
+                            <div class="spec-value">kode_voucher, tipe_diskon, nilai_diskon, kuota_pemakaian</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Batasan Baris</div>
@@ -679,7 +679,7 @@
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Gunakan klausa <code>LIMIT 5</code> di akhir query untuk membatasi jumlah data yang ditarik.</span>
+                        <span><strong>Petunjuk:</strong> Gunakan klausa <code>LIMIT 5</code> di akhir query untuk membatasi jumlah data yang diambil agar tidak membebani memori.</span>
                     </div>
 
                     <!-- Scratchpad Coba Tulis Query -->
@@ -690,7 +690,7 @@
                                 <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 1
                             </button>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query SQL Anda di sini untuk latihan...&#10;Contoh: SELECT nama_produk..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis query SQL Anda di sini untuk latihan...&#10;Contoh: SELECT kode_voucher..."></textarea>
                     </div>
                 </div>
 
@@ -703,16 +703,18 @@
                     <div class="jawaban-sql-wrap">
                         <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                         <pre class="code-block"><code class="language-sql">SELECT 
-    nama_produk, 
-    berat_gram
-FROM produk
+    kode_voucher, 
+    tipe_diskon, 
+    nilai_diskon, 
+    kuota_pemakaian
+FROM voucher_promo
 LIMIT 5;</code></pre>
                     </div>
                     <div class="jawaban-explanation">
                         <strong>Pembahasan Logika:</strong>
                         <ul>
-                            <li><code>SELECT nama_produk, berat_gram</code>: Hanya mengambil 2 kolom yang relevan sehingga hemat memori.</li>
-                            <li><code>FROM produk</code>: Menentukan tabel sumber data.</li>
+                            <li><code>SELECT kode_voucher, tipe_diskon, nilai_diskon, kuota_pemakaian</code>: Hanya mengambil kolom yang relevan dengan audit kupon tanpa memuat kolom minimal belanja.</li>
+                            <li><code>FROM voucher_promo</code>: Menentukan tabel sumber data promo voucher.</li>
                             <li><code>LIMIT 5</code>: Menghentikan scan mesin SQLite setelah menemukan 5 record pertama.</li>
                         </ul>
                     </div>
@@ -723,14 +725,14 @@ LIMIT 5;</code></pre>
                         </div>
                         <table class="output-table">
                             <thead>
-                                <tr><th>nama_produk</th><th>berat_gram</th></tr>
+                                <tr><th>kode_voucher</th><th>tipe_diskon</th><th>nilai_diskon</th><th>kuota_pemakaian</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td>Samsung Galaxy S24 Ultra 5G Smartphone</td><td>450</td></tr>
-                                <tr><td>Samsung Galaxy Z Flip5 Smartphone Foldable</td><td>380</td></tr>
-                                <tr><td>Apple iPhone 15 Pro Max Garansi Resmi</td><td>420</td></tr>
-                                <tr><td>Xiaomi Redmi Note 13 Pro 4G NFC</td><td>400</td></tr>
-                                <tr><td>ASUS ROG Zephyrus G14 Gaming Laptop</td><td>2800</td></tr>
+                                <tr><td>GAJIANHEMAT50</td><td>Nominal</td><td>50000</td><td>1000</td></tr>
+                                <tr><td>DISKONMEMBER25</td><td>Nominal</td><td>25000</td><td>2500</td></tr>
+                                <tr><td>ONGKIRGRATIS15</td><td>Nominal</td><td>15000</td><td>5000</td></tr>
+                                <tr><td>ELEKTRONIK100K</td><td>Nominal</td><td>100000</td><td>800</td></tr>
+                                <tr><td>FASHIONFEST20</td><td>Persen</td><td>20</td><td>1500</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -743,28 +745,28 @@ LIMIT 5;</code></pre>
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">2</div>
                         <div>
-                            <div class="soal-title-text">Alias Kolom &amp; Kalkulasi Margin Keuntungan</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: AS &bull; Operator Matematika (-)</div>
+                            <div class="soal-title-text">Kalkulasi Ongkos Kirim Paket Berat 5 Kg</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: SELECT &bull; AS &bull; Aritmatika (*)</div>
                         </div>
                     </div>
                     <span class="soal-topic-tag">AS &amp; Kalkulasi</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Manajer keuangan ingin menghitung estimasi keuntungan kotor nominal (margin rupiah) per unit untuk setiap variasi barang yang dijual.
+                        <strong>Kasus Bisnis:</strong> Tim operasional logistik ingin membuat simulasi biaya pengiriman barang untuk pesanan paket seberat 5 kilogram dari seluruh opsi kurir ekspedisi.
                     </div>
                     <div class="spec-grid">
                         <div class="spec-item">
                             <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">variasi_produk</div>
+                            <div class="spec-value">kurir_ekspedisi</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Kolom Diminta</div>
-                            <div class="spec-value">sku, harga_modal, harga_jual</div>
+                            <div class="spec-value">nama_kurir, layanan, tarif_per_kg</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Kolom Kalkulasi</div>
-                            <div class="spec-value">harga_jual - harga_modal AS keuntungan_nominal</div>
+                            <div class="spec-value">tarif_per_kg * 5 AS estimasi_ongkir_5kg</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Batasan Baris</div>
@@ -773,7 +775,7 @@ LIMIT 5;</code></pre>
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Kurangi <code>harga_jual</code> dengan <code>harga_modal</code> di klausa SELECT dan namai dengan kata kunci <code>AS keuntungan_nominal</code>.</span>
+                        <span><strong>Petunjuk:</strong> Kalikan kolom tarif dengan 5 di klausa SELECT: <code>(tarif_per_kg * 5) AS estimasi_ongkir_5kg</code>.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
@@ -782,7 +784,7 @@ LIMIT 5;</code></pre>
                                 <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 2
                             </button>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query kalkulasi margin laba di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis query SQL Anda di sini untuk latihan...&#10;Contoh: SELECT nama_kurir, layanan..."></textarea>
                     </div>
                 </div>
 
@@ -794,19 +796,19 @@ LIMIT 5;</code></pre>
                     <div class="jawaban-sql-wrap">
                         <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                         <pre class="code-block"><code class="language-sql">SELECT 
-    sku,
-    harga_modal,
-    harga_jual,
-    (harga_jual - harga_modal) AS keuntungan_nominal
-FROM variasi_produk
+    nama_kurir, 
+    layanan, 
+    tarif_per_kg,
+    (tarif_per_kg * 5) AS estimasi_ongkir_5kg
+FROM kurir_ekspedisi
 LIMIT 5;</code></pre>
                     </div>
                     <div class="jawaban-explanation">
                         <strong>Pembahasan Logika:</strong>
                         <ul>
-                            <li>SQL mendukung operator matematika standar seperti <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> langsung di klausa <code>SELECT</code>.</li>
-                            <li>Tanda kurung <code>(harga_jual - harga_modal)</code> membantu memperjelas prioritas kalkulasi aritmatika.</li>
-                            <li><code>AS keuntungan_nominal</code> memberi nama kolom yang jelas bagi tim frontend/laporan tanpa mengubah struktur tabel fisik.</li>
+                            <li><code>(tarif_per_kg * 5)</code>: Melakukan kalkulasi matematika langsung di mesin SQLite tanpa manipulasi manual di aplikasi.</li>
+                            <li><code>AS estimasi_ongkir_5kg</code>: Mengganti nama header kolom hasil kalkulasi agar mudah dibaca oleh tim bisnis.</li>
+                            <li><code>LIMIT 5</code>: Membatasi tampilan 5 opsi kurir pertama.</li>
                         </ul>
                     </div>
                     <div class="jawaban-output-preview">
@@ -816,14 +818,14 @@ LIMIT 5;</code></pre>
                         </div>
                         <table class="output-table">
                             <thead>
-                                <tr><th>sku</th><th>harga_modal</th><th>harga_jual</th><th>keuntungan_nominal</th></tr>
+                                <tr><th>nama_kurir</th><th>layanan</th><th>tarif_per_kg</th><th>estimasi_ongkir_5kg</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td>SAM-S24U-BLK-256</td><td>16.500.000</td><td>19.999.000</td><td>3.499.000</td></tr>
-                                <tr><td>SAM-S24U-GRY-512</td><td>18.500.000</td><td>21.999.000</td><td>3.499.000</td></tr>
-                                <tr><td>SAM-ZFL5-MNT-256</td><td>11.500.000</td><td>14.499.000</td><td>2.999.000</td></tr>
-                                <tr><td>SAM-ZFL5-GRA-512</td><td>13.000.000</td><td>16.499.000</td><td>3.499.000</td></tr>
-                                <tr><td>APL-IP15PM-NT-256</td><td>20.000.000</td><td>23.999.000</td><td>3.999.000</td></tr>
+                                <tr><td>JNE Express</td><td>Reguler (2-3 Hari)</td><td>10000</td><td>50000</td></tr>
+                                <tr><td>JNE Express</td><td>YES - Yakin Esok Sampai</td><td>20000</td><td>100000</td></tr>
+                                <tr><td>SiCepat Express</td><td>SiUntung Reguler</td><td>9500</td><td>47500</td></tr>
+                                <tr><td>SiCepat Express</td><td>BEST - Besok Sampai Tujuan</td><td>18500</td><td>92500</td></tr>
+                                <tr><td>J&amp;T Express</td><td>EZ Standard Service</td><td>11000</td><td>55000</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -836,28 +838,28 @@ LIMIT 5;</code></pre>
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">3</div>
                         <div>
-                            <div class="soal-title-text">Filter Transaksi Selesai Bernilai Tinggi (WHERE &gt;=)</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE &bull; AND &bull; ORDER BY ASC</div>
+                            <div class="soal-title-text">Peringatan Stok Menipis di Gudang (WHERE &lt;=)</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE &bull; ORDER BY jumlah_stok ASC &bull; LIMIT 5</div>
                         </div>
                     </div>
-                    <span class="soal-topic-tag">WHERE &amp; Operator &gt;=</span>
+                    <span class="soal-topic-tag">WHERE &amp; Operator &lt;=</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Divisi audit keuangan ingin meninjau pesanan yang telah sukses dikirim (status 'Selesai') dan bernilai pembayaran Rp 1.000.000 ke atas.
+                        <strong>Kasus Bisnis:</strong> Manajer gudang membutuhkan sistem peringatan dini (restock alert) untuk produk yang persediaannya kritis agar segera dipesan ulang ke pemasok.
                     </div>
                     <div class="spec-grid">
                         <div class="spec-item">
                             <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">pesanan</div>
+                            <div class="spec-value">stok_gudang</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Kondisi Filter</div>
-                            <div class="spec-value">status_pesanan = 'Selesai' AND total_bayar &gt;= 1000000</div>
+                            <div class="spec-value">jumlah_stok &lt;= 10</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Pengurutan</div>
-                            <div class="spec-value">ORDER BY total_bayar ASC (Termurah dulu)</div>
+                            <div class="spec-value">ORDER BY jumlah_stok ASC (Paling sedikit dulu)</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Batasan Baris</div>
@@ -866,7 +868,7 @@ LIMIT 5;</code></pre>
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Gunakan operator perbandingan <code>&gt;= 1000000</code> dan rangkai dengan <code>AND</code>.</span>
+                        <span><strong>Petunjuk:</strong> Gunakan operator perbandingan <code>&lt;= 10</code> dan urutkan dengan <code>ORDER BY jumlah_stok ASC</code>.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
@@ -875,7 +877,7 @@ LIMIT 5;</code></pre>
                                 <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 3
                             </button>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query WHERE di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis query WHERE stok_gudang di sini..."></textarea>
                     </div>
                 </div>
 
@@ -887,22 +889,21 @@ LIMIT 5;</code></pre>
                     <div class="jawaban-sql-wrap">
                         <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                         <pre class="code-block"><code class="language-sql">SELECT 
-    nomor_invoice, 
-    tanggal_pesanan, 
-    total_bayar, 
-    status_pesanan
-FROM pesanan
-WHERE status_pesanan = 'Selesai'
-  AND total_bayar >= 1000000
-ORDER BY total_bayar ASC
+    stok_id, 
+    gudang_id, 
+    variasi_id, 
+    jumlah_stok
+FROM stok_gudang
+WHERE jumlah_stok &lt;= 10
+ORDER BY jumlah_stok ASC
 LIMIT 5;</code></pre>
                     </div>
                     <div class="jawaban-explanation">
                         <strong>Pembahasan Logika:</strong>
                         <ul>
-                            <li>Klausa <code>WHERE</code> memfilter baris sebelum dikelompokkan atau diurutkan.</li>
-                            <li>Kombinasi <code>AND</code> mewajibkan kedua kondisi bernilai benar (TRUE).</li>
-                            <li><code>ORDER BY total_bayar ASC</code> mengurutkan dari nominal terendah yang memenuhi syarat batas 1 juta.</li>
+                            <li>Klausa <code>WHERE jumlah_stok &lt;= 10</code> menyaring hanya baris data fisik yang memenuhi ambang batas kritis.</li>
+                            <li><code>ORDER BY jumlah_stok ASC</code> mengurutkan dari stok yang paling kritis (terkecil) ke yang lebih banyak agar prioritas restock tertangani pertama kali.</li>
+                            <li><code>LIMIT 5</code> mengambil 5 varian barang teratas yang paling mendesak untuk di-restock.</li>
                         </ul>
                     </div>
                     <div class="jawaban-output-preview">
@@ -912,14 +913,14 @@ LIMIT 5;</code></pre>
                         </div>
                         <table class="output-table">
                             <thead>
-                                <tr><th>nomor_invoice</th><th>tanggal_pesanan</th><th>total_bayar</th><th>status_pesanan</th></tr>
+                                <tr><th>stok_id</th><th>gudang_id</th><th>variasi_id</th><th>jumlah_stok</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td>INV/20240314/00746</td><td>2024-03-14 09:12:00</td><td>1.002.500</td><td>Selesai</td></tr>
-                                <tr><td>INV/20240501/01890</td><td>2024-05-01 14:22:15</td><td>1.005.000</td><td>Selesai</td></tr>
-                                <tr><td>INV/20240228/01123</td><td>2024-02-28 17:05:40</td><td>1.010.000</td><td>Selesai</td></tr>
-                                <tr><td>INV/20240419/02441</td><td>2024-04-19 11:45:00</td><td>1.012.000</td><td>Selesai</td></tr>
-                                <tr><td>INV/20240611/00389</td><td>2024-06-11 16:30:20</td><td>1.015.000</td><td>Selesai</td></tr>
+                                <tr><td>125</td><td>5</td><td>25</td><td>2</td></tr>
+                                <tr><td>132</td><td>2</td><td>27</td><td>2</td></tr>
+                                <tr><td>153</td><td>3</td><td>31</td><td>2</td></tr>
+                                <tr><td>176</td><td>1</td><td>36</td><td>2</td></tr>
+                                <tr><td>183</td><td>3</td><td>37</td><td>2</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -932,28 +933,28 @@ LIMIT 5;</code></pre>
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">4</div>
                         <div>
-                            <div class="soal-title-text">Kombinasi String &amp; Tanggal Pendaftaran</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE &bull; Format ISO 'YYYY-MM-DD'</div>
+                            <div class="soal-title-text">Kurasi Ulasan Tertulis Pelanggan (WHERE, AND, &amp; IS NOT NULL)</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE rating = 3 &bull; AND komentar IS NOT NULL &bull; LIMIT 5</div>
                         </div>
                     </div>
-                    <span class="soal-topic-tag">Filter Tanggal &amp; String</span>
+                    <span class="soal-topic-tag">WHERE, AND, &amp; IS NOT NULL</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Tim CRM ingin membagikan voucher promo khusus bagi anggota pelanggan wanita yang mendaftar pada atau setelah 1 Januari 2023.
+                        <strong>Kasus Bisnis:</strong> Tim evaluasi kepuasan pelanggan ingin meneliti ulasan bintang 3 yang memiliki feedback komentar tertulis (bukan ulasan yang dikosongkan pembeli).
                     </div>
                     <div class="spec-grid">
                         <div class="spec-item">
                             <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">pelanggan</div>
+                            <div class="spec-value">ulasan_produk</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Kondisi Filter</div>
-                            <div class="spec-value">gender = 'Wanita' AND tanggal_daftar &gt;= '2023-01-01'</div>
+                            <div class="spec-value">rating = 3 AND komentar IS NOT NULL</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Kolom Diminta</div>
-                            <div class="spec-value">pelanggan_id, nama_lengkap, gender, tanggal_daftar, email</div>
+                            <div class="spec-value">ulasan_id, produk_id, rating, komentar</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Batasan Baris</div>
@@ -962,7 +963,7 @@ LIMIT 5;</code></pre>
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Nilai tanggal diapit tanda kutip satu dengan format baku ISO <code>'YYYY-MM-DD'</code>.</span>
+                        <span><strong>Petunjuk:</strong> Nilai numerik rating tanpa petik <code>rating = 3</code> dan cek kolom yang terisi dengan <code>IS NOT NULL</code> (bukan <code>&lt;&gt; NULL</code>).</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
@@ -971,7 +972,7 @@ LIMIT 5;</code></pre>
                                 <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 4
                             </button>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query filter pelanggan di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis query kurasi ulasan pelanggan di sini..."></textarea>
                     </div>
                 </div>
 
@@ -983,21 +984,21 @@ LIMIT 5;</code></pre>
                     <div class="jawaban-sql-wrap">
                         <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                         <pre class="code-block"><code class="language-sql">SELECT 
-    pelanggan_id, 
-    nama_lengkap, 
-    gender, 
-    tanggal_daftar, 
-    email
-FROM pelanggan
-WHERE gender = 'Wanita'
-  AND tanggal_daftar >= '2023-01-01'
+    ulasan_id, 
+    produk_id, 
+    rating, 
+    komentar
+FROM ulasan_produk
+WHERE rating = 3 
+  AND komentar IS NOT NULL
 LIMIT 5;</code></pre>
                     </div>
                     <div class="jawaban-explanation">
                         <strong>Pembahasan Logika:</strong>
                         <ul>
-                            <li>Format string teks dan tanggal di SQL wajib diapit tanda petik tunggal (<code>'Wanita'</code>).</li>
-                            <li>Tipe data tanggal ISO-8601 memungkinkan perbandingan leksikografis langsung dengan operator <code>&gt;=</code>.</li>
+                            <li><code>rating = 3</code>: Memfilter ulasan dengan skor netral (bintang 3).</li>
+                            <li><code>AND komentar IS NOT NULL</code>: Memastikan bahwa pembeli benar-benar mengetikkan ulasan teks (bukan hanya memberikan bintang tanpa komentar). Di SQL standar, nilai NULL wajib diuji dengan <code>IS NOT NULL</code>.</li>
+                            <li><code>LIMIT 5</code>: Membatasi tampilan 5 sampel ulasan teratas.</li>
                         </ul>
                     </div>
                     <div class="jawaban-output-preview">
@@ -1007,14 +1008,14 @@ LIMIT 5;</code></pre>
                         </div>
                         <table class="output-table">
                             <thead>
-                                <tr><th>pelanggan_id</th><th>nama_lengkap</th><th>gender</th><th>tanggal_daftar</th><th>email</th></tr>
+                                <tr><th>ulasan_id</th><th>produk_id</th><th>rating</th><th>komentar</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td>3</td><td>Siti Nurhaliza</td><td>Wanita</td><td>2023-01-14</td><td>siti.nurhaliza@email.com</td></tr>
-                                <tr><td>7</td><td>Dewi Sartika</td><td>Wanita</td><td>2023-02-03</td><td>dewi.sartika@email.com</td></tr>
-                                <tr><td>9</td><td>Putri Lestari</td><td>Wanita</td><td>2023-02-18</td><td>putri.lestari@email.com</td></tr>
-                                <tr><td>14</td><td>Rina Marlina</td><td>Wanita</td><td>2023-03-05</td><td>rina.marlina@email.com</td></tr>
-                                <tr><td>18</td><td>Nurul Hidayah</td><td>Wanita</td><td>2023-03-22</td><td>nurul.hidayah@email.com</td></tr>
+                                <tr><td>4</td><td>15</td><td>3</td><td>Kualitas bahan sangat bagus, jahitan rapi, ukuran pas di badan.</td></tr>
+                                <tr><td>8</td><td>5</td><td>3</td><td>Harga bersaing dibanding toko sebelah, respon admin cepat dan ramah.</td></tr>
+                                <tr><td>9</td><td>8</td><td>3</td><td>Packing aman sekali dengan bubble wrap tebal dan kardus tebal.</td></tr>
+                                <tr><td>18</td><td>6</td><td>3</td><td>Bintang 5! Sangat memuaskan, repeat order kedua kalinya.</td></tr>
+                                <tr><td>35</td><td>22</td><td>3</td><td>Bintang 5! Sangat memuaskan, repeat order kedua kalinya.</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1027,37 +1028,37 @@ LIMIT 5;</code></pre>
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">5</div>
                         <div>
-                            <div class="soal-title-text">Eliminasi Duplikasi &amp; Pengurutan Bertingkat</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: DISTINCT &bull; ORDER BY Kolom 1, Kolom 2</div>
+                            <div class="soal-title-text">Sebaran Kota Pemasok Logistik (DISTINCT)</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: SELECT DISTINCT &bull; ORDER BY kota ASC</div>
                         </div>
                     </div>
                     <span class="soal-topic-tag">DISTINCT &amp; ORDER BY</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Tim ekspedisi kurir membutuhkan rekapitulasi daftar wilayah tujuan pengiriman tanpa duplikasi nama kota dan provinsi.
+                        <strong>Kasus Bisnis:</strong> Divisi pengadaan barang (procurement) membutuhkan rekapitulasi kota-kota tempat mitra pemasok berdomisili untuk pemetaan rute suplai logistik tanpa duplikasi nama kota.
                     </div>
                     <div class="spec-grid">
                         <div class="spec-item">
                             <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">alamat_pelanggan</div>
+                            <div class="spec-value">supplier</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Kolom Diminta</div>
-                            <div class="spec-value">kota, provinsi (tanpa duplikat)</div>
+                            <div class="spec-value">kota (nilai unik)</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Pengurutan</div>
-                            <div class="spec-value">provinsi ASC, lalu kota ASC</div>
+                            <div class="spec-value">ORDER BY kota ASC (A ke Z)</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Batasan Baris</div>
-                            <div class="spec-value">10 baris pertama</div>
+                            <div class="spec-value">Semua kota unik (10 baris)</div>
                         </div>
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Gunakan kata kunci <code>SELECT DISTINCT</code> untuk menghapus baris duplikat.</span>
+                        <span><strong>Petunjuk:</strong> Gunakan kata kunci <code>SELECT DISTINCT kota</code> untuk mengeliminasi duplikasi nama kota.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
@@ -1066,7 +1067,7 @@ LIMIT 5;</code></pre>
                                 <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 5
                             </button>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query DISTINCT kota dan provinsi di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis query DISTINCT kota supplier di sini..."></textarea>
                     </div>
                 </div>
 
@@ -1078,39 +1079,37 @@ LIMIT 5;</code></pre>
                     <div class="jawaban-sql-wrap">
                         <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                         <pre class="code-block"><code class="language-sql">SELECT DISTINCT 
-    kota, 
-    provinsi
-FROM alamat_pelanggan
-ORDER BY provinsi ASC, kota ASC
-LIMIT 10;</code></pre>
+    kota
+FROM supplier
+ORDER BY kota ASC;</code></pre>
                     </div>
                     <div class="jawaban-explanation">
                         <strong>Pembahasan Logika:</strong>
                         <ul>
-                            <li><code>DISTINCT</code> menghapus seluruh baris yang memiliki pasangan nilai (kota, provinsi) yang persis sama.</li>
-                            <li><code>ORDER BY provinsi ASC, kota ASC</code> menerapkan pengurutan dua tingkat: mengurutkan provinsi secara alfabetis terlebih dahulu, kemudian kota di dalam provinsi tersebut.</li>
+                            <li><code>SELECT DISTINCT kota</code> menghapus seluruh nama kota yang duplikat sehingga setiap kota hanya muncul tepat satu kali.</li>
+                            <li><code>ORDER BY kota ASC</code> mengurutkan daftar nama kota secara alfabetis dari A sampai Z.</li>
                         </ul>
                     </div>
                     <div class="jawaban-output-preview">
                         <div class="output-header">
-                            <span>Pratinjau Hasil Query (10 Baris)</span>
+                            <span>Pratinjau Hasil Query (10 Kota Unik)</span>
                             <span>database/ecommerce.db</span>
                         </div>
                         <table class="output-table">
                             <thead>
-                                <tr><th>kota</th><th>provinsi</th></tr>
+                                <tr><th>kota</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td>Badung</td><td>Bali</td></tr>
-                                <tr><td>Denpasar</td><td>Bali</td></tr>
-                                <tr><td>Tangerang</td><td>Banten</td></tr>
-                                <tr><td>Tangerang Selatan</td><td>Banten</td></tr>
-                                <tr><td>Sleman</td><td>DI Yogyakarta</td></tr>
-                                <tr><td>Yogyakarta</td><td>DI Yogyakarta</td></tr>
-                                <tr><td>Jakarta Barat</td><td>DKI Jakarta</td></tr>
-                                <tr><td>Jakarta Pusat</td><td>DKI Jakarta</td></tr>
-                                <tr><td>Jakarta Selatan</td><td>DKI Jakarta</td></tr>
-                                <tr><td>Jakarta Timur</td><td>DKI Jakarta</td></tr>
+                                <tr><td>Balikpapan</td></tr>
+                                <tr><td>Bandung</td></tr>
+                                <tr><td>Denpasar</td></tr>
+                                <tr><td>Jakarta Pusat</td></tr>
+                                <tr><td>Makassar</td></tr>
+                                <tr><td>Medan</td></tr>
+                                <tr><td>Semarang</td></tr>
+                                <tr><td>Surabaya</td></tr>
+                                <tr><td>Tangerang</td></tr>
+                                <tr><td>Yogyakarta</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1123,37 +1122,37 @@ LIMIT 10;</code></pre>
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">6</div>
                         <div>
-                            <div class="soal-title-text">Filter Himpunan Nilai Tertentu (Operator IN)</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE ... IN ('Diproses', 'Dikirim')</div>
+                            <div class="soal-title-text">Analisis Saluran Pembayaran Digital (Operator IN)</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE tipe IN ('Virtual Account', 'E-Wallet') &bull; ORDER BY biaya_admin ASC, nama_metode ASC</div>
                         </div>
                     </div>
                     <span class="soal-topic-tag">Operator IN</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Petugas fulfillment gudang ingin memantau antrean pesanan aktif yang statusnya sedang 'Diproses' atau sedang 'Dikirim'.
+                        <strong>Kasus Bisnis:</strong> Manajer produk fintech ingin mengevaluasi saluran pembayaran perbankan digital bertipe Virtual Account dan E-Wallet beserta struktur biaya layanannya.
                     </div>
                     <div class="spec-grid">
                         <div class="spec-item">
                             <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">pesanan</div>
+                            <div class="spec-value">metode_pembayaran</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Kondisi Filter</div>
-                            <div class="spec-value">status_pesanan IN ('Diproses', 'Dikirim')</div>
+                            <div class="spec-value">tipe IN ('Virtual Account', 'E-Wallet')</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Pengurutan</div>
-                            <div class="spec-value">tanggal_pesanan DESC (Terbaru)</div>
+                            <div class="spec-value">biaya_admin ASC, nama_metode ASC</div>
                         </div>
                         <div class="spec-item">
-                            <div class="spec-label">Batasan Baris</div>
-                            <div class="spec-value">5 baris pertama</div>
+                            <div class="spec-label">Kolom Diminta</div>
+                            <div class="spec-value">nama_metode, tipe, biaya_admin</div>
                         </div>
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Operator <code>IN (...)</code> jauh lebih efisien daripada menulis banyak kondisi <code>OR</code>.</span>
+                        <span><strong>Petunjuk:</strong> Operator <code>IN ('Virtual Account', 'E-Wallet')</code> jauh lebih ringkas dan elegan dibanding menulis multi-kondisi <code>OR</code>.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
@@ -1162,7 +1161,7 @@ LIMIT 10;</code></pre>
                                 <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 6
                             </button>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query operator IN di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis query operator IN metode pembayaran di sini..."></textarea>
                     </div>
                 </div>
 
@@ -1174,37 +1173,37 @@ LIMIT 10;</code></pre>
                     <div class="jawaban-sql-wrap">
                         <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                         <pre class="code-block"><code class="language-sql">SELECT 
-    nomor_invoice, 
-    tanggal_pesanan, 
-    status_pesanan, 
-    total_bayar
-FROM pesanan
-WHERE status_pesanan IN ('Diproses', 'Dikirim')
-ORDER BY tanggal_pesanan DESC
-LIMIT 5;</code></pre>
+    nama_metode, 
+    tipe, 
+    biaya_admin
+FROM metode_pembayaran
+WHERE tipe IN ('Virtual Account', 'E-Wallet')
+ORDER BY biaya_admin ASC, nama_metode ASC;</code></pre>
                     </div>
                     <div class="jawaban-explanation">
                         <strong>Pembahasan Logika:</strong>
                         <ul>
-                            <li><code>status_pesanan IN ('Diproses', 'Dikirim')</code> mencocokkan baris mana pun yang nilainya ada dalam daftar himpunan.</li>
-                            <li><code>ORDER BY tanggal_pesanan DESC</code> memprioritaskan pesanan terbaru di paling atas agar segera ditindaklanjuti.</li>
+                            <li><code>WHERE tipe IN ('Virtual Account', 'E-Wallet')</code> menyaring baris yang nilainya tercantum di dalam kumpulan pilihan.</li>
+                            <li><code>ORDER BY biaya_admin ASC, nama_metode ASC</code> mengurutkan secara bertingkat: biaya admin termurah terlebih dahulu; jika biaya sama, diurutkan alfabetis nama metode.</li>
                         </ul>
                     </div>
                     <div class="jawaban-output-preview">
                         <div class="output-header">
-                            <span>Pratinjau Hasil Query (5 Baris)</span>
+                            <span>Pratinjau Hasil Query (7 Saluran Pembayaran)</span>
                             <span>database/ecommerce.db</span>
                         </div>
                         <table class="output-table">
                             <thead>
-                                <tr><th>nomor_invoice</th><th>tanggal_pesanan</th><th>status_pesanan</th><th>total_bayar</th></tr>
+                                <tr><th>nama_metode</th><th>tipe</th><th>biaya_admin</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td>INV/20240901/02810</td><td>2024-09-01 19:40:11</td><td>Diproses</td><td>1.450.000</td></tr>
-                                <tr><td>INV/20240901/02805</td><td>2024-09-01 18:22:30</td><td>Dikirim</td><td>890.000</td></tr>
-                                <tr><td>INV/20240831/02798</td><td>2024-08-31 21:15:00</td><td>Dikirim</td><td>3.200.000</td></tr>
-                                <tr><td>INV/20240831/02791</td><td>2024-08-31 16:04:18</td><td>Diproses</td><td>650.000</td></tr>
-                                <tr><td>INV/20240830/02780</td><td>2024-08-30 11:12:45</td><td>Dikirim</td><td>2.150.000</td></tr>
+                                <tr><td>GoPay Indonesia</td><td>E-Wallet</td><td>1000</td></tr>
+                                <tr><td>OVO Cash</td><td>E-Wallet</td><td>1000</td></tr>
+                                <tr><td>ShopeePay Digital</td><td>E-Wallet</td><td>1000</td></tr>
+                                <tr><td>BNI Virtual Account</td><td>Virtual Account</td><td>1500</td></tr>
+                                <tr><td>BRI Virtual Account (BRIVA)</td><td>Virtual Account</td><td>1500</td></tr>
+                                <tr><td>BCA Virtual Account</td><td>Virtual Account</td><td>2000</td></tr>
+                                <tr><td>Mandiri Virtual Account</td><td>Virtual Account</td><td>2000</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1217,32 +1216,32 @@ LIMIT 5;</code></pre>
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">7</div>
                         <div>
-                            <div class="soal-title-text">Filter Rentang Nilai Inklusif (Operator BETWEEN)</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE ... BETWEEN 250000 AND 500000</div>
+                            <div class="soal-title-text">Evaluasi Promo Belanja Skala Menengah (BETWEEN)</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE minimal_belanja BETWEEN 100000 AND 250000 &bull; ORDER BY minimal_belanja ASC</div>
                         </div>
                     </div>
                     <span class="soal-topic-tag">Operator BETWEEN</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Tim produk ingin mengamati transaksi bernilai belanja keranjang menengah, yaitu dengan total pembayaran antara Rp 250.000 hingga Rp 500.000.
+                        <strong>Kasus Bisnis:</strong> Tim kampanye pemasaran ingin memfilter kupon voucher yang dirancang khusus untuk memicu transaksi bernilai menengah (syarat minimal belanja Rp 100.000 s/d Rp 250.000).
                     </div>
                     <div class="spec-grid">
                         <div class="spec-item">
                             <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">pesanan</div>
+                            <div class="spec-value">voucher_promo</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Kondisi Filter</div>
-                            <div class="spec-value">total_bayar BETWEEN 250000 AND 500000</div>
+                            <div class="spec-value">minimal_belanja BETWEEN 100000 AND 250000</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Pengurutan</div>
-                            <div class="spec-value">total_bayar DESC (Terbesar ke terkecil)</div>
+                            <div class="spec-value">minimal_belanja ASC (Syarat terkecil ke terbesar)</div>
                         </div>
                         <div class="spec-item">
-                            <div class="spec-label">Batasan Baris</div>
-                            <div class="spec-value">5 baris pertama</div>
+                            <div class="spec-label">Kolom Diminta</div>
+                            <div class="spec-value">kode_voucher, tipe_diskon, nilai_diskon, minimal_belanja</div>
                         </div>
                     </div>
                     <div class="hint-box">
@@ -1256,7 +1255,7 @@ LIMIT 5;</code></pre>
                                 <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 7
                             </button>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query BETWEEN di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis query BETWEEN voucher di sini..."></textarea>
                     </div>
                 </div>
 
@@ -1268,36 +1267,36 @@ LIMIT 5;</code></pre>
                     <div class="jawaban-sql-wrap">
                         <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                         <pre class="code-block"><code class="language-sql">SELECT 
-    nomor_invoice, 
-    total_bayar, 
-    status_pesanan
-FROM pesanan
-WHERE total_bayar BETWEEN 250000 AND 500000
-ORDER BY total_bayar DESC
-LIMIT 5;</code></pre>
+    kode_voucher, 
+    tipe_diskon, 
+    nilai_diskon, 
+    minimal_belanja
+FROM voucher_promo
+WHERE minimal_belanja BETWEEN 100000 AND 250000
+ORDER BY minimal_belanja ASC;</code></pre>
                     </div>
                     <div class="jawaban-explanation">
                         <strong>Pembahasan Logika:</strong>
                         <ul>
-                            <li><code>BETWEEN 250000 AND 500000</code> menghasilkan kode yang bersih dibandingkan menulis <code>total_bayar &gt;= 250000 AND total_bayar &lt;= 500000</code>.</li>
-                            <li><code>ORDER BY total_bayar DESC</code> menaruh nilai yang mendekati batas atas 500 ribu di urutan pertama.</li>
+                            <li><code>WHERE minimal_belanja BETWEEN 100000 AND 250000</code> menyaring rentang nilai secara inklusif (sama artinya dengan <code>minimal_belanja &gt;= 100000 AND minimal_belanja &lt;= 250000</code>).</li>
+                            <li><code>ORDER BY minimal_belanja ASC</code> mengurutkan dari syarat transaksi terendah ke tertinggi.</li>
                         </ul>
                     </div>
                     <div class="jawaban-output-preview">
                         <div class="output-header">
-                            <span>Pratinjau Hasil Query (5 Baris)</span>
+                            <span>Pratinjau Hasil Query (5 Voucher Promo)</span>
                             <span>database/ecommerce.db</span>
                         </div>
                         <table class="output-table">
                             <thead>
-                                <tr><th>nomor_invoice</th><th>total_bayar</th><th>status_pesanan</th></tr>
+                                <tr><th>kode_voucher</th><th>tipe_diskon</th><th>nilai_diskon</th><th>minimal_belanja</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td>INV/20240618/01201</td><td>498.000</td><td>Selesai</td></tr>
-                                <tr><td>INV/20240411/00889</td><td>495.000</td><td>Selesai</td></tr>
-                                <tr><td>INV/20240722/01540</td><td>492.500</td><td>Selesai</td></tr>
-                                <tr><td>INV/20240305/00431</td><td>490.000</td><td>Selesai</td></tr>
-                                <tr><td>INV/20240814/02102</td><td>489.000</td><td>Diproses</td></tr>
+                                <tr><td>ONGKIRGRATIS15</td><td>Nominal</td><td>15000</td><td>100000</td></tr>
+                                <tr><td>BEAUTYGLOW15</td><td>Persen</td><td>15</td><td>120000</td></tr>
+                                <tr><td>DISKONMEMBER25</td><td>Nominal</td><td>25000</td><td>150000</td></tr>
+                                <tr><td>FASHIONFEST20</td><td>Persen</td><td>20</td><td>200000</td></tr>
+                                <tr><td>SUPERDEAL35K</td><td>Nominal</td><td>35000</td><td>250000</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1310,33 +1309,37 @@ LIMIT 5;</code></pre>
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">8</div>
                         <div>
-                            <div class="soal-title-text">Pencarian Pola Teks Wildcard (LIKE &amp; OR)</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE ... LIKE '%Wireless%' OR LIKE '%Gaming%'</div>
+                            <div class="soal-title-text">Audit Legalitas Identitas Vendor Supplier (Pencarian Teks LIKE)</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE nama_supplier LIKE 'PT%' &bull; ORDER BY nama_supplier ASC</div>
                         </div>
                     </div>
                     <span class="soal-topic-tag">LIKE &amp; Wildcard</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Pelanggan mencari aksesoris atau gadget bertema nirkabel atau gaming di katalog toko online.
+                        <strong>Kasus Bisnis:</strong> Tim legal perusahaan mewajibkan pendataan vendor penyedia barang yang berbadan hukum resmi Perseroan Terbatas (PT).
                     </div>
                     <div class="spec-grid">
                         <div class="spec-item">
                             <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">produk</div>
+                            <div class="spec-value">supplier</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Kondisi Filter</div>
-                            <div class="spec-value">nama_produk mengandung 'Wireless' ATAU 'Gaming'</div>
+                            <div class="spec-value">nama_supplier LIKE 'PT%'</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Pengurutan</div>
+                            <div class="spec-value">nama_supplier ASC (A ke Z)</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Kolom Diminta</div>
-                            <div class="spec-value">produk_id, nama_produk, deskripsi</div>
+                            <div class="spec-value">supplier_id, nama_supplier, kontak_person, kota</div>
                         </div>
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Karakter persen <code>%</code> adalah wildcard pencocokan substring di posisi mana pun.</span>
+                        <span><strong>Petunjuk:</strong> Karakter persen <code>%</code> di akhir string mencocokkan teks yang berawalan dengan pola tersebut.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
@@ -1345,7 +1348,7 @@ LIMIT 5;</code></pre>
                                 <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 8
                             </button>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query LIKE wildcard di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis query LIKE PT supplier di sini..."></textarea>
                     </div>
                 </div>
 
@@ -1357,35 +1360,37 @@ LIMIT 5;</code></pre>
                     <div class="jawaban-sql-wrap">
                         <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                         <pre class="code-block"><code class="language-sql">SELECT 
-    produk_id, 
-    nama_produk, 
-    deskripsi
-FROM produk
-WHERE nama_produk LIKE '%Wireless%'
-   OR nama_produk LIKE '%Gaming%';</code></pre>
+    supplier_id, 
+    nama_supplier, 
+    kontak_person, 
+    kota
+FROM supplier
+WHERE nama_supplier LIKE 'PT%'
+ORDER BY nama_supplier ASC;</code></pre>
                     </div>
                     <div class="jawaban-explanation">
                         <strong>Pembahasan Logika:</strong>
                         <ul>
-                            <li><code>LIKE '%Wireless%'</code> mencocokkan kata "Wireless" baik di awal, tengah, maupun akhir nama produk.</li>
-                            <li>Operator <code>OR</code> memastikan produk yang memuat salah satu kata kunci tersebut tetap lolos seleksi.</li>
+                            <li><code>LIKE 'PT%'</code>: Wildcard <code>%</code> di akhir kata mencocokkan teks yang diawali kata 'PT' dan diikuti karakter apa pun setelahnya.</li>
+                            <li><code>ORDER BY nama_supplier ASC</code>: Mengurutkan daftar perusahaan dari abjad A ke Z.</li>
                         </ul>
                     </div>
                     <div class="jawaban-output-preview">
                         <div class="output-header">
-                            <span>Pratinjau Hasil Query (Produk Terpilih)</span>
+                            <span>Pratinjau Hasil Query (6 Vendor PT)</span>
                             <span>database/ecommerce.db</span>
                         </div>
                         <table class="output-table">
                             <thead>
-                                <tr><th>produk_id</th><th>nama_produk</th></tr>
+                                <tr><th>supplier_id</th><th>nama_supplier</th><th>kontak_person</th><th>kota</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td>5</td><td>ASUS ROG Zephyrus G14 Gaming Laptop</td></tr>
-                                <tr><td>7</td><td>Logitech MX Master 3S Wireless Performance Mouse</td></tr>
-                                <tr><td>8</td><td>Logitech G PRO X Wireless Mechanical Gaming Keyboard</td></tr>
-                                <tr><td>9</td><td>Sony WH-1000XM5 Wireless Noise Cancelling Headphone</td></tr>
-                                <tr><td>11</td><td>Xiaomi Wireless Earbuds Redmi Buds 5 Pro</td></tr>
+                                <tr><td>9</td><td>PT Banten Niaga Cipta</td><td>Siti Maryam</td><td>Tangerang</td></tr>
+                                <tr><td>8</td><td>PT Celebes Global Logistik</td><td>Irfan Syamsuddin</td><td>Makassar</td></tr>
+                                <tr><td>1</td><td>PT Nusantara Mega Distribusi</td><td>Budi Hartono</td><td>Jakarta Pusat</td></tr>
+                                <tr><td>3</td><td>PT Sinergi Abadi Sentosa</td><td>Dewi Sartika</td><td>Bandung</td></tr>
+                                <tr><td>4</td><td>PT Surya Graha Perkasa</td><td>Ahmad Rizal</td><td>Semarang</td></tr>
+                                <tr><td>6</td><td>PT Tri Tunggal Sejahtera</td><td>Faisal Lubis</td><td>Medan</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1398,33 +1403,37 @@ WHERE nama_produk LIKE '%Wireless%'
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">9</div>
                         <div>
-                            <div class="soal-title-text">Paginasi Halaman Data (LIMIT &amp; OFFSET)</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: ORDER BY DESC &bull; LIMIT 10 OFFSET 10</div>
+                            <div class="soal-title-text">Paginasi Leaderboard Produk Mewah Halaman ke-2 (ORDER BY, LIMIT, OFFSET)</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: ORDER BY harga_jual DESC &bull; LIMIT 5 OFFSET 5</div>
                         </div>
                     </div>
                     <span class="soal-topic-tag">LIMIT &amp; OFFSET</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Pada dashboard sistem manajemen pesanan (OMS), daftar transaksi bernilai terbesar dimuat 10 transaksi per halaman. Pengguna sedang membuka Halaman ke-2.
+                        <strong>Kasus Bisnis:</strong> Pada katalog aplikasi eksekutif, data variasi produk termahal ditampilkan sebanyak 5 barang per halaman. Pengguna sedang membuka Halaman ke-2 (peringkat 6 s/d 10 termahal).
                     </div>
                     <div class="spec-grid">
                         <div class="spec-item">
                             <div class="spec-label">Tabel Target</div>
-                            <div class="spec-value">pesanan</div>
+                            <div class="spec-value">variasi_produk</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Pengurutan</div>
-                            <div class="spec-value">total_bayar DESC (Termahal dulu)</div>
+                            <div class="spec-value">ORDER BY harga_jual DESC (Termahal dulu)</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Halaman Target</div>
-                            <div class="spec-value">Halaman 2 (Lewati 10 data pertama, ambil 10 berikutnya)</div>
+                            <div class="spec-value">Halaman 2 (Lewati 5 produk pertama, ambil 5 berikutnya)</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Kolom Diminta</div>
+                            <div class="spec-value">sku, warna, ukuran, harga_jual</div>
                         </div>
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Gunakan <code>LIMIT 10 OFFSET 10</code> untuk melompati baris 1-10 dan mengambil baris 11-20.</span>
+                        <span><strong>Petunjuk:</strong> Gunakan rumus paginasi <code>ORDER BY harga_jual DESC LIMIT 5 OFFSET 5</code>.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
@@ -1433,7 +1442,7 @@ WHERE nama_produk LIKE '%Wireless%'
                                 <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 9
                             </button>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query paginasi LIMIT OFFSET di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis query paginasi produk termahal di sini..."></textarea>
                     </div>
                 </div>
 
@@ -1445,35 +1454,36 @@ WHERE nama_produk LIKE '%Wireless%'
                     <div class="jawaban-sql-wrap">
                         <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                         <pre class="code-block"><code class="language-sql">SELECT 
-    nomor_invoice, 
-    tanggal_pesanan, 
-    total_bayar
-FROM pesanan
-ORDER BY total_bayar DESC
-LIMIT 10 OFFSET 10;</code></pre>
+    sku, 
+    warna, 
+    ukuran, 
+    harga_jual
+FROM variasi_produk
+ORDER BY harga_jual DESC
+LIMIT 5 OFFSET 5;</code></pre>
                     </div>
                     <div class="jawaban-explanation">
                         <strong>Pembahasan Logika:</strong>
                         <ul>
-                            <li><code>LIMIT 10</code> menentukan ukuran per halaman (page size).</li>
-                            <li><code>OFFSET 10</code> melompati 10 record peringkat 1 s/d 10 (Halaman 1) sehingga yang tampil murni record peringkat 11 s/d 20 (Halaman 2).</li>
+                            <li><code>ORDER BY harga_jual DESC</code> mengurutkan harga jual dari yang paling mahal ke paling terjangkau.</li>
+                            <li><code>LIMIT 5 OFFSET 5</code>: Rumus paginasi standar di mana <code>OFFSET 5</code> melompati 5 varian termahal pertama (halaman 1), dan <code>LIMIT 5</code> mengambil 5 varian berikutnya (halaman 2).</li>
                         </ul>
                     </div>
                     <div class="jawaban-output-preview">
                         <div class="output-header">
-                            <span>Pratinjau Hasil Halaman 2 (Peringkat 11 - 15)</span>
+                            <span>Pratinjau Hasil Halaman 2 (Peringkat 6 - 10)</span>
                             <span>database/ecommerce.db</span>
                         </div>
                         <table class="output-table">
                             <thead>
-                                <tr><th>nomor_invoice</th><th>tanggal_pesanan</th><th>total_bayar</th></tr>
+                                <tr><th>sku</th><th>warna</th><th>ukuran</th><th>harga_jual</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td>INV/20240510/02354</td><td>2024-05-10 14:10:00</td><td>100.073.000</td></tr>
-                                <tr><td>INV/20240211/00710</td><td>2024-02-11 11:25:30</td><td>95.676.000</td></tr>
-                                <tr><td>INV/20240720/00059</td><td>2024-07-20 18:40:15</td><td>95.036.000</td></tr>
-                                <tr><td>INV/20240307/00931</td><td>2024-03-07 10:15:00</td><td>92.765.000</td></tr>
-                                <tr><td>INV/20240217/01518</td><td>2024-02-17 16:50:20</td><td>92.341.000</td></tr>
+                                <tr><td>SAM-S24U-BLK-256</td><td>Titanium Black</td><td>256GB</td><td>19.999.000</td></tr>
+                                <tr><td>SAM-ZFL5-GRA-512</td><td>Graphite</td><td>512GB</td><td>16.499.000</td></tr>
+                                <tr><td>SAM-ZFL5-MNT-256</td><td>Mint Green</td><td>256GB</td><td>14.499.000</td></tr>
+                                <tr><td>SNY-WH5-BLK</td><td>Black Matte</td><td>Over-Ear</td><td>5.499.000</td></tr>
+                                <tr><td>SNY-WH5-SLV</td><td>Silver Platinum</td><td>Over-Ear</td><td>5.499.000</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1486,15 +1496,15 @@ LIMIT 10 OFFSET 10;</code></pre>
                     <div class="soal-title-wrap">
                         <div class="soal-number-badge">10</div>
                         <div>
-                            <div class="soal-title-text">Pengecekan Nilai Kosong (IS NULL)</div>
-                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE voucher_id IS NULL</div>
+                            <div class="soal-title-text">Audit Risiko Transaksi Tertunda &amp; Batal (Multi-Kondisi AND, OR, Kurung)</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Klausa: WHERE (status_pesanan = 'Dibatalkan' OR status_pesanan = 'Menunggu Pembayaran') AND total_bayar &gt;= 50000000 &bull; ORDER BY total_bayar DESC &bull; LIMIT 5</div>
                         </div>
                     </div>
-                    <span class="soal-topic-tag">IS NULL</span>
+                    <span class="soal-topic-tag">Multi-Kondisi AND &amp; OR</span>
                 </div>
                 <div class="soal-card-body">
                     <div class="scenario-box">
-                        <strong>Kasus Bisnis:</strong> Analis e-commerce ingin mengevaluasi perilaku transaksi organik: pesanan mana saja yang dibuat tanpa menggunakan kode voucher diskon sama sekali.
+                        <strong>Kasus Bisnis:</strong> Tim manajemen risiko ingin memeriksa pesanan bernilai transaksi fantastis (di atas Rp 50.000.000) yang gagal diproses atau masih tertunda pembayarannya.
                     </div>
                     <div class="spec-grid">
                         <div class="spec-item">
@@ -1503,20 +1513,24 @@ LIMIT 10 OFFSET 10;</code></pre>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Kondisi Filter</div>
-                            <div class="spec-value">voucher_id IS NULL</div>
+                            <div class="spec-value">(status_pesanan = 'Dibatalkan' OR status_pesanan = 'Menunggu Pembayaran') AND total_bayar &gt;= 50000000</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Pengurutan</div>
-                            <div class="spec-value">tanggal_pesanan DESC (Terbaru)</div>
+                            <div class="spec-value">ORDER BY total_bayar DESC (Terbesar dulu)</div>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">Batasan Baris</div>
                             <div class="spec-value">5 baris pertama</div>
                         </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Kolom Diminta</div>
+                            <div class="spec-value">nomor_invoice, tanggal_pesanan, status_pesanan, ongkos_kirim, total_bayar</div>
+                        </div>
                     </div>
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
-                        <span><strong>Petunjuk:</strong> Jangan gunakan <code>= NULL</code>. Standar SQL wajib menggunakan operator khusus <code>IS NULL</code>.</span>
+                        <span><strong>Petunjuk:</strong> Wajib membungkus kondisi status dengan tanda kurung <code>(status_pesanan = 'Dibatalkan' OR status_pesanan = 'Menunggu Pembayaran')</code> sebelum dirangkai dengan <code>AND</code> agar presedensi operator benar.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
@@ -1525,7 +1539,7 @@ LIMIT 10 OFFSET 10;</code></pre>
                                 <i class="fa-solid fa-eye"></i> Buka/Tutup Jawaban Soal 10
                             </button>
                         </div>
-                        <textarea class="scratchpad-textarea" placeholder="Tulis query IS NULL di sini..."></textarea>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis query multi-kondisi tanda kurung di sini..."></textarea>
                     </div>
                 </div>
 
@@ -1538,37 +1552,39 @@ LIMIT 10 OFFSET 10;</code></pre>
                         <button class="btn-copy-code" type="button" aria-label="Salin SQL" onclick="salinKode(this)"><i class="fa-regular fa-copy"></i> Salin SQL</button>
                         <pre class="code-block"><code class="language-sql">SELECT 
     nomor_invoice, 
-    potongan_diskon, 
-    voucher_id, 
-    total_bayar, 
-    tanggal_pesanan
+    tanggal_pesanan, 
+    status_pesanan, 
+    ongkos_kirim, 
+    total_bayar
 FROM pesanan
-WHERE voucher_id IS NULL
-ORDER BY tanggal_pesanan DESC
+WHERE (status_pesanan = 'Dibatalkan' OR status_pesanan = 'Menunggu Pembayaran')
+  AND total_bayar &gt;= 50000000
+ORDER BY total_bayar DESC
 LIMIT 5;</code></pre>
                     </div>
                     <div class="jawaban-explanation">
                         <strong>Pembahasan Logika:</strong>
                         <ul>
-                            <li>Nilai <code>NULL</code> menandakan ketiadaan nilai (pelanggan check-out tanpa voucher promo).</li>
-                            <li>Perbandingan <code>= NULL</code> selalu bernilai UNKNOWN / FALSE dalam logika tiga nilai SQL, sehingga hanya operator <code>IS NULL</code> yang sah.</li>
+                            <li><code>(status_pesanan = 'Dibatalkan' OR status_pesanan = 'Menunggu Pembayaran')</code>: Wajib dibungkus tanda kurung <code>( ... )</code> agar klausa <code>OR</code> diproses sebagai satu kelompok logika sebelum disandingkan dengan operator <code>AND</code>.</li>
+                            <li><code>AND total_bayar &gt;= 50000000</code>: Memastikan hanya transaksi bernilai sangat besar (kategori risiko tinggi) yang disaring.</li>
+                            <li><code>ORDER BY total_bayar DESC</code>: Mengurutkan transaksi fantastis dari yang paling jumbo.</li>
                         </ul>
                     </div>
                     <div class="jawaban-output-preview">
                         <div class="output-header">
-                            <span>Pratinjau Hasil Query (5 Baris)</span>
+                            <span>Pratinjau Hasil Query (5 Transaksi Tertinggi)</span>
                             <span>database/ecommerce.db</span>
                         </div>
                         <table class="output-table">
                             <thead>
-                                <tr><th>nomor_invoice</th><th>potongan_diskon</th><th>voucher_id</th><th>total_bayar</th><th>tanggal_pesanan</th></tr>
+                                <tr><th>nomor_invoice</th><th>tanggal_pesanan</th><th>status_pesanan</th><th>ongkos_kirim</th><th>total_bayar</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td>INV/20240901/02812</td><td>0</td><td>NULL</td><td>850.000</td><td>2024-09-01 22:10:00</td></tr>
-                                <tr><td>INV/20240901/02809</td><td>0</td><td>NULL</td><td>1.200.000</td><td>2024-09-01 19:15:30</td></tr>
-                                <tr><td>INV/20240901/02804</td><td>0</td><td>NULL</td><td>450.000</td><td>2024-09-01 17:50:00</td></tr>
-                                <tr><td>INV/20240831/02796</td><td>0</td><td>NULL</td><td>3.100.000</td><td>2024-08-31 20:30:10</td></tr>
-                                <tr><td>INV/20240831/02790</td><td>0</td><td>NULL</td><td>520.000</td><td>2024-08-31 15:45:22</td></tr>
+                                <tr><td>INV/20240613/02323</td><td>2024-06-13 16:10:13</td><td>Dibatalkan</td><td>30.000</td><td>73.043.000</td></tr>
+                                <tr><td>INV/20240310/01450</td><td>2024-03-10 17:35:50</td><td>Dibatalkan</td><td>60.000</td><td>72.156.000</td></tr>
+                                <tr><td>INV/20240427/02253</td><td>2024-04-27 18:00:44</td><td>Dibatalkan</td><td>210.000</td><td>70.802.000</td></tr>
+                                <tr><td>INV/20240719/01108</td><td>2024-07-19 14:43:40</td><td>Dibatalkan</td><td>95.000</td><td>70.675.000</td></tr>
+                                <tr><td>INV/20240520/01813</td><td>2024-05-20 17:34:53</td><td>Dibatalkan</td><td>100.000</td><td>69.946.000</td></tr>
                             </tbody>
                         </table>
                     </div>
