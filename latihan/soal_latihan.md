@@ -9,7 +9,7 @@ Untuk setiap misi:
 
 ---
 
-## 10 Misi Analisis Data
+## 12 Misi Analisis Data
 
 ---
 
@@ -80,3 +80,17 @@ Untuk setiap misi:
 - **Divisi Pemohon:** Tim Keuangan & Manajemen Risiko
 - **Cerita Kasus:** Manajemen keuangan mendeteksi adanya transaksi bernilai sangat besar (di atas Rp 50.000.000) yang berisiko gagal menjadi pemasukan toko karena statusnya masih 'Menunggu Pembayaran' atau sudah 'Dibatalkan'. Tim butuh data transaksi ini segera untuk ditindaklanjuti.
 - **Kebutuhan Analisis:** Buka data pesanan di TablePlus. Tampilkan informasi faktur, tanggal transaksi, status, biaya kirim, dan total bayar. Saring pesanan yang total bayarnya minimal Rp 50.000.000 dan statusnya berada di antara 'Dibatalkan' atau 'Menunggu Pembayaran'. Urutkan dari transaksi bernilai rupiah paling besar, lalu ambil 5 data teratas.
+
+---
+
+### Misi 11: Rekapitulasi Pendapatan & Volume Transaksi per Metode Pembayaran
+- **Divisi Pemohon:** Tim Keuangan (Finance) & Tim Operasional Pembayaran
+- **Cerita Kasus:** Tim Keuangan sedang mengevaluasi kinerja masing-masing metode pembayaran (seperti e-wallet, virtual account, kartu kredit, hingga COD) untuk melihat saluran mana yang menyumbang total perputaran uang terbesar dan frekuensi transaksi terbanyak dari para pembeli.
+- **Kebutuhan Analisis:** Buka tabel `pesanan` dan relasikan dengan tabel `metode_pembayaran`. Kelompokkan data transaksi berdasarkan nama metode pembayaran (`GROUP BY mp.nama_metode`). Hitung total frekuensi pesanan (`total_transaksi`), total akumulasi penerimaan pembayaran (`total_pendapatan`), dan rata-rata nominal per transaksi (`rata_rata_transaksi`). Urutkan dari metode dengan total pendapatan tertinggi ke terendah.
+
+---
+
+### Misi 12: Identifikasi Kota Pasar Potensial Beromzet Tinggi
+- **Divisi Pemohon:** Tim Logistik & Tim Operasional
+- **Cerita Kasus:** Tim Logistik dan Operasional ingin mengetahui kota-kota tujuan pengiriman paket yang memiliki volume transaksi tinggi. Toko ingin memprioritaskan peningkatan layanan pengiriman di kota-kota yang total akumulasi belanja pelanggannya mencapai minimal Rp 1.800.000.000 (Rp 1,8 Miliar).
+- **Kebutuhan Analisis:** Buka tabel `pesanan` dan relasikan dengan tabel `alamat_pelanggan`. Kelompokkan data pesanan berdasarkan kota alamat pengiriman (`GROUP BY ap.kota`). Hitung total pesanan (`total_pesanan`), total perputaran omzet (`total_omzet`), dan rata-rata nilai transaksi per pesanan (`rata_rata_transaksi`). Saring kelompok kota menggunakan klausa `HAVING` agar hanya menampilkan kota dengan total omzet minimal Rp 1.800.000.000. Urutkan hasilnya dari kota beromzet tertinggi ke terendah.

@@ -1,0 +1,22 @@
+{
+  "tasks": [
+    {
+      "id": "TASK-01",
+      "title": "Standarisasi file query SQL di sql/01_tipe_data.sql dan sql/02_query_dasar.sql (Penambahan GROUP BY & Fungsi Teknis Murni)",
+      "status": "closed",
+      "updated_at": "2026-10-24T08:09:00+07:00"
+    },
+    {
+      "id": "TASK-02",
+      "title": "Standarisasi file query SQL lanjutan sql/03 s/d 07 dan semua_query_latihan.sql (GROUP BY komprehensif & Fungsi Teknis Murni)",
+      "status": "closed",
+      "updated_at": "2026-10-24T08:09:00+07:00"
+    },
+    {
+      "id": "TASK-03",
+      "title": "Tambahkan studi kasus latihan GROUP BY & HAVING pada latihan.html, soal_latihan.md, dan kunci_jawaban.md dengan penjelasan fungsi murni",
+      "status": "closed",
+      "updated_at": "2026-10-24T08:09:00+07:00"
+    }
+  ]
+}

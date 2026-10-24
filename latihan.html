@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Latihan Query SQL E-Commerce — Soal &amp; Kunci Jawaban (Velora)</title>
-    <meta name="description" content="10 Soal latihan mandiri query dasar SQL dan kunci jawaban lengkap terpisah berdasarkan database riil e-commerce Indonesia (ecommerce.db). Disusun oleh Mahin Utsman Nawawi, S.H.">
+    <meta name="description" content="12 Soal latihan mandiri query dasar SQL, filtering, dan agregasi GROUP BY berdasarkan database riil e-commerce Indonesia (ecommerce.db). Disusun oleh Mahin Utsman Nawawi, S.H.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css?v=2.5.0">
@@ -552,7 +552,7 @@
 
         <div class="nav-divider"></div>
 
-        <div class="sidebar-header"><i class="fa-solid fa-list-ol"></i> 10 Nomor Latihan</div>
+        <div class="sidebar-header"><i class="fa-solid fa-list-ol"></i> 12 Nomor Latihan</div>
         <nav class="sidebar-nav" aria-label="Daftar Soal Latihan">
             <a href="#soal-1" class="nav-link"><i class="fa-solid fa-ticket"></i> Soal 1: Kupon Promo (SELECT &amp; LIMIT)</a>
             <a href="#soal-2" class="nav-link"><i class="fa-solid fa-truck"></i> Soal 2: Ongkir Kurir (AS &amp; Kalkulasi)</a>
@@ -564,6 +564,8 @@
             <a href="#soal-8" class="nav-link"><i class="fa-solid fa-building"></i> Soal 8: Vendor PT (LIKE Wildcard)</a>
             <a href="#soal-9" class="nav-link"><i class="fa-solid fa-forward"></i> Soal 9: Paginasi Halaman 2 (OFFSET)</a>
             <a href="#soal-10" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Soal 10: Audit Risiko (AND, OR, Kurung)</a>
+            <a href="#soal-11" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Soal 11: Rekap Omzet (GROUP BY)</a>
+            <a href="#soal-12" class="nav-link"><i class="fa-solid fa-map-location-dot"></i> Soal 12: Kota Potensial (HAVING)</a>
         </nav>
 
         <div class="nav-divider"></div>
@@ -577,13 +579,13 @@
         <!-- Hero Section -->
         <section class="latihan-hero">
             <div class="latihan-badges">
-                <span class="latihan-badge badge-blue"><i class="fa-solid fa-pen-to-square"></i> 10 SOAL LATIHAN MANDIRI</span>
+                <span class="latihan-badge badge-blue"><i class="fa-solid fa-pen-to-square"></i> 12 SOAL LATIHAN MANDIRI</span>
                 <span class="latihan-badge badge-surface"><i class="fa-solid fa-database"></i> ECOMMERCE.DB (20 TABEL)</span>
                 <span class="latihan-badge badge-green"><i class="fa-solid fa-brain"></i> TANTANGAN MANDIRI</span>
             </div>
-            <h1>Latihan Query SQL: <span>Query Dasar &amp; Filtering</span></h1>
+            <h1>Latihan Query SQL: <span>Query Dasar, Filter &amp; GROUP BY</span></h1>
             <p>
-                Asah keterampilan analisis SQL Anda menggunakan data transaksi nyata di <strong>ecommerce.db</strong>. Buka database di <strong>TablePlus</strong>, amati struktur tabel yang relevan, dan pecahkan 10 studi kasus bisnis di bawah ini secara mandiri.
+                Asah keterampilan analisis SQL Anda menggunakan data transaksi nyata di <strong>ecommerce.db</strong>. Buka database di <strong>TablePlus</strong>, amati struktur tabel yang relevan, dan pecahkan 12 studi kasus bisnis di bawah ini secara mandiri.
             </p>
         </section>
 
@@ -616,7 +618,7 @@
             <div class="latihan-nav-bar" style="margin-bottom: 24px; justify-content: space-between;">
                 <div style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:0.95rem;color:var(--text-primary);">
                     <i class="fa-solid fa-list-check" style="color:var(--brand-light);"></i>
-                    Daftar 10 Misi Analisis Data Mandiri
+                    Daftar 12 Misi Analisis Data Mandiri
                 </div>
 
                 <div class="quick-jump-wrap">
@@ -632,12 +634,14 @@
                         <a href="#soal-8" class="jump-btn">8</a>
                         <a href="#soal-9" class="jump-btn">9</a>
                         <a href="#soal-10" class="jump-btn">10</a>
+                        <a href="#soal-11" class="jump-btn">11</a>
+                        <a href="#soal-12" class="jump-btn">12</a>
                     </div>
                 </div>
             </div>
 
             <!-- ===================================================================
-                 DAFTAR 10 SOAL LATIHAN ANALISIS DATA
+                 DAFTAR 12 SOAL LATIHAN ANALISIS DATA
                  =================================================================== -->
 
             <!-- SOAL 1 -->
@@ -961,6 +965,72 @@
                     <div class="hint-box">
                         <i class="fa-solid fa-lightbulb"></i>
                         <span><strong>Tips Analis:</strong> Ketika menggabungkan syarat pilihan (salah satu boleh benar) dengan syarat wajib, perhatikan urutan evaluasi logika dalam database agar kriteria tidak salah terfilter.</span>
+                    </div>
+                    <div class="scratchpad-wrap area-soal">
+                        <div class="scratchpad-header">
+                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query:</span>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di TablePlus</span>
+                        </div>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis rancangan query SQL Anda di sini..."></textarea>
+                    </div>
+                </div>
+            </article>
+
+            <!-- SOAL 11 -->
+            <article class="soal-card" id="soal-11">
+                <div class="soal-card-header">
+                    <div class="soal-title-wrap">
+                        <div class="soal-number-badge">11</div>
+                        <div>
+                            <div class="soal-title-text">Rekapitulasi Pendapatan &amp; Volume Transaksi per Metode Pembayaran</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Pemohon: Tim Keuangan &amp; Operasional &bull; Fokus: Agregasi Omzet &amp; Pengelompokan Data</div>
+                        </div>
+                    </div>
+                    <span class="soal-topic-tag">Agregasi GROUP BY</span>
+                </div>
+                <div class="soal-card-body">
+                    <div class="scenario-box">
+                        <strong>Latar Belakang:</strong> Tim Keuangan sedang mengevaluasi kinerja masing-masing metode pembayaran (seperti e-wallet, virtual account, kartu kredit, transfer bank, hingga COD). Pimpinan ingin melihat metode mana yang paling sering digunakan pembeli dan mana yang menyumbang total perputaran uang terbanyak.
+                    </div>
+                    <div class="scenario-box" style="background: rgba(56, 189, 248, 0.05); border-left-color: var(--brand-light);">
+                        <strong>Tugas Analisis:</strong> Buka tabel <code>pesanan</code> dan relasikan dengan tabel <code>metode_pembayaran</code> di TablePlus. Kelompokkan data transaksi berdasarkan nama metode pembayaran (<code>GROUP BY mp.nama_metode</code>). Hitung total frekuensi transaksi (<code>COUNT</code>), total akumulasi pendapatan (<code>SUM</code>), dan rata-rata nominal per transaksi (<code>AVG</code> dibulatkan). Urutkan hasilnya dari metode dengan total pendapatan tertinggi ke terendah.
+                    </div>
+                    <div class="hint-box">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        <span><strong>Tips Analis:</strong> Klausa <code>GROUP BY</code> berfungsi mengelompokkan baris data yang memiliki nilai sama pada kolom tertentu (seperti mengelompokkan per metode pembayaran). Setiap kali kamu menggunakan fungsi agregasi seperti <code>COUNT()</code>, <code>SUM()</code>, atau <code>AVG()</code> bersama kolom kategori, kolom kategori tersebut wajib dimasukkan ke dalam klausa <code>GROUP BY</code>.</span>
+                    </div>
+                    <div class="scratchpad-wrap area-soal">
+                        <div class="scratchpad-header">
+                            <span><i class="fa-solid fa-terminal"></i> Kotak Uji Query:</span>
+                            <span style="font-size:0.75rem;color:var(--text-muted);"><i class="fa-solid fa-code"></i> Tulis query &amp; uji di TablePlus</span>
+                        </div>
+                        <textarea class="scratchpad-textarea" placeholder="Tulis rancangan query SQL Anda di sini..."></textarea>
+                    </div>
+                </div>
+            </article>
+
+            <!-- SOAL 12 -->
+            <article class="soal-card" id="soal-12">
+                <div class="soal-card-header">
+                    <div class="soal-title-wrap">
+                        <div class="soal-number-badge">12</div>
+                        <div>
+                            <div class="soal-title-text">Identifikasi Kota Pasar Potensial Beromzet Tinggi</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Pemohon: Tim Logistik &amp; Operasional &bull; Fokus: Filter Agregasi &amp; Kelompok Data Potensial</div>
+                        </div>
+                    </div>
+                    <span class="soal-topic-tag">Klausa HAVING</span>
+                </div>
+                <div class="soal-card-body">
+                    <div class="scenario-box">
+                        <strong>Latar Belakang:</strong> Tim Logistik dan Operasional ingin mengetahui kota-kota tujuan pengiriman paket yang memiliki aktivitas belanja tinggi. Toko ingin memprioritaskan peningkatan kualitas layanan pengiriman di kota-kota yang total transaksi belanjanya sudah mencapai minimal Rp 1.800.000.000 (Rp 1,8 Miliar).
+                    </div>
+                    <div class="scenario-box" style="background: rgba(56, 189, 248, 0.05); border-left-color: var(--brand-light);">
+                        <strong>Tugas Analisis:</strong> Buka tabel <code>pesanan</code> dan relasikan dengan tabel <code>alamat_pelanggan</code> di TablePlus. Kelompokkan pesanan berdasarkan kota tujuan pengiriman (<code>GROUP BY ap.kota</code>). Hitung total jumlah pesanan, total perputaran omzet, dan rata-rata nominal transaksi. Saring kelompok kota menggunakan klausa <code>HAVING</code> agar hanya menampilkan kota dengan total omzet minimal Rp 1.800.000.000. Urutkan hasilnya dari kota beromzet tertinggi.
+                    </div>
+                    <div class="hint-box">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        <span><strong>Tips Analis:</strong> Klausa <code>WHERE</code> menyaring baris data sebelum proses pengelompokan dilakukan, sedangkan klausa <code>HAVING</code> menyaring hasil kelompok setelah <code>GROUP BY</code> selesai dihitung. Karena fungsi agregasi seperti <code>SUM()</code> tidak bisa disaring dengan <code>WHERE</code>, kita wajib menggunakan <code>HAVING</code>.</span>
                     </div>
                     <div class="scratchpad-wrap area-soal">
                         <div class="scratchpad-header">
